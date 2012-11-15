@@ -12,7 +12,7 @@ In developpement :
  - Files are not bundling for easier debugging.
  - Less files are compiled when updated or if an "@import" inside is updated
  
- In production :
+In production :
  
  - All files are bundling and cached one time only if needed.
 
@@ -33,7 +33,7 @@ Installation
 
 #### By cloning project
 
-1. Install the [lessphp], [CssMin],[JsMin] by cloning them into `./vendor/`.
+1. Install the [lessphp](https://github.com/leafo/lessphp) (latest master), [CssMin](https://github.com/natxet/CssMin),[JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
 2. Clone this project into your `./vendor/` directory.
 
 #### With composer

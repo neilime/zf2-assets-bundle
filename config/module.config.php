@@ -36,11 +36,11 @@ return array(
         'invoqua'
     ),
     'asset_bundle' => array(
-		'production' => __APPLICATION_ENV__ === __ENV_PROD__,
-    	'cachePath' => __ASSETS_CACHE_PATH__,
-    	'webCachePath' => __ASSETS_PUBLIC_CACHE_PATH__,
-    	'baseUrl' => __ASSETS_ROOT_PATH__,
-    	'imgExt' => array('png','gif','cur'),
+		'production' => true,//Define here environnemt (Developpement set false)
+    	'cachePath' => '/public/assets/cache/',//absolute path to the cache directory
+    	'webCachePath' => '@zfBaseUrl/cache/',//cache directory base url
+    	'baseUrl' => '@zfBaseUrl',
+    	'imgExt' => array('png','gif','cur'),//Put here all image extensions to be cached
     	'rendererToStrategy' => array(
             'Zend\View\Renderer\PhpRenderer'  => 'AssetsBundle\View\Strategy\ViewHelperStrategy',
             'Zend\View\Renderer\FeedRenderer' => 'AssetsBundle\View\Strategy\NoneStrategy',
