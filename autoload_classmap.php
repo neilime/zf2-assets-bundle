@@ -8,10 +8,10 @@ return array(
 	'Neilime\AssetsBundle\Service\Minifier\CssMinifier' => __DIR__ . '/src/AssetsBundle/Service/Minifier/CssMinifier.php',
 	'Neilime\AssetsBundle\Service\Minifier\JsMinifier' => __DIR__ . '/src/AssetsBundle/Service/Minifier/JsMinifier.php',
 	'Neilime\AssetsBundle\Service\Minifier\MinifierInterface' => __DIR__ . '/src/AssetsBundle/Service/Minifier/MinifierInterface.php',
-	'Neilime\AssetsBundle\View\Renderer\JsRenderer' => __DIR__ . 'src/AssetsBundle/View/Renderer/JsRenderer.php',
-	'Neilime\AssetsBundle\View\Strategy\AbstractStrategy' => __DIR__ . 'src/AssetsBundle/View/Strategy/AbstractStrategy.php',
-	'Neilime\AssetsBundle\View\Strategy\JsCustomStrategy' => __DIR__ . 'src/AssetsBundle/View/Strategy/JsCustomStrategy.php',
-	'Neilime\AssetsBundle\View\Strategy\NoneStrategy' => __DIR__ . 'src/AssetsBundle/View/Strategy/NoneStrategy.php',
-	'Neilime\AssetsBundle\View\Strategy\StrategyInterface' => __DIR__ . 'src/AssetsBundle/View/Strategy/StrategyInterface.php',
-	'Neilime\AssetsBundle\View\Strategy\ViewHelperStrategy' => __DIR__ . 'src/AssetsBundle/View/Strategy/ViewHelperStrategy.php'
+	'Neilime\AssetsBundle\View\Renderer\JsRenderer' => __DIR__ . '/src/AssetsBundle/View/Renderer/JsRenderer.php',
+	'Neilime\AssetsBundle\View\Strategy\AbstractStrategy' => __DIR__ . '/src/AssetsBundle/View/Strategy/AbstractStrategy.php',
+	'Neilime\AssetsBundle\View\Strategy\JsCustomStrategy' => __DIR__ . '/src/AssetsBundle/View/Strategy/JsCustomStrategy.php',
+	'Neilime\AssetsBundle\View\Strategy\NoneStrategy' => __DIR__ . '/src/AssetsBundle/View/Strategy/NoneStrategy.php',
+	'Neilime\AssetsBundle\View\Strategy\StrategyInterface' => __DIR__ . '/src/AssetsBundle/View/Strategy/StrategyInterface.php',
+	'Neilime\AssetsBundle\View\Strategy\ViewHelperStrategy' => __DIR__ . '/src/AssetsBundle/View/Strategy/ViewHelperStrategy.php'
 );
