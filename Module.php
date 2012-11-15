@@ -32,7 +32,7 @@ class Module implements AutoloaderProviderInterface{
 		/* @var $oRouter \Zend\Mvc\Router\RouteMatch */
 		$oRouter = $oEvent->getRouteMatch();
 		if($oRouter instanceof \Zend\Mvc\Router\RouteMatch){
-			$oEvent->getApplication()->getServiceManager()->get('NeilimeAssetBundleService')
+			$oEvent->getApplication()->getServiceManager()->get('AssetsBundleService')
 			->setControllerName($oRouter->getParam('controller'))
 			->setActionName($oRouter->getParam('action'))
 			->setRenderer($oEvent->getApplication()->getServiceManager()->get('ViewRenderer'))
