@@ -1,6 +1,6 @@
 <?php
 namespace Neilime\AssetsBundle\View\Strategy;
-abstract class AbstractStrategy implements \Neilime\AssetsBundle\View\StrategyInterface{
+abstract class AbstractStrategy implements \Neilime\AssetsBundle\View\Strategy\StrategyInterface{
     /**
      * @var \Zend\View\Renderer\RendererInterface
      */

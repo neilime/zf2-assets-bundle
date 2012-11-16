@@ -4,6 +4,9 @@ return array(
     'Neilime\AssetsBundle\Module' => __DIR__ . '/Module.php',
     'Neilime\AssetsBundleTest\Framework\TestCase' => __DIR__ . '/tests/AssetsBundle/Framework/TestCase.php',
     'Neilime\AssetsBundleTest\SampleTest' => __DIR__ . '/tests/AssetsBundle/SampleTest.php',
+	'Neilime\AssetsBundle\Factory\ServiceFactory' => __DIR__ . '/src/AssetsBundle/Factory/ServiceFactory.php',
+	'Neilime\AssetsBundle\Factory\Minifier\CssMinifierFactory' => __DIR__ . '/src/AssetsBundle/Factory/Minifier/CssMinifierFactory.php',
+	'Neilime\AssetsBundle\Factory\Minifier\JsMinifierFactory' => __DIR__ . '/src/AssetsBundle/Factory/Minifier/JsMinifierFactory.php',
 	'Neilime\AssetsBundle\Service\Service' => __DIR__ . '/src/AssetsBundle/Service/Service.php',
 	'Neilime\AssetsBundle\Service\Minifier\CssMinifier' => __DIR__ . '/src/AssetsBundle/Service/Minifier/CssMinifier.php',
 	'Neilime\AssetsBundle\Service\Minifier\JsMinifier' => __DIR__ . '/src/AssetsBundle/Service/Minifier/JsMinifier.php',
@@ -13,5 +16,7 @@ return array(
 	'Neilime\AssetsBundle\View\Strategy\JsCustomStrategy' => __DIR__ . '/src/AssetsBundle/View/Strategy/JsCustomStrategy.php',
 	'Neilime\AssetsBundle\View\Strategy\NoneStrategy' => __DIR__ . '/src/AssetsBundle/View/Strategy/NoneStrategy.php',
 	'Neilime\AssetsBundle\View\Strategy\StrategyInterface' => __DIR__ . '/src/AssetsBundle/View/Strategy/StrategyInterface.php',
-	'Neilime\AssetsBundle\View\Strategy\ViewHelperStrategy' => __DIR__ . '/src/AssetsBundle/View/Strategy/ViewHelperStrategy.php'
+	'Neilime\AssetsBundle\View\Strategy\ViewHelperStrategy' => __DIR__ . '/src/AssetsBundle/View/Strategy/ViewHelperStrategy.php',
+	//JSMin don't have autoloader
+	'JSMin\Minify' =>  __DIR__ . '/../../nick4fake/jsmin/JsMin/Minify.php'
 );

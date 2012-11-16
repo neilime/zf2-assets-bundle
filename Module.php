@@ -2,12 +2,12 @@
 namespace Neilime\AssetsBundle;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 class Module implements AutoloaderProviderInterface{
-	
+
 	/**
 	 * @var \Zend\ModuleManager\ModuleManagerInterface
 	 */
 	private $moduleManager;
-	
+
 	/**
 	 * Init module
 	 * @param \Zend\ModuleManager\ModuleManagerInterface $oManager
@@ -16,7 +16,7 @@ class Module implements AutoloaderProviderInterface{
 	public function init(\Zend\ModuleManager\ModuleManagerInterface $oManager){
 		$this->moduleManager = $oManager;
 	}
-	
+
 	/**
 	 * @param \Zend\EventManager\EventInterface $oEvent
 	 */
@@ -24,7 +24,7 @@ class Module implements AutoloaderProviderInterface{
 		$oServiceManager = $oEvent->getApplication()->getServiceManager();
 		if($oServiceManager->get('ViewRenderer') instanceof \Zend\View\Renderer\PhpRenderer)$oEvent->getApplication()->getEventManager()->attach('render', array($this, 'renderAssets'), 32);
 	}
-	
+
 	/**
 	 * @param \Zend\Mvc\MvcEvent $oEvent
 	 */
@@ -48,10 +48,7 @@ class Module implements AutoloaderProviderInterface{
         return array(
             'Zend\Loader\ClassMapAutoloader' => array(
                 __DIR__ . '/autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(__NAMESPACE__ => __DIR__ . '/src/' . str_replace('\\', '/' , __NAMESPACE__))
-            ),
+            )
         );
     }
 

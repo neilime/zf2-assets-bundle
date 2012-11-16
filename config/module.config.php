@@ -19,32 +19,24 @@ return array(
     )),
 	'service_manager' => array(
         'factories' => array(
-            'CssMinifier' => __NAMESPACE__.'\Service\Minifier\CssMinifier',
-        	'JsMinifier' => __NAMESPACE__.'\Service\Minifier\JsMinifier',
-        	'AssetsBundleService' => function(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator){
-            	$aConfiguration = $oServiceLocator->get('Configuration');
-            	$oService = new \Neilime\AssetsBundle\Service\Service($aConfiguration['asset_bundle']);
-            	return $oService->setMinifiers(array(
-            		\Neilime\AssetsBundle\Service\Service::ASSET_CSS => $oServiceLocator->get('CssMinifier'),
-            		\Neilime\AssetsBundle\Service\Service::ASSET_JS => $oServiceLocator->get('JsMinifier')
-            	));
-            },
+            'CssMinifier' => '\Neilime\AssetsBundle\Factory\Minifier\CssMinifierFactory',
+        	'JsMinifier' => '\Neilime\AssetsBundle\Factory\Minifier\JsMinifierFactory',
+        	'AssetsBundleService' => '\Neilime\AssetsBundle\Factory\ServiceFactory',
             'ViewJsCustomStrategy' => function(){
             	return new \Neilime\AssetsBundle\View\Strategy\JsCustomStrategy(new \Neilime\AssetsBundle\View\Renderer\JsRenderer());
             }
-        ),
-        'invoqua'
+        )
     ),
     'asset_bundle' => array(
-		'production' => true,//Define here environnemt (Developpement set false)
-    	'cachePath' => '/public/assets/cache/',//absolute path to the cache directory
-    	'webCachePath' => '@zfBaseUrl/cache/',//cache directory base url
-    	'baseUrl' => '@zfBaseUrl',
+		'production' => true,//Define here environment (Developpement => false)
+    	'cachePath' => '@zfRootPath/public/assets/cache',//cache directory absolute path
+    	'assetPath' => '@zfRootPath/public/assets',//assets directory absolute path (allows you to define relative path for assets config)
+    	'cacheUrl' => '@zfBaseUrl/assets/cache/',//cache directory base url
     	'imgExt' => array('png','gif','cur'),//Put here all image extensions to be cached
     	'rendererToStrategy' => array(
-            'Zend\View\Renderer\PhpRenderer'  => 'AssetsBundle\View\Strategy\ViewHelperStrategy',
-            'Zend\View\Renderer\FeedRenderer' => 'AssetsBundle\View\Strategy\NoneStrategy',
-            'Zend\View\Renderer\JsonRenderer' => 'AssetsBundle\View\Strategy\NoneStrategy'
+            'Zend\View\Renderer\PhpRenderer'  => '\Neilime\AssetsBundle\View\Strategy\ViewHelperStrategy',
+            'Zend\View\Renderer\FeedRenderer' => '\Neilime\AssetsBundle\View\Strategy\NoneStrategy',
+            'Zend\View\Renderer\JsonRenderer' => '\Neilime\AssetsBundle\View\Strategy\NoneStrategy'
         )
     ),
     'view_manager' => array('strategies' => array('ViewJsCustomStrategy'))
