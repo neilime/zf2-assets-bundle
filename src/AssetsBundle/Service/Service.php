@@ -458,8 +458,8 @@ class Service{
 		if(empty($sPath) || !is_string($sPath))throw new \Exception('Path is not valid : '.gettype($sPath));
 		if(file_exists($sPath))return realpath($sPath);
 		
-		if(strpos($sPath,'@zfRootPath'))$sPath = str_ireplace('@zfRootPath',getcwd(),$sPath);
-		if(strpos($sPath,'@zfAssetPath')){
+		if(strpos($sPath,'@zfRootPath') !== false)$sPath = str_ireplace('@zfRootPath',getcwd(),$sPath);
+		if(strpos($sPath,'@zfAssetPath') !== false){
 			if(!isset($this->configuration['assetPath']))throw new \Exception('Asset Path is undefined');
 			$sPath = str_ireplace('@zfAssetPath',$this->configuration['assetPath'],$sPath);
 		}

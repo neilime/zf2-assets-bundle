@@ -1,5 +1,5 @@
 <?php
-namespace Neilime\AssetsBundle\Factory;
+namespace Neilime\AssetsBundle\Factory\Filter;
 class JsFilterFactory implements \Zend\ServiceManager\FactoryInterface{
 
 	/**
