@@ -61,7 +61,7 @@ Installation
     return array(
         'modules' => array(
             // ...
-            'AssetsBundle',
+            'Neilime\AssetsBundle',
         ),
         // ...
     );
