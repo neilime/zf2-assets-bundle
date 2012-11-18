@@ -1,6 +1,9 @@
 <?php
 namespace Neilime\AssetsBundle\Service\Filter;
 class LessFilter implements \Neilime\AssetsBundle\Service\Filter\FilterInterface{
+	/**
+	 * @var \lessc
+	 */
 	protected $lessParser;
 	
 	/**
@@ -14,7 +17,9 @@ class LessFilter implements \Neilime\AssetsBundle\Service\Filter\FilterInterface
 		if(!is_dir($aConfiguration['assetPath'] = $this->getRealPath($aConfiguration['assetPath'])))throw new \Exception('assetPath is not a valid directory : '.$aConfiguration['assetPath']);
 		else $aConfiguration['assetPath'] .= DIRECTORY_SEPARATOR;
 		$this->lessParser = new \lessc();
-		$this->lessParser->importDir = $aConfiguration['assetPath'];
+		$this->lessParser->addImportDir($aConfiguration['assetPath']);
+		$this->lessParser->addImportDir(getcwd());
+		
 	}
 	
 	/**

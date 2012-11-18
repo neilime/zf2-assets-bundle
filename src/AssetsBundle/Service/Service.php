@@ -356,7 +356,7 @@ class Service{
 		foreach($aAssetsPath as $sAssetPath){
 			//Absolute path
 			if(!in_array($sAssetPath,$aAssetsExists) && !($sAssetPath = $this->getRealPath($sAssetPath)))throw new \Exception('File not found : '.$sAssetPath);
-			$sImportContent .= '@import "'.str_ireplace($this->configuration['assetPath'], '', $sAssetPath).'";'.PHP_EOL;
+			$sImportContent .= '@import "'.str_ireplace(getcwd(), '', $sAssetPath).'";'.PHP_EOL;
 		};
 		$sImportContent = trim($sImportContent);
 
