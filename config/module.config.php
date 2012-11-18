@@ -19,8 +19,9 @@ return array(
     )),
 	'service_manager' => array(
         'factories' => array(
-            'CssMinifier' => '\Neilime\AssetsBundle\Factory\Minifier\CssMinifierFactory',
-        	'JsMinifier' => '\Neilime\AssetsBundle\Factory\Minifier\JsMinifierFactory',
+            'CssFilter' => '\Neilime\AssetsBundle\Factory\Filter\CssFilterFactory',
+        	'JsFilter' => '\Neilime\AssetsBundle\Factory\Filter\JsFilterFactory',
+        	'LessFilter' => '\Neilime\AssetsBundle\Factory\Filter\LessFilterFactory',
         	'AssetsBundleService' => '\Neilime\AssetsBundle\Factory\ServiceFactory',
             'ViewJsCustomStrategy' => function(){
             	return new \Neilime\AssetsBundle\View\Strategy\JsCustomStrategy(new \Neilime\AssetsBundle\View\Renderer\JsRenderer());
