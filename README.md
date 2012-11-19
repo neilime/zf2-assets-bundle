@@ -66,3 +66,18 @@ Installation
         // ...
     );
     ```
+    
+# How to use _AssetsBundle_
+
+## Simple configuration example
+
+This example shows how to convert "ZF2 Skeleton Application" to manage assets via AssetsBundle.
+
+1. After installing skeleton application, just create cache directory into public/
+  ```bash
+  cd to/your/project/public/dir/
+  mkdir cache
+  chmod 777 cache
+  ```
+
+2. Edit the application module configuration file `module/Application/config/module.config.php`, adding the configuration fragment below:
