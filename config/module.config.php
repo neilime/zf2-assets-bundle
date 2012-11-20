@@ -30,8 +30,8 @@ return array(
     ),
     'asset_bundle' => array(
 		'production' => true,//Define here environment (Developpement => false)
-    	'cachePath' => '@zfRootPath/public/assets/cache',//cache directory absolute path
-    	'assetPath' => '@zfRootPath/public/assets',//assets directory absolute path (allows you to define relative path for assets config)
+    	'cachePath' => '@zfRootPath/public/cache',//cache directory absolute path
+    	'assetPath' => '@zfRootPath/public',//assets directory absolute path (allows you to define relative path for assets config)
     	'cacheUrl' => '@zfBaseUrl/assets/cache/',//cache directory base url
     	'imgExt' => array('png','gif','cur'),//Put here all image extensions to be cached
     	'rendererToStrategy' => array(

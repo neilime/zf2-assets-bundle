@@ -72,12 +72,48 @@ Installation
 ## Simple configuration example
 
 This example shows how to convert "ZF2 Skeleton Application" to manage assets via AssetsBundle.
+1. After installing skeleton application, install _AssetsBundle_ as explained above
 
-1. After installing skeleton application, just create cache directory into public/
+2. Then just create cache directory into public/
   ```bash
   cd to/your/project/public/dir/
   mkdir cache
-  chmod 777 cache
   ```
-
 2. Edit the application module configuration file `module/Application/config/module.config.php`, adding the configuration fragment below:
+	
+	```php
+	<?php
+	return array(
+		//...
+		'asset_bundle' => array(
+	    	'assets' => array(
+	    		'application' => array(
+	    			'css' => array(
+	    				'css/bootstrap-responsive.min.css',
+	    				'css/bootstrap.min.css',
+	    				'css/style.css'
+	    			),
+	    			'js' => array(
+	    				'js/jquery.min.js',
+	    				'js/bootstrap.min.js'
+	    			),
+	    			'img' => array('images/')
+	    		)
+	    	)
+	    ),
+	    //...
+	);
+	```
+3. Edit layout file `module/Application/view/layout/layout.phtml`, removing prepend function for assets:
+	```php
+	 <?php
+	//Remove these lines
+	
+	->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
+	->prependStylesheet($this->basePath() . '/css/style.css')
+	->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+	
+	 ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+     ->prependFile($this->basePath() . '/js/jquery.min.js')
+     ```
+3. Save & Resfresh
