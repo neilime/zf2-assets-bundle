@@ -72,14 +72,15 @@ Installation
 ## Simple configuration example
 
 This example shows how to convert "ZF2 Skeleton Application" to manage assets via AssetsBundle.
-1. After installing skeleton application, install _AssetsBundle_ as explained above
 
-2. Then just create cache directory into public/
+1. After installing skeleton application, install _AssetsBundle_ as explained above.
+
+2. Then just create cache directory into "public/".
   ```bash
   cd to/your/project/public/dir/
   mkdir cache
   ```
-2. Edit the application module configuration file `module/Application/config/module.config.php`, adding the configuration fragment below:
+3. Edit the application module configuration file `module/Application/config/module.config.php`, adding the configuration fragment below:
 	
 	```php
 	<?php
@@ -104,7 +105,7 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
 	    //...
 	);
 	```
-3. Edit layout file `module/Application/view/layout/layout.phtml`, removing prepend function for assets:
+4. Edit layout file `module/Application/view/layout/layout.phtml`, removing prepend function for assets:
 	```php
 	 <?php
 	//Remove these lines
@@ -116,4 +117,4 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
 	 ->prependFile($this->basePath() . '/js/bootstrap.min.js')
      ->prependFile($this->basePath() . '/js/jquery.min.js')
      ```
-3. Save & Resfresh
+5. Save & Resfresh.
