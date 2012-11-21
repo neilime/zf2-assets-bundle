@@ -22,6 +22,9 @@
                 "url": "https://github.com/Nodge/lessphp.git",
                 "type": "git",
                 "reference": "master"
+            },
+            "autoload": {
+                "classmap": ["lessc.inc.php"]
             }
         }
     }],
