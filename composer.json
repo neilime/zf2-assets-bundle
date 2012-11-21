@@ -16,7 +16,7 @@
         "type": "package",
         "package": {
             "version": "dev-master",
-            "name": "leafo/lessphp",
+            "name": "nodge/lessphp",
             "source": {
                 "url": "https://github.com/Nodge/lessphp.git",
                 "type": "git",
@@ -27,7 +27,7 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",
-        "leafo/lessphp": "dev-master",
+        "nodge/lessphp": "dev-master",
         "natxet/CssMin": "dev-master",
         "nick4fake/jsmin": "dev-master"
     },
