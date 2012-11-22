@@ -20,7 +20,7 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",
-        "lessphp/lessphp": "master",
+        "leafo/lessphp": "dev-master",
         "natxet/CssMin": "dev-master",
         "nick4fake/jsmin": "dev-master"
     },
