@@ -14,24 +14,13 @@
     ],
     "minimum-stability":"dev",
     "repositories": [{
-        "type": "package",
-        "package": {
-            "version": "dev-master",
-            "name": "nodge/lessphp",
-            "source": {
-                "url": "https://github.com/Nodge/lessphp.git",
-                "type": "git",
-                "reference": "master"
-            },
-            "autoload": {
-                "classmap": ["lessc.inc.php"]
-            }
-        }
+        "type": "vcs",
+        "url": "http://github.com/Nodge/lessphp"
     }],
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",
-        "nodge/lessphp": "dev-master",
+        "lessphp/lessphp": "dev-master",
         "natxet/CssMin": "dev-master",
         "nick4fake/jsmin": "dev-master"
     },
