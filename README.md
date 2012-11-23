@@ -173,7 +173,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 	);
 	```
 	
-	For each of assets type you can set files or directories. All of these are relative to asset path by default, but you can set absolute path or use "@zfAssetPath" and "@zfRootPath" constants.
+	For each of assets you can set files or directories. All of these are relative to asset path by default, but you can set absolute path or use "@zfAssetPath" and "@zfRootPath" constants.
 	If you set directory all files that matching asset type are included.
 	You can set an includes order you can do this : 
 	
@@ -190,6 +190,6 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
     	)    			
     	//...
     );
-    ```php
+    ```
     
    	This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"
