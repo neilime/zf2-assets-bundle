@@ -52,10 +52,10 @@ class Service{
 
 		//Check configuration values
 		if(strpos($aConfiguration['cacheUrl'],'@zfBaseUrl') !== false)$aConfiguration['cacheUrl'] = $oServiceLocator->get('ViewHelperManager')->get('basePath')->__invoke(str_ireplace('@zfBaseUrl','', $aConfiguration['cacheUrl']));
-		
+
 		if(!is_dir($aConfiguration['cachePath'] = $this->getRealPath($aConfiguration['cachePath'])))throw new \Exception('cachePath is not a valid directory : '.$aConfiguration['cachePath']);
 		else $aConfiguration['cachePath'] .= DIRECTORY_SEPARATOR;
-		
+
 		if(!is_dir($aConfiguration['assetPath'] = $this->getRealPath($aConfiguration['assetPath'])))throw new \Exception('assetPath is not a valid directory : '.$aConfiguration['assetPath']);
 		else $aConfiguration['assetPath'] .= DIRECTORY_SEPARATOR;
 
@@ -181,15 +181,15 @@ class Service{
 		}
 
 		//Manage images caching
-		$this->cacheImages(array_unique($aAssets[self::ASSET_IMG]));
+		$this->cacheImages($this->getValidAssets(array_unique($aAssets[self::ASSET_IMG]),self::ASSET_IMG));
 
 		//Manage less files caching
-		$aAssets[self::ASSET_CSS][] = $this->cacheLess(array_unique($aAssets[self::ASSET_LESS]));
+		$aAssets[self::ASSET_CSS][] = $this->cacheLess($this->getValidAssets(array_unique($aAssets[self::ASSET_LESS]),self::ASSET_LESS));
 
 		//Manage css & js file caching
 		return $this->displayAssets(array_unique(array_filter(array_merge(
-			$this->cacheAssets(array_unique(array_filter($aAssets[self::ASSET_CSS])),self::ASSET_CSS),
-			$this->cacheAssets(array_unique(array_filter($aAssets[self::ASSET_JS])),self::ASSET_JS)
+			$this->cacheAssets($this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_CSS])),self::ASSET_CSS),self::ASSET_CSS),
+			$this->cacheAssets($this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_JS])),self::ASSET_JS),self::ASSET_JS)
 		))));
 	}
 
@@ -231,6 +231,7 @@ class Service{
 			if($bCacheOk)return array($sCacheFile);
 		}
 
+		$bHasContent = false;
 		foreach($aAssetsPath as $sAssetPath){
 			//Absolute path
 			if(!in_array($sAssetPath,$aAssetsExists) && !($sAssetPath = $this->getRealPath($sAssetPath)))throw new \Exception('File not found : '.$sAssetPath);
@@ -264,15 +265,17 @@ class Service{
 					$sCacheContent = trim($this->getFilter(self::ASSET_JS)->run($sAssetContent)).PHP_EOL.'//'.PHP_EOL;
 					break;
 			}
+			$sCacheContent = trim($sCacheContent);
 			if(empty($sCacheContent))continue;
+			else $bHasContent = true;
 			if(!file_put_contents($this->configuration['cachePath'].$sCacheFile,$sCacheContent.PHP_EOL,FILE_APPEND))throw new \Exception('Unable to write in file : '.$this->configuration['cachePath'].$sCacheFile);
 		}
-		return $this->configuration['production']?array($sCacheFile):$aCacheAssets;
+		return $this->configuration['production']?($bHasContent?array($sCacheFile):array()):$aCacheAssets;
 	}
 
 	/**
 	 * Optimise and cache "Images" assets
-	 * @param array $aImagesPath : les assets to cache (Directories are allowed)
+	 * @param array $aImagesPath : images to cache
 	 * @throws \Exception
 	 * @return \Neilime\AssetsBundle\Service
 	 */
@@ -280,30 +283,77 @@ class Service{
 		foreach($aImagesPath as $sImagePath){
 			//Absolute path
 			if(!($sImagePath = $this->getRealPath($sImagePath)))throw new \Exception('File not found : '.$sImagePath);
-			if(is_dir($sImagePath)){
-				$oDirIterator = new \DirectoryIterator($sImagePath);
-				foreach($oDirIterator as $oFile){
-					/* @var $oFile \DirectoryIterator */
-					if($oFile->isFile() && in_array($sExtension = strtolower(pathinfo($oFile->getFilename(), PATHINFO_EXTENSION)),$this->configuration['imgExt'])){
-						$sCacheImgPath = str_ireplace($this->configuration['assetPath'],$this->configuration['cachePath'],$oFile->getFileInfo()->getPathname());
-						//Asset isn't cached or it's deprecated
-						if($this->hasToCache($oFile->getPathname(),$sCacheImgPath)){
-							switch($sExtension){
-								case 'png':
-								case 'gif':
-								case 'cur':
-									$this->copyIntoCache($oFile->getPathname(),$sCacheImgPath);
-									break;
-								default:
-									throw new \Exception('Extension is not valid (png,gif,cur): '.$sExtension);
-							}
-						}
-					}
-				}
+			//Define cache path
+			$sCacheImgPath = str_ireplace($this->configuration['assetPath'],$this->configuration['cachePath'],$sImagePath);
+
+			//If image is not in asset directory
+			if($sCacheImgPath === $sImagePath)$sCacheImgPath = str_ireplace(getcwd(),$this->configuration['cachePath'],$sImagePath);
+
+			//Image isn't cached or it's deprecated
+			if($this->hasToCache($sImagePath,$sCacheImgPath))switch($sExtension = strtolower(pathinfo($sImagePath,PATHINFO_EXTENSION))){
+				case 'png':
+				case 'gif':
+				case 'cur':
+					$this->copyIntoCache($sImagePath,$sCacheImgPath);
+					break;
+				default:
+					if(in_array($sExtension,$this->configuration['imgExt']))$this->copyIntoCache($sImagePath,$sCacheImgPath);
+					else throw new \Exception('Extension is not valid ('.join(', ',$this->configuration['imgExt']).') : '.$sExtension);
+					break;
 			}
 		}
 		return $this;
 	}
+
+	/**
+	 * Retrieve assets realpath
+	 * @param array $aAssets
+	 * @param string $sTypeAsset
+	 * @throws \Exception
+	 * @return array
+	 */
+	private function getValidAssets(array $aAssets,$sTypeAsset){
+		if(!self::assetTypeExists($sTypeAsset))throw new \Exception('Asset\'s type is undefined : '.$sTypeAsset);
+		$aReturn = array();
+		foreach($aAssets as $sAssetPath){
+			if(!($sAssetPath =  $this->getRealPath($sAssetPath)))throw new \Exception('Directory not found : '.$sAssetPath);
+			if(is_dir($sAssetPath))$aReturn += $this->getAssetsFromDirectory($sAssetPath, $sTypeAsset);
+			else $aReturn[] = $sAssetPath;
+		}
+		return array_unique(array_filter($aReturn));
+	}
+
+	/**
+	 * Retrieve assets from a directory
+	 * @param string $sDirPath
+	 * @param string $sTypeAsset
+	 * @throws \Exception
+	 * @return array
+	 */
+	private function getAssetsFromDirectory($sDirPath,$sTypeAsset){
+		if(!is_string($sDirPath) || !($sDirPath = $this->getRealPath($sDirPath)) && !is_dir($sDirPath))throw new \Exception('Directory not found : '.$sDirPath);
+		if(!self::assetTypeExists($sTypeAsset))throw new \Exception('Asset\'s type is undefined : '.$sTypeAsset);
+		$oDirIterator = new \DirectoryIterator($sDirPath);
+		$aAssets = array();
+		foreach($oDirIterator as $oFile){
+			/* @var $oFile \DirectoryIterator */
+			if($oFile->isFile())switch($sTypeAsset){
+				case self::ASSET_CSS:
+				case self::ASSET_JS:
+				case self::ASSET_LESS:
+					if(strtolower(pathinfo($oFile->getFilename(),PATHINFO_EXTENSION)) === $sTypeAsset)$aAssets[] = $oFile->getPathname();
+					break;
+				case self::ASSET_IMG:
+					if(in_array(
+						$sExtension = strtolower(pathinfo($oFile->getFilename(),PATHINFO_EXTENSION)),
+						$this->configuration['imgExt']
+					))$aAssets[] = $oFile->getPathname();
+					break;
+			}
+		}
+		return $aAssets;
+	}
+
 
 	/**
 	 * Optimise and cache "Less" assets
@@ -359,9 +409,23 @@ class Service{
 			$sImportContent .= '@import "'.str_ireplace(getcwd(), '', $sAssetPath).'";'.PHP_EOL;
 		};
 		$sImportContent = trim($sImportContent);
+		if(empty($sImportContent) || !($sImportContent = $this->getFilter(self::ASSET_LESS)->run($sImportContent)))return null;
 
-		if(empty($sImportContent))return null;
-		if(!file_put_contents($sCacheFile = $this->configuration['cachePath'].$sCacheFile,$this->getFilter(self::ASSET_LESS)->run($sImportContent)))throw new \Exception('Unable to write in file : '.$sCacheFile);
+		//Background images
+		$sImportContent = preg_replace_callback(
+			'/background(-image)??\s*?:.*?url\((["|\']??(.+)["|\']??)\)/',
+			array($this,'rewriteUrl'),
+			$sImportContent
+		);
+
+		//Cursor images
+		$sImportContent = preg_replace_callback(
+			'/(cursor??\s*?:.*?)url\((["|\']??(.+)["|\']??)\)/',
+			array($this,'rewriteUrl'),
+			$sImportContent
+		);
+
+		if(!file_put_contents($sCacheFile = $this->configuration['cachePath'].$sCacheFile,$sImportContent))throw new \Exception('Unable to write in file : '.$sCacheFile);
 		return $sCacheFile;
 	}
 
@@ -447,7 +511,7 @@ class Service{
 		if(!copy($sFilePath,$sCachePath) || !file_exists($sCachePath))throw new \Exception('Unable to create file : '.$sCachePath);
 		return $this;
 	}
-	
+
 	/**
 	 * Try to retrieve realpath for a given path (manage @zfRootPath & @zfAssetPath)
 	 * @param string $sPath
@@ -456,8 +520,15 @@ class Service{
 	 */
 	private function getRealPath($sPath){
 		if(empty($sPath) || !is_string($sPath))throw new \Exception('Path is not valid : '.gettype($sPath));
+
+		//If path is "/", assets path is prefered
+		if($sPath === '/'){
+			if(!isset($this->configuration['assetPath']))throw new \Exception('Asset Path is undefined');
+			return $this->configuration['assetPath'];
+		}
+
 		if(file_exists($sPath))return realpath($sPath);
-		
+
 		if(strpos($sPath,'@zfRootPath') !== false)$sPath = str_ireplace('@zfRootPath',getcwd(),$sPath);
 		if(strpos($sPath,'@zfAssetPath') !== false){
 			if(!isset($this->configuration['assetPath']))throw new \Exception('Asset Path is undefined');
@@ -468,5 +539,27 @@ class Service{
 		if(file_exists($sRealPath = getcwd().DIRECTORY_SEPARATOR.$sPath))return realpath($sRealPath);
 		elseif(isset($this->configuration['assetPath']) && file_exists($sRealPath = $this->configuration['assetPath'].$sPath))return realpath($sRealPath);
 		else return false;
+	}
+
+	/**
+	 * Rewrite url to match with cache path
+	 * @param array $aMatches
+	 * @throws \Exception
+	 * @return mixed
+	 */
+	private function rewriteUrl(array $aMatches){
+		if(!isset($aMatches[3]))throw new \Exception('Url match is not valid');
+
+		//Remove quotes & double quotes from url
+		$aMatches[3] = str_ireplace(array('"','\''),'', $aMatches[3]);
+
+		$sRootPath = realpath(getcwd().DIRECTORY_SEPARATOR.'..');
+		$sAssetRelativePath = str_ireplace(array($sRootPath,DIRECTORY_SEPARATOR),array('','/'), $this->configuration['assetPath']);
+
+		$sUrl = str_ireplace('..'.$sAssetRelativePath,'', $aMatches[3]);
+
+		//Url does not point to the assets directory
+		if($sUrl == $aMatches[3])$sUrl = str_ireplace('..'.str_ireplace(array($sRootPath,DIRECTORY_SEPARATOR),array('','/'), getcwd()).'/','', $aMatches[3]);
+		return str_ireplace($aMatches[2],$this->configuration['cacheUrl'].$sUrl,$aMatches[0]);
 	}
 }

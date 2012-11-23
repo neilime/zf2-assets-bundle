@@ -33,7 +33,7 @@ Installation
 
 #### By cloning project
 
-1. Install the [lessphp](https://github.com/leafo/lessphp) (latest master), [CssMin](https://github.com/natxet/CssMin),[JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
+1. Install the [lessphp fork](https://github.com/Nodge/lessphp) (latest master), [CssMin](https://github.com/natxet/CssMin),[JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
 2. Clone this project into your `./vendor/` directory.
 
 #### With composer
@@ -46,7 +46,16 @@ Installation
     }
     ```
 
-2. Now tell composer to download AssetsBundle by running the command:
+2. Due to bug in lessphp you have to use Nodge's fork, add this repository in your composer.json:
+	
+	```json
+    "repositories": [{
+        "type": "vcs",
+        "url": "http://github.com/Nodge/lessphp"
+    }],
+    ```
+
+3. Now tell composer to download AssetsBundle by running the command:
 
     ```bash
     $ php composer.phar update
@@ -89,16 +98,12 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
 		'asset_bundle' => array(
 	    	'assets' => array(
 	    		'application' => array(
-	    			'css' => array(
-	    				'css/bootstrap-responsive.min.css',
-	    				'css/bootstrap.min.css',
-	    				'css/style.css'
-	    			),
+	    			'css' => array('css'),
 	    			'js' => array(
 	    				'js/jquery.min.js',
 	    				'js/bootstrap.min.js'
 	    			),
-	    			'img' => array('images/')
+	    			'img' => array('images')
 	    		)
 	    	)
 	    ),
@@ -118,3 +123,73 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
      ->prependFile($this->basePath() . '/js/jquery.min.js')
      ```
 5. Save & Resfresh.
+
+# Configuration
+
+The default configuration is setup to run with "Application ZF2 Skeleton"
+
+1. _AssetsBundle_ :
+
+ 	- boolean production : Define the application environment (development => false). Default true.
+    - string cachePath : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".
+    - string assetPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
+    - string cacheUrl : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".
+    - array imgExt : Put here all images extensions to be cached. Default array('png','gif','cur').
+
+2. Modules :
+
+ You can define assets for modules / controllers / action
+ 
+ Exemple for the application module : 
+ 
+ 	```php
+	<?php
+	return array(
+		//...
+    	'assets' => array(
+    		'application' => array( //Module Name
+    			'css' => array(), //Define css files to include
+    			'js' => array(), //Define js files to include
+    			'less' => array(), //Define less files to include
+    			'img' => array() //Define images to manage
+    			    			
+    			'Test/Controller/Name' => array(
+    				'css' => array(),
+	    			'js' => array(),
+	    			'less' => array(), 
+	    			'img' => array()
+	    			
+	    			'ActionName'=> array(
+	    				'css' => array(),
+		    			'js' => array(),
+		    			'less' => array(), 
+		    			'img' => array()
+    				)
+    			)
+    			//...
+    		)
+	    ),
+	    //...
+	);
+	```
+	
+	For each of assets type you can set files or directories. All of these are relative to asset path by default, but you can set absolute path or use "@zfAssetPath" and "@zfRootPath" constants.
+	If you set directory all files that matching asset type are included.
+	You can set an includes order you can do this : 
+	
+	```php
+	<?php
+	return array(
+		//...
+    	'assets' => array(
+    		'application' => array(
+    			'js' => array('js/firstFile.js','js'),
+    			//...
+    		)
+    		//...
+    	)    			
+    	//...
+    );
+    ```php
+    
+   	This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"
