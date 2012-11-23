@@ -173,9 +173,10 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 	);
 	```
 	
-	For each of assets you can set files or directories. All of these are relative to asset path by default, but you can set absolute path or use "@zfAssetPath" and "@zfRootPath" constants.
-	If you set directory all files that matching asset type are included.
-	You can set an includes order you can do this : 
+	For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
+	but you can specify an absolute path or use the constants "@zfAssetPath" and "@zfRootPath".
+	If you specify a directory, all files matching the asset type (css, less, js, img) will be included.
+	You can define an inclusion order like this :
 	
 	```php
 	<?php
@@ -193,3 +194,49 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
     ```
     
    	This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"
+   	
+3. Custom Js :
+
+This function allows you to dynamically include javascript files. For exemple, files specific to a user settings.
+In this case, your controller that need these file have to extends "Neilime\AssetsBundle\Mvc\ControllerAbstractActionController".
+
+Then create a jscustomAction function into your controller : 
+	
+	```php
+	<?php
+	public function jscustomAction($sAction = null){
+    	$aConfiguration = $this->getServiceLocator()->get('config');
+    	if(!isset($aConfiguration['asset_bundle']))throw new \Exception('AssetBundle config is not defined');
+    	if(empty($sAction)){
+    		//Test if you are in production
+    		if(!$aConfiguration['asset_bundle']['production'])throw new \Exception('action must be defined in development mode');
+    		$sAction = $this->params('js_action');
+    		if(empty($sAction))throw new \Exception('Action is not defined');
+    		$bReturnFiles = false;
+    	}
+    	else $bReturnFiles = true;
+    	$aJsFiles = array();
+
+    	switch($sAction){
+    		case 'application':
+				//Here you can specify js files to include
+				$aJsFiles[] = 'js/dynamicFile.js';
+    			break;
+    	}
+    	if($bReturnFiles)return $aJsFiles;
+    	else{
+    		$this->layout()->jsFiles = $aJsFiles;
+    		return false;
+    	}
+    }
+	```
+
+Edit layout file:
+	
+	```php
+	//Into head
+	if(!empty($this->jsCustomUrl))$this->plugin('InlineScript')->appendFile($this->jsCustomUrl.'?'.time());//Set time() force browser not to cache file, it's not mandatory
+	elseif(is_array($this->jsCustomFiles))foreach($this->jsCustomFiles as $sJsCustomFile){
+		$this->plugin('InlineScript')->appendFile($sJsCustomFile.'?'.time());//Set time() force browser not to cache file, it's not mandatory
+	}
+	```
