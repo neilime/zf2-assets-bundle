@@ -29,15 +29,13 @@ class Module implements AutoloaderProviderInterface{
 	 * @param \Zend\Mvc\MvcEvent $oEvent
 	 */
 	public function renderAssets(\Zend\Mvc\MvcEvent $oEvent){
+		$oAssetsBundleService = $oEvent->getApplication()->getServiceManager()->get('AssetsBundleService')
+		->setRenderer($oEvent->getApplication()->getServiceManager()->get('ViewRenderer'));
+
 		/* @var $oRouter \Zend\Mvc\Router\RouteMatch */
 		$oRouter = $oEvent->getRouteMatch();
-		if($oRouter instanceof \Zend\Mvc\Router\RouteMatch){
-			$oEvent->getApplication()->getServiceManager()->get('AssetsBundleService')
-			->setControllerName($oRouter->getParam('controller'))
-			->setActionName($oRouter->getParam('action'))
-			->setRenderer($oEvent->getApplication()->getServiceManager()->get('ViewRenderer'))
-			->renderAssets(array_keys($this->moduleManager->getLoadedModules()));
-		}
+		if($oRouter instanceof \Zend\Mvc\Router\RouteMatch)$oAssetsBundleService->setControllerName($oRouter->getParam('controller'))->setActionName($oRouter->getParam('action'));
+		$oAssetsBundleService->renderAssets(array_keys($this->moduleManager->getLoadedModules()));
 	}
 
 	/**
