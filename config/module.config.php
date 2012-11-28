@@ -33,7 +33,7 @@ return array(
     	'cachePath' => '@zfRootPath/public/cache',//cache directory absolute path
     	'assetPath' => '@zfRootPath/public',//assets directory absolute path (allows you to define relative path for assets config)
     	'cacheUrl' => '@zfBaseUrl/assets/cache/',//cache directory base url
-    	'imgExt' => array('png','gif','cur'),//Put here all image extensions to be cached
+    	'mediaExt' => array('png','gif','cur','ttf'),//Put here all media extensions to be cached
     	'rendererToStrategy' => array(
             'Zend\View\Renderer\PhpRenderer'  => '\Neilime\AssetsBundle\View\Strategy\ViewHelperStrategy',
             'Zend\View\Renderer\FeedRenderer' => '\Neilime\AssetsBundle\View\Strategy\NoneStrategy',

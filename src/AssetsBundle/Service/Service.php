@@ -4,7 +4,7 @@ class Service{
 	const ASSET_CSS = 'css';
 	const ASSET_JS = 'js';
 	const ASSET_LESS = 'less';
-	const ASSET_IMG = 'img';
+	const ASSET_MEDIA = 'media';
 
 	/**
 	 * @var array
@@ -48,7 +48,7 @@ class Service{
 	 */
 	public function __construct(array $aConfiguration,\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator){
 		//Check configuration entries
-		if(!isset($aConfiguration['cachePath'],$aConfiguration['cacheUrl'],$aConfiguration['assetPath'],$aConfiguration['rendererToStrategy'],$aConfiguration['imgExt']))throw new \Exception('Error in configuration');
+		if(!isset($aConfiguration['cachePath'],$aConfiguration['cacheUrl'],$aConfiguration['assetPath'],$aConfiguration['rendererToStrategy'],$aConfiguration['mediaExt']))throw new \Exception('Error in configuration');
 
 		//Check configuration values
 		if(strpos($aConfiguration['cacheUrl'],'@zfBaseUrl') !== false)$aConfiguration['cacheUrl'] = $oServiceLocator->get('ViewHelperManager')->get('basePath')->__invoke(str_ireplace('@zfBaseUrl','', $aConfiguration['cacheUrl']));
@@ -60,7 +60,7 @@ class Service{
 		else $aConfiguration['assetPath'] .= DIRECTORY_SEPARATOR;
 
 		if(!is_array($aConfiguration['rendererToStrategy']))throw new \Exception('rendererToStrategy is not an array : '.gettype($aConfiguration['rendererToStrategy']));
-		if(!is_array($aConfiguration['imgExt']))throw new \Exception('imgExt is not an array : '.gettype($aConfiguration['imgExt']));
+		if(!is_array($aConfiguration['mediaExt']))throw new \Exception('mediaExt is not an array : '.gettype($aConfiguration['mediaExt']));
 		$this->configuration = $aConfiguration;
 	}
 
@@ -144,13 +144,14 @@ class Service{
 		if($this->configuration['production']){
 			$sCssCacheFile = md5($this->getControllerName().$this->getActionName()).'.'.self::ASSET_CSS;
 			$sJsCacheFile = md5($this->getControllerName().$this->getActionName()).'.'.self::ASSET_JS;
-			if($this->getRealPath($sCssCacheFile) && $this->getRealPath($sJsCacheFile))return $this->displayAssets(array(
+			if($this->getRealPath($this->configuration['cachePath'].$sCssCacheFile)
+			&& $this->getRealPath($this->configuration['cachePath'].$sJsCacheFile))return $this->displayAssets(array(
 				self::ASSET_CSS => $sCssCacheFile,
 				self::ASSET_JS => $sJsCacheFile,
 			));
 		}
 
-		$aAssets = array(self::ASSET_CSS => array(),self::ASSET_LESS => array(),self::ASSET_JS => array(), self::ASSET_IMG => array());
+		$aAssets = array(self::ASSET_CSS => array(),self::ASSET_LESS => array(),self::ASSET_JS => array(), self::ASSET_MEDIA => array());
 		foreach($aModules as $sModuleName){
 			if(isset($this->configuration['assets'][$sModuleName = strtolower($sModuleName)])){
 				//Module configuration
@@ -158,7 +159,7 @@ class Service{
 				if(!empty($aConfigurationModule[self::ASSET_CSS]) && is_array($aConfigurationModule[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationModule[self::ASSET_CSS]);
 				if(!empty($aConfigurationModule[self::ASSET_LESS]) && is_array($aConfigurationModule[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationModule[self::ASSET_LESS]);
 				if(!empty($aConfigurationModule[self::ASSET_JS]) && is_array($aConfigurationModule[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationModule[self::ASSET_JS]);
-				if(!empty($aConfigurationModule[self::ASSET_IMG]) && is_array($aConfigurationModule[self::ASSET_IMG]))$aAssets[self::ASSET_IMG] = array_merge($aAssets[self::ASSET_IMG],$aConfigurationModule[self::ASSET_IMG]);
+				if(!empty($aConfigurationModule[self::ASSET_MEDIA]) && is_array($aConfigurationModule[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationModule[self::ASSET_MEDIA]);
 
 				//Controller configuration
 				if(isset($aConfigurationModule[$this->getControllerName()])){
@@ -166,7 +167,7 @@ class Service{
 					if(!empty($aConfigurationController[self::ASSET_CSS]) && is_array($aConfigurationController[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationController[self::ASSET_CSS]);
 					if(!empty($aConfigurationController[self::ASSET_LESS]) && is_array($aConfigurationController[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationController[self::ASSET_LESS]);
 					if(!empty($aConfigurationController[self::ASSET_JS]) && is_array($aConfigurationController[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationController[self::ASSET_JS]);
-					if(!empty($aConfigurationController[self::ASSET_IMG]) && is_array($aConfigurationController[self::ASSET_IMG]))$aAssets[self::ASSET_IMG] = array_merge($aAssets[self::ASSET_IMG],$aConfigurationController[self::ASSET_IMG]);
+					if(!empty($aConfigurationController[self::ASSET_MEDIA]) && is_array($aConfigurationController[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationController[self::ASSET_MEDIA]);
 
 					//Action configuration
 					if(isset($aConfigurationController[$this->getActionName()])){
@@ -174,14 +175,14 @@ class Service{
 						if(!empty($aConfigurationAction[self::ASSET_CSS]) && is_array($aConfigurationAction[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationAction[self::ASSET_CSS]);
 						if(!empty($aConfigurationAction[self::ASSET_LESS]) && is_array($aConfigurationAction[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationAction[self::ASSET_LESS]);
 						if(!empty($aConfigurationAction[self::ASSET_JS]) && is_array($aConfigurationAction[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationAction[self::ASSET_JS]);
-						if(!empty($aConfigurationAction[self::ASSET_IMG]) && is_array($aConfigurationAction[self::ASSET_IMG]))$aAssets[self::ASSET_IMG] = array_merge($aAssets[self::ASSET_IMG],$aConfigurationAction[self::ASSET_IMG]);
+						if(!empty($aConfigurationAction[self::ASSET_MEDIA]) && is_array($aConfigurationAction[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationAction[self::ASSET_MEDIA]);
 					}
 				}
 			}
 		}
 
 		//Manage images caching
-		$this->cacheImages($this->getValidAssets(array_unique($aAssets[self::ASSET_IMG]),self::ASSET_IMG));
+		$this->cacheMedias($this->getValidAssets(array_unique($aAssets[self::ASSET_MEDIA]),self::ASSET_MEDIA));
 
 		//Manage less files caching
 		$aAssets[self::ASSET_CSS][] = $this->cacheLess($this->getValidAssets(array_unique($aAssets[self::ASSET_LESS]),self::ASSET_LESS));
@@ -274,31 +275,33 @@ class Service{
 	}
 
 	/**
-	 * Optimise and cache "Images" assets
-	 * @param array $aImagesPath : images to cache
+	 * Optimise and cache "Medias" assets
+	 * @param array $aMediasPath : medias to cache
 	 * @throws \Exception
 	 * @return \Neilime\AssetsBundle\Service
 	 */
-	private function cacheImages(array $aImagesPath){
-		foreach($aImagesPath as $sImagePath){
+	private function cacheMedias(array $aMediasPath){
+		foreach($aMediasPath as $sMediaPath){
 			//Absolute path
-			if(!($sImagePath = $this->getRealPath($sImagePath)))throw new \Exception('File not found : '.$sImagePath);
+			if(!($sMediaPath = $this->getRealPath($sMediaPath)))throw new \Exception('File not found : '.$sMediaPath);
 			//Define cache path
-			$sCacheImgPath = str_ireplace($this->configuration['assetPath'],$this->configuration['cachePath'],$sImagePath);
+			$sCacheMediaPath = str_ireplace($this->configuration['assetPath'],$this->configuration['cachePath'],$sMediaPath);
 
-			//If image is not in asset directory
-			if($sCacheImgPath === $sImagePath)$sCacheImgPath = str_ireplace(getcwd(),$this->configuration['cachePath'],$sImagePath);
+			//If media is not in asset directory
+			if($sCacheMediaPath === $sMediaPath)$sCacheMediaPath = str_ireplace(getcwd(),$this->configuration['cachePath'],$sMediaPath);
 
-			//Image isn't cached or it's deprecated
-			if($this->hasToCache($sImagePath,$sCacheImgPath))switch($sExtension = strtolower(pathinfo($sImagePath,PATHINFO_EXTENSION))){
+			//Media isn't cached or it's deprecated
+			if($this->hasToCache($sMediaPath,$sCacheMediaPath))switch($sExtension = strtolower(pathinfo($sMediaPath,PATHINFO_EXTENSION))){
+				//Images
 				case 'png':
 				case 'gif':
 				case 'cur':
-					$this->copyIntoCache($sImagePath,$sCacheImgPath);
+					$this->copyIntoCache($sMediaPath,$sCacheMediaPath);
 					break;
+				//Others
 				default:
-					if(in_array($sExtension,$this->configuration['imgExt']))$this->copyIntoCache($sImagePath,$sCacheImgPath);
-					else throw new \Exception('Extension is not valid ('.join(', ',$this->configuration['imgExt']).') : '.$sExtension);
+					if(in_array($sExtension,$this->configuration['mediaExt']))$this->copyIntoCache($sMediaPath,$sCacheMediaPath);
+					else throw new \Exception('Extension is not valid ('.join(', ',$this->configuration['mediaExt']).') : '.$sExtension);
 					break;
 			}
 		}
@@ -343,10 +346,10 @@ class Service{
 				case self::ASSET_LESS:
 					if(strtolower(pathinfo($oFile->getFilename(),PATHINFO_EXTENSION)) === $sTypeAsset)$aAssets[] = $oFile->getPathname();
 					break;
-				case self::ASSET_IMG:
+				case self::ASSET_MEDIA:
 					if(in_array(
 						$sExtension = strtolower(pathinfo($oFile->getFilename(),PATHINFO_EXTENSION)),
-						$this->configuration['imgExt']
+						$this->configuration['mediaExt']
 					))$aAssets[] = $oFile->getPathname();
 					break;
 			}
@@ -465,7 +468,7 @@ class Service{
 			case self::ASSET_CSS:
 			case self::ASSET_LESS:
 			case self::ASSET_JS:
-			case self::ASSET_IMG:
+			case self::ASSET_MEDIA:
 				return true;
 			default:
 				return false;

@@ -103,7 +103,7 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
 	    				'js/jquery.min.js',
 	    				'js/bootstrap.min.js'
 	    			),
-	    			'img' => array('images')
+	    			'media' => array('images')
 	    		)
 	    	)
 	    ),
@@ -134,7 +134,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
     - string cachePath : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".
     - string assetPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
     - string cacheUrl : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".
-    - array imgExt : Put here all images extensions to be cached. Default array('png','gif','cur').
+    - array mediaExt : Put here all medias extensions to be cached. Default array('png','gif','cur','ttf').
 
 2. Modules :
 
@@ -151,19 +151,19 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
     			'css' => array(), //Define css files to include
     			'js' => array(), //Define js files to include
     			'less' => array(), //Define less files to include
-    			'img' => array() //Define images to manage
+    			'media' => array() //Define images to manage
     			    			
     			'Test/Controller/Name' => array(
     				'css' => array(),
 	    			'js' => array(),
 	    			'less' => array(), 
-	    			'img' => array()
+	    			'media' => array()
 	    			
 	    			'ActionName'=> array(
 	    				'css' => array(),
 		    			'js' => array(),
 		    			'less' => array(), 
-		    			'img' => array()
+		    			'media' => array()
     				)
     			)
     			//...
@@ -175,7 +175,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 	
 	For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
 	but you can specify an absolute path or use the constants "@zfAssetPath" and "@zfRootPath".
-	If you specify a directory, all files matching the asset type (css, less, js, img) will be included.
+	If you specify a directory, all files matching the asset type (css, less, js, media) will be included.
 	You can define an inclusion order like this :
 	
 	```php
