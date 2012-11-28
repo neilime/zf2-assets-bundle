@@ -8,6 +8,7 @@ return array(
 	'Neilime\AssetsBundle\Factory\Filter\CssFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/CssFilterFactory.php',
 	'Neilime\AssetsBundle\Factory\Filter\JsFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/JsFilterFactory.php',
 	'Neilime\AssetsBundle\Factory\Filter\LessFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/LessFilterFactory.php',
+	'Neilime\AssetsBundle\Mvc\Controller\AbstractActionController' => __DIR__ . '/src/AssetsBundle/Mvc/Controller/AbstractActionController.php',
 	'Neilime\AssetsBundle\Service\Filter\CssFilter' => __DIR__ . '/src/AssetsBundle/Service/Filter/CssFilter.php',
 	'Neilime\AssetsBundle\Service\Filter\JsFilter' => __DIR__ . '/src/AssetsBundle/Service/Filter/JsFilter.php',
 	'Neilime\AssetsBundle\Service\Filter\LessFilter' => __DIR__ . '/src/AssetsBundle/Service/Filter/LessFilter.php',

@@ -66,9 +66,11 @@ class Service{
 
 	/**
 	 * @param string $sControllerName
+	 * @throws \Exception
 	 * @return \Neilime\AssetsBundle\Service\Service
 	 */
 	public function setControllerName($sControllerName){
+		if(!is_string($sControllerName) || empty($sControllerName))throw new \Exception('Controller name is not valid');
 		$this->controllerName = $sControllerName;
 		return $this;
 	}
@@ -77,14 +79,16 @@ class Service{
 	 * @return string
 	 */
 	public function getControllerName(){
-		return $this->controllerName;
+		return $this->controllerName?:'no_controller';
 	}
 
 	/**
 	 * @param string $sActionName
+	 * @throws \Exception
 	 * @return \Neilime\AssetsBundle\Service\Service
 	 */
 	public function setActionName($sActionName){
+		if(!is_string($sActionName) || empty($sActionName))throw new \Exception('Action name is not valid');
 		$this->actionName = $sActionName;
 		return $this;
 	}
@@ -93,14 +97,14 @@ class Service{
 	 * @return string
 	 */
 	public function getActionName(){
-		return $this->actionName;
+		return $this->actionName?:'no_action';
 	}
 
 	/**
 	 * @param \Zend\View\Renderer\RendererInterface $oRenderer
 	 * @return \Neilime\AssetsBundle\Service\Service
 	 */
-	public function setRenderer($oRenderer){
+	public function setRenderer(\Zend\View\Renderer\RendererInterface $oRenderer){
 		$this->renderer = $oRenderer;
 		return $this;
 	}
