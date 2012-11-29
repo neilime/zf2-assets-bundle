@@ -262,6 +262,7 @@ class Service{
 
 			//Production : optimize assets
 			if(($sAssetContent = file_get_contents($sAssetPath)) === false)throw new \Exception('Unable to get file content : '.$sAssetPath);
+
 			switch($sTypeAsset){
 				case self::ASSET_CSS:
 					$sCacheContent = trim($this->getFilter(self::ASSET_CSS)->run($sAssetContent));
@@ -297,6 +298,7 @@ class Service{
 			//Media isn't cached or it's deprecated
 			if($this->hasToCache($sMediaPath,$sCacheMediaPath))switch($sExtension = strtolower(pathinfo($sMediaPath,PATHINFO_EXTENSION))){
 				//Images
+				case 'jpg':
 				case 'png':
 				case 'gif':
 				case 'cur':
@@ -418,16 +420,9 @@ class Service{
 		$sImportContent = trim($sImportContent);
 		if(empty($sImportContent) || !($sImportContent = $this->getFilter(self::ASSET_LESS)->run($sImportContent)))return null;
 
-		//Background images
+		//Rewrite urls
 		$sImportContent = preg_replace_callback(
-			'/background(-image)??\s*?:.*?url\((["|\']??(.+)["|\']??)\)/',
-			array($this,'rewriteUrl'),
-			$sImportContent
-		);
-
-		//Cursor images
-		$sImportContent = preg_replace_callback(
-			'/(cursor??\s*?:.*?)url\((["|\']??(.+)["|\']??)\)/',
+			'/url\(([^\)]+)\)/',
 			array($this,'rewriteUrl'),
 			$sImportContent
 		);
@@ -555,18 +550,17 @@ class Service{
 	 * @return mixed
 	 */
 	private function rewriteUrl(array $aMatches){
-		if(!isset($aMatches[3]))throw new \Exception('Url match is not valid');
+		if(!isset($aMatches[1]))throw new \Exception('Url match is not valid');
 
 		//Remove quotes & double quotes from url
-		$aMatches[3] = str_ireplace(array('"','\''),'', $aMatches[3]);
-
+		$aMatches[1] = str_ireplace(array('"','\''),'', $aMatches[1]);
 		$sRootPath = realpath(getcwd().DIRECTORY_SEPARATOR.'..');
 		$sAssetRelativePath = str_ireplace(array($sRootPath,DIRECTORY_SEPARATOR),array('','/'), $this->configuration['assetPath']);
 
-		$sUrl = str_ireplace('..'.$sAssetRelativePath,'', $aMatches[3]);
+		$sUrl = str_ireplace('..'.$sAssetRelativePath,'', $aMatches[1]);
 
 		//Url does not point to the assets directory
-		if($sUrl == $aMatches[3])$sUrl = str_ireplace('..'.str_ireplace(array($sRootPath,DIRECTORY_SEPARATOR),array('','/'), getcwd()).'/','', $aMatches[3]);
-		return str_ireplace($aMatches[2],$this->configuration['cacheUrl'].$sUrl,$aMatches[0]);
+		if($sUrl == $aMatches[1])$sUrl = str_ireplace('..'.str_ireplace(array($sRootPath,DIRECTORY_SEPARATOR),array('','/'), getcwd()).'/','', $aMatches[1]);
+		return str_ireplace($aMatches[1],$this->configuration['cacheUrl'].$sUrl,$aMatches[0]);
 	}
 }
