@@ -326,7 +326,7 @@ class Service{
 		$aReturn = array();
 		foreach($aAssets as $sAssetPath){
 			if(!($sAssetPath =  $this->getRealPath($sAssetPath)))throw new \Exception('Directory not found : '.$sAssetPath);
-			if(is_dir($sAssetPath))$aReturn += $this->getAssetsFromDirectory($sAssetPath, $sTypeAsset);
+			if(is_dir($sAssetPath))$aReturn = array_merge($aReturn,$this->getAssetsFromDirectory($sAssetPath, $sTypeAsset));
 			else $aReturn[] = $sAssetPath;
 		}
 		return array_unique(array_filter($aReturn));
