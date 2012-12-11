@@ -142,7 +142,11 @@ class Service{
 		return $this->assetFilters[$sAssetType];
 	}
 
-
+	/**
+	 * Render Js and css assets
+	 * @param array $aModules
+	 * @return \Neilime\AssetsBundle\Service\Service
+	 */
 	public function renderAssets(array $aModules){
 		//Production : check already cached files
 		if($this->configuration['production']){
@@ -249,11 +253,11 @@ class Service{
 					array('','.css'),
 					$sAssetPath
 				);
-				else $sAssetRelativePath = str_ireplace(DIRECTORY_SEPARATOR,'_',str_ireplace(
-					$this->configuration['assetPath'],
-					'',
+				else $sAssetRelativePath = str_ireplace(
+					array($this->configuration['assetPath'],getcwd(),DIRECTORY_SEPARATOR),
+					array('','','_'),
 					$sAssetPath
-				));
+				);
 
 				$this->copyIntoCache($sAssetPath, $this->configuration['cachePath'].$sAssetRelativePath);
 				$aCacheAssets[] = $sAssetRelativePath;
@@ -283,7 +287,7 @@ class Service{
 	 * Optimise and cache "Medias" assets
 	 * @param array $aMediasPath : medias to cache
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service
+	 * @return \Neilime\AssetsBundle\Service\Service
 	 */
 	private function cacheMedias(array $aMediasPath){
 		foreach($aMediasPath as $sMediaPath){
@@ -368,7 +372,7 @@ class Service{
 	 * Optimise and cache "Less" assets
 	 * @param array $aAssetsPath : assets to cache
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service
+	 * @return \Neilime\AssetsBundle\Service\Service
 	 */
 	private function cacheLess(array $aAssetsPath){
 		//Create global import file for Less assets
@@ -435,7 +439,7 @@ class Service{
 	 * Show assets through View Helper
 	 * @param array $aAssets
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service
+	 * @return \Neilime\AssetsBundle\Service\Service
 	 */
 	public function displayAssets(array $aAssets){
 		if(!array_key_exists($sRendererName = get_class($this->getRenderer()), $this->configuration['rendererToStrategy']))throw new \Exception(\Exception::ERREUR_TYPE_ENTITE);
@@ -495,7 +499,7 @@ class Service{
 	 * @param string $sFilePath
 	 * @param string $sCachePath
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service
+	 * @return \Neilime\AssetsBundle\Service\Service
 	 */
 	private function copyIntoCache($sFilePath,$sCachePath){
 		if(!file_exists($sFilePath))throw new \Exception('File not found : '.$sFilePath);
@@ -547,7 +551,7 @@ class Service{
 	 * Rewrite url to match with cache path
 	 * @param array $aMatches
 	 * @throws \Exception
-	 * @return mixed
+	 * @return string
 	 */
 	private function rewriteUrl(array $aMatches){
 		if(!isset($aMatches[1]))throw new \Exception('Url match is not valid');
