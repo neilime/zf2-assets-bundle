@@ -1,7 +1,20 @@
-<phpunit bootstrap="./bootstrap.php" colors="true">
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="Bootstrap.php"
+         colors="true"
+         verbose="true"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         stopOnFailure="false">
+
     <testsuites>
-        <testsuite name="AssetsBundle Test Suite">
-            <directory>./</directory>
+        <testsuite name="src">
+            <directory suffix=".php">./AssetsBundle/</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../src/</directory>
+        </whitelist>
+    </filter>
 </phpunit>

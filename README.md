@@ -1,5 +1,8 @@
 AssetsBundle
 =======
+
+[![Build Status](https://travis-ci.org/neilime/AssetsBundle.png?branch=master)](https://travis-ci.org/neilime/AssetsBundle)
+
 Created by Neilime
 
 Introduction
