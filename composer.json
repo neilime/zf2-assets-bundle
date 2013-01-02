@@ -22,7 +22,8 @@
         "zendframework/zendframework": "2.*",
         "leafo/lessphp": "dev-master",
         "natxet/CssMin": "dev-master",
-        "nick4fake/jsmin": "dev-master"
+        "nick4fake/jsmin": "dev-master",
+        "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
         "psr-0": {
