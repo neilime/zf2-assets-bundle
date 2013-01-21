@@ -1,0 +1,307 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Assetsbundle by neilime</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Assetsbundle</h1>
+        <p></p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/neilime/AssetsBundle" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/neilime/AssetsBundle/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/neilime/AssetsBundle/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>AssetsBundle</h1>
+
+<p>Created by Neilime</p>
+
+<p><a href="https://travis-ci.org/neilime/AssetsBundle"><img src="https://travis-ci.org/neilime/AssetsBundle.png?branch=master" alt="Build Status"></a></p>
+
+<h2>Introduction</h2>
+
+<p>AssetsBundle is module for ZF2 allowing asset managment (bundling &amp; caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
+This module manages the concept of the environment/production development.</p>
+
+<p>In developpement : </p>
+
+<ul>
+<li>Files are not bundling for easier debugging.</li>
+<li>Less files are compiled when updated or if an "<a href="https://github.com/import" class="user-mention">@import</a>" inside is updated</li>
+</ul><p>In production :</p>
+
+<ul>
+<li>All files are bundling and cached one time only if needed.</li>
+</ul><p>P.S. Sorry for my english. If You wish to help me with this project or correct my english description - You are welcome :)</p>
+
+<h2>Requirements</h2>
+
+<ul>
+<li>
+<a href="https://github.com/zendframework/zf2">Zend Framework 2</a> (latest master)</li>
+<li>
+<a href="https://github.com/leafo/lessphp">lessphp</a> (latest master).</li>
+<li>
+<a href="https://github.com/natxet/CssMin">CssMin</a> (latest master).</li>
+<li>
+<a href="https://github.com/nick4fake/JsMin">JsMin</a> (latest master).</li>
+</ul><h2>Installation</h2>
+
+<h3>Main Setup</h3>
+
+<h4>By cloning project</h4>
+
+<ol>
+<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a> (latest master), <a href="https://github.com/natxet/CssMin">CssMin</a>,<a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
+<li>Clone this project into your <code>./vendor/</code> directory.</li>
+</ol><h4>With composer</h4>
+
+<ol>
+<li>
+<p>Add this project in your composer.json:</p>
+
+<div class="highlight"><pre><span class="s2">"require"</span><span class="err">:</span> <span class="p">{</span>
+    <span class="nt">"neilime/zf2-assets-bundle"</span><span class="p">:</span> <span class="s2">"dev-master"</span>
+<span class="p">}</span>
+</pre></div>
+</li>
+<li>
+<p>Due to bug in lessphp you have to use Nodge's fork, add this repository in your composer.json:</p>
+
+<div class="highlight"><pre><span class="s2">"repositories"</span><span class="err">:</span> <span class="p">[{</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"vcs"</span><span class="p">,</span>
+    <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://github.com/Nodge/lessphp"</span>
+<span class="p">}]</span><span class="err">,</span>
+</pre></div>
+</li>
+<li>
+<p>Now tell composer to download AssetsBundle by running the command:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>php composer.phar update
+</pre></div>
+</li>
+</ol><h4>Post installation</h4>
+
+<ol>
+<li>
+<p>Enabling it in your <code>application.config.php</code>file.</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'modules'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="c1">// ...</span>
+        <span class="s1">'Neilime\AssetsBundle'</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="c1">// ...</span>
+<span class="p">);</span>
+</pre></div>
+</li>
+</ol><h1>How to use <em>AssetsBundle</em>
+</h1>
+
+<h2>Simple configuration example</h2>
+
+<p>This example shows how to convert "ZF2 Skeleton Application" to manage assets via AssetsBundle.</p>
+
+<ol>
+<li><p>After installing skeleton application, install <em>AssetsBundle</em> as explained above.</p></li>
+<li>
+<p>Then just create cache directory into "public/".</p>
+
+<div class="highlight"><pre><span class="nb">cd </span>to/your/project/public/dir/
+mkdir cache
+</pre></div>
+</li>
+<li>
+<p>Edit the application module configuration file <code>module/Application/config/module.config.php</code>, adding the configuration fragment below:</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+    <span class="c1">//...</span>
+    <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'application'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'css'</span><span class="p">),</span>
+                <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">'js/jquery.min.js'</span><span class="p">,</span>
+                    <span class="s1">'js/bootstrap.min.js'</span>
+                <span class="p">),</span>
+                <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'images'</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="c1">//...</span>
+<span class="p">);</span>
+</pre></div>
+</li>
+<li>
+<p>Edit layout file <code>module/Application/view/layout/layout.phtml</code>, removing prepend function for assets:</p>
+
+<div class="highlight"><pre> <span class="o">&lt;?</span><span class="nx">php</span>
+<span class="c1">//Remove these lines</span>
+
+<span class="o">-&gt;</span><span class="na">prependStylesheet</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/css/bootstrap-responsive.min.css'</span><span class="p">)</span>
+<span class="o">-&gt;</span><span class="na">prependStylesheet</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/css/style.css'</span><span class="p">)</span>
+<span class="o">-&gt;</span><span class="na">prependStylesheet</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/css/bootstrap.min.css'</span><span class="p">)</span>
+
+ <span class="o">-&gt;</span><span class="na">prependFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/js/bootstrap.min.js'</span><span class="p">)</span>
+ <span class="o">-&gt;</span><span class="na">prependFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/js/jquery.min.js'</span><span class="p">)</span>
+</pre></div>
+</li>
+<li><p>Save &amp; Resfresh.</p></li>
+</ol><h1>Configuration</h1>
+
+<p>The default configuration is setup to run with "Application ZF2 Skeleton"</p>
+
+<ol>
+<li>
+<em>AssetsBundle</em> :</li>
+</ol><pre><code>- boolean production : Define the application environment (development =&gt; false). Default true.
+- string cachePath : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".
+- string assetPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
+- string cacheUrl : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".
+- array mediaExt : Put here all medias extensions to be cached. Default array('png','gif','cur','ttf').
+</code></pre>
+
+<ol>
+<li>
+<p>Modules :</p>
+
+<p>You can define assets for modules / controllers / action</p>
+
+<p>Exemple for the application module : </p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+    <span class="c1">//...</span>
+    <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'application'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span> <span class="c1">//Module Name</span>
+            <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define css files to include</span>
+            <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define js files to include</span>
+            <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define less files to include</span>
+            <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span> <span class="c1">//Define images to manage</span>
+
+            <span class="s1">'Test/Controller/Name'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+                <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+                <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
+                <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
+
+                <span class="s1">'ActionName'</span><span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+                    <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+                    <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
+                    <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1">//...</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="c1">//...</span>
+<span class="p">);</span>
+</pre></div>
+
+<p>For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
+but you can specify an absolute path or use the constants "@zfAssetPath" and "@zfRootPath".
+If you specify a directory, all files matching the asset type (css, less, js, media) will be included.
+You can define an inclusion order like this :</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+    <span class="c1">//...</span>
+    <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'application'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'js/firstFile.js'</span><span class="p">,</span><span class="s1">'js'</span><span class="p">),</span>
+            <span class="c1">//...</span>
+        <span class="p">)</span>
+        <span class="c1">//...</span>
+    <span class="p">)</span>               
+    <span class="c1">//...</span>
+<span class="p">);</span>
+</pre></div>
+
+<p>This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"</p>
+</li>
+<li><p>Custom Js :</p></li>
+</ol><p>This function allows you to dynamically include javascript files. For exemple, files specific to a user settings.
+In this case, your controller that need these file have to extends "Neilime\AssetsBundle\Mvc\ControllerAbstractActionController".</p>
+
+<p>Then create a jscustomAction function into your controller : </p>
+
+<pre><code>```php
+&lt;?php
+public function jscustomAction($sAction = null){
+    $aConfiguration = $this-&gt;getServiceLocator()-&gt;get('config');
+    if(!isset($aConfiguration['asset_bundle']))throw new \Exception('AssetBundle config is not defined');
+    if(empty($sAction)){
+        //Test if you are in production
+        if(!$aConfiguration['asset_bundle']['production'])throw new \Exception('action must be defined in development mode');
+        $sAction = $this-&gt;params('js_action');
+        if(empty($sAction))throw new \Exception('Action is not defined');
+        $bReturnFiles = false;
+    }
+    else $bReturnFiles = true;
+    $aJsFiles = array();
+
+    switch($sAction){
+        case 'application':
+            //Here you can specify js files to include
+            $aJsFiles[] = 'js/dynamicFile.js';
+            break;
+    }
+    if($bReturnFiles)return $aJsFiles;
+    else{
+        $this-&gt;layout()-&gt;jsFiles = $aJsFiles;
+        return false;
+    }
+}
+```
+</code></pre>
+
+<p>Edit layout file:</p>
+
+<pre><code>```php
+//Into head
+if(!empty($this-&gt;jsCustomUrl))$this-&gt;plugin('InlineScript')-&gt;appendFile($this-&gt;jsCustomUrl.'?'.time());//Set time() force browser not to cache file, it's not mandatory
+elseif(is_array($this-&gt;jsCustomFiles))foreach($this-&gt;jsCustomFiles as $sJsCustomFile){
+    $this-&gt;plugin('InlineScript')-&gt;appendFile($sJsCustomFile.'?'.time());//Set time() force browser not to cache file, it's not mandatory
+}
+```
+</code></pre>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/neilime">neilime</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
