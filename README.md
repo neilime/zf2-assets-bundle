@@ -1,7 +1,7 @@
 AssetsBundle
 =======
 
-[![Build Status](https://travis-ci.org/neilime/AssetsBundle.png?branch=master)](https://travis-ci.org/neilime/AssetsBundle)
+[![Build Status](https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master)](https://travis-ci.org/neilime/zf2-assets-bundle)
 
 Created by Neilime
 
