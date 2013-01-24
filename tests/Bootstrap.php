@@ -1,106 +1,95 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/AssetsBundle for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
+namespace AssetsBundleTest;
+error_reporting(E_ALL | E_STRICT);
+chdir(__DIR__);
+class Bootstrap{
+    /**
+     * @var \Zend\ServiceManager\ServiceManager
+     */
+	protected static $serviceManager;
 
-$additionalNamespaces = $additionalModulePaths = $moduleDependencies = null;
+	/**
+	 * @var array
+	 */
+	protected static $config;
+    protected static $bootstrap;
 
-$rootPath = realpath(dirname(__DIR__));
-$testsPath = "$rootPath/tests";
+    /**
+     * Initialize bootstrap
+     */
+    public static function init(){
+        //Load the user-defined test configuration file, if it exists;
+        $aTestConfig = include is_readable(__DIR__ . '/TestConfig.php')?__DIR__ . '/TestConfig.php':__DIR__ . '/TestConfig.php.dist';
+        $aZf2ModulePaths = array();
+        if(isset($aTestConfig['module_listener_options']['module_paths']))foreach($aTestConfig['module_listener_options']['module_paths'] as $sModulePath){
+        	if(($sPath = static::findParentPath($sModulePath)))$aZf2ModulePaths[] = $sPath;
+        }
+        static::initAutoloader();
 
-if (is_readable($testsPath . '/TestConfiguration.php')) {
-    require_once $testsPath . '/TestConfiguration.php';
-} else {
-    require_once $testsPath . '/TestConfiguration.php.dist';
-}
-
-$path = array(
-    ZF2_PATH,
-    get_include_path(),
-);
-set_include_path(implode(PATH_SEPARATOR, $path));
-
-require_once  'Zend/Loader/AutoloaderFactory.php';
-require_once  'Zend/Loader/StandardAutoloader.php';
-
-use Zend\Loader\AutoloaderFactory;
-use Zend\Loader\StandardAutoloader;
-
-// setup autoloader
-AutoloaderFactory::factory(
-    array(
-    	'Zend\Loader\StandardAutoloader' => array(
-            StandardAutoloader::AUTOREGISTER_ZF => true,
-            StandardAutoloader::ACT_AS_FALLBACK => false,
-            StandardAutoloader::LOAD_NS => $additionalNamespaces,
-        )
-    )
-);
-
-// The module name is obtained using directory name or constant
-$moduleName = pathinfo($rootPath, PATHINFO_BASENAME);
-if (defined('MODULE_NAME')) {
-    $moduleName = MODULE_NAME;
-}
-
-// A locator will be set to this class if available
-$moduleTestCaseClassname = '\\'.$moduleName.'Test\\Framework\\TestCase';
-
-// This module's path plus additionally defined paths are used $modulePaths
-$modulePaths = array(dirname($rootPath));
-if (isset($additionalModulePaths)) {
-    $modulePaths = array_merge($modulePaths, $additionalModulePaths);
-}
-
-// Load this module and defined dependencies
-$modules = array($moduleName);
-if (isset($moduleDependencies)) {
-    $modules = array_merge($modules, $moduleDependencies);
-}
-
-
-$listenerOptions = new Zend\ModuleManager\Listener\ListenerOptions(array('module_paths' => $modulePaths));
-$defaultListeners = new Zend\ModuleManager\Listener\DefaultListenerAggregate($listenerOptions);
-$sharedEvents = new Zend\EventManager\SharedEventManager();
-$moduleManager = new \Zend\ModuleManager\ModuleManager($modules);
-$moduleManager->getEventManager()->setSharedManager($sharedEvents);
-$moduleManager->getEventManager()->attachAggregate($defaultListeners);
-$moduleManager->loadModules();
-
-if (method_exists($moduleTestCaseClassname, 'setLocator')) {
-    $config = $defaultListeners->getConfigListener()->getMergedConfig();
-
-    $di = new \Zend\Di\Di;
-    $di->instanceManager()->addTypePreference('Zend\Di\LocatorInterface', $di);
-
-    if (isset($config['di'])) {
-        $diConfig = new \Zend\Di\Config($config['di']);
-        $diConfig->configure($di);
+        //Use ModuleManager to load this module and it's dependencies
+        static::$config = \Zend\Stdlib\ArrayUtils::merge(array(
+            'module_listener_options' => array(
+                'module_paths' => array_merge(
+                	$aZf2ModulePaths,
+                	explode(PATH_SEPARATOR, (getenv('ZF2_MODULES_TEST_PATHS')?:(defined('ZF2_MODULES_TEST_PATHS')?ZF2_MODULES_TEST_PATHS:'')))
+                )
+            )
+        ),$aTestConfig);
+        static::$serviceManager = new \Zend\ServiceManager\ServiceManager(new \Zend\Mvc\Service\ServiceManagerConfig());
+        static::$serviceManager->setService('ApplicationConfig',static::$config)->get('ModuleManager')->loadModules();
     }
 
-    $routerDiConfig = new \Zend\Di\Config(
-        array(
-            'definition' => array(
-                'class' => array(
-                    'Zend\Mvc\Router\RouteStackInterface' => array(
-                        'instantiator' => array(
-                            'Zend\Mvc\Router\Http\TreeRouteStack',
-                            'factory'
-                        ),
-                    ),
+    /**
+     * @return \Zend\ServiceManager\ServiceManager
+     */
+    public static function getServiceManager(){
+        return static::$serviceManager;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getConfig(){
+        return static::$config;
+    }
+
+    /**
+     * Initialize Autoloader
+     * @throws RuntimeException
+     */
+    protected static function initAutoloader(){
+        $sVendorPath = static::findParentPath('vendor');
+
+        if(is_readable($sVendorPath . '/autoload.php'))$oLoader = include $sVendorPath.'/autoload.php';
+        else{
+            $sZf2Path = getenv('ZF2_PATH')?:(defined('ZF2_PATH')?ZF2_PATH:(is_dir($sVendorPath . '/ZF2/library')?$sVendorPath.'/ZF2/library':false));
+            if(!$sZf2Path)throw new \RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
+            include $sZf2Path . '/Zend/Loader/AutoloaderFactory.php';
+        }
+        \Zend\Loader\AutoloaderFactory::factory(array(
+            'Zend\Loader\StandardAutoloader' => array(
+                'autoregister_zf' => true,
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
                 ),
             ),
-        )
-    );
-    $routerDiConfig->configure($di);
+        ));
+    }
 
-    call_user_func_array($moduleTestCaseClassname.'::setLocator', array($di));
+    /**
+     * Retrieve parent for a given path
+     * @param string $sPath
+     * @return boolean|string
+     */
+    protected static function findParentPath($sPath){
+        $sCurrentDir = __DIR__;
+        $sPreviousDir = '.';
+        while(!is_dir($sPreviousDir . '/' . $sPath)){
+            $sCurrentDir = dirname($sCurrentDir);
+            if($sPreviousDir === $sCurrentDir)return false;
+            $sPreviousDir = $sCurrentDir;
+        }
+        return $sCurrentDir . '/' . $sPath;
+    }
 }
-
-// When this is in global scope, PHPUnit catches exception:
-// Exception: Zend\Stdlib\PriorityQueue::serialize() must return a string or NULL
-unset($moduleManager, $sharedEvents);
+Bootstrap::init();

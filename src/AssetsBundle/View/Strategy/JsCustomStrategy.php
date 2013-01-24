@@ -1,5 +1,5 @@
 <?php
-namespace Neilime\AssetsBundle\View\Strategy;
+namespace AssetsBundle\View\Strategy;
 class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface{
 	const ACTION_JS_CUSTOM = 'jscustom';
 
@@ -9,7 +9,7 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface{
     protected $listeners = array();
 
     /**
-     * @var \Neilime\AssetsBundle\View\Renderer\JsRenderer
+     * @var \AssetsBundle\View\Renderer\JsRenderer
      */
     protected $renderer;
 
@@ -20,9 +20,9 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface{
 
     /**
      * Constructor
-     * @param \Neilime\AssetsBundle\View\Renderer\JsRenderer $oRenderer
+     * @param \AssetsBundle\View\Renderer\JsRenderer $oRenderer
      */
-    public function __construct(\Neilime\AssetsBundle\View\Renderer\JsRenderer $oRenderer){
+    public function __construct(\AssetsBundle\View\Renderer\JsRenderer $oRenderer){
     	$this->renderer = $oRenderer;
     }
 
@@ -53,7 +53,7 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface{
     /**
      * Set current MVC action
      * @param \Zend\Mvc\MvcEvent $oEvent
-     * @return \Neilime\AssetsBundle\View\Strategy\JsCustomStrategy
+     * @return \AssetsBundle\View\Strategy\JsCustomStrategy
      */
     public function setAction(\Zend\Mvc\MvcEvent $oEvent){
     	$this->action = $oEvent->getRouteMatch()->getParam('action');
@@ -65,7 +65,7 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface{
      * Check if JsRenderer has to be used (MVC action = self::ACTION_JS_CUSTOM)
      * @param \Zend\View\ViewEvent $oEvent
      * @throws \Exception
-     * @return void|\Neilime\AssetsBundle\View\Renderer\JsRenderer
+     * @return void|\AssetsBundle\View\Renderer\JsRenderer
      */
     public function selectRenderer(\Zend\View\ViewEvent $oEvent){
 		if($this->action === self::ACTION_JS_CUSTOM){

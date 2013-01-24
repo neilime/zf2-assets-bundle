@@ -12,10 +12,10 @@
             "role": "Developer"
         }
     ],
-    "minimum-stability":"dev",
+    "minimum-stability": "dev",
     "repositories": [{
         "type": "vcs",
-        "url": "http://github.com/Nodge/lessphp"
+        "url": "http://github.com/neilime/lessphp"
     }],
     "require": {
         "php": ">=5.3.3",

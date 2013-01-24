@@ -1,9 +1,9 @@
 <?php
-namespace Neilime\AssetsBundle\Service\Filter;
-class JsFilter implements \Neilime\AssetsBundle\Service\Filter\FilterInterface{
+namespace AssetsBundle\Service\Filter;
+class JsFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	/**
 	 * @param string $sContent
-	 * @see \Neilime\AssetsBundle\Service\Filter\FilterInterface::run()
+	 * @see \AssetsBundle\Service\Filter\FilterInterface::run()
 	 * @throws \Exception
 	 * @return string
 	 */

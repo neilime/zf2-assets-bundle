@@ -1,3 +1,3 @@
 <?php
-namespace Neilime\AssetsBundle\View\Strategy;
-class NoneStrategy extends \Neilime\AssetsBundle\View\Strategy\AbstractStrategy{}
+namespace AssetsBundle\View\Strategy;
+class NoneStrategy extends \AssetsBundle\View\Strategy\AbstractStrategy{}

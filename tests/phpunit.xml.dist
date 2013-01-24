@@ -8,10 +8,9 @@
 
     <testsuites>
         <testsuite name="src">
-            <directory suffix=".php">./AssetsBundle/</directory>
+            <directory suffix=".php">./AssetsBundleTest/</directory>
         </testsuite>
     </testsuites>
-
     <filter>
         <whitelist>
             <directory suffix=".php">../src/</directory>

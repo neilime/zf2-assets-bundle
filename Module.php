@@ -1,5 +1,5 @@
 <?php
-namespace Neilime\AssetsBundle;
+namespace AssetsBundle;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 class Module implements AutoloaderProviderInterface{
 
@@ -22,7 +22,11 @@ class Module implements AutoloaderProviderInterface{
 	 */
 	public function onBootstrap(\Zend\EventManager\EventInterface $oEvent){
 		$oServiceManager = $oEvent->getApplication()->getServiceManager();
-		if($oServiceManager->get('ViewRenderer') instanceof \Zend\View\Renderer\PhpRenderer)$oEvent->getApplication()->getEventManager()->attach('render', array($this, 'renderAssets'), 32);
+		if(
+			($oRequest = $oEvent->getRequest()) instanceof \Zend\Http\Request
+			&& !$oRequest->isXmlHttpRequest()
+			&& $oServiceManager->get('ViewRenderer') instanceof \Zend\View\Renderer\PhpRenderer
+		)$oEvent->getApplication()->getEventManager()->attach('render', array($this, 'renderAssets'), 32);
 	}
 
 	/**
@@ -45,7 +49,7 @@ class Module implements AutoloaderProviderInterface{
 	public function getAutoloaderConfig(){
         return array(
             'Zend\Loader\ClassMapAutoloader' => array(
-                __DIR__ . '/autoload_classmap.php',
+                __DIR__ . '/autoload_classmap.php'
             )
         );
     }

@@ -36,7 +36,7 @@ Installation
 
 #### By cloning project
 
-1. Install the [lessphp fork](https://github.com/Nodge/lessphp) (latest master), [CssMin](https://github.com/natxet/CssMin),[JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
+1. Install the [lessphp fork](https://github.com/neilime/lessphp) (latest master), [CssMin](https://github.com/natxet/CssMin),[JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
 2. Clone this project into your `./vendor/` directory.
 
 #### With composer
@@ -49,12 +49,12 @@ Installation
     }
     ```
 
-2. Due to bug in lessphp you have to use Nodge's fork, add this repository in your composer.json:
+2. Due to bug in lessphp you have to use neilime's Lessphp fork, add this repository in your composer.json:
 	
 	```json
     "repositories": [{
         "type": "vcs",
-        "url": "http://github.com/Nodge/lessphp"
+        "url": "http://github.com/neilime/lessphp"
     }],
     ```
 
@@ -73,7 +73,7 @@ Installation
     return array(
         'modules' => array(
             // ...
-            'Neilime\AssetsBundle',
+            'AssetsBundle',
         ),
         // ...
     );
@@ -135,7 +135,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 
  	- boolean production : Define the application environment (development => false). Default true.
     - string cachePath : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".
-    - string assetPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
+    - string assetsPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
     - string cacheUrl : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".
     - array mediaExt : Put here all medias extensions to be cached. Default array('png','gif','cur','ttf').
 
@@ -177,7 +177,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 	```
 	
 	For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
-	but you can specify an absolute path or use the constants "@zfAssetPath" and "@zfRootPath".
+	but you can specify an absolute path or use the constants "@zfAssetsPath" and "@zfRootPath".
 	If you specify a directory, all files matching the asset type (css, less, js, media) will be included.
 	You can define an inclusion order like this :
 	
@@ -201,7 +201,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 3. Custom Js :
 
 This function allows you to dynamically include javascript files. For exemple, files specific to a user settings.
-In this case, your controller that need these file have to extends "Neilime\AssetsBundle\Mvc\ControllerAbstractActionController".
+In this case, your controller that need these file have to extends "AssetsBundle\Mvc\ControllerAbstractActionController".
 
 Then create a jscustomAction function into your controller : 
 	

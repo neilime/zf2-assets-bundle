@@ -1,5 +1,5 @@
 <?php
-namespace Neilime\AssetsBundle\Service\Filter;
+namespace AssetsBundle\Service\Filter;
 interface FilterInterface{
 	/**
 	 * @param string $sContent

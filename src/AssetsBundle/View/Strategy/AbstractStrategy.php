@@ -1,6 +1,6 @@
 <?php
-namespace Neilime\AssetsBundle\View\Strategy;
-abstract class AbstractStrategy implements \Neilime\AssetsBundle\View\Strategy\StrategyInterface{
+namespace AssetsBundle\View\Strategy;
+abstract class AbstractStrategy implements \AssetsBundle\View\Strategy\StrategyInterface{
     /**
      * @var \Zend\View\Renderer\RendererInterface
      */
@@ -13,7 +13,7 @@ abstract class AbstractStrategy implements \Neilime\AssetsBundle\View\Strategy\S
 
     /**
      * @param \Zend\View\Renderer\RendererInterface $oRenderer
-     * @return \Neilime\AssetsBundle\View\Strategy\AbstractStrategy
+     * @return \AssetsBundle\View\Strategy\AbstractStrategy
      */
     public function setRenderer(\Zend\View\Renderer\RendererInterface $oRenderer){
         $this->renderer = $oRenderer;
@@ -29,7 +29,7 @@ abstract class AbstractStrategy implements \Neilime\AssetsBundle\View\Strategy\S
 
     /**
      * @param string $baseUrl
-     * @return \Neilime\AssetsBundle\View\Strategy\AbstractStrategy
+     * @return \AssetsBundle\View\Strategy\AbstractStrategy
      */
     public function setBaseUrl($sBaseUrl){
         $this->baseUrl = $sBaseUrl;

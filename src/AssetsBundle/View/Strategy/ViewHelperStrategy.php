@@ -1,6 +1,6 @@
 <?php
-namespace Neilime\AssetsBundle\View\Strategy;
-class ViewHelperStrategy extends \Neilime\AssetsBundle\View\Strategy\AbstractStrategy{
+namespace AssetsBundle\View\Strategy;
+class ViewHelperStrategy extends \AssetsBundle\View\Strategy\AbstractStrategy{
     /**
      * Render asset file
      * @param string $sPath

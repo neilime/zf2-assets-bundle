@@ -1,5 +1,5 @@
 <?php
-namespace Neilime\AssetsBundle\View\Strategy;
+namespace AssetsBundle\View\Strategy;
 interface StrategyInterface{
 	/**
 	 * @param \Zend\View\Renderer\RendererInterface $oRenderer
@@ -13,7 +13,7 @@ interface StrategyInterface{
 
     /**
      * @param string $sBaseUrl
-     * @return \Neilime\AssetsBundle\View\Strategy\StrategyInterface
+     * @return \AssetsBundle\View\Strategy\StrategyInterface
      */
 	public function setBaseUrl($sBaseUrl);
 

@@ -1,5 +1,5 @@
 <?php
-namespace Neilime\AssetsBundle\Service;
+namespace AssetsBundle\Service;
 class Service{
 	const ASSET_CSS = 'css';
 	const ASSET_JS = 'js';
@@ -43,21 +43,24 @@ class Service{
 	/**
 	 * Constructor
 	 * @param array $aConfiguration
-	 * @param \Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator
 	 * @throws \Exception
 	 */
-	public function __construct(array $aConfiguration,\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator){
+	public function __construct(array $aConfiguration){
 		//Check configuration entries
-		if(!isset($aConfiguration['cachePath'],$aConfiguration['cacheUrl'],$aConfiguration['assetPath'],$aConfiguration['rendererToStrategy'],$aConfiguration['mediaExt']))throw new \Exception('Error in configuration');
+		if(!isset($aConfiguration['cachePath'],$aConfiguration['cacheUrl'],$aConfiguration['assetsPath'],$aConfiguration['rendererToStrategy'],$aConfiguration['mediaExt']))throw new \Exception('Error in configuration');
 
 		//Check configuration values
-		if(strpos($aConfiguration['cacheUrl'],'@zfBaseUrl') !== false)$aConfiguration['cacheUrl'] = $oServiceLocator->get('ViewHelperManager')->get('basePath')->__invoke(str_ireplace('@zfBaseUrl','', $aConfiguration['cacheUrl']));
+		if(strpos($aConfiguration['cacheUrl'],'@zfBaseUrl') !== false){
+			if(empty($aConfiguration['basePath']))throw new \Exception('Base path is undefined in configuration');
+			$aConfiguration['basePath'] = rtrim($aConfiguration['basePath'], '/');
+			$aConfiguration['cacheUrl'] = $aConfiguration['basePath'].'/'.ltrim(str_ireplace('@zfBaseUrl','', $aConfiguration['cacheUrl']),'/');
+		}
 
-		if(!is_dir($aConfiguration['cachePath'] = $this->getRealPath($aConfiguration['cachePath'])))throw new \Exception('cachePath is not a valid directory : '.$aConfiguration['cachePath']);
-		else $aConfiguration['cachePath'] .= DIRECTORY_SEPARATOR;
+		if(!is_dir($sCachePath = $this->getRealPath($aConfiguration['cachePath'])))throw new \Exception('cachePath is not a valid directory : '.$aConfiguration['cachePath']);
+		else $aConfiguration['cachePath'] = $sCachePath.DIRECTORY_SEPARATOR;
 
-		if(!is_dir($aConfiguration['assetPath'] = $this->getRealPath($aConfiguration['assetPath'])))throw new \Exception('assetPath is not a valid directory : '.$aConfiguration['assetPath']);
-		else $aConfiguration['assetPath'] .= DIRECTORY_SEPARATOR;
+		if(!is_dir($sAssetsPath = $this->getRealPath($aConfiguration['assetsPath'])))throw new \Exception('assetsPath is not a valid directory : '.$aConfiguration['assetsPath']);
+		else $aConfiguration['assetsPath'] = $sAssetsPath.DIRECTORY_SEPARATOR;
 
 		if(!is_array($aConfiguration['rendererToStrategy']))throw new \Exception('rendererToStrategy is not an array : '.gettype($aConfiguration['rendererToStrategy']));
 		if(!is_array($aConfiguration['mediaExt']))throw new \Exception('mediaExt is not an array : '.gettype($aConfiguration['mediaExt']));
@@ -67,7 +70,7 @@ class Service{
 	/**
 	 * @param string $sControllerName
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service\Service
+	 * @return \AssetsBundle\Service\Service
 	 */
 	public function setControllerName($sControllerName){
 		if(!is_string($sControllerName) || empty($sControllerName))throw new \Exception('Controller name is not valid');
@@ -85,7 +88,7 @@ class Service{
 	/**
 	 * @param string $sActionName
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service\Service
+	 * @return \AssetsBundle\Service\Service
 	 */
 	public function setActionName($sActionName){
 		if(!is_string($sActionName) || empty($sActionName))throw new \Exception('Action name is not valid');
@@ -102,7 +105,7 @@ class Service{
 
 	/**
 	 * @param \Zend\View\Renderer\RendererInterface $oRenderer
-	 * @return \Neilime\AssetsBundle\Service\Service
+	 * @return \AssetsBundle\Service\Service
 	 */
 	public function setRenderer(\Zend\View\Renderer\RendererInterface $oRenderer){
 		$this->renderer = $oRenderer;
@@ -120,13 +123,13 @@ class Service{
 	 * Set filters for "Css" and "Js" assets
 	 * @param array $aFilters
 	 * @throws \Exceptions
-	 * @return \Neilime\AssetsBundle\Service\Service
+	 * @return \AssetsBundle\Service\Service
 	 */
 	public function setFilters(array $aFilters){
 		if(!is_array($aFilters) || !isset($aFilters[self::ASSET_CSS],$aFilters[self::ASSET_JS],$aFilters[self::ASSET_LESS])
-		|| !($aFilters[self::ASSET_CSS] instanceof \Neilime\AssetsBundle\Service\Filter\FilterInterface)
-		|| !($aFilters[self::ASSET_JS] instanceof \Neilime\AssetsBundle\Service\Filter\FilterInterface)
-		|| !($aFilters[self::ASSET_LESS] instanceof \Neilime\AssetsBundle\Service\Filter\FilterInterface))throw new \Exception('Filters are not valid');
+		|| !($aFilters[self::ASSET_CSS] instanceof \AssetsBundle\Service\Filter\FilterInterface)
+		|| !($aFilters[self::ASSET_JS] instanceof \AssetsBundle\Service\Filter\FilterInterface)
+		|| !($aFilters[self::ASSET_LESS] instanceof \AssetsBundle\Service\Filter\FilterInterface))throw new \Exception('Filters are not valid');
 		$this->assetFilters = $aFilters;
 		return $this;
 	}
@@ -134,18 +137,18 @@ class Service{
 	/**
 	 * @param string $sAssetType
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service\Filter\FilterInterface
+	 * @return \AssetsBundle\Service\Filter\FilterInterface
 	 */
 	public function getFilter($sAssetType){
 		if(!self::assetTypeExists($sAssetType))throw new \Exception('Asset\'s type is not valid : '.$sAssetType);
-		if(!($this->assetFilters[$sAssetType] instanceof \Neilime\AssetsBundle\Service\Filter\FilterInterface))throw new \Exception('Filters are not defined');
+		if(!($this->assetFilters[$sAssetType] instanceof \AssetsBundle\Service\Filter\FilterInterface))throw new \Exception('Filters are not defined');
 		return $this->assetFilters[$sAssetType];
 	}
 
 	/**
 	 * Render Js and css assets
 	 * @param array $aModules
-	 * @return \Neilime\AssetsBundle\Service\Service
+	 * @return \AssetsBundle\Service\Service
 	 */
 	public function renderAssets(array $aModules){
 		//Production : check already cached files
@@ -229,10 +232,10 @@ class Service{
 		&& file_exists($this->configuration['cachePath'].$sCacheFile)
 		&& ($iLastModifiedCache = filemtime($this->configuration['cachePath'].$sCacheFile)) !== false){
 			$bCacheOk = true;
-			foreach($aAssetsPath as $sAssetPath){
-				if(!($sAssetPath = $this->getRealPath($sAssetPath)))throw new \Exception('File not found : '.$sAssetPath);
-				$aAssetsExists[] = $sAssetPath;
-				if(($iLastModified = filemtime($sAssetPath)) === false || $iLastModified > $iLastModifiedCache){
+			foreach($aAssetsPath as $sAssetsPath){
+				if(!($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
+				$aAssetsExists[] = $sAssetsPath;
+				if(($iLastModified = filemtime($sAssetsPath)) === false || $iLastModified > $iLastModifiedCache){
 					$bCacheOk = false;
 					break;
 				}
@@ -241,31 +244,31 @@ class Service{
 		}
 
 		$bHasContent = false;
-		foreach($aAssetsPath as $sAssetPath){
+		foreach($aAssetsPath as $sAssetsPath){
 			//Absolute path
-			if(!in_array($sAssetPath,$aAssetsExists) && !($sAssetPath = $this->getRealPath($sAssetPath)))throw new \Exception('File not found : '.$sAssetPath);
+			if(!in_array($sAssetsPath,$aAssetsExists) && !($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
 
 			//Developpement : don't optimize assets
 			if(!$this->configuration['production']){
 				//If asset is already a cache file
-				if(strpos($sAssetPath,$this->configuration['cachePath']) !== false)$sAssetRelativePath = str_ireplace(
+				if(strpos($sAssetsPath,$this->configuration['cachePath']) !== false)$sAssetRelativePath = str_ireplace(
 					array($this->configuration['cachePath'],'.less'),
 					array('','.css'),
-					$sAssetPath
+					$sAssetsPath
 				);
 				else $sAssetRelativePath = str_ireplace(
-					array($this->configuration['assetPath'],getcwd(),DIRECTORY_SEPARATOR),
+					array($this->configuration['assetsPath'],getcwd(),DIRECTORY_SEPARATOR),
 					array('','','_'),
-					$sAssetPath
+					$sAssetsPath
 				);
 
-				$this->copyIntoCache($sAssetPath, $this->configuration['cachePath'].$sAssetRelativePath);
+				$this->copyIntoCache($sAssetsPath, $this->configuration['cachePath'].$sAssetRelativePath);
 				$aCacheAssets[] = $sAssetRelativePath;
 				continue;
 			}
 
 			//Production : optimize assets
-			if(($sAssetContent = file_get_contents($sAssetPath)) === false)throw new \Exception('Unable to get file content : '.$sAssetPath);
+			if(($sAssetContent = file_get_contents($sAssetsPath)) === false)throw new \Exception('Unable to get file content : '.$sAssetsPath);
 
 			switch($sTypeAsset){
 				case self::ASSET_CSS:
@@ -287,14 +290,14 @@ class Service{
 	 * Optimise and cache "Medias" assets
 	 * @param array $aMediasPath : medias to cache
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service\Service
+	 * @return \AssetsBundle\Service\Service
 	 */
 	private function cacheMedias(array $aMediasPath){
 		foreach($aMediasPath as $sMediaPath){
 			//Absolute path
 			if(!($sMediaPath = $this->getRealPath($sMediaPath)))throw new \Exception('File not found : '.$sMediaPath);
 			//Define cache path
-			$sCacheMediaPath = str_ireplace($this->configuration['assetPath'],$this->configuration['cachePath'],$sMediaPath);
+			$sCacheMediaPath = str_ireplace($this->configuration['assetsPath'],$this->configuration['cachePath'],$sMediaPath);
 
 			//If media is not in asset directory
 			if($sCacheMediaPath === $sMediaPath)$sCacheMediaPath = str_ireplace(getcwd(),$this->configuration['cachePath'],$sMediaPath);
@@ -328,10 +331,10 @@ class Service{
 	private function getValidAssets(array $aAssets,$sTypeAsset){
 		if(!self::assetTypeExists($sTypeAsset))throw new \Exception('Asset\'s type is undefined : '.$sTypeAsset);
 		$aReturn = array();
-		foreach($aAssets as $sAssetPath){
-			if(!($sAssetPath =  $this->getRealPath($sAssetPath)))throw new \Exception('Directory not found : '.$sAssetPath);
-			if(is_dir($sAssetPath))$aReturn = array_merge($aReturn,$this->getAssetsFromDirectory($sAssetPath, $sTypeAsset));
-			else $aReturn[] = $sAssetPath;
+		foreach($aAssets as $sAssetsPath){
+			if(!($sRealAssetsPath =  $this->getRealPath($sAssetsPath)))throw new \Exception('Asset file not found : '.$sAssetsPath);
+			if(is_dir($sRealAssetsPath))$aReturn = array_merge($aReturn,$this->getAssetsFromDirectory($sRealAssetsPath, $sTypeAsset));
+			else $aReturn[] = $sRealAssetsPath;
 		}
 		return array_unique(array_filter($aReturn));
 	}
@@ -372,7 +375,7 @@ class Service{
 	 * Optimise and cache "Less" assets
 	 * @param array $aAssetsPath : assets to cache
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service\Service
+	 * @return \AssetsBundle\Service\Service
 	 */
 	private function cacheLess(array $aAssetsPath){
 		//Create global import file for Less assets
@@ -385,18 +388,18 @@ class Service{
 		//Check if cache file has to been updated
 		if(file_exists($this->configuration['cachePath'].$sCacheFile) && ($iLastModifiedCache = filemtime($this->configuration['cachePath'].$sCacheFile)) !== false){
 			$bCacheOk = true;
-			foreach($aAssetsPath as $sAssetPath){
-				if(!($sAssetPath = $this->getRealPath($sAssetPath)))throw new \Exception('File not found : '.$sAssetPath);
-				$aAssetsExists[] = $sAssetPath;
-				if(($iLastModified = filemtime($sAssetPath)) === false || $iLastModified > $iLastModifiedCache){
+			foreach($aAssetsPath as $sAssetsPath){
+				if(!($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
+				$aAssetsExists[] = $sAssetsPath;
+				if(($iLastModified = filemtime($sAssetsPath)) === false || $iLastModified > $iLastModifiedCache){
 					$bCacheOk = false;
 					break;
 				}
 				//If file is up to date, check if it doesn't contain @imports
 				else{
-					if(($sAssetContent = file_get_contents($sAssetPath)) === false)throw new \Exception('Unable to get file content : '.$sAssetPath);
+					if(($sAssetContent = file_get_contents($sAssetsPath)) === false)throw new \Exception('Unable to get file content : '.$sAssetsPath);
 					if(preg_match_all('/@import([^;]*);/', $sAssetContent, $aImports,PREG_PATTERN_ORDER)){
-						$sAssetDirPath = realpath(pathinfo($sAssetPath,PATHINFO_DIRNAME)).DIRECTORY_SEPARATOR;
+						$sAssetDirPath = realpath(pathinfo($sAssetsPath,PATHINFO_DIRNAME)).DIRECTORY_SEPARATOR;
 						foreach($aImports[1] as $sImport){
 							$sImport = trim(str_ireplace(array('"','\'','url','(',')'),'',$sImport));
 							//Check if file to be imported exists
@@ -416,10 +419,10 @@ class Service{
 			if($bCacheOk)return $this->configuration['cachePath'].$sCacheFile;
 		}
 		$sImportContent = '';
-		foreach($aAssetsPath as $sAssetPath){
+		foreach($aAssetsPath as $sAssetsPath){
 			//Absolute path
-			if(!in_array($sAssetPath,$aAssetsExists) && !($sAssetPath = $this->getRealPath($sAssetPath)))throw new \Exception('File not found : '.$sAssetPath);
-			$sImportContent .= '@import "'.str_ireplace(getcwd(), '', $sAssetPath).'";'.PHP_EOL;
+			if(!in_array($sAssetsPath,$aAssetsExists) && !($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
+			$sImportContent .= '@import "'.str_ireplace(getcwd(), '', $sAssetsPath).'";'.PHP_EOL;
 		};
 		$sImportContent = trim($sImportContent);
 		if(empty($sImportContent) || !($sImportContent = $this->getFilter(self::ASSET_LESS)->run($sImportContent)))return null;
@@ -439,7 +442,7 @@ class Service{
 	 * Show assets through View Helper
 	 * @param array $aAssets
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service\Service
+	 * @return \AssetsBundle\Service\Service
 	 */
 	public function displayAssets(array $aAssets){
 		if(!array_key_exists($sRendererName = get_class($this->getRenderer()), $this->configuration['rendererToStrategy']))throw new \Exception(\Exception::ERREUR_TYPE_ENTITE);
@@ -447,15 +450,15 @@ class Service{
 			$sStrategyClass = $this->configuration['rendererToStrategy'][$sRendererName];
 			if(!class_exists($sStrategyClass, true))throw new \Exception('Strategy Class not found : '.$sStrategyClass);
 			$this->strategy[$sRendererName] = new $sStrategyClass();
-			if(!($this->strategy[$sRendererName] instanceof \Neilime\AssetsBundle\View\Strategy\StrategyInterface))throw new \Exception('Strategy doesn\'t implement \Neilime\AssetsBundle\View\Strategy\StrategyInterface : '.$sStrategyClass);
+			if(!($this->strategy[$sRendererName] instanceof \AssetsBundle\View\Strategy\StrategyInterface))throw new \Exception('Strategy doesn\'t implement \AssetsBundle\View\Strategy\StrategyInterface : '.$sStrategyClass);
 		}
 
 		/** @var $oStrategy \Neilime\AsseticBundle\View\StrategyInterface */
 		$oStrategy = $this->strategy[$sRendererName]->setBaseUrl($this->configuration['cacheUrl'])->setRenderer($this->getRenderer());
-		foreach($aAssets as $sAssetPath){
+		foreach($aAssets as $sAssetsPath){
 			$oStrategy->renderAsset(
-				$sAssetPath,
-				file_exists($sAbsolutePath = $this->configuration['cachePath'].DIRECTORY_SEPARATOR.$sAssetPath)?filemtime($sAbsolutePath):time()
+				$sAssetsPath,
+				file_exists($sAbsolutePath = $this->configuration['cachePath'].DIRECTORY_SEPARATOR.$sAssetsPath)?filemtime($sAbsolutePath):time()
 			);
 		}
 		return $this;
@@ -499,7 +502,7 @@ class Service{
 	 * @param string $sFilePath
 	 * @param string $sCachePath
 	 * @throws \Exception
-	 * @return \Neilime\AssetsBundle\Service\Service
+	 * @return \AssetsBundle\Service\Service
 	 */
 	private function copyIntoCache($sFilePath,$sCachePath){
 		if(!file_exists($sFilePath))throw new \Exception('File not found : '.$sFilePath);
@@ -519,7 +522,7 @@ class Service{
 	}
 
 	/**
-	 * Try to retrieve realpath for a given path (manage @zfRootPath & @zfAssetPath)
+	 * Try to retrieve realpath for a given path (manage @zfRootPath & @zfAssetsPath)
 	 * @param string $sPath
 	 * @throws \Exception
 	 * @return string|boolean : real path or false if not found
@@ -529,21 +532,21 @@ class Service{
 
 		//If path is "/", assets path is prefered
 		if($sPath === '/'){
-			if(!isset($this->configuration['assetPath']))throw new \Exception('Asset Path is undefined');
-			return $this->configuration['assetPath'];
+			if(!isset($this->configuration['assetsPath']))throw new \Exception('Asset Path is undefined');
+			return $this->configuration['assetsPath'];
 		}
 
 		if(file_exists($sPath))return realpath($sPath);
 
 		if(strpos($sPath,'@zfRootPath') !== false)$sPath = str_ireplace('@zfRootPath',getcwd(),$sPath);
-		if(strpos($sPath,'@zfAssetPath') !== false){
-			if(!isset($this->configuration['assetPath']))throw new \Exception('Asset Path is undefined');
-			$sPath = str_ireplace('@zfAssetPath',$this->configuration['assetPath'],$sPath);
+		if(strpos($sPath,'@zfAssetsPath') !== false){
+			if(!isset($this->configuration['assetsPath']))throw new \Exception('Asset Path is undefined');
+			$sPath = str_ireplace('@zfAssetsPath',$this->configuration['assetsPath'],$sPath);
 		}
 		if(($sRealPath = realpath($sPath)) !== false)return $sRealPath;
 		//Try to guess real path with root path or asset path (if defined)
 		if(file_exists($sRealPath = getcwd().DIRECTORY_SEPARATOR.$sPath))return realpath($sRealPath);
-		elseif(isset($this->configuration['assetPath']) && file_exists($sRealPath = $this->configuration['assetPath'].$sPath))return realpath($sRealPath);
+		elseif(isset($this->configuration['assetsPath']) && file_exists($sRealPath = $this->configuration['assetsPath'].$sPath))return realpath($sRealPath);
 		else return false;
 	}
 
@@ -559,7 +562,7 @@ class Service{
 		//Remove quotes & double quotes from url
 		$aMatches[1] = str_ireplace(array('"','\''),'', $aMatches[1]);
 		$sRootPath = realpath(getcwd().DIRECTORY_SEPARATOR.'..');
-		$sAssetRelativePath = str_ireplace(array($sRootPath,DIRECTORY_SEPARATOR),array('','/'), $this->configuration['assetPath']);
+		$sAssetRelativePath = str_ireplace(array($sRootPath,DIRECTORY_SEPARATOR),array('','/'), $this->configuration['assetsPath']);
 
 		$sUrl = str_ireplace('..'.$sAssetRelativePath,'', $aMatches[1]);
 

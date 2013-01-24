@@ -19,25 +19,25 @@ return array(
     )),
 	'service_manager' => array(
         'factories' => array(
-            'CssFilter' => '\Neilime\AssetsBundle\Factory\Filter\CssFilterFactory',
-        	'JsFilter' => '\Neilime\AssetsBundle\Factory\Filter\JsFilterFactory',
-        	'LessFilter' => '\Neilime\AssetsBundle\Factory\Filter\LessFilterFactory',
-        	'AssetsBundleService' => '\Neilime\AssetsBundle\Factory\ServiceFactory',
+            'CssFilter' => '\AssetsBundle\Factory\Filter\CssFilterFactory',
+        	'JsFilter' => '\AssetsBundle\Factory\Filter\JsFilterFactory',
+        	'LessFilter' => '\AssetsBundle\Factory\Filter\LessFilterFactory',
+        	'AssetsBundleService' => '\AssetsBundle\Factory\ServiceFactory',
             'ViewJsCustomStrategy' => function(){
-            	return new \Neilime\AssetsBundle\View\Strategy\JsCustomStrategy(new \Neilime\AssetsBundle\View\Renderer\JsRenderer());
+            	return new \AssetsBundle\View\Strategy\JsCustomStrategy(new \AssetsBundle\View\Renderer\JsRenderer());
             }
         )
     ),
     'asset_bundle' => array(
 		'production' => true,//Define here environment (Developpement => false)
     	'cachePath' => '@zfRootPath/public/cache',//cache directory absolute path
-    	'assetPath' => '@zfRootPath/public',//assets directory absolute path (allows you to define relative path for assets config)
+    	'assetsPath' => '@zfRootPath/public',//assets directory absolute path (allows you to define relative path for assets config)
     	'cacheUrl' => '@zfBaseUrl/assets/cache/',//cache directory base url
     	'mediaExt' => array('jpg','png','gif','cur','ttf','eot','svg','woff'),//Put here all media extensions to be cached
     	'rendererToStrategy' => array(
-            'Zend\View\Renderer\PhpRenderer'  => '\Neilime\AssetsBundle\View\Strategy\ViewHelperStrategy',
-            'Zend\View\Renderer\FeedRenderer' => '\Neilime\AssetsBundle\View\Strategy\NoneStrategy',
-            'Zend\View\Renderer\JsonRenderer' => '\Neilime\AssetsBundle\View\Strategy\NoneStrategy'
+            'Zend\View\Renderer\PhpRenderer'  => '\AssetsBundle\View\Strategy\ViewHelperStrategy',
+            'Zend\View\Renderer\FeedRenderer' => '\AssetsBundle\View\Strategy\NoneStrategy',
+            'Zend\View\Renderer\JsonRenderer' => '\AssetsBundle\View\Strategy\NoneStrategy'
         )
     ),
     'view_manager' => array('strategies' => array('ViewJsCustomStrategy'))

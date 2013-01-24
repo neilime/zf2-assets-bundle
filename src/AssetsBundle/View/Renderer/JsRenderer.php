@@ -1,5 +1,5 @@
 <?php
-namespace Neilime\AssetsBundle\View\Renderer;
+namespace AssetsBundle\View\Renderer;
 class JsRenderer implements \Zend\View\Renderer\RendererInterface{
 
 	/**
@@ -8,7 +8,7 @@ class JsRenderer implements \Zend\View\Renderer\RendererInterface{
     protected $resolver;
 
     /**
-     * @return \Neilime\AssetsBundle\View\Renderer\JsRenderer
+     * @return \AssetsBundle\View\Renderer\JsRenderer
      */
     public function getEngine(){
         return $this;
@@ -17,7 +17,7 @@ class JsRenderer implements \Zend\View\Renderer\RendererInterface{
     /**
      * Set the resolver used to map a template name to a resource the renderer may consume.
      * @param \Zend\View\Resolver\ResolverInterface $oResolver
-     * @return \Neilime\AssetsBundle\View\Renderer\JsRenderer
+     * @return \AssetsBundle\View\Renderer\JsRenderer
      */
     public function setResolver(\Zend\View\Resolver\ResolverInterface $oResolver){
         $this->resolver = $oResolver;

@@ -1,5 +1,5 @@
 <?php
-namespace Neilime\AssetsBundle\Mvc\Controller;
+namespace AssetsBundle\Mvc\Controller;
 use \Zend\Mvc\Controller\AbstractActionController as OriginalAbstractActionController;
 abstract class AbstractActionController extends OriginalAbstractActionController{
 	public function onDispatch(\Zend\Mvc\MvcEvent $oEvent){

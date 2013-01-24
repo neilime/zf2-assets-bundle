@@ -1,6 +1,6 @@
 <?php
-namespace Neilime\AssetsBundle\Service\Filter;
-class LessFilter implements \Neilime\AssetsBundle\Service\Filter\FilterInterface{
+namespace AssetsBundle\Service\Filter;
+class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	/**
 	 * @var \lessc
 	 */
@@ -13,17 +13,17 @@ class LessFilter implements \Neilime\AssetsBundle\Service\Filter\FilterInterface
 	 */
 	public function __construct(array $aConfiguration){
 		//Check configuration entries
-		if(!isset($aConfiguration['assetPath']))throw new \Exception('Error in configuration');
-		if(!is_dir($aConfiguration['assetPath'] = $this->getRealPath($aConfiguration['assetPath'])))throw new \Exception('assetPath is not a valid directory : '.$aConfiguration['assetPath']);
-		else $aConfiguration['assetPath'] .= DIRECTORY_SEPARATOR;
+		if(!isset($aConfiguration['assetsPath']))throw new \Exception('Error in configuration');
+		if(!is_dir($aConfiguration['assetsPath'] = $this->getRealPath($aConfiguration['assetsPath'])))throw new \Exception('assetsPath is not a valid directory : '.$aConfiguration['assetsPath']);
+		else $aConfiguration['assetsPath'] .= DIRECTORY_SEPARATOR;
 		$this->lessParser = new \lessc();
-		$this->lessParser->addImportDir($aConfiguration['assetPath']);
+		$this->lessParser->addImportDir($aConfiguration['assetsPath']);
 		$this->lessParser->addImportDir(getcwd());
 	}
 
 	/**
 	 * @param string $sContent
-	 * @see \Neilime\AssetsBundle\Service\Filter\FilterInterface::run()
+	 * @see \AssetsBundle\Service\Filter\FilterInterface::run()
 	 * @throws \Exception
 	 * @return string
 	 */
