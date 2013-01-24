@@ -670,8 +670,8 @@ header {
 }
 header h1 {
   font: 40px/48px "Copse", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #f3f3f3;
-  text-shadow: 0px 2px 0px #235796;
+  color: #FFD143;
+  text-shadow: 0px 2px 0px #9D822A;
   margin: 0px;
   white-space: nowrap;
   overflow: hidden;
@@ -690,12 +690,12 @@ header p {
   z-index: 100;
   left: 0;
   right: 50%;
-  height: 50px;
+  height: 64px;
   margin-right: -382px;
   position: fixed;
   top: 115px;
-  background: #ffcc00;
-  border: 1px solid #f0b500;
+  background: #CCC1A6;
+  border: 1px solid #C4B9A1;
   -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
   -o-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
@@ -728,15 +728,23 @@ header p {
   box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.4), 0px 1px 1px rgba(0, 0, 0, 0.1);
   background-color: #FFE788;
   margin-left: 5px;
-  padding: 10px 12px;
   margin-top: 6px;
-  line-height: 14px;
-  font-size: 14px;
   color: #333;
   font-weight: bold;
   display: inline-block;
   text-align: center;
+  padding: 12px 8px;
+  font-size: 15px;
+  line-height: 25px;
+  float: right;
 }
+
+#banner .button span{
+  padding-left: 50px;
+  display: block;
+    height: 26px;
+}
+
 #banner .button:hover {
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffe788), color-stop(100%, #ffe788));
   background: -webkit-linear-gradient(#ffe788, #ffe788);
