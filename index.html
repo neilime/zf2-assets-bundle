@@ -1,38 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
     <title>Assetsbundle by neilime</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Assetsbundle</h1>
-        <h2></h2>
-        <a href="https://github.com/neilime/zf2-assets-bundle" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>AssetsBundle</h1>
+      <header>
+        <h1>Assetsbundle</h1>
+        <p> AssetsBundle is module for ZF2 allowing asset managment (bundling &amp; caching)</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/neilime/zf2-assets-bundle" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/neilime/zf2-assets-bundle/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/neilime/zf2-assets-bundle/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>AssetsBundle</h1>
+
+<p><a href="https://travis-ci.org/neilime/zf2-assets-bundle"><img src="https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master" alt="Build Status"></a></p>
 
 <p>Created by Neilime</p>
-
-<p><a href="https://travis-ci.org/neilime/AssetsBundle"><img src="https://travis-ci.org/neilime/AssetsBundle.png?branch=master" alt="Build Status"></a></p>
 
 <h2>Introduction</h2>
 
@@ -68,7 +79,7 @@ This module manages the concept of the environment/production development.</p>
 <h4>By cloning project</h4>
 
 <ol>
-<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a> (latest master), <a href="https://github.com/natxet/CssMin">CssMin</a>,<a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
+<li>Install the <a href="https://github.com/neilime/lessphp">lessphp fork</a> (latest master), <a href="https://github.com/natxet/CssMin">CssMin</a>,<a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
 <li>Clone this project into your <code>./vendor/</code> directory.</li>
 </ol><h4>With composer</h4>
 
@@ -82,11 +93,11 @@ This module manages the concept of the environment/production development.</p>
 </pre></div>
 </li>
 <li>
-<p>Due to bug in lessphp you have to use Nodge's fork, add this repository in your composer.json:</p>
+<p>Due to bug in lessphp you have to use neilime's Lessphp fork, add this repository in your composer.json:</p>
 
 <div class="highlight"><pre><span class="s2">"repositories"</span><span class="err">:</span> <span class="p">[{</span>
     <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"vcs"</span><span class="p">,</span>
-    <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://github.com/Nodge/lessphp"</span>
+    <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://github.com/neilime/lessphp"</span>
 <span class="p">}]</span><span class="err">,</span>
 </pre></div>
 </li>
@@ -106,7 +117,7 @@ This module manages the concept of the environment/production development.</p>
 <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
     <span class="s1">'modules'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
         <span class="c1">// ...</span>
-        <span class="s1">'Neilime\AssetsBundle'</span><span class="p">,</span>
+        <span class="s1">'AssetsBundle'</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1">// ...</span>
 <span class="p">);</span>
@@ -174,7 +185,7 @@ mkdir cache
 <em>AssetsBundle</em> :</li>
 </ol><pre><code>- boolean production : Define the application environment (development =&gt; false). Default true.
 - string cachePath : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".
-- string assetPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
+- string assetsPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
 - string cacheUrl : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".
 - array mediaExt : Put here all medias extensions to be cached. Default array('png','gif','cur','ttf').
 </code></pre>
@@ -218,7 +229,7 @@ mkdir cache
 </pre></div>
 
 <p>For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
-but you can specify an absolute path or use the constants "@zfAssetPath" and "@zfRootPath".
+but you can specify an absolute path or use the constants "@zfAssetsPath" and "@zfRootPath".
 If you specify a directory, all files matching the asset type (css, less, js, media) will be included.
 You can define an inclusion order like this :</p>
 
@@ -240,7 +251,7 @@ You can define an inclusion order like this :</p>
 </li>
 <li><p>Custom Js :</p></li>
 </ol><p>This function allows you to dynamically include javascript files. For exemple, files specific to a user settings.
-In this case, your controller that need these file have to extends "Neilime\AssetsBundle\Mvc\ControllerAbstractActionController".</p>
+In this case, your controller that need these file have to extends "AssetsBundle\Mvc\ControllerAbstractActionController".</p>
 
 <p>Then create a jscustomAction function into your controller : </p>
 
@@ -284,25 +295,13 @@ elseif(is_array($this-&gt;jsCustomFiles))foreach($this-&gt;jsCustomFiles as $sJs
 }
 ```
 </code></pre>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/neilime/zf2-assets-bundle/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/neilime/zf2-assets-bundle/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/neilime/zf2-assets-bundle"></a> is maintained by <a href="https://github.com/neilime">neilime</a>.</p>
-
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/neilime">neilime</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
     </div>
-
-  
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>
