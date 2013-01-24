@@ -51,7 +51,7 @@ class Service{
 
 		//Check configuration values
 		if(strpos($aConfiguration['cacheUrl'],'@zfBaseUrl') !== false){
-			if(empty($aConfiguration['basePath']))throw new \Exception('Base path is undefined in configuration');
+			if(!isset($aConfiguration['basePath']))throw new \Exception('Base path is undefined in configuration');
 			$aConfiguration['basePath'] = rtrim($aConfiguration['basePath'], '/');
 			$aConfiguration['cacheUrl'] = $aConfiguration['basePath'].'/'.ltrim(str_ireplace('@zfBaseUrl','', $aConfiguration['cacheUrl']),'/');
 		}
