@@ -272,9 +272,13 @@ class Service{
 
 			switch($sTypeAsset){
 				case self::ASSET_CSS:
+					//Reset time limit
+					set_time_limit(30);
 					$sCacheContent = trim($this->getFilter(self::ASSET_CSS)->run($sAssetContent));
 					break;
 				case self::ASSET_JS:
+					//Reset time limit
+					set_time_limit(30);
 					$sCacheContent = trim($this->getFilter(self::ASSET_JS)->run($sAssetContent)).PHP_EOL.'//'.PHP_EOL;
 					break;
 			}
@@ -425,6 +429,9 @@ class Service{
 			$sImportContent .= '@import "'.str_ireplace(getcwd(), '', $sAssetsPath).'";'.PHP_EOL;
 		};
 		$sImportContent = trim($sImportContent);
+
+		//Reset time limit
+		set_time_limit(30);
 		if(empty($sImportContent) || !($sImportContent = $this->getFilter(self::ASSET_LESS)->run($sImportContent)))return null;
 
 		//Rewrite urls
