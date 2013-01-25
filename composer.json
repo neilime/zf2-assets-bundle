@@ -13,10 +13,16 @@
         }
     ],
     "minimum-stability": "dev",
-    "repositories": [{
-        "type": "vcs",
-        "url": "http://github.com/neilime/lessphp"
-    }],
+    "repositories": [
+        {
+	        "type": "vcs",
+	        "url": "http://github.com/neilime/lessphp"
+	    },
+	    {
+	        "type": "vcs",
+	        "url": "http://github.com/neilime/CssMin"
+	    }
+	],
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",

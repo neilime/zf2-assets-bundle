@@ -76,13 +76,13 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		$sLessFile = '6784e1c334dfceb8f017667c0b0f6a3e.less';
 		$sJsFile = '6784e1c334dfceb8f017667c0b0f6a3e.less';
 
-    	//Empty cache directory
+    	//Empty cache directory except .gitignore
 		foreach(new \RecursiveIteratorIterator(
 			new \RecursiveDirectoryIterator($sCachePath, \RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::CHILD_FIRST
 		) as $oFileinfo){
 			if($oFileinfo->isDir())rmdir($oFileinfo->getRealPath());
-			else unlink($oFileinfo->getRealPath());
+			elseif($oFileinfo->getBasename() !== '.gitignore')unlink($oFileinfo->getRealPath());
 		}
 
 		//Render assets
@@ -120,13 +120,13 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		$sCssFile = 'ebcddd147f42ba536510ab2d0f1a5069.css';
 		$sLessFile = 'ebcddd147f42ba536510ab2d0f1a5069.less';
 
-    	//Empty cache directory
+    	//Empty cache directory except .gitignore
 		foreach(new \RecursiveIteratorIterator(
 			new \RecursiveDirectoryIterator($sCachePath, \RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::CHILD_FIRST
 		) as $oFileinfo){
 			if($oFileinfo->isDir())rmdir($oFileinfo->getRealPath());
-			else unlink($oFileinfo->getRealPath());
+			elseif($oFileinfo->getBasename() !== '.gitignore')unlink($oFileinfo->getRealPath());
 		}
 
 		//Render assets

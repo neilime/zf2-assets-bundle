@@ -36,7 +36,7 @@ Installation
 
 #### By cloning project
 
-1. Install the [lessphp fork](https://github.com/neilime/lessphp) (latest master), [CssMin](https://github.com/natxet/CssMin),[JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
+1. Install the [lessphp fork](https://github.com/neilime/lessphp) (latest master), [CssMin fork](https://github.com/neilime/CssMin),[JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
 2. Clone this project into your `./vendor/` directory.
 
 #### With composer
@@ -49,13 +49,19 @@ Installation
     }
     ```
 
-2. Due to bug in lessphp you have to use neilime's Lessphp fork, add this repository in your composer.json:
+2. Due to bug in lessphp & CssMin you have to use neilime's Lessphp & CssMin forks, add this repository in your composer.json:
 	
 	```json
-    "repositories": [{
-        "type": "vcs",
-        "url": "http://github.com/neilime/lessphp"
-    }],
+    "repositories": [
+	    {
+	        "type": "vcs",
+	        "url": "http://github.com/neilime/lessphp"
+	    },
+	    {
+	        "type": "vcs",
+	        "url": "http://github.com/neilime/CssMin"
+	    }
+	],
     ```
 
 3. Now tell composer to download AssetsBundle by running the command:
