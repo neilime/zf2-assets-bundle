@@ -137,7 +137,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
     - string cachePath : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".
     - string assetsPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
     - string cacheUrl : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".
-    - array mediaExt : Put here all medias extensions to be cached. Default array('png','gif','cur','ttf').
+    - array mediaExt : Put here all medias extensions to be cached. Default array('jpg','png','gif','cur','ttf','eot','svg','woff').
 
 2. Modules :
 

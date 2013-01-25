@@ -9,6 +9,6 @@ class JsFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	 */
 	public function run($sContent){
 		if(!is_string($sContent))throw new \Exception('Content is not a string : '.gettype($sContent));
-		return \JSMin\Minify::minify($sContent);
+		return \JsMin\Minify::minify($sContent);
 	}
 }
