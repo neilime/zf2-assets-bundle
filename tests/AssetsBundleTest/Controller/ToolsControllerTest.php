@@ -1,0 +1,93 @@
+<?php
+namespace AssetsBundleTest\Controller;
+use AssetsBundle\Controller\ToolsController;
+
+class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
+	/**
+	 * @var array
+	 */
+	private $configuration = array(
+		'asset_bundle' => array(
+			'basePath' => '/',
+			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
+			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
+			'assets' => array(
+				'test' => array(
+					'css' => array('css/test.css'),
+					'less' => array('less/test.less'),
+					'js' => array('js/test.js'),
+					'index' => array(
+						'test-media' => array(
+							'css' => array('css/test-media.css'),
+							'less' => array('less/test-media.less'),
+							'media' => array(
+								'@zfRootPath/AssetsBundleTest/_files/fonts',
+								'@zfRootPath/AssetsBundleTest/_files/images'
+							)
+						)
+					)
+				)
+			)
+
+		)
+	);
+
+	/**
+	 * @var \AssetsBundle\Controller\ToolsController
+	 */
+	protected $controller;
+
+	/**
+	 * @var \Zend\Http\Request
+	 */
+	protected $request;
+
+	/**
+	 * @var \Zend\Mvc\Router\RouteMatch
+	 */
+	protected $routeMatch;
+
+	/**
+	 * @var \Zend\Mvc\MvcEvent
+	 */
+	protected $event;
+
+	/**
+	 * @see PHPUnit_Framework_TestCase::setUp()
+	 */
+    protected function setUp(){
+        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+
+        $this->configuration = \Zend\Stdlib\ArrayUtils::merge($oServiceManager->get('Config'),$this->configuration);
+        $bAllowOverride = $oServiceManager->getAllowOverride();
+        if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
+        $oServiceManager->setService('Config',$this->configuration)->setAllowOverride($bAllowOverride);
+
+        $this->controller = new \AssetsBundle\Controller\ToolsController();
+        $this->request = new \Zend\Http\Request();
+        $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'tools'));
+        $this->event = new \Zend\Mvc\MvcEvent();
+        $this->event
+        	->setRouter(\Zend\Mvc\Router\Http\TreeRouteStack::factory(isset($this->configuration['router'])?$this->configuration['router']:array()))
+        	->setRouteMatch($this->routeMatch);
+        $this->controller->setEvent($this->event);
+        $this->controller->setServiceLocator($oServiceManager);
+    }
+
+    public function testRenderAssets(){
+    	$this->routeMatch->setParam('action', 'renderassets');
+    	$this->controller->dispatch($this->request);
+    	$this->assertEquals(200, $this->controller->getResponse()->getStatusCode());
+    }
+
+    public function testEmptyCache(){
+    	$this->routeMatch->setParam('action', 'emptycache');
+    	$this->controller->dispatch($this->request);
+    	$this->assertEquals(200, $this->controller->getResponse()->getStatusCode());
+
+    	//Cache directory has only .gitignore file
+		$aFiles = scandir(dirname(__DIR__).'/_files/cache');
+		$this->assertCount(3, $aFiles);
+		$this->assertContains('.gitignore', $aFiles);
+    }
+}

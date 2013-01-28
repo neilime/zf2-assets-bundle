@@ -17,6 +17,35 @@ return array(
     		)
     	)
     )),
+	'controllers' => array(
+		'invokables' => array(
+			'AssetsBundle\Controller\Tools' => 'AssetsBundle\Controller\ToolsController'
+		)
+	),
+	'console' => array(
+		'router' => array(
+			'routes' => array(
+				'render-assets' => array(
+					'options' => array(
+						'route'    => 'render',
+						'defaults' => array(
+							'controller' => 'AssetsBundle\Controller\Tools',
+							'action' => 'renderassets'
+						)
+					)
+				),
+				'empty-cache' => array(
+					'options' => array(
+						'route'    => 'empty',
+						'defaults' => array(
+							'controller' => 'AssetsBundle\Controller\Tools',
+							'action' => 'emptycache'
+						)
+					)
+				)
+			)
+		)
+	),
 	'service_manager' => array(
         'factories' => array(
             'CssFilter' => '\AssetsBundle\Factory\Filter\CssFilterFactory',

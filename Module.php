@@ -1,7 +1,9 @@
 <?php
 namespace AssetsBundle;
-use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
-class Module implements AutoloaderProviderInterface{
+class Module implements
+	\Zend\ModuleManager\Feature\ConfigProviderInterface,
+	\Zend\ModuleManager\Feature\AutoloaderProviderInterface,
+	\Zend\ModuleManager\Feature\ConsoleUsageProviderInterface{
 
 	/**
 	 * @var \Zend\ModuleManager\ModuleManagerInterface
@@ -34,12 +36,28 @@ class Module implements AutoloaderProviderInterface{
 	 */
 	public function renderAssets(\Zend\Mvc\MvcEvent $oEvent){
 		$oAssetsBundleService = $oEvent->getApplication()->getServiceManager()->get('AssetsBundleService')
-		->setRenderer($oEvent->getApplication()->getServiceManager()->get('ViewRenderer'));
+		->setRenderer($oEvent->getApplication()->getServiceManager()->get('ViewRenderer'))
+		->setLoadedModules(array_keys($this->moduleManager->getLoadedModules()));
 
 		/* @var $oRouter \Zend\Mvc\Router\RouteMatch */
 		$oRouter = $oEvent->getRouteMatch();
 		if($oRouter instanceof \Zend\Mvc\Router\RouteMatch)$oAssetsBundleService->setControllerName($oRouter->getParam('controller'))->setActionName($oRouter->getParam('action'));
-		$oAssetsBundleService->renderAssets(array_keys($this->moduleManager->getLoadedModules()));
+		$oAssetsBundleService->renderAssets();
+	}
+
+	/**
+	 * @see \Zend\ModuleManager\Feature\ConsoleUsageProviderInterface::getConsoleUsage()
+	 * @param \Zend\Console\Adapter\AdapterInterface $oConsole
+	 * @return array
+	 */
+	public function getConsoleUsage(\Zend\Console\Adapter\AdapterInterface $oConsole){
+		return array(
+			'Rendering assets:',
+			'render' => 'render all assets',
+
+			'Empty cache:',
+			'empty' => 'empty cache directory',
+		);
 	}
 
 	/**

@@ -1,15 +1,24 @@
 <?php
 namespace AssetsBundle\Service;
 class Service{
+	//Assets
 	const ASSET_CSS = 'css';
 	const ASSET_JS = 'js';
 	const ASSET_LESS = 'less';
 	const ASSET_MEDIA = 'media';
 
+	const NO_ACTION = 'no_action';
+	const NO_CONTROLLER = 'no_controller';
+
 	/**
 	 * @var array
 	 */
 	protected $configuration;
+
+	/**
+	 * @var array
+	 */
+	protected $loadedModules;
 
 	/**
 	 * @var string
@@ -68,6 +77,26 @@ class Service{
 	}
 
 	/**
+	 * @param array $aLoadedModules
+	 * @return \AssetsBundle\Service\Service
+	 */
+	public function setLoadedModules(array $aLoadedModules){
+		foreach(array_unique($aLoadedModules) as $sModuleName){
+			if(isset($this->configuration['assets'][$sModuleName = strtolower($sModuleName)]))$this->loadedModules[$sModuleName];
+		}
+		return $this;
+	}
+
+	/**
+	 * @throws \Exception
+	 * @return array
+	 */
+	public function getLoadedModules(){
+		if(!$this->loadedModules)throw new \Exception('Loaded modules are undefined');
+		return $this->loadedModules;
+	}
+
+	/**
 	 * @param string $sControllerName
 	 * @throws \Exception
 	 * @return \AssetsBundle\Service\Service
@@ -82,7 +111,7 @@ class Service{
 	 * @return string
 	 */
 	public function getControllerName(){
-		return $this->controllerName?:'no_controller';
+		return $this->controllerName?:self::NO_CONTROLLER;
 	}
 
 	/**
@@ -100,7 +129,7 @@ class Service{
 	 * @return string
 	 */
 	public function getActionName(){
-		return $this->actionName?:'no_action';
+		return $this->actionName?:self::NO_ACTION;
 	}
 
 	/**
@@ -146,51 +175,103 @@ class Service{
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getCachePath(){
+		return $this->configuration['cachePath'];
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAssetsConfiguration(){
+		$aAssets = array(
+			self::ASSET_CSS => array(),
+			self::ASSET_LESS => array(),
+			self::ASSET_JS => array(),
+			self::ASSET_MEDIA => array()
+		);
+
+		foreach($this->getLoadedModules() as $sModuleName){
+			//Module configuration
+			$aConfigurationModule = $this->configuration['assets'][$sModuleName];
+			if(!empty($aConfigurationModule[self::ASSET_CSS]) && is_array($aConfigurationModule[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationModule[self::ASSET_CSS]);
+			if(!empty($aConfigurationModule[self::ASSET_LESS]) && is_array($aConfigurationModule[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationModule[self::ASSET_LESS]);
+			if(!empty($aConfigurationModule[self::ASSET_JS]) && is_array($aConfigurationModule[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationModule[self::ASSET_JS]);
+			if(!empty($aConfigurationModule[self::ASSET_MEDIA]) && is_array($aConfigurationModule[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationModule[self::ASSET_MEDIA]);
+
+			//Controller configuration
+			if(isset($aConfigurationModule[$this->getControllerName()])){
+				$aConfigurationController = $aConfigurationModule[$this->getControllerName()];
+				if(!empty($aConfigurationController[self::ASSET_CSS]) && is_array($aConfigurationController[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationController[self::ASSET_CSS]);
+				if(!empty($aConfigurationController[self::ASSET_LESS]) && is_array($aConfigurationController[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationController[self::ASSET_LESS]);
+				if(!empty($aConfigurationController[self::ASSET_JS]) && is_array($aConfigurationController[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationController[self::ASSET_JS]);
+				if(!empty($aConfigurationController[self::ASSET_MEDIA]) && is_array($aConfigurationController[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationController[self::ASSET_MEDIA]);
+
+				//Action configuration
+				if(isset($aConfigurationController[$this->getActionName()])){
+					$aConfigurationAction = $aConfigurationController[$this->getActionName()];
+					if(!empty($aConfigurationAction[self::ASSET_CSS]) && is_array($aConfigurationAction[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationAction[self::ASSET_CSS]);
+					if(!empty($aConfigurationAction[self::ASSET_LESS]) && is_array($aConfigurationAction[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationAction[self::ASSET_LESS]);
+					if(!empty($aConfigurationAction[self::ASSET_JS]) && is_array($aConfigurationAction[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationAction[self::ASSET_JS]);
+					if(!empty($aConfigurationAction[self::ASSET_MEDIA]) && is_array($aConfigurationAction[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationAction[self::ASSET_MEDIA]);
+				}
+			}
+		}
+		return $aAssets;
+	}
+
+	/**
+	 * @param string $sControllerName
+	 * @throws \Exception
+	 * @return boolean
+	 */
+	protected function controllerHasAssetConfiguration($sControllerName){
+		if(!is_string($sControllerName) || empty($sControllerName))throw new \Exception('Controller name is not valid');
+		foreach($this->getLoadedModules() as $sModuleName){
+			if(isset($this->configuration['assets'][$sModuleName][$sControllerName]))return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @param string $sControllerName
+	 * @throws \Exception
+	 * @return boolean
+	 */
+	protected function actionHasAssetConfiguration($sActionName){
+		if(!is_string($sActionName) || empty($sActionName))throw new \Exception('Action name is not valid');
+		foreach($this->getLoadedModules() as $sModuleName){
+			if(isset($this->configuration['assets'][$sModuleName][$sControllerName][$sActionName]))return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Render Js and css assets
-	 * @param array $aModules
 	 * @return \AssetsBundle\Service\Service
 	 */
-	public function renderAssets(array $aModules){
+	public function renderAssets(){
 		//Production : check already cached files
 		if($this->configuration['production']){
-			$sCssCacheFile = md5($this->getControllerName().$this->getActionName()).'.'.self::ASSET_CSS;
-			$sJsCacheFile = md5($this->getControllerName().$this->getActionName()).'.'.self::ASSET_JS;
-			if($this->getRealPath($this->configuration['cachePath'].$sCssCacheFile)
-			&& $this->getRealPath($this->configuration['cachePath'].$sJsCacheFile))return $this->displayAssets(array(
+			//Check if controller and action have assets configuration
+			$sCacheName = md5(
+				($this->controllerHasAssetConfiguration($this->getControllerName())?$this->getControllerName():self::NO_CONTROLLER).
+				($this->actionHasAssetConfiguration($this->getActionName())?$this->getActionName():self::NO_ACTION)
+			);
+
+			$sCssCacheFile = $sCacheName.'.'.self::ASSET_CSS;
+			$sJsCacheFile = $sCacheName.'.'.self::ASSET_JS;
+
+			//Assets are already cache
+			if($this->getRealPath($this->getCachePath().$sCssCacheFile)
+			&& $this->getRealPath($this->getCachePath().$sJsCacheFile))return $this->displayAssets(array(
 				self::ASSET_CSS => $sCssCacheFile,
 				self::ASSET_JS => $sJsCacheFile,
 			));
 		}
 
-		$aAssets = array(self::ASSET_CSS => array(),self::ASSET_LESS => array(),self::ASSET_JS => array(), self::ASSET_MEDIA => array());
-		foreach($aModules as $sModuleName){
-			if(isset($this->configuration['assets'][$sModuleName = strtolower($sModuleName)])){
-				//Module configuration
-				$aConfigurationModule = $this->configuration['assets'][$sModuleName];
-				if(!empty($aConfigurationModule[self::ASSET_CSS]) && is_array($aConfigurationModule[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationModule[self::ASSET_CSS]);
-				if(!empty($aConfigurationModule[self::ASSET_LESS]) && is_array($aConfigurationModule[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationModule[self::ASSET_LESS]);
-				if(!empty($aConfigurationModule[self::ASSET_JS]) && is_array($aConfigurationModule[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationModule[self::ASSET_JS]);
-				if(!empty($aConfigurationModule[self::ASSET_MEDIA]) && is_array($aConfigurationModule[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationModule[self::ASSET_MEDIA]);
-
-				//Controller configuration
-				if(isset($aConfigurationModule[$this->getControllerName()])){
-					$aConfigurationController = $aConfigurationModule[$this->getControllerName()];
-					if(!empty($aConfigurationController[self::ASSET_CSS]) && is_array($aConfigurationController[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationController[self::ASSET_CSS]);
-					if(!empty($aConfigurationController[self::ASSET_LESS]) && is_array($aConfigurationController[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationController[self::ASSET_LESS]);
-					if(!empty($aConfigurationController[self::ASSET_JS]) && is_array($aConfigurationController[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationController[self::ASSET_JS]);
-					if(!empty($aConfigurationController[self::ASSET_MEDIA]) && is_array($aConfigurationController[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationController[self::ASSET_MEDIA]);
-
-					//Action configuration
-					if(isset($aConfigurationController[$this->getActionName()])){
-						$aConfigurationAction = $aConfigurationController[$this->getActionName()];
-						if(!empty($aConfigurationAction[self::ASSET_CSS]) && is_array($aConfigurationAction[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationAction[self::ASSET_CSS]);
-						if(!empty($aConfigurationAction[self::ASSET_LESS]) && is_array($aConfigurationAction[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationAction[self::ASSET_LESS]);
-						if(!empty($aConfigurationAction[self::ASSET_JS]) && is_array($aConfigurationAction[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationAction[self::ASSET_JS]);
-						if(!empty($aConfigurationAction[self::ASSET_MEDIA]) && is_array($aConfigurationAction[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationAction[self::ASSET_MEDIA]);
-					}
-				}
-			}
-		}
+		$aAssets = $this->getAssetsConfiguration();
 
 		//Manage images caching
 		$this->cacheMedias($this->getValidAssets(array_unique($aAssets[self::ASSET_MEDIA]),self::ASSET_MEDIA));
@@ -229,8 +310,8 @@ class Service{
 
 		//Production : check if cache file is up to date
 		if($this->configuration['production']
-		&& file_exists($this->configuration['cachePath'].$sCacheFile)
-		&& ($iLastModifiedCache = filemtime($this->configuration['cachePath'].$sCacheFile)) !== false){
+		&& file_exists($this->getCachePath().$sCacheFile)
+		&& ($iLastModifiedCache = filemtime($this->getCachePath().$sCacheFile)) !== false){
 			$bCacheOk = true;
 			foreach($aAssetsPath as $sAssetsPath){
 				if(!($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
@@ -251,8 +332,8 @@ class Service{
 			//Developpement : don't optimize assets
 			if(!$this->configuration['production']){
 				//If asset is already a cache file
-				if(strpos($sAssetsPath,$this->configuration['cachePath']) !== false)$sAssetRelativePath = str_ireplace(
-					array($this->configuration['cachePath'],'.less'),
+				if(strpos($sAssetsPath,$this->getCachePath()) !== false)$sAssetRelativePath = str_ireplace(
+					array($this->getCachePath(),'.less'),
 					array('','.css'),
 					$sAssetsPath
 				);
@@ -262,7 +343,7 @@ class Service{
 					$sAssetsPath
 				);
 
-				$this->copyIntoCache($sAssetsPath, $this->configuration['cachePath'].$sAssetRelativePath);
+				$this->copyIntoCache($sAssetsPath, $this->getCachePath().$sAssetRelativePath);
 				$aCacheAssets[] = $sAssetRelativePath;
 				continue;
 			}
@@ -285,7 +366,7 @@ class Service{
 			$sCacheContent = trim($sCacheContent);
 			if(empty($sCacheContent))continue;
 			else $bHasContent = true;
-			if(!file_put_contents($this->configuration['cachePath'].$sCacheFile,$sCacheContent.PHP_EOL,FILE_APPEND))throw new \Exception('Unable to write in file : '.$this->configuration['cachePath'].$sCacheFile);
+			if(!file_put_contents($this->getCachePath().$sCacheFile,$sCacheContent.PHP_EOL,FILE_APPEND))throw new \Exception('Unable to write in file : '.$this->getCachePath().$sCacheFile);
 		}
 		return $this->configuration['production']?($bHasContent?array($sCacheFile):array()):$aCacheAssets;
 	}
@@ -301,10 +382,10 @@ class Service{
 			//Absolute path
 			if(!($sMediaPath = $this->getRealPath($sMediaPath)))throw new \Exception('File not found : '.$sMediaPath);
 			//Define cache path
-			$sCacheMediaPath = str_ireplace($this->configuration['assetsPath'],$this->configuration['cachePath'],$sMediaPath);
+			$sCacheMediaPath = str_ireplace($this->configuration['assetsPath'],$this->getCachePath(),$sMediaPath);
 
 			//If media is not in asset directory
-			if($sCacheMediaPath === $sMediaPath)$sCacheMediaPath = str_ireplace(getcwd(),$this->configuration['cachePath'],$sMediaPath);
+			if($sCacheMediaPath === $sMediaPath)$sCacheMediaPath = str_ireplace(getcwd(),$this->getCachePath(),$sMediaPath);
 
 			//Media isn't cached or it's deprecated
 			if($this->hasToCache($sMediaPath,$sCacheMediaPath))switch($sExtension = strtolower(pathinfo($sMediaPath,PATHINFO_EXTENSION))){
@@ -390,7 +471,7 @@ class Service{
 		$aAssetsExists = array();
 
 		//Check if cache file has to been updated
-		if(file_exists($this->configuration['cachePath'].$sCacheFile) && ($iLastModifiedCache = filemtime($this->configuration['cachePath'].$sCacheFile)) !== false){
+		if(file_exists($this->getCachePath().$sCacheFile) && ($iLastModifiedCache = filemtime($this->getCachePath().$sCacheFile)) !== false){
 			$bCacheOk = true;
 			foreach($aAssetsPath as $sAssetsPath){
 				if(!($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
@@ -420,7 +501,7 @@ class Service{
 					}
 				}
 			}
-			if($bCacheOk)return $this->configuration['cachePath'].$sCacheFile;
+			if($bCacheOk)return $this->getCachePath().$sCacheFile;
 		}
 		$sImportContent = '';
 		foreach($aAssetsPath as $sAssetsPath){
@@ -441,7 +522,7 @@ class Service{
 			$sImportContent
 		);
 
-		if(!file_put_contents($sCacheFile = $this->configuration['cachePath'].$sCacheFile,$sImportContent))throw new \Exception('Unable to write in file : '.$sCacheFile);
+		if(!file_put_contents($sCacheFile = $this->getCachePath().$sCacheFile,$sImportContent))throw new \Exception('Unable to write in file : '.$sCacheFile);
 		return $sCacheFile;
 	}
 
@@ -465,7 +546,7 @@ class Service{
 		foreach($aAssets as $sAssetsPath){
 			$oStrategy->renderAsset(
 				$sAssetsPath,
-				file_exists($sAbsolutePath = $this->configuration['cachePath'].DIRECTORY_SEPARATOR.$sAssetsPath)?filemtime($sAbsolutePath):time()
+				file_exists($sAbsolutePath = $this->getCachePath().DIRECTORY_SEPARATOR.$sAssetsPath)?filemtime($sAbsolutePath):time()
 			);
 		}
 		return $this;
@@ -516,7 +597,7 @@ class Service{
 		if(!$this->hasToCache($sFilePath,$sCachePath))return $this;
 		//Create directory structure if it doesn't exist in cache
 		if(!is_dir($sDirPath = pathinfo($sCachePath,PATHINFO_DIRNAME))){
-			$sCurrentPath = $this->configuration['cachePath'];
+			$sCurrentPath = $this->getCachePath();
 			//Directory traversal
 			foreach(explode(DIRECTORY_SEPARATOR,str_ireplace($sCurrentPath,'',$sDirPath)) as $sDirPathPart){
 				//Create current directory if it doesn't exist

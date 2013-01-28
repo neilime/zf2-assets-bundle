@@ -50,12 +50,16 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
         //Define service
         $this->service = $oServiceManager->get('AssetsBundleService');
-        $this->service->setRenderer(new \Zend\View\Renderer\PhpRenderer());
+        $this->service->setRenderer(new \Zend\View\Renderer\PhpRenderer())->setLoadedModules(array('Test'));
         $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'index','action' => 'index'));
     }
 
     public function testService(){
+    	//Test service instance
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service);
+
+    	//Test cache path
+    	$this->assertEquals(realpath(__DIR__.'/_files/cache'), $this->service->getCachePath(), $actualClassOrObject);
     }
 
     public function testSetRoute(){
@@ -69,7 +73,6 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     }
 
     public function testRenderSimpleAssets(){
-		$sCachePath = __DIR__.'/_files/cache';
 		$sCacheExpectedPath = __DIR__.'/_files/cache-expected';
 
 		$sCssFile = '6784e1c334dfceb8f017667c0b0f6a3e.css';
@@ -78,7 +81,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
     	//Empty cache directory except .gitignore
 		foreach(new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($sCachePath, \RecursiveDirectoryIterator::SKIP_DOTS),
+			new \RecursiveDirectoryIterator($this->service->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::CHILD_FIRST
 		) as $oFileinfo){
 			if($oFileinfo->isDir())rmdir($oFileinfo->getRealPath());
@@ -86,32 +89,31 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		}
 
 		//Render assets
-		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets(array('Test')));
+		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
 		//Css cache file
-		$this->assertFileExists($sCachePath.'/');
+		$this->assertFileExists($this->service->getCachePath().'/'.$sCssFile);
 		$this->assertEquals(
-			file_get_contents($sCachePath.'/'.$sCssFile),
+			file_get_contents($this->service->getCachePath().'/'.$sCssFile),
 			file_get_contents($sCacheExpectedPath.'/'.$sCssFile)
 		);
 
 		//Less cache file
-		$this->assertFileExists($sCachePath.'/'.$sLessFile);
+		$this->assertFileExists($this->service->getCachePath().'/'.$sLessFile);
 		$this->assertEquals(
-			file_get_contents($sCachePath.'/'.$sLessFile),
+			file_get_contents($this->service->getCachePath().'/'.$sLessFile),
 			file_get_contents($sCacheExpectedPath.'/'.$sLessFile)
 		);
 
 		//Js cache file
-		$this->assertFileExists($sCachePath.'/'.$sJsFile);
+		$this->assertFileExists($this->service->getCachePath().'/'.$sJsFile);
 		$this->assertEquals(
-			file_get_contents($sCachePath.'/'.$sJsFile),
+			file_get_contents($this->service->getCachePath().'/'.$sJsFile),
 			file_get_contents($sCacheExpectedPath.'/'.$sJsFile)
 		);
     }
 
 	public function testRenderAssetsWithMedias(){
-		$sCachePath = __DIR__.'/_files/cache';
 		$sCacheExpectedPath = __DIR__.'/_files/cache-expected';
 
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName('test-media'));
@@ -122,7 +124,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
     	//Empty cache directory except .gitignore
 		foreach(new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($sCachePath, \RecursiveDirectoryIterator::SKIP_DOTS),
+			new \RecursiveDirectoryIterator($this->service->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::CHILD_FIRST
 		) as $oFileinfo){
 			if($oFileinfo->isDir())rmdir($oFileinfo->getRealPath());
@@ -130,30 +132,30 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		}
 
 		//Render assets
-		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets(array('Test')));
+		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
 		//Css cache file
-		$this->assertFileExists($sCachePath.'/');
+		$this->assertFileExists($this->service->getCachePath().'/'.$sCssFile);
 		$this->assertEquals(
-			file_get_contents($sCachePath.'/'.$sCssFile),
+			file_get_contents($this->service->getCachePath().'/'.$sCssFile),
 			file_get_contents($sCacheExpectedPath.'/'.$sCssFile)
 		);
 
 		//Less cache file
-		$this->assertFileExists($sCachePath.'/'.$sLessFile);
+		$this->assertFileExists($this->service->getCachePath().'/'.$sLessFile);
 		$this->assertEquals(
-			file_get_contents($sCachePath.'/'.$sLessFile),
+			file_get_contents($this->service->getCachePath().'/'.$sLessFile),
 			file_get_contents($sCacheExpectedPath.'/'.$sLessFile)
 		);
 
 		//Media cache files
 
 		#Fonts
-		$this->assertFileExists($sCachePath.'/AssetsBundleTest/_files/fonts/fontawesome-webfont.eot');
-		$this->assertFileExists($sCachePath.'/AssetsBundleTest/_files/fonts/fontawesome-webfont.ttf');
-		$this->assertFileExists($sCachePath.'/AssetsBundleTest/_files/fonts/fontawesome-webfont.woff');
+		$this->assertFileExists($this->service->getCachePath().'/AssetsBundleTest/_files/fonts/fontawesome-webfont.eot');
+		$this->assertFileExists($this->service->getCachePath().'/AssetsBundleTest/_files/fonts/fontawesome-webfont.ttf');
+		$this->assertFileExists($this->service->getCachePath().'/AssetsBundleTest/_files/fonts/fontawesome-webfont.woff');
 
 		#Images
-		$this->assertFileExists($sCachePath.'/AssetsBundleTest/_files/images/test-media.gif');
+		$this->assertFileExists($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.gif');
     }
 }
