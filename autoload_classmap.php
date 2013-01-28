@@ -1,6 +1,7 @@
 <?php
 return array(
     'AssetsBundle\Module' => __DIR__ . '/Module.php',
+	'AssetsBundle\Controller\ToolsController' => __DIR__ . '/src/AssetsBundle/Controller/ToolsController.php',
 	'AssetsBundle\Factory\ServiceFactory' => __DIR__ . '/src/AssetsBundle/Factory/ServiceFactory.php',
 	'AssetsBundle\Factory\Filter\CssFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/CssFilterFactory.php',
 	'AssetsBundle\Factory\Filter\JsFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/JsFilterFactory.php',

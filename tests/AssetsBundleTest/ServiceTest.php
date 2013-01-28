@@ -50,7 +50,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
         //Define service
         $this->service = $oServiceManager->get('AssetsBundleService');
-        $this->service->setRenderer(new \Zend\View\Renderer\PhpRenderer())->setLoadedModules(array('Test'));
+        $this->service->setRenderer(new \Zend\View\Renderer\PhpRenderer())->setLoadedModules(array('Test','Useless-module'));
         $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'index','action' => 'index'));
     }
 
@@ -59,7 +59,17 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service);
 
     	//Test cache path
-    	$this->assertEquals(realpath(__DIR__.'/_files/cache'), $this->service->getCachePath(), $actualClassOrObject);
+    	$this->assertEquals(realpath(__DIR__.'/_files/cache').DIRECTORY_SEPARATOR, $this->service->getCachePath());
+
+    	//Test loaded modules
+    	$this->assertEquals(array('test'), $this->service->getLoadedModules());
+
+    	//Test assets configuration
+    	$this->assertTrue($this->service->controllerHasAssetConfiguration('index'));
+    	$this->assertFalse($this->service->controllerHasAssetConfiguration('wrong-controller'));
+
+    	$this->assertTrue($this->service->actionHasAssetConfiguration('test-media'));
+    	$this->assertFalse($this->service->actionHasAssetConfiguration('wrong-action'));
     }
 
     public function testSetRoute(){
@@ -70,47 +80,50 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     	//Action
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName($this->routeMatch->getParam('action')));
     	$this->assertEquals('index', $this->service->getActionName());
+
+    	//Cache file name
+    	$this->assertEquals($this->service->getCacheFileName(), md5($this->routeMatch->getParam('controller').\AssetsBundle\Service\Service::NO_ACTION));
     }
 
     public function testRenderSimpleAssets(){
 		$sCacheExpectedPath = __DIR__.'/_files/cache-expected';
+		$sCacheName = $this->service->getCacheFileName();
 
-		$sCssFile = '6784e1c334dfceb8f017667c0b0f6a3e.css';
-		$sLessFile = '6784e1c334dfceb8f017667c0b0f6a3e.less';
-		$sJsFile = '6784e1c334dfceb8f017667c0b0f6a3e.less';
+		$sCssFile = $sCacheName.'.css';
+		$sLessFile = $sCacheName.'.less';
+		$sJsFile = $sCacheName.'.js';
 
-    	//Empty cache directory except .gitignore
-		foreach(new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($this->service->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS),
-			\RecursiveIteratorIterator::CHILD_FIRST
-		) as $oFileinfo){
-			if($oFileinfo->isDir())rmdir($oFileinfo->getRealPath());
-			elseif($oFileinfo->getBasename() !== '.gitignore')unlink($oFileinfo->getRealPath());
-		}
+		//Empty cache directory
+		$this->emptyCacheDirectory();
 
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
+		var_dump($this->service->getCachePath().$sCssFile);
+
 		//Css cache file
-		$this->assertFileExists($this->service->getCachePath().'/'.$sCssFile);
+		$this->assertFileExists($this->service->getCachePath().$sCssFile);
 		$this->assertEquals(
-			file_get_contents($this->service->getCachePath().'/'.$sCssFile),
+			file_get_contents($this->service->getCachePath().$sCssFile),
 			file_get_contents($sCacheExpectedPath.'/'.$sCssFile)
 		);
 
 		//Less cache file
-		$this->assertFileExists($this->service->getCachePath().'/'.$sLessFile);
+		$this->assertFileExists($this->service->getCachePath().$sLessFile);
 		$this->assertEquals(
-			file_get_contents($this->service->getCachePath().'/'.$sLessFile),
+			file_get_contents($this->service->getCachePath().$sLessFile),
 			file_get_contents($sCacheExpectedPath.'/'.$sLessFile)
 		);
 
 		//Js cache file
-		$this->assertFileExists($this->service->getCachePath().'/'.$sJsFile);
+		$this->assertFileExists($this->service->getCachePath().$sJsFile);
 		$this->assertEquals(
-			file_get_contents($this->service->getCachePath().'/'.$sJsFile),
+			file_get_contents($this->service->getCachePath().$sJsFile),
 			file_get_contents($sCacheExpectedPath.'/'.$sJsFile)
 		);
+
+		//Empty cache directory
+		$this->emptyCacheDirectory();
     }
 
 	public function testRenderAssetsWithMedias(){
@@ -119,25 +132,24 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName('test-media'));
 		$this->assertEquals('test-media', $this->service->getActionName());
 
-		$sCssFile = 'ebcddd147f42ba536510ab2d0f1a5069.css';
-		$sLessFile = 'ebcddd147f42ba536510ab2d0f1a5069.less';
+		//Test Cache file name
+		$this->assertEquals($this->service->getCacheFileName(), md5($this->routeMatch->getParam('controller').'test-media'));
 
-    	//Empty cache directory except .gitignore
-		foreach(new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($this->service->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS),
-			\RecursiveIteratorIterator::CHILD_FIRST
-		) as $oFileinfo){
-			if($oFileinfo->isDir())rmdir($oFileinfo->getRealPath());
-			elseif($oFileinfo->getBasename() !== '.gitignore')unlink($oFileinfo->getRealPath());
-		}
+		$sCacheName = $this->service->getCacheFileName();
+
+		$sCssFile = $sCacheName.'.css';
+		$sLessFile = $sCacheName.'.less';
+
+		//Empty cache directory
+		$this->emptyCacheDirectory();
 
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
 		//Css cache file
-		$this->assertFileExists($this->service->getCachePath().'/'.$sCssFile);
+		$this->assertFileExists($this->service->getCachePath().$sCssFile);
 		$this->assertEquals(
-			file_get_contents($this->service->getCachePath().'/'.$sCssFile),
+			file_get_contents($this->service->getCachePath().$sCssFile),
 			file_get_contents($sCacheExpectedPath.'/'.$sCssFile)
 		);
 
@@ -157,5 +169,19 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
 		#Images
 		$this->assertFileExists($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.gif');
+
+		//Empty cache directory
+		$this->emptyCacheDirectory();
+    }
+
+    protected function emptyCacheDirectory(){
+    	//Empty cache directory except .gitignore
+    	foreach(new \RecursiveIteratorIterator(
+    			new \RecursiveDirectoryIterator($this->service->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS),
+    			\RecursiveIteratorIterator::CHILD_FIRST
+    	) as $oFileinfo){
+    		if($oFileinfo->isDir())rmdir($oFileinfo->getRealPath());
+    		elseif($oFileinfo->getBasename() !== '.gitignore')unlink($oFileinfo->getRealPath());
+    	}
     }
 }

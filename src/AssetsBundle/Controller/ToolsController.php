@@ -1,7 +1,7 @@
 <?php
 namespace AssetsBundle\Controller;
 class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
-    public function renderAction(){
+    public function renderassetsAction(){
         $oServiceLocator = $this->getServiceLocator();
         try{
             $oModuleManager = $oServiceLocator->get('modulemanager');
@@ -34,35 +34,20 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
         $aConfiguration = $this->getServiceLocator()->get('config');
 
         $oConsole->writeLine('Start rendering assets : ');
+        $aUnwantedKeys = array(self::ASSET_CSS => true, self::ASSET_LESS => true, self::ASSET_JS => true, self::ASSET_MEDIA => true);
         foreach($aModules as $sModuleName){
-        	if(isset($aConfiguration['assets'][$sModuleName])){
-        		$aModuleConfiguration = $aConfiguration['assets'][$sModuleName];
-        		unset(
-        			$aModuleConfiguration[\AssetsBundle\Service\Service::ASSET_CSS],
-        			$aModuleConfiguration[\AssetsBundle\Service\Service::ASSET_JS],
-        			$aModuleConfiguration[\AssetsBundle\Service\Service::ASSET_LESS],
-        			$aModuleConfiguration[\AssetsBundle\Service\Service::ASSET_MEDIA]
-        		);
+        	if(!isset($aConfiguration['assets'][$sModuleName]))continue;
+        	foreach(array_diff_key($aConfiguration['assets'][$sModuleName], $aUnwantedKeys) as $sControllerName => $aConfig){
+        		$oConsole->writeLine($sControllerName.' : '.\AssetsBundle\Service\Service::NO_ACTION, \Zend\Console\ColorInterface::GREEN);
 
-        		if(!empty($aModuleConfiguration))foreach($aModuleConfiguration as $sControllerName => $aControllerConfiguration){
-        			$oConsole->writeLine($sControllerName.' : '.\AssetsBundle\Service\Service::NO_ACTION, \Zend\Console\ColorInterface::GREEN);
+        		//Render assets for no_actions
+        		$oAssetsBundleService->setControllerName($sControllerName)
+        		->setActionName(\AssetsBundle\Service\Service::NO_ACTION)
+        		->renderAssets();
 
-        			//Render assets for no_actions
-        			$oAssetsBundleService->setControllerName($sControllerName)
-        			->setActionName(\AssetsBundle\Service\Service::NO_ACTION)
-        			->renderAssets();
-
-        			unset(
-        				$aControllerConfiguration[\AssetsBundle\Service\Service::ASSET_CSS],
-        				$aControllerConfiguration[\AssetsBundle\Service\Service::ASSET_JS],
-        				$aControllerConfiguration[\AssetsBundle\Service\Service::ASSET_LESS],
-        				$aControllerConfiguration[\AssetsBundle\Service\Service::ASSET_MEDIA]
-        			);
-        			if(!empty($aControllerConfiguration))foreach($aControllerConfiguration as $sActionName => $aActionConfiguration){
-        				$oConsole->writeLine($sControllerName.' : '.$sActionName, \Zend\Console\ColorInterface::GREEN);
-        				$oAssetsBundleService->setActionName()->$sActionNamerenderAssets();
-        			}
-
+        		foreach(array_diff_key($aConfiguration['assets'][$sModuleName][$sControllerName], $aUnwantedKeys) as $sActionName => $aActionConfiguration){
+        			$oConsole->writeLine($sControllerName.' : '.$sActionName, \Zend\Console\ColorInterface::GREEN);
+        			$oAssetsBundleService->setActionName()->$sActionNamerenderAssets();
         		}
         	}
         }

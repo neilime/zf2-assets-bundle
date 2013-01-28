@@ -74,10 +74,11 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
         $this->controller->setServiceLocator($oServiceManager);
     }
 
-    public function testRenderAssets(){
+   	public function testRenderAssets(){
     	$this->routeMatch->setParam('action', 'renderassets');
     	$this->controller->dispatch($this->request);
     	$this->assertEquals(200, $this->controller->getResponse()->getStatusCode());
+
     }
 
     public function testEmptyCache(){
@@ -85,7 +86,7 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
     	$this->controller->dispatch($this->request);
     	$this->assertEquals(200, $this->controller->getResponse()->getStatusCode());
 
-    	//Cache directory has only .gitignore file
+    	//Test cache directory has only .gitignore file
 		$aFiles = scandir(dirname(__DIR__).'/_files/cache');
 		$this->assertCount(3, $aFiles);
 		$this->assertContains('.gitignore', $aFiles);

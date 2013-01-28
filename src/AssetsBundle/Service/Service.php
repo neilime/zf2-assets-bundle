@@ -82,7 +82,7 @@ class Service{
 	 */
 	public function setLoadedModules(array $aLoadedModules){
 		foreach(array_unique($aLoadedModules) as $sModuleName){
-			if(isset($this->configuration['assets'][$sModuleName = strtolower($sModuleName)]))$this->loadedModules[$sModuleName];
+			if(isset($this->configuration['assets'][$sModuleName = strtolower($sModuleName)]))$this->loadedModules[] = $sModuleName;
 		}
 		return $this;
 	}
@@ -226,7 +226,7 @@ class Service{
 	 * @throws \Exception
 	 * @return boolean
 	 */
-	protected function controllerHasAssetConfiguration($sControllerName){
+	public function controllerHasAssetConfiguration($sControllerName){
 		if(!is_string($sControllerName) || empty($sControllerName))throw new \Exception('Controller name is not valid');
 		foreach($this->getLoadedModules() as $sModuleName){
 			if(isset($this->configuration['assets'][$sModuleName][$sControllerName]))return true;
@@ -239,12 +239,26 @@ class Service{
 	 * @throws \Exception
 	 * @return boolean
 	 */
-	protected function actionHasAssetConfiguration($sActionName){
+	public function actionHasAssetConfiguration($sActionName){
 		if(!is_string($sActionName) || empty($sActionName))throw new \Exception('Action name is not valid');
+		$aUnwantedKeys = array(self::ASSET_CSS => true, self::ASSET_LESS => true, self::ASSET_JS => true, self::ASSET_MEDIA => true);
 		foreach($this->getLoadedModules() as $sModuleName){
-			if(isset($this->configuration['assets'][$sModuleName][$sControllerName][$sActionName]))return true;
+			foreach(array_diff_key($this->configuration['assets'][$sModuleName], $aUnwantedKeys) as $sControllerName => $aConfig){
+				if(isset($this->configuration['assets'][$sModuleName][$sControllerName][$sActionName]))return true;
+			}
 		}
 		return false;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCacheFileName(){
+		//Check if controller and action have assets configuration
+		return md5(
+			($this->controllerHasAssetConfiguration($this->getControllerName())?$this->getControllerName():self::NO_CONTROLLER).
+			($this->actionHasAssetConfiguration($this->getActionName())?$this->getActionName():self::NO_ACTION)
+		);
 	}
 
 	/**
@@ -252,14 +266,11 @@ class Service{
 	 * @return \AssetsBundle\Service\Service
 	 */
 	public function renderAssets(){
+		//Retreive cache file name
+		$sCacheName = $this->getCacheFileName();
+
 		//Production : check already cached files
 		if($this->configuration['production']){
-			//Check if controller and action have assets configuration
-			$sCacheName = md5(
-				($this->controllerHasAssetConfiguration($this->getControllerName())?$this->getControllerName():self::NO_CONTROLLER).
-				($this->actionHasAssetConfiguration($this->getActionName())?$this->getActionName():self::NO_ACTION)
-			);
-
 			$sCssCacheFile = $sCacheName.'.'.self::ASSET_CSS;
 			$sJsCacheFile = $sCacheName.'.'.self::ASSET_JS;
 
@@ -277,12 +288,12 @@ class Service{
 		$this->cacheMedias($this->getValidAssets(array_unique($aAssets[self::ASSET_MEDIA]),self::ASSET_MEDIA));
 
 		//Manage less files caching
-		$aAssets[self::ASSET_CSS][] = $this->cacheLess($this->getValidAssets(array_unique($aAssets[self::ASSET_LESS]),self::ASSET_LESS));
+		$aAssets[self::ASSET_CSS][] = $this->cacheLess($this->getValidAssets(array_unique($aAssets[self::ASSET_LESS]),self::ASSET_LESS),$sCacheName);
 
 		//Manage css & js file caching
 		return $this->displayAssets(array_unique(array_filter(array_merge(
-			$this->cacheAssets($this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_CSS])),self::ASSET_CSS),self::ASSET_CSS),
-			$this->cacheAssets($this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_JS])),self::ASSET_JS),self::ASSET_JS)
+			$this->cacheAssets($this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_CSS])),self::ASSET_CSS),self::ASSET_CSS,$sCacheName),
+			$this->cacheAssets($this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_JS])),self::ASSET_JS),self::ASSET_JS,$sCacheName)
 		))));
 	}
 
@@ -290,19 +301,23 @@ class Service{
 	 * Optimise and cache "Css" & "Js" assets
 	 * @param array $aAssetsPath : file to cache
 	 * @param string $sTypeAsset : asset's type to cache (self::ASSET_CSS or self::ASSET_JS)
+	 * @param string $sCacheName : cache file name
 	 * @throws \Exception
 	 * @return string
 	 */
-	private function cacheAssets(array $aAssetsPath,$sTypeAsset){
+	private function cacheAssets(array $aAssetsPath,$sTypeAsset,$sCacheName){
 		if(!is_array($aAssetsPath))throw new \Exception('AssetsPath is not an array : '.gettype($aAssetsPath));
 		if(!self::assetTypeExists($sTypeAsset))throw new \Exception('Asset\'s type is undefined : '.$sTypeAsset);
+		if(!is_string($sCacheName))throw new \Exception('CacheName expects string, '.gettype($aAssetsPath).' given');
+		if(empty($sCacheName))throw new \Exception('CacheName is empty');
+
 		$aReturn = array();
 
 		//No assets to cache
 		if(empty($aAssetsPath))return $aReturn;
 
 		//Production cache file
-		$sCacheFile = md5($this->getControllerName().$this->getActionName()).'.'.$sTypeAsset;
+		$sCacheFile = $sCacheName.'.'.$sTypeAsset;
 		$aCacheAssets = array();
 
 		//Allows service store existing assets
@@ -459,12 +474,13 @@ class Service{
 	/**
 	 * Optimise and cache "Less" assets
 	 * @param array $aAssetsPath : assets to cache
+	 * @param string $sCacheName : cache file name
 	 * @throws \Exception
 	 * @return \AssetsBundle\Service\Service
 	 */
-	private function cacheLess(array $aAssetsPath){
+	private function cacheLess(array $aAssetsPath, $sCacheName){
 		//Create global import file for Less assets
-		$sCacheFile = md5($this->getControllerName().$this->getActionName()).'.'.self::ASSET_LESS;
+		$sCacheFile = $sCacheName.'.'.self::ASSET_LESS;
 		if(!$this->configuration['production'])$sCacheFile = 'dev_'.$sCacheFile;
 
 		//Allows service to store existing assets
