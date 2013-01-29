@@ -20,6 +20,7 @@ class ServiceFactory implements \Zend\ServiceManager\FactoryInterface{
 				$aConfiguration['asset_bundle']['basePath'] = $oRequest->getBasePath();
 			}
 		}
+		$oService = new \AssetsBundle\Service\Service($aConfiguration['asset_bundle']);
 		return $oService->setFilters(array(
 			\AssetsBundle\Service\Service::ASSET_CSS => $oServiceLocator->get('CssFilter'),
 			\AssetsBundle\Service\Service::ASSET_JS => $oServiceLocator->get('JsFilter'),
