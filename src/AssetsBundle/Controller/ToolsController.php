@@ -10,47 +10,40 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
             return $this->sendError('Cannot get Zend\ModuleManager\ModuleManager instance. Is your application using it?');
         }
         $oConsole = $this->getServiceLocator()->get('console');
-        $aModules = array_diff(array_keys($oModuleManager->getLoadedModules(false)), array('AssetsBundle'));
-        if(empty($aModules)){
-            $oConsole->writeLine('No modules installed. Are you in the root folder of a ZF2 application?');
-            return;
-        }
 
         //Initialize AssetsBundle service
         $oAssetsBundleService = $oServiceLocator->get('AssetsBundleService')
-        ->setRenderer($oServiceLocator->get('ViewRenderer'))
-        ->setLoadedModules($aModules);
-
-        $aModules = $oAssetsBundleService->getLoadedModules();
-        if(empty($aModules)){
-        	$oConsole->writeLine('No modules have assets configuration.');
-        	return;
-        }
+        ->setRenderer(new \Zend\View\Renderer\PhpRenderer());
 
         //Empty cache directory
         $this->emptycacheAction();
 
         //Retrieve configuration
         $aConfiguration = $this->getServiceLocator()->get('config');
+        if(!isset($aConfiguration['asset_bundle'])) return $this->sendError('AssetsBundle configuration is undefined');
+       	$aConfiguration  = $aConfiguration['asset_bundle'];
 
         $oConsole->writeLine('Start rendering assets : ');
-        $aUnwantedKeys = array(self::ASSET_CSS => true, self::ASSET_LESS => true, self::ASSET_JS => true, self::ASSET_MEDIA => true);
-        foreach($aModules as $sModuleName){
-        	if(!isset($aConfiguration['assets'][$sModuleName]))continue;
-        	foreach(array_diff_key($aConfiguration['assets'][$sModuleName], $aUnwantedKeys) as $sControllerName => $aConfig){
-        		$oConsole->writeLine($sControllerName.' : '.\AssetsBundle\Service\Service::NO_ACTION, \Zend\Console\ColorInterface::GREEN);
+        $aUnwantedKeys = array(
+        	\AssetsBundle\Service\Service::ASSET_CSS => true,
+        	\AssetsBundle\Service\Service::ASSET_LESS => true,
+        	\AssetsBundle\Service\Service::ASSET_JS => true,
+        	\AssetsBundle\Service\Service::ASSET_MEDIA => true
+        );
 
-        		//Render assets for no_actions
-        		$oAssetsBundleService->setControllerName($sControllerName)
-        		->setActionName(\AssetsBundle\Service\Service::NO_ACTION)
-        		->renderAssets();
+        //Render all assets
+        foreach(array_diff_key($aConfiguration['assets'], $aUnwantedKeys) as $sControllerName => $aConfig){
+        	$oConsole->writeLine($sControllerName.' : '.\AssetsBundle\Service\Service::NO_ACTION, \Zend\Console\ColorInterface::GREEN);
+       		//Render assets for no_actions
+       		$oAssetsBundleService->setControllerName($sControllerName)
+       		->setActionName(\AssetsBundle\Service\Service::NO_ACTION)
+       		->renderAssets();
 
-        		foreach(array_diff_key($aConfiguration['assets'][$sModuleName][$sControllerName], $aUnwantedKeys) as $sActionName => $aActionConfiguration){
-        			$oConsole->writeLine($sControllerName.' : '.$sActionName, \Zend\Console\ColorInterface::GREEN);
-        			$oAssetsBundleService->setActionName()->$sActionNamerenderAssets();
-        		}
-        	}
-        }
+       		foreach(array_diff_key($aConfiguration['assets'][$sControllerName], $aUnwantedKeys) as $sActionName => $aActionConfiguration){
+       			$oConsole->writeLine($sControllerName.' : '.$sActionName, \Zend\Console\ColorInterface::GREEN);
+       			$oAssetsBundleService->setActionName($sActionName)->renderAssets();
+       		}
+       	}
 
         $oConsole->writeLine(\AssetsBundle\Service\Service::NO_CONTROLLER.' : '.\AssetsBundle\Service\Service::NO_ACTION, \Zend\Console\ColorInterface::GREEN);
 
@@ -86,5 +79,4 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
         $oView->setErrorLevel(2);
         return $oView->setResult($sMessage.PHP_EOL);
     }
-
 }

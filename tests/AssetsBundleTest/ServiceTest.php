@@ -10,23 +10,20 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
 			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
 			'assets' => array(
-				'test' => array(
-					'css' => array('css/test.css'),
-					'less' => array('less/test.less'),
-					'js' => array('js/test.js'),
-					'index' => array(
-						'test-media' => array(
-							'css' => array('css/test-media.css'),
-							'less' => array('less/test-media.less'),
-							'media' => array(
-								'@zfRootPath/AssetsBundleTest/_files/fonts',
-								'@zfRootPath/AssetsBundleTest/_files/images'
-							)
+				'css' => array('css/test.css'),
+				'less' => array('less/test.less'),
+				'js' => array('js/test.js'),
+				'index' => array(
+					'test-media' => array(
+						'css' => array('css/test-media.css'),
+						'less' => array('less/test-media.less'),
+						'media' => array(
+							'@zfRootPath/AssetsBundleTest/_files/fonts',
+							'@zfRootPath/AssetsBundleTest/_files/images'
 						)
 					)
 				)
 			)
-
 		)
 	);
 
@@ -50,7 +47,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
         //Define service
         $this->service = $oServiceManager->get('AssetsBundleService');
-        $this->service->setRenderer(new \Zend\View\Renderer\PhpRenderer())->setLoadedModules(array('Test','Useless-module'));
+        $this->service->setRenderer(new \Zend\View\Renderer\PhpRenderer());
         $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'index','action' => 'index'));
     }
 
@@ -60,9 +57,6 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
     	//Test cache path
     	$this->assertEquals(realpath(__DIR__.'/_files/cache').DIRECTORY_SEPARATOR, $this->service->getCachePath());
-
-    	//Test loaded modules
-    	$this->assertEquals(array('test'), $this->service->getLoadedModules());
 
     	//Test assets configuration
     	$this->assertTrue($this->service->controllerHasAssetConfiguration('index'));
@@ -98,8 +92,6 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
-
-		var_dump($this->service->getCachePath().$sCssFile);
 
 		//Css cache file
 		$this->assertFileExists($this->service->getCachePath().$sCssFile);

@@ -25,8 +25,8 @@ Requirements
 ------------
 
 * [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
-* [lessphp](https://github.com/leafo/lessphp) (latest master).
-* [CssMin](https://github.com/natxet/CssMin) (latest master).
+* [lessphp](https://github.com/Nodge/lessphp) (latest master).
+* [CssMin](https://github.com/neilime/CssMin) (latest master).
 * [JsMin](https://github.com/nick4fake/JsMin) (latest master).
 
 Installation
@@ -36,7 +36,7 @@ Installation
 
 #### By cloning project
 
-1. Install the [lessphp fork](https://github.com/neilime/lessphp) (latest master), [CssMin fork](https://github.com/neilime/CssMin),[JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
+1. Install the [lessphp fork](https://github.com/Nodge/lessphp) (latest master), [CssMin fork](https://github.com/neilime/CssMin), [JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
 2. Clone this project into your `./vendor/` directory.
 
 #### With composer
@@ -49,13 +49,13 @@ Installation
     }
     ```
 
-2. Due to bug in lessphp & CssMin you have to use neilime's Lessphp & CssMin forks, add this repository in your composer.json:
+2. Due to bug in lessphp & CssMin you have to use Nodge's Lessphp & neilime's CssMin forks, add this repository in your composer.json:
 	
 	```json
     "repositories": [
 	    {
 	        "type": "vcs",
-	        "url": "http://github.com/neilime/lessphp"
+	        "url": "http://github.com/Nodge/lessphp"
 	    },
 	    {
 	        "type": "vcs",
@@ -106,14 +106,12 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
 		//...
 		'asset_bundle' => array(
 	    	'assets' => array(
-	    		'application' => array(
-	    			'css' => array('css'),
-	    			'js' => array(
-	    				'js/jquery.min.js',
-	    				'js/bootstrap.min.js'
-	    			),
-	    			'media' => array('images')
-	    		)
+    			'css' => array('css'),
+    			'js' => array(
+    				'js/jquery.min.js',
+    				'js/bootstrap.min.js'
+    			),
+    			'media' => array('images')
 	    	)
 	    ),
 	    //...
@@ -145,29 +143,31 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
     - string cacheUrl : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".
     - array mediaExt : Put here all medias extensions to be cached. Default array('jpg','png','gif','cur','ttf','eot','svg','woff').
 
-2. Modules :
+2. Assets :
 
- You can define assets for modules / controllers / action
+ You can define assets for controllers / action
  
- Exemple for the application module : 
+ Exemple : 
  
  	```php
 	<?php
 	return array(
 		//...
     	'assets' => array(
-    		'application' => array( //Module Name
+    			//Common assets    			
     			'css' => array(), //Define css files to include
     			'js' => array(), //Define js files to include
     			'less' => array(), //Define less files to include
     			'media' => array() //Define images to manage
     			    			
+    			//Controller assets
     			'Test/Controller/Name' => array(
     				'css' => array(),
 	    			'js' => array(),
 	    			'less' => array(), 
 	    			'media' => array()
 	    			
+	    			//Action assets
 	    			'ActionName'=> array(
 	    				'css' => array(),
 		    			'js' => array(),
@@ -192,11 +192,8 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 	return array(
 		//...
     	'assets' => array(
-    		'application' => array(
-    			'js' => array('js/firstFile.js','js'),
-    			//...
-    		)
-    		//...
+			'js' => array('js/firstFile.js','js'),
+			//...
     	)    			
     	//...
     );
@@ -249,3 +246,22 @@ Edit layout file:
 		$this->plugin('InlineScript')->appendFile($sJsCustomFile.'?'.time());//Set time() force browser not to cache file, it's not mandatory
 	}
 	```
+	
+# Tools
+
+_AssetsBundle_ provides console tools.
+
+## Features
+
+    Rendering all assets
+    Empty cache directory
+
+## Usage
+
+### Rendering all assets
+
+    zf.php render
+    
+### Empty cache directory
+
+    zf.php empty     

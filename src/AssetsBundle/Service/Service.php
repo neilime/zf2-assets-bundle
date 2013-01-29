@@ -16,11 +16,6 @@ class Service{
 	protected $configuration;
 
 	/**
-	 * @var array
-	 */
-	protected $loadedModules;
-
-	/**
 	 * @var string
 	 */
 	protected $controllerName;
@@ -74,26 +69,6 @@ class Service{
 		if(!is_array($aConfiguration['rendererToStrategy']))throw new \Exception('rendererToStrategy is not an array : '.gettype($aConfiguration['rendererToStrategy']));
 		if(!is_array($aConfiguration['mediaExt']))throw new \Exception('mediaExt is not an array : '.gettype($aConfiguration['mediaExt']));
 		$this->configuration = $aConfiguration;
-	}
-
-	/**
-	 * @param array $aLoadedModules
-	 * @return \AssetsBundle\Service\Service
-	 */
-	public function setLoadedModules(array $aLoadedModules){
-		foreach(array_unique($aLoadedModules) as $sModuleName){
-			if(isset($this->configuration['assets'][$sModuleName = strtolower($sModuleName)]))$this->loadedModules[] = $sModuleName;
-		}
-		return $this;
-	}
-
-	/**
-	 * @throws \Exception
-	 * @return array
-	 */
-	public function getLoadedModules(){
-		if(!$this->loadedModules)throw new \Exception('Loaded modules are undefined');
-		return $this->loadedModules;
 	}
 
 	/**
@@ -192,30 +167,28 @@ class Service{
 			self::ASSET_MEDIA => array()
 		);
 
-		foreach($this->getLoadedModules() as $sModuleName){
-			//Module configuration
-			$aConfigurationModule = $this->configuration['assets'][$sModuleName];
-			if(!empty($aConfigurationModule[self::ASSET_CSS]) && is_array($aConfigurationModule[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationModule[self::ASSET_CSS]);
-			if(!empty($aConfigurationModule[self::ASSET_LESS]) && is_array($aConfigurationModule[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationModule[self::ASSET_LESS]);
-			if(!empty($aConfigurationModule[self::ASSET_JS]) && is_array($aConfigurationModule[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationModule[self::ASSET_JS]);
-			if(!empty($aConfigurationModule[self::ASSET_MEDIA]) && is_array($aConfigurationModule[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationModule[self::ASSET_MEDIA]);
+		//Common configuration
+		$aCommonConfiguration = $this->configuration['assets'];
+		if(!empty($aCommonConfiguration[self::ASSET_CSS]) && is_array($aCommonConfiguration[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aCommonConfiguration[self::ASSET_CSS]);
+		if(!empty($aCommonConfiguration[self::ASSET_LESS]) && is_array($aCommonConfiguration[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aCommonConfiguration[self::ASSET_LESS]);
+		if(!empty($aCommonConfiguration[self::ASSET_JS]) && is_array($aCommonConfiguration[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aCommonConfiguration[self::ASSET_JS]);
+		if(!empty($aCommonConfiguration[self::ASSET_MEDIA]) && is_array($aCommonConfiguration[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aCommonConfiguration[self::ASSET_MEDIA]);
 
-			//Controller configuration
-			if(isset($aConfigurationModule[$this->getControllerName()])){
-				$aConfigurationController = $aConfigurationModule[$this->getControllerName()];
-				if(!empty($aConfigurationController[self::ASSET_CSS]) && is_array($aConfigurationController[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationController[self::ASSET_CSS]);
-				if(!empty($aConfigurationController[self::ASSET_LESS]) && is_array($aConfigurationController[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationController[self::ASSET_LESS]);
-				if(!empty($aConfigurationController[self::ASSET_JS]) && is_array($aConfigurationController[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationController[self::ASSET_JS]);
-				if(!empty($aConfigurationController[self::ASSET_MEDIA]) && is_array($aConfigurationController[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationController[self::ASSET_MEDIA]);
+		//Controller configuration
+		if(isset($aCommonConfiguration[$this->getControllerName()])){
+			$aControllerConfiguration = $aCommonConfiguration[$this->getControllerName()];
+			if(!empty($aControllerConfiguration[self::ASSET_CSS]) && is_array($aControllerConfiguration[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aControllerConfiguration[self::ASSET_CSS]);
+			if(!empty($aControllerConfiguration[self::ASSET_LESS]) && is_array($aControllerConfiguration[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aControllerConfiguration[self::ASSET_LESS]);
+			if(!empty($aControllerConfiguration[self::ASSET_JS]) && is_array($aControllerConfiguration[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aControllerConfiguration[self::ASSET_JS]);
+			if(!empty($aControllerConfiguration[self::ASSET_MEDIA]) && is_array($aControllerConfiguration[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aControllerConfiguration[self::ASSET_MEDIA]);
 
-				//Action configuration
-				if(isset($aConfigurationController[$this->getActionName()])){
-					$aConfigurationAction = $aConfigurationController[$this->getActionName()];
-					if(!empty($aConfigurationAction[self::ASSET_CSS]) && is_array($aConfigurationAction[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aConfigurationAction[self::ASSET_CSS]);
-					if(!empty($aConfigurationAction[self::ASSET_LESS]) && is_array($aConfigurationAction[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aConfigurationAction[self::ASSET_LESS]);
-					if(!empty($aConfigurationAction[self::ASSET_JS]) && is_array($aConfigurationAction[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aConfigurationAction[self::ASSET_JS]);
-					if(!empty($aConfigurationAction[self::ASSET_MEDIA]) && is_array($aConfigurationAction[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aConfigurationAction[self::ASSET_MEDIA]);
-				}
+			//Action configuration
+			if(isset($aControllerConfiguration[$this->getActionName()])){
+				$aActionConfiguration = $aControllerConfiguration[$this->getActionName()];
+				if(!empty($aActionConfiguration[self::ASSET_CSS]) && is_array($aActionConfiguration[self::ASSET_CSS]))$aAssets[self::ASSET_CSS] = array_merge($aAssets[self::ASSET_CSS],$aActionConfiguration[self::ASSET_CSS]);
+				if(!empty($aActionConfiguration[self::ASSET_LESS]) && is_array($aActionConfiguration[self::ASSET_LESS]))$aAssets[self::ASSET_LESS] = array_merge($aAssets[self::ASSET_LESS],$aActionConfiguration[self::ASSET_LESS]);
+				if(!empty($aActionConfiguration[self::ASSET_JS]) && is_array($aActionConfiguration[self::ASSET_JS]))$aAssets[self::ASSET_JS] = array_merge($aAssets[self::ASSET_JS],$aActionConfiguration[self::ASSET_JS]);
+				if(!empty($aActionConfiguration[self::ASSET_MEDIA]) && is_array($aActionConfiguration[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aActionConfiguration[self::ASSET_MEDIA]);
 			}
 		}
 		return $aAssets;
@@ -228,10 +201,7 @@ class Service{
 	 */
 	public function controllerHasAssetConfiguration($sControllerName){
 		if(!is_string($sControllerName) || empty($sControllerName))throw new \Exception('Controller name is not valid');
-		foreach($this->getLoadedModules() as $sModuleName){
-			if(isset($this->configuration['assets'][$sModuleName][$sControllerName]))return true;
-		}
-		return false;
+		return isset($this->configuration['assets'][$sControllerName]);
 	}
 
 	/**
@@ -242,22 +212,24 @@ class Service{
 	public function actionHasAssetConfiguration($sActionName){
 		if(!is_string($sActionName) || empty($sActionName))throw new \Exception('Action name is not valid');
 		$aUnwantedKeys = array(self::ASSET_CSS => true, self::ASSET_LESS => true, self::ASSET_JS => true, self::ASSET_MEDIA => true);
-		foreach($this->getLoadedModules() as $sModuleName){
-			foreach(array_diff_key($this->configuration['assets'][$sModuleName], $aUnwantedKeys) as $sControllerName => $aConfig){
-				if(isset($this->configuration['assets'][$sModuleName][$sControllerName][$sActionName]))return true;
-			}
+		foreach(array_diff_key($this->configuration['assets'], $aUnwantedKeys) as $sControllerName => $aConfig){
+			if(isset($this->configuration['assets'][$sControllerName][$sActionName]))return true;
 		}
 		return false;
 	}
 
 	/**
+	 * Retrieve cache file name for given controller name and action name
+	 * @param string $sControllerName : (optionnal)
+	 * @param string $sActionName : (optionnal)
 	 * @return string
 	 */
-	public function getCacheFileName(){
-		//Check if controller and action have assets configuration
+	public function getCacheFileName($sControllerName = null, $sActionName = null){
+		$sControllerName = $sControllerName?:$this->getControllerName();
+		$sActionName = $sActionName?:$this->getActionName();
 		return md5(
-			($this->controllerHasAssetConfiguration($this->getControllerName())?$this->getControllerName():self::NO_CONTROLLER).
-			($this->actionHasAssetConfiguration($this->getActionName())?$this->getActionName():self::NO_ACTION)
+			($this->controllerHasAssetConfiguration($sControllerName)?$sControllerName:self::NO_CONTROLLER).
+			($this->actionHasAssetConfiguration($sActionName)?$sActionName:self::NO_ACTION)
 		);
 	}
 

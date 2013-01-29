@@ -36,8 +36,7 @@ class Module implements
 	 */
 	public function renderAssets(\Zend\Mvc\MvcEvent $oEvent){
 		$oAssetsBundleService = $oEvent->getApplication()->getServiceManager()->get('AssetsBundleService')
-		->setRenderer($oEvent->getApplication()->getServiceManager()->get('ViewRenderer'))
-		->setLoadedModules(array_keys($this->moduleManager->getLoadedModules()));
+		->setRenderer($oEvent->getApplication()->getServiceManager()->get('ViewRenderer'));
 
 		/* @var $oRouter \Zend\Mvc\Router\RouteMatch */
 		$oRouter = $oEvent->getRouteMatch();

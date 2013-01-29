@@ -12,23 +12,20 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
 			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
 			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
 			'assets' => array(
-				'test' => array(
-					'css' => array('css/test.css'),
-					'less' => array('less/test.less'),
-					'js' => array('js/test.js'),
-					'index' => array(
-						'test-media' => array(
-							'css' => array('css/test-media.css'),
-							'less' => array('less/test-media.less'),
-							'media' => array(
-								'@zfRootPath/AssetsBundleTest/_files/fonts',
-								'@zfRootPath/AssetsBundleTest/_files/images'
-							)
+				'css' => array('css/test.css'),
+				'less' => array('less/test.less'),
+				'js' => array('js/test.js'),
+				'index' => array(
+					'test-media' => array(
+						'css' => array('css/test-media.css'),
+						'less' => array('less/test-media.less'),
+						'media' => array(
+							'@zfRootPath/AssetsBundleTest/_files/fonts',
+							'@zfRootPath/AssetsBundleTest/_files/images'
 						)
 					)
 				)
 			)
-
 		)
 	);
 
@@ -79,9 +76,43 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
     	$this->controller->dispatch($this->request);
     	$this->assertEquals(200, $this->controller->getResponse()->getStatusCode());
 
+    	$oAssetsBundleService = $this->controller->getServiceLocator()->get('AssetsBundleService');
+
+    	//Test service instance
+    	$this->assertInstanceOf('AssetsBundle\Service\Service',$oAssetsBundleService);
+
+    	$sCacheExpectedPath = dirname(__DIR__).'/_files/cache-expected';
+
+    	//Test cache files
+    	foreach(array(
+    		$oAssetsBundleService->getCacheFileName('index',\AssetsBundle\Service\Service::NO_ACTION),
+    		$oAssetsBundleService->getCacheFileName('index','test-media'),
+    		$oAssetsBundleService->getCacheFileName(\AssetsBundle\Service\Service::NO_CONTROLLER,\AssetsBundle\Service\Service::NO_ACTION),
+    	) as $sCacheFile){
+    		//Css cache files
+    		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.css');
+    		$this->assertEquals(
+    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.css'),
+    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.css')
+    		);
+
+    		//Less cache files
+    		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.less');
+    		$this->assertEquals(
+    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.less'),
+    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.less')
+    		);
+
+    		//Js cache files
+    		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.js');
+    		$this->assertEquals(
+    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.js'),
+    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.js')
+    		);
+    	}
     }
 
-    public function testEmptyCache(){
+   	public function testEmptyCache(){
     	$this->routeMatch->setParam('action', 'emptycache');
     	$this->controller->dispatch($this->request);
     	$this->assertEquals(200, $this->controller->getResponse()->getStatusCode());
