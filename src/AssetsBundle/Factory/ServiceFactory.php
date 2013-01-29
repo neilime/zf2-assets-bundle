@@ -13,8 +13,13 @@ class ServiceFactory implements \Zend\ServiceManager\FactoryInterface{
 		if(!isset($aConfiguration['asset_bundle']))throw new \Exception('AssetsBundle configuration is undefined');
 
 		//Define base path
-		if(($oRequest = $oServiceLocator->get('request')) instanceof \Zend\Http\PhpEnvironment\Request)$aConfiguration['asset_bundle']['basePath'] = $oRequest->getBasePath();
-		$oService = new \AssetsBundle\Service\Service($aConfiguration['asset_bundle']);
+		if(!isset($aConfiguration['asset_bundle']['basePath'])){
+			if(($oRequest = $oServiceLocator->get('request')) instanceof \Zend\Http\PhpEnvironment\Request)$aConfiguration['asset_bundle']['basePath'] = $oRequest->getBasePath();
+			else{
+				$oRequest = new \Zend\Http\PhpEnvironment\Request();
+				$aConfiguration['asset_bundle']['basePath'] = $oRequest->getBasePath();
+			}
+		}
 		return $oService->setFilters(array(
 			\AssetsBundle\Service\Service::ASSET_CSS => $oServiceLocator->get('CssFilter'),
 			\AssetsBundle\Service\Service::ASSET_JS => $oServiceLocator->get('JsFilter'),
