@@ -49,22 +49,7 @@ Installation
     }
     ```
 
-2. Due to bug in lessphp & CssMin you have to use Nodge's Lessphp & neilime's CssMin forks, add this repository in your composer.json:
-	
-	```json
-    "repositories": [
-	    {
-	        "type": "vcs",
-	        "url": "http://github.com/Nodge/lessphp"
-	    },
-	    {
-	        "type": "vcs",
-	        "url": "http://github.com/neilime/CssMin"
-	    }
-	],
-    ```
-
-3. Now tell composer to download AssetsBundle by running the command:
+2. Now tell composer to download AssetsBundle by running the command:
 
     ```bash
     $ php composer.phar update
