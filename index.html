@@ -172,15 +172,14 @@ mkdir cache
 <ol>
 <li>
 <em>AssetsBundle</em> :</li>
-</ol><pre><code>- boolean production : Define the application environment (development =&gt; false). Default true.
-- string basePath : (optionnal) only needed if "cacheUrl" use "@zfBaseUrl". If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used
-- string cachePath : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".
-- string assetsPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
-- string cacheUrl : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".
-- array mediaExt : Put here all medias extensions to be cached. Default array('jpg','png','gif','cur','ttf','eot','svg','woff').
-</code></pre>
-
-<ol>
+</ol><ul>
+<li>boolean <code>production</code>: Define the application environment (development =&gt; false). Default true.</li>
+<li>string <code>basePath</code> : (optionnal) only needed if "cacheUrl" use "@zfBaseUrl". If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used</li>
+<li>string <code>cachePath</code> : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".</li>
+<li>string <code>assetsPath</code> : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".</li>
+<li>string <code>cacheUrl</code> : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".</li>
+<li>array <code>mediaExt</code> : Put here all medias extensions to be cached. Default array('jpg','png','gif','cur','ttf','eot','svg','woff').</li>
+</ul><ol>
 <li>
 <p>Assets :</p>
 
@@ -238,54 +237,52 @@ You can define an inclusion order like this :</p>
 
 <p>This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"</p>
 </li>
-<li><p>Custom Js :</p></li>
-</ol><p>This function allows you to dynamically include javascript files. For exemple, files specific to a user settings.
+<li>
+<p>Custom Js :</p>
+
+<p>This function allows you to dynamically include javascript files. For exemple, files specific to a user settings.
 In this case, your controller that need these file have to extends "AssetsBundle\Mvc\ControllerAbstractActionController".</p>
 
 <p>Then create a jscustomAction function into your controller : </p>
 
-<pre><code>```php
-&lt;?php
-public function jscustomAction($sAction = null){
-    $aConfiguration = $this-&gt;getServiceLocator()-&gt;get('config');
-    if(!isset($aConfiguration['asset_bundle']))throw new \Exception('AssetBundle config is not defined');
-    if(empty($sAction)){
-        //Test if you are in production
-        if(!$aConfiguration['asset_bundle']['production'])throw new \Exception('action must be defined in development mode');
-        $sAction = $this-&gt;params('js_action');
-        if(empty($sAction))throw new \Exception('Action is not defined');
-        $bReturnFiles = false;
-    }
-    else $bReturnFiles = true;
-    $aJsFiles = array();
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">jscustomAction</span><span class="p">(</span><span class="nv">$sAction</span> <span class="o">=</span> <span class="k">null</span><span class="p">){</span>
+    <span class="nv">$aConfiguration</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getServiceLocator</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'config'</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$aConfiguration</span><span class="p">[</span><span class="s1">'asset_bundle'</span><span class="p">]))</span><span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">'AssetBundle config is not defined'</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">)){</span>
+        <span class="c1">//Test if you are in production</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nv">$aConfiguration</span><span class="p">[</span><span class="s1">'asset_bundle'</span><span class="p">][</span><span class="s1">'production'</span><span class="p">])</span><span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">'action must be defined in development mode'</span><span class="p">);</span>
+        <span class="nv">$sAction</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">(</span><span class="s1">'js_action'</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">))</span><span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">'Action is not defined'</span><span class="p">);</span>
+        <span class="nv">$bReturnFiles</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="nv">$bReturnFiles</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="nv">$aJsFiles</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 
-    switch($sAction){
-        case 'application':
-            //Here you can specify js files to include
-            $aJsFiles[] = 'js/dynamicFile.js';
-            break;
-    }
-    if($bReturnFiles)return $aJsFiles;
-    else{
-        $this-&gt;layout()-&gt;jsFiles = $aJsFiles;
-        return false;
-    }
-}
-```
-</code></pre>
+    <span class="k">switch</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">){</span>
+        <span class="k">case</span> <span class="s1">'application'</span><span class="o">:</span>
+            <span class="c1">//Here you can specify js files to include</span>
+            <span class="nv">$aJsFiles</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">'js/dynamicFile.js'</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="nv">$bReturnFiles</span><span class="p">)</span><span class="k">return</span> <span class="nv">$aJsFiles</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">jsFiles</span> <span class="o">=</span> <span class="nv">$aJsFiles</span><span class="p">;</span>
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 
 <p>Edit layout file:</p>
 
-<pre><code>```php
-//Into head
-if(!empty($this-&gt;jsCustomUrl))$this-&gt;plugin('InlineScript')-&gt;appendFile($this-&gt;jsCustomUrl.'?'.time());//Set time() force browser not to cache file, it's not mandatory
-elseif(is_array($this-&gt;jsCustomFiles))foreach($this-&gt;jsCustomFiles as $sJsCustomFile){
-    $this-&gt;plugin('InlineScript')-&gt;appendFile($sJsCustomFile.'?'.time());//Set time() force browser not to cache file, it's not mandatory
-}
-```
-</code></pre>
-
-<h1>Tools</h1>
+<div class="highlight"><pre><span class="c1">//Into head</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomUrl</span><span class="p">))</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">plugin</span><span class="p">(</span><span class="s1">'InlineScript'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">appendFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomUrl</span><span class="o">.</span><span class="s1">'?'</span><span class="o">.</span><span class="nb">time</span><span class="p">());</span><span class="c1">//Set time() force browser not to cache file, it's not mandatory</span>
+<span class="k">elseif</span><span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomFiles</span><span class="p">))</span><span class="k">foreach</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomFiles</span> <span class="k">as</span> <span class="nv">$sJsCustomFile</span><span class="p">){</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">plugin</span><span class="p">(</span><span class="s1">'InlineScript'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">appendFile</span><span class="p">(</span><span class="nv">$sJsCustomFile</span><span class="o">.</span><span class="s1">'?'</span><span class="o">.</span><span class="nb">time</span><span class="p">());</span><span class="c1">//Set time() force browser not to cache file, it's not mandatory</span>
+<span class="p">}</span>
+</pre></div>
+</li>
+</ol><h1>Tools</h1>
 
 <p><em>AssetsBundle</em> provides console tools.</p>
 
