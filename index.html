@@ -24,9 +24,14 @@
       <div id="banner">
         <span id="logo"></span>
 
-	    <a href="https://github.com/neilime/zf2-assets-bundle/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-	    <a href="https://github.com/neilime/zf2-assets-bundle/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-        <a href="https://github.com/neilime/zf2-assets-bundle" id="view-on-github" class="button"><span>View On GitHub</span></a>
+        <a href="https://github.com/neilime/zf2-assets-bundle" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/neilime/zf2-assets-bundle/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/neilime/zf2-assets-bundle/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
       </div><!-- end banner -->
 
     <div class="wrapper">
@@ -62,9 +67,9 @@ This module manages the concept of the environment/production development.</p>
 <li>
 <a href="https://github.com/zendframework/zf2">Zend Framework 2</a> (latest master)</li>
 <li>
-<a href="https://github.com/leafo/lessphp">lessphp</a> (latest master).</li>
+<a href="https://github.com/Nodge/lessphp">lessphp</a> (latest master).</li>
 <li>
-<a href="https://github.com/natxet/CssMin">CssMin</a> (latest master).</li>
+<a href="https://github.com/neilime/CssMin">CssMin</a> (latest master).</li>
 <li>
 <a href="https://github.com/nick4fake/JsMin">JsMin</a> (latest master).</li>
 </ul><h2>Installation</h2>
@@ -74,7 +79,7 @@ This module manages the concept of the environment/production development.</p>
 <h4>By cloning project</h4>
 
 <ol>
-<li>Install the <a href="https://github.com/neilime/lessphp">lessphp fork</a> (latest master), <a href="https://github.com/natxet/CssMin">CssMin</a>,<a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
+<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a> (latest master), <a href="https://github.com/neilime/CssMin">CssMin fork</a>, <a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
 <li>Clone this project into your <code>./vendor/</code> directory.</li>
 </ol><h4>With composer</h4>
 
@@ -85,15 +90,6 @@ This module manages the concept of the environment/production development.</p>
 <div class="highlight"><pre><span class="s2">"require"</span><span class="err">:</span> <span class="p">{</span>
     <span class="nt">"neilime/zf2-assets-bundle"</span><span class="p">:</span> <span class="s2">"dev-master"</span>
 <span class="p">}</span>
-</pre></div>
-</li>
-<li>
-<p>Due to bug in lessphp you have to use neilime's Lessphp fork, add this repository in your composer.json:</p>
-
-<div class="highlight"><pre><span class="s2">"repositories"</span><span class="err">:</span> <span class="p">[{</span>
-    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"vcs"</span><span class="p">,</span>
-    <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://github.com/neilime/lessphp"</span>
-<span class="p">}]</span><span class="err">,</span>
 </pre></div>
 </li>
 <li>
@@ -142,14 +138,12 @@ mkdir cache
     <span class="c1">//...</span>
     <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-            <span class="s1">'application'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'css'</span><span class="p">),</span>
-                <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                    <span class="s1">'js/jquery.min.js'</span><span class="p">,</span>
-                    <span class="s1">'js/bootstrap.min.js'</span>
-                <span class="p">),</span>
-                <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'images'</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'css'</span><span class="p">),</span>
+            <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'js/jquery.min.js'</span><span class="p">,</span>
+                <span class="s1">'js/bootstrap.min.js'</span>
+            <span class="p">),</span>
+            <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'images'</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="p">),</span>
     <span class="c1">//...</span>
@@ -179,36 +173,39 @@ mkdir cache
 <li>
 <em>AssetsBundle</em> :</li>
 </ol><pre><code>- boolean production : Define the application environment (development =&gt; false). Default true.
+- string basePath : (optionnal) only needed if "cacheUrl" use "@zfBaseUrl". If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used
 - string cachePath : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".
 - string assetsPath : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".
 - string cacheUrl : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".
-- array mediaExt : Put here all medias extensions to be cached. Default array('png','gif','cur','ttf').
+- array mediaExt : Put here all medias extensions to be cached. Default array('jpg','png','gif','cur','ttf','eot','svg','woff').
 </code></pre>
 
 <ol>
 <li>
-<p>Modules :</p>
+<p>Assets :</p>
 
-<p>You can define assets for modules / controllers / action</p>
+<p>You can define assets for controllers / action</p>
 
-<p>Exemple for the application module : </p>
+<p>Exemple : </p>
 
 <div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
     <span class="c1">//...</span>
     <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">'application'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span> <span class="c1">//Module Name</span>
+            <span class="c1">//Common assets             </span>
             <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define css files to include</span>
             <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define js files to include</span>
             <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define less files to include</span>
             <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span> <span class="c1">//Define images to manage</span>
 
+            <span class="c1">//Controller assets</span>
             <span class="s1">'Test/Controller/Name'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                 <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                 <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                 <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
                 <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
 
+                <span class="c1">//Action assets</span>
                 <span class="s1">'ActionName'</span><span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                     <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                     <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
@@ -232,10 +229,7 @@ You can define an inclusion order like this :</p>
 <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
     <span class="c1">//...</span>
     <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">'application'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-            <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'js/firstFile.js'</span><span class="p">,</span><span class="s1">'js'</span><span class="p">),</span>
-            <span class="c1">//...</span>
-        <span class="p">)</span>
+        <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'js/firstFile.js'</span><span class="p">,</span><span class="s1">'js'</span><span class="p">),</span>
         <span class="c1">//...</span>
     <span class="p">)</span>               
     <span class="c1">//...</span>
@@ -289,6 +283,28 @@ elseif(is_array($this-&gt;jsCustomFiles))foreach($this-&gt;jsCustomFiles as $sJs
     $this-&gt;plugin('InlineScript')-&gt;appendFile($sJsCustomFile.'?'.time());//Set time() force browser not to cache file, it's not mandatory
 }
 ```
+</code></pre>
+
+<h1>Tools</h1>
+
+<p><em>AssetsBundle</em> provides console tools.</p>
+
+<h2>Features</h2>
+
+<pre><code>Rendering all assets
+Empty cache directory
+</code></pre>
+
+<h2>Usage</h2>
+
+<h3>Rendering all assets</h3>
+
+<pre><code>zf.php render
+</code></pre>
+
+<h3>Empty cache directory</h3>
+
+<pre><code>zf.php empty     
 </code></pre>
       </section>
       <footer>
