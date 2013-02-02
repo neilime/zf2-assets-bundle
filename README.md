@@ -64,7 +64,7 @@ Installation
 	]
 	```
 
-2. Now tell composer to download AssetsBundle by running the command:
+3. Now tell composer to download AssetsBundle by running the command:
 
     ```bash
     $ php composer.phar update
