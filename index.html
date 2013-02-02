@@ -88,6 +88,21 @@ This module manages the concept of the environment/production development.</p>
 </pre></div>
 </li>
 <li>
+<p>Due to bug in lessphp &amp; CssMin you have to use Nodge's Lessphp &amp; neilime's CssMin forks, add this repository in your composer.json:</p>
+
+<div class="highlight"><pre><span class="s2">"repositories"</span><span class="err">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"vcs"</span><span class="p">,</span>
+        <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://github.com/Nodge/lessphp"</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"vcs"</span><span class="p">,</span>
+        <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://github.com/neilime/CssMin"</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</li>
+<li>
 <p>Now tell composer to download AssetsBundle by running the command:</p>
 
 <div class="highlight"><pre><span class="nv">$ </span>php composer.phar update
