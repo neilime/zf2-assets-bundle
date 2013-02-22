@@ -1,0 +1,7 @@
+.span(@columns) {
+  width: (5 * @columns) + (5 * (@columns - 1)) - 14;
+}
+
+.spanX (@index) when (@index > 0) {
+	.span(@index);
+}

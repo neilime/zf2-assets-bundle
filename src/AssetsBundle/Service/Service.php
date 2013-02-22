@@ -47,37 +47,44 @@ class Service{
 	/**
 	 * Constructor
 	 * @param array $aConfiguration
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(array $aConfiguration){
 		//Check configuration entries
-		if(!isset($aConfiguration['cachePath'],$aConfiguration['cacheUrl'],$aConfiguration['assetsPath'],$aConfiguration['rendererToStrategy'],$aConfiguration['mediaExt']))throw new \Exception('Error in configuration');
+		if(!isset($aConfiguration['cachePath'],$aConfiguration['cacheUrl'],$aConfiguration['assetsPath'],$aConfiguration['rendererToStrategy'],$aConfiguration['mediaExt']))throw new \InvalidArgumentException('Error in configuration');
 
 		//Check configuration values
 		if(strpos($aConfiguration['cacheUrl'],'@zfBaseUrl') !== false){
-			if(!isset($aConfiguration['basePath']))throw new \Exception('Base path is undefined in configuration');
+			if(!isset($aConfiguration['basePath']))throw new \InvalidArgumentException('Base path is undefined in configuration');
 			$aConfiguration['basePath'] = rtrim($aConfiguration['basePath'], '/');
 			$aConfiguration['cacheUrl'] = $aConfiguration['basePath'].'/'.ltrim(str_ireplace('@zfBaseUrl','', $aConfiguration['cacheUrl']),'/');
 		}
 
-		if(!is_dir($sCachePath = $this->getRealPath($aConfiguration['cachePath'])))throw new \Exception('cachePath is not a valid directory : '.$aConfiguration['cachePath']);
+		if(!is_dir($sCachePath = $this->getRealPath($aConfiguration['cachePath'])))throw new \InvalidArgumentException('cachePath is not a valid directory : '.$aConfiguration['cachePath']);
 		else $aConfiguration['cachePath'] = $sCachePath.DIRECTORY_SEPARATOR;
 
-		if(!is_dir($sAssetsPath = $this->getRealPath($aConfiguration['assetsPath'])))throw new \Exception('assetsPath is not a valid directory : '.$aConfiguration['assetsPath']);
+		if(!is_dir($sAssetsPath = $this->getRealPath($aConfiguration['assetsPath'])))throw new \InvalidArgumentException('assetsPath is not a valid directory : '.$aConfiguration['assetsPath']);
 		else $aConfiguration['assetsPath'] = $sAssetsPath.DIRECTORY_SEPARATOR;
 
-		if(!is_array($aConfiguration['rendererToStrategy']))throw new \Exception('rendererToStrategy is not an array : '.gettype($aConfiguration['rendererToStrategy']));
-		if(!is_array($aConfiguration['mediaExt']))throw new \Exception('mediaExt is not an array : '.gettype($aConfiguration['mediaExt']));
+		if(!is_array($aConfiguration['rendererToStrategy']))throw new \InvalidArgumentException('rendererToStrategy is not an array : '.gettype($aConfiguration['rendererToStrategy']));
+		if(!is_array($aConfiguration['mediaExt']))throw new \InvalidArgumentException('mediaExt is not an array : '.gettype($aConfiguration['mediaExt']));
+
 		$this->configuration = $aConfiguration;
+
+		//Check filters
+		if(isset($aConfiguration['filters'])){
+			if(!is_array($aConfiguration['filters']))throw new \InvalidArgumentException('Filters configuration expects array, "'.gettype($aConfiguration['filters']).'" given');
+			$this->setFilters($aConfiguration['filters']);
+		}
 	}
 
 	/**
 	 * @param string $sControllerName
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 * @return \AssetsBundle\Service\Service
 	 */
 	public function setControllerName($sControllerName){
-		if(!is_string($sControllerName) || empty($sControllerName))throw new \Exception('Controller name is not valid');
+		if(!is_string($sControllerName) || empty($sControllerName))throw new \InvalidArgumentException('Controller name is not valid');
 		$this->controllerName = $sControllerName;
 		return $this;
 	}
@@ -124,29 +131,54 @@ class Service{
 	}
 
 	/**
-	 * Set filters for "Css" and "Js" assets
+	 * Set filters
 	 * @param array $aFilters
-	 * @throws \Exceptions
+	 * @throws \InvalidArgumentException
 	 * @return \AssetsBundle\Service\Service
 	 */
 	public function setFilters(array $aFilters){
-		if(!is_array($aFilters) || !isset($aFilters[self::ASSET_CSS],$aFilters[self::ASSET_JS],$aFilters[self::ASSET_LESS])
-		|| !($aFilters[self::ASSET_CSS] instanceof \AssetsBundle\Service\Filter\FilterInterface)
-		|| !($aFilters[self::ASSET_JS] instanceof \AssetsBundle\Service\Filter\FilterInterface)
-		|| !($aFilters[self::ASSET_LESS] instanceof \AssetsBundle\Service\Filter\FilterInterface))throw new \Exception('Filters are not valid');
-		$this->assetFilters = $aFilters;
+		foreach($aFilters as $sFilterType => $oFilter){
+			if(!self::assetTypeExists($sFilterType) && !in_array($sFilterType,$this->configuration['mediaExt']))throw new \InvalidArgumentException(sprintf(
+				'Filter\'s type is not valid expects "%s", "%s" given',
+				join(', ',array_merge(array(self::ASSET_CSS,self::ASSET_JS,self::ASSET_LESS),$this->configuration['mediaExt'])),
+				$sFilterType
+			));
+			if($oFilter instanceof \AssetsBundle\Service\Filter\FilterInterface)$this->assetFilters[$sFilterType] = $oFilter;
+			else throw new \InvalidArgumentException(sprintf(
+				'Filter expects \AssetsBundle\Service\Filter\FilterInterface, "%s" given',
+				is_object($oFilter)?get_class($oFilter):gettype($oFilter)
+			));
+		}
 		return $this;
 	}
 
 	/**
-	 * @param string $sAssetType
-	 * @throws \Exception
+	 * @param string $sFilterType
+	 * @throws \InvalidArgumentException
 	 * @return \AssetsBundle\Service\Filter\FilterInterface
 	 */
-	public function getFilter($sAssetType){
-		if(!self::assetTypeExists($sAssetType))throw new \Exception('Asset\'s type is not valid : '.$sAssetType);
-		if(!($this->assetFilters[$sAssetType] instanceof \AssetsBundle\Service\Filter\FilterInterface))throw new \Exception('Filters are not defined');
-		return $this->assetFilters[$sAssetType];
+	public function getFilter($sFilterType){
+		if(!self::assetTypeExists($sFilterType) && !in_array($sFilterType,$this->configuration['mediaExt']))throw new \InvalidArgumentException(sprintf(
+			'Filter\'s type is not valid expects "%s" or "%s", "%s" given',
+			join(', ',array_merge(array(self::ASSET_CSS,self::ASSET_JS,self::ASSET_LESS),$this->configuration['mediaExt'])),
+			$sFilterType
+		));
+		if(!$this->hasFilter($sFilterType))throw new \InvalidArgumentException('Filter "'.$sFilterType.'" is not defined');
+		return $this->assetFilters[$sFilterType];
+	}
+
+	/**
+	 * @param string $sFilterType
+	 * @throws \InvalidArgumentException
+	 * @return boolean
+	 */
+	public function hasFilter($sFilterType){
+		if(!self::assetTypeExists($sFilterType) && !in_array($sFilterType,$this->configuration['mediaExt']))throw new \InvalidArgumentException(sprintf(
+			'Filter\'s type is not valid expects "%s" or "%s", "%s" given',
+			join(', ',array_merge(array(self::ASSET_CSS,self::ASSET_JS,self::ASSET_LESS),$this->configuration['mediaExt'])),
+			$sFilterType
+		));
+		return isset($this->assetFilters[$sFilterType]) && $this->assetFilters[$sFilterType] instanceof \AssetsBundle\Service\Filter\FilterInterface;
 	}
 
 	/**
@@ -342,12 +374,12 @@ class Service{
 				case self::ASSET_CSS:
 					//Reset time limit
 					set_time_limit(30);
-					$sCacheContent = trim($this->getFilter(self::ASSET_CSS)->run($sAssetContent));
+					$sCacheContent = trim($this->hasFilter(self::ASSET_CSS)?$this->getFilter(self::ASSET_CSS)->run($sAssetContent):$sAssetContent);
 					break;
 				case self::ASSET_JS:
 					//Reset time limit
 					set_time_limit(30);
-					$sCacheContent = trim($this->getFilter(self::ASSET_JS)->run($sAssetContent)).PHP_EOL.'//'.PHP_EOL;
+					$sCacheContent = trim($this->hasFilter(self::ASSET_JS)?$this->getFilter(self::ASSET_JS)->run($sAssetContent):$sAssetContent).PHP_EOL.'//'.PHP_EOL;
 					break;
 			}
 			$sCacheContent = trim($sCacheContent);
@@ -375,19 +407,13 @@ class Service{
 			if($sCacheMediaPath === $sMediaPath)$sCacheMediaPath = str_ireplace(getcwd(),$this->getCachePath(),$sMediaPath);
 
 			//Media isn't cached or it's deprecated
-			if($this->hasToCache($sMediaPath,$sCacheMediaPath))switch($sExtension = strtolower(pathinfo($sMediaPath,PATHINFO_EXTENSION))){
-				//Images
-				case 'jpg':
-				case 'png':
-				case 'gif':
-				case 'cur':
-					$this->copyIntoCache($sMediaPath,$sCacheMediaPath);
-					break;
-				//Others
-				default:
-					if(in_array($sExtension,$this->configuration['mediaExt']))$this->copyIntoCache($sMediaPath,$sCacheMediaPath);
-					else throw new \Exception('Extension is not valid ('.join(', ',$this->configuration['mediaExt']).') : '.$sExtension);
-					break;
+			if($this->hasToCache($sMediaPath,$sCacheMediaPath)){
+				$sExtension = strtolower(pathinfo($sMediaPath,PATHINFO_EXTENSION));
+				if(!in_array($sExtension,$this->configuration['mediaExt']))throw new \Exception('Extension is not valid ('.join(', ',$this->configuration['mediaExt']).') : '.$sExtension);
+				$this->copyIntoCache($sMediaPath,$sCacheMediaPath);
+
+				//If filter is defined for extension
+				if($this->hasFilter($sExtension))$this->getFilter($sExtension)->run($sCacheMediaPath);
 			}
 		}
 		return $this;
@@ -501,7 +527,12 @@ class Service{
 
 		//Reset time limit
 		set_time_limit(30);
-		if(empty($sImportContent) || !($sImportContent = $this->getFilter(self::ASSET_LESS)->run($sImportContent)))return null;
+
+		//If content is empty, stop rendering process
+		if(
+			empty($sImportContent)
+			|| ($this->hasFilter(self::ASSET_LESS) && !($sImportContent = $this->getFilter(self::ASSET_LESS)->run($sImportContent)))
+		)return null;
 
 		//Rewrite urls
 		$sImportContent = preg_replace_callback(

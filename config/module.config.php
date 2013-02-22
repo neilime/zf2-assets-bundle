@@ -51,6 +51,7 @@ return array(
             'CssFilter' => '\AssetsBundle\Factory\Filter\CssFilterFactory',
         	'JsFilter' => '\AssetsBundle\Factory\Filter\JsFilterFactory',
         	'LessFilter' => '\AssetsBundle\Factory\Filter\LessFilterFactory',
+        	'PngFilter' => '\AssetsBundle\Factory\Filter\PngFilterFactory',
         	'AssetsBundleService' => '\AssetsBundle\Factory\ServiceFactory',
             'ViewJsCustomStrategy' => function(){
             	return new \AssetsBundle\View\Strategy\JsCustomStrategy(new \AssetsBundle\View\Renderer\JsRenderer());
@@ -67,7 +68,13 @@ return array(
             'Zend\View\Renderer\PhpRenderer'  => '\AssetsBundle\View\Strategy\ViewHelperStrategy',
             'Zend\View\Renderer\FeedRenderer' => '\AssetsBundle\View\Strategy\NoneStrategy',
             'Zend\View\Renderer\JsonRenderer' => '\AssetsBundle\View\Strategy\NoneStrategy'
-        )
+        ),
+    	'filters' => array(
+    		\AssetsBundle\Service\Service::ASSET_CSS => 'CssFilter',
+    		\AssetsBundle\Service\Service::ASSET_JS => 'JsFilter',
+    		\AssetsBundle\Service\Service::ASSET_LESS => 'LessFilter',
+    		'png' => 'PngFilter'
+    	)
     ),
     'view_manager' => array('strategies' => array('ViewJsCustomStrategy'))
 );

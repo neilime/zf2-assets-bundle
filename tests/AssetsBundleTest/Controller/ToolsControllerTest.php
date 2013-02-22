@@ -23,6 +23,12 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
 							'@zfRootPath/AssetsBundleTest/_files/fonts',
 							'@zfRootPath/AssetsBundleTest/_files/images'
 						)
+					),
+					'test-mixins' => array(
+						'less' => array(
+							'less/test-mixins.less',
+							'less/test-mixins-use.less'
+						)
 					)
 				)
 			)
@@ -91,6 +97,7 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
     	) as $sCacheFile){
     		//Css cache files
     		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.css');
+
     		$this->assertEquals(
     			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.css'),
     			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.css')

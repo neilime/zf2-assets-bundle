@@ -22,6 +22,9 @@
 	        "url": "http://github.com/neilime/CssMin"
 	    }
 	],
+	"suggest": {
+        "ext-gd2": "GD library to compress png files"
+    },
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",

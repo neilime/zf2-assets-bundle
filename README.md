@@ -261,8 +261,8 @@ _AssetsBundle_ provides console tools.
 
 ### Rendering all assets
 
-    zf.php render
+    php public/index.php render
     
 ### Empty cache directory
 
-    zf.php empty     
+    php public/index.php empty     
