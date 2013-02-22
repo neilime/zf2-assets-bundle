@@ -19,6 +19,7 @@ class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 		$this->lessParser = new \lessc();
 		$this->lessParser->addImportDir($aConfiguration['assetsPath']);
 		$this->lessParser->addImportDir(getcwd());
+		$this->lessParser->setAllowUrlRewrite(true);
 	}
 
 	/**
