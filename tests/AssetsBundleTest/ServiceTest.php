@@ -197,18 +197,6 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.gif'),filesize(__DIR__.'/_files/images/test-media.gif'));
 		}
 
-		//Imagick
-		if(class_exists('Imagick')){
-			//Contents
-			$this->assertEquals(
-					file_get_contents($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media-animated.gif'),
-					file_get_contents($sMediaExpectedPath.'/test-media-animated.gif')
-			);
-
-			//Sizes
-			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media-animated.gif'),filesize(__DIR__.'/_files/images/test-media-animated.gif'));
-		}
-
 		//Empty cache directory
 		$this->emptyCacheDirectory();
     }

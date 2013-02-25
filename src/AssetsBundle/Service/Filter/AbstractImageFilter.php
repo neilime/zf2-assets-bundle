@@ -41,7 +41,7 @@ abstract class AbstractImageFilter implements \AssetsBundle\Service\Filter\Filte
 	}
 
 	/**
-	 * @param string $sImgPath
+	 * @param string $sImagePath
 	 * @see \AssetsBundle\Service\Filter\FilterInterface::run()
 	 * @throws \InvalidArgumentException
 	 * @throws \RuntimeException

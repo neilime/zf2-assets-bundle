@@ -23,7 +23,8 @@
 	    }
 	],
 	"suggest": {
-        "ext-gd2": "GD library to compress png files"
+        "ext-gd2": "GD library to compress png files",
+        "ext-imagick": "Imagick library to compress animated gif files"
     },
     "require": {
         "php": ">=5.3.3",
