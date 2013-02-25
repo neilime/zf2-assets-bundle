@@ -126,7 +126,6 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
 	public function testRenderAssetsWithMedias(){
 		$sCacheExpectedPath = __DIR__.'/_files/cache-expected';
-		$sMediaExpectedPath = __DIR__.'/_files/media-expected';
 
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName('test-media'));
 		$this->assertEquals('test-media', $this->service->getActionName());
@@ -171,26 +170,9 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		$this->assertFileExists($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.png');
 
 		//Check optimisation
-		file_put_contents($sMediaExpectedPath.'/test-media-animated.gif',file_get_contents($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media-animated.gif'));
 
 		//Gd2 compression
 		if(function_exists('imagecreatefromstring')){
-			//Contents
-			$this->assertEquals(
-				file_get_contents($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.png'),
-				file_get_contents($sMediaExpectedPath.'/test-media.png')
-			);
-
-			$this->assertEquals(
-				file_get_contents($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.jpg'),
-				file_get_contents($sMediaExpectedPath.'/test-media.jpg')
-			);
-
-			$this->assertEquals(
-				file_get_contents($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.gif'),
-				file_get_contents($sMediaExpectedPath.'/test-media.gif')
-			);
-
 			//Sizes
 			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.png'),filesize(__DIR__.'/_files/images/test-media.png'));
 			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.jpg'),filesize(__DIR__.'/_files/images/test-media.jpg'));
