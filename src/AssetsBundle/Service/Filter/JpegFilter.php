@@ -1,11 +1,11 @@
 <?php
 namespace AssetsBundle\Service\Filter;
-class PngFilter extends \AssetsBundle\Service\Filter\AbstractImageFilter{
+class JpegFilter extends \AssetsBundle\Service\Filter\AbstractImageFilter{
 	/**
-	 * Compression level: from 0 (no compression) to 9.
+	 * Compression level: from 0 (worst quality, smaller file) to 100 (best quality, biggest file)
 	 * @var int
 	 */
-	protected $imageQuality = 9;
+	protected $imageQuality = 30;
 
 	/**
 	 * Constructor
@@ -20,11 +20,11 @@ class PngFilter extends \AssetsBundle\Service\Filter\AbstractImageFilter{
 	/**
 	 * @param int $iImageQuality
 	 * @throws \InvalidArgumentException
-	 * @return \AssetsBundle\Service\Filter\PngFilter
+	 * @return \AssetsBundle\Service\Filter\JpegFilter
 	 */
 	public function setImageQuality($iImageQuality){
-		if(!is_numeric($iImageQuality) || $iImageQuality < 0 || $iImageQuality > 9)throw new \InvalidArgumentException(sprintf(
-			'$iImageQuality expects int from 0 to 9 "%s" given',
+		if(!is_numeric($iImageQuality) || $iImageQuality < 0 || $iImageQuality > 100)throw new \InvalidArgumentException(sprintf(
+			'$iImageQuality expects int from 0 to 100 "%s" given',
 			is_scalar($iImageQuality)?$iImageQuality:(is_object($iImageQuality)?get_class($iImageQuality):gettype($iImageQuality))
 		));
 		$this->imageQuality = (int)$iImageQuality;
@@ -44,6 +44,6 @@ class PngFilter extends \AssetsBundle\Service\Filter\AbstractImageFilter{
 	 * @return boolean
 	 */
 	public function optimize($oImage,$sImagePath){
-		return imagepng($oImage,$sImagePath,$this->getImageQuality());
+		return imagejpeg($oImage,$sImagePath,$this->getImageQuality());
 	}
 }

@@ -52,6 +52,8 @@ return array(
         	'JsFilter' => '\AssetsBundle\Factory\Filter\JsFilterFactory',
         	'LessFilter' => '\AssetsBundle\Factory\Filter\LessFilterFactory',
         	'PngFilter' => '\AssetsBundle\Factory\Filter\PngFilterFactory',
+        	'JpegFilter' => '\AssetsBundle\Factory\Filter\JpegFilterFactory',
+        	'GifFilter' => '\AssetsBundle\Factory\Filter\GifFilterFactory',
         	'AssetsBundleService' => '\AssetsBundle\Factory\ServiceFactory',
             'ViewJsCustomStrategy' => function(){
             	return new \AssetsBundle\View\Strategy\JsCustomStrategy(new \AssetsBundle\View\Renderer\JsRenderer());
@@ -63,7 +65,7 @@ return array(
     	'cachePath' => '@zfRootPath/public/cache',//cache directory absolute path
     	'assetsPath' => '@zfRootPath/public',//assets directory absolute path (allows you to define relative path for assets config)
     	'cacheUrl' => '@zfBaseUrl/assets/cache/',//cache directory base url
-    	'mediaExt' => array('jpg','png','gif','cur','ttf','eot','svg','woff'),//Put here all media extensions to be cached
+    	'mediaExt' => array('jpeg','jpg','png','gif','cur','ttf','eot','svg','woff'),//Put here all media extensions to be cached
     	'rendererToStrategy' => array(
             'Zend\View\Renderer\PhpRenderer'  => '\AssetsBundle\View\Strategy\ViewHelperStrategy',
             'Zend\View\Renderer\FeedRenderer' => '\AssetsBundle\View\Strategy\NoneStrategy',
@@ -73,7 +75,9 @@ return array(
     		\AssetsBundle\Service\Service::ASSET_CSS => 'CssFilter',
     		\AssetsBundle\Service\Service::ASSET_JS => 'JsFilter',
     		\AssetsBundle\Service\Service::ASSET_LESS => 'LessFilter',
-    		'png' => 'PngFilter'
+    		'png' => 'PngFilter',
+    		'jpg' => 'JpegFilter','jpeg' => 'JpegFilter',
+    		'gif' => 'GifFilter'
     	)
     ),
     'view_manager' => array('strategies' => array('ViewJsCustomStrategy'))
