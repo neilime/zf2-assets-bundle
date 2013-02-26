@@ -7,6 +7,8 @@ return array(
 	'AssetsBundle\Factory\Filter\JsFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/JsFilterFactory.php',
 	'AssetsBundle\Factory\Filter\LessFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/LessFilterFactory.php',
 	'AssetsBundle\Factory\Filter\PngFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/PngFilterFactory.php',
+	'AssetsBundle\Factory\Filter\JpegFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/JpegFilterFactory.php',
+	'AssetsBundle\Factory\Filter\GifFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/Filter/GifFilterFactory.php',
 	'AssetsBundle\Mvc\Controller\AbstractActionController' => __DIR__ . '/src/AssetsBundle/Mvc/Controller/AbstractActionController.php',
 	'AssetsBundle\Service\Filter\AbstractImageFilter' => __DIR__ . '/src/AssetsBundle/Service/Filter/AbstractImageFilter.php',
 	'AssetsBundle\Service\Filter\CssFilter' => __DIR__ . '/src/AssetsBundle/Service/Filter/CssFilter.php',
