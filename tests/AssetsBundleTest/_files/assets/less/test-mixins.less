@@ -1,7 +1,11 @@
-.span(@columns) {
-  width: (5 * @columns) + (5 * (@columns - 1)) - 14;
+@gridColumnWidth:         60px;
+@gridGutterWidth:         20px;
+
+.span (@columns) {
+  width: (@gridColumnWidth * @columns) + (@gridGutterWidth * (@columns - 1));
 }
 
 .spanX (@index) when (@index > 0) {
-	.span(@index);
+  .span@{index} { .span(@index); }
+  .spanX(@index - 1);
 }
