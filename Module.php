@@ -6,20 +6,6 @@ class Module implements
 	\Zend\ModuleManager\Feature\ConsoleUsageProviderInterface{
 
 	/**
-	 * @var \Zend\ModuleManager\ModuleManagerInterface
-	 */
-	private $moduleManager;
-
-	/**
-	 * Init module
-	 * @param \Zend\ModuleManager\ModuleManagerInterface $oManager
-	 * @return void
-	 */
-	public function init(\Zend\ModuleManager\ModuleManagerInterface $oManager){
-		$this->moduleManager = $oManager;
-	}
-
-	/**
 	 * @param \Zend\EventManager\EventInterface $oEvent
 	 */
 	public function onBootstrap(\Zend\EventManager\EventInterface $oEvent){
