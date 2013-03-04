@@ -8,7 +8,7 @@ Created by Neilime
 Introduction
 ------------
 
-AssetsBundle is module for ZF2 allowing asset managment (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
+AssetsBundle is a module for ZF2 allowing asset managment (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
 This module manages the concept of the environment/production development.
 
 In developpement : 
