@@ -691,7 +691,7 @@ class Service{
 	 * @throws \Exception
 	 * @return string
 	 */
-	private function rewriteUrl(array $aMatches,$sAssetPath = null){
+	public function rewriteUrl(array $aMatches,$sAssetPath = null){
 		if(!isset($aMatches[1]))throw new \Exception('Url match is not valid');
 
 		//Remove quotes & double quotes from url
