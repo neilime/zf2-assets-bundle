@@ -8,6 +8,7 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
 	 */
 	private $configuration = array(
 		'asset_bundle' => array(
+			'production' => true,
 			'basePath' => '/',
 			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
 			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
@@ -61,7 +62,10 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
     protected function setUp(){
         $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
 
-        $this->configuration = \Zend\Stdlib\ArrayUtils::merge($oServiceManager->get('Config'),$this->configuration);
+        $aConfiguration = $oServiceManager->get('Config');
+        unset($aConfiguration['asset_bundle']['assets']);
+
+        $this->configuration = \Zend\Stdlib\ArrayUtils::merge($aConfiguration,$this->configuration);
         $bAllowOverride = $oServiceManager->getAllowOverride();
         if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
         $oServiceManager->setService('Config',$this->configuration)->setAllowOverride($bAllowOverride);
@@ -87,7 +91,7 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
     	//Test service instance
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$oAssetsBundleService);
 
-    	$sCacheExpectedPath = dirname(__DIR__).'/_files/cache-expected';
+    	$sCacheExpectedPath = dirname(__DIR__).'/_files/prod-cache-expected';
 
     	//Test cache files
     	foreach(array(
@@ -95,9 +99,9 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
     		$oAssetsBundleService->getCacheFileName('index','test-media'),
     		$oAssetsBundleService->getCacheFileName(\AssetsBundle\Service\Service::NO_CONTROLLER,\AssetsBundle\Service\Service::NO_ACTION),
     	) as $sCacheFile){
+
     		//Css cache files
     		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.css');
-
     		$this->assertEquals(
     			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.css'),
     			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.css')

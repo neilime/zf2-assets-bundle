@@ -1,11 +1,12 @@
 <?php
 namespace AssetsBundleTest;
-class ServiceTest extends \PHPUnit_Framework_TestCase{
+class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @var array
 	 */
 	private $configuration = array(
 		'asset_bundle' => array(
+			'production' => true,
 			'basePath' => '/',
 			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
 			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
@@ -46,15 +47,21 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     protected function setUp(){
         $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
 
-        $this->configuration = \Zend\Stdlib\ArrayUtils::merge($oServiceManager->get('Config'),$this->configuration);
+        $aConfiguration = $oServiceManager->get('Config');
+        unset($aConfiguration['asset_bundle']['assets']);
+
+        $this->configuration = \Zend\Stdlib\ArrayUtils::merge($aConfiguration,$this->configuration);
         $bAllowOverride = $oServiceManager->getAllowOverride();
         if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
         $oServiceManager->setService('Config',$this->configuration)->setAllowOverride($bAllowOverride);
 
         //Define service
-        $this->service = $oServiceManager->get('AssetsBundleService');
-        $this->service->setRenderer(new \Zend\View\Renderer\PhpRenderer());
+        $oServiceFactory = new \AssetsBundle\Factory\ServiceFactory();
         $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'index','action' => 'index'));
+        $this->service = $oServiceFactory->createService($oServiceManager)
+        ->setRenderer(new \Zend\View\Renderer\PhpRenderer())
+        ->setControllerName($this->routeMatch->getParam('controller'))
+        ->setActionName($this->routeMatch->getParam('action'));
     }
 
     public function testService(){
@@ -86,8 +93,11 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     }
 
     public function testRenderSimpleAssets(){
-		$sCacheExpectedPath = __DIR__.'/_files/cache-expected';
+		$sCacheExpectedPath = __DIR__.'/_files/prod-cache-expected';
 		$sCacheName = $this->service->getCacheFileName();
+
+		//Cache file name
+		$this->assertEquals($sCacheName, md5($this->routeMatch->getParam('controller').\AssetsBundle\Service\Service::NO_ACTION));
 
 		$sCssFile = $sCacheName.'.css';
 		$sLessFile = $sCacheName.'.less';
@@ -125,7 +135,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     }
 
 	public function testRenderAssetsWithMedias(){
-		$sCacheExpectedPath = __DIR__.'/_files/cache-expected';
+		$sCacheExpectedPath = __DIR__.'/_files/prod-cache-expected';
 
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName('test-media'));
 		$this->assertEquals('test-media', $this->service->getActionName());
@@ -184,7 +194,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     }
 
     public function testRenderMixins(){
-    	$sCacheExpectedPath = __DIR__.'/_files/cache-expected';
+    	$sCacheExpectedPath = __DIR__.'/_files/prod-cache-expected';
 
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName('test-mixins'));
     	$this->assertEquals('test-mixins', $this->service->getActionName());
