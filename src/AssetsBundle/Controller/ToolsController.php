@@ -59,7 +59,7 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
        	$oConsole->write(\AssetsBundle\Service\Service::NO_ACTION.PHP_EOL,\Zend\Console\ColorInterface::LIGHT_WHITE);
 
         //Render assets for no_controller
-        $oAssetsBundleService->setControllerName($sControllerName)
+        $oAssetsBundleService
         ->setControllerName(\AssetsBundle\Service\Service::NO_CONTROLLER)
         ->setActionName(\AssetsBundle\Service\Service::NO_ACTION)
         ->renderAssets();
