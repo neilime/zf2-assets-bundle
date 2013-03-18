@@ -64,7 +64,7 @@ This module manages the concept of the environment/production development.</p>
 <li>
 <a href="https://github.com/Nodge/lessphp">lessphp</a> (latest master).</li>
 <li>
-<a href="https://github.com/neilime/CssMin">CssMin</a> (latest master).</li>
+<a href="https://github.com/natxet/CssMin">CssMin</a> (latest master).</li>
 <li>
 <a href="https://github.com/nick4fake/JsMin">JsMin</a> (latest master).</li>
 </ul><h2>Installation</h2>
@@ -74,7 +74,7 @@ This module manages the concept of the environment/production development.</p>
 <h4>By cloning project</h4>
 
 <ol>
-<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a> (latest master), <a href="https://github.com/neilime/CssMin">CssMin fork</a>, <a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
+<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a>, <a href="https://github.com/natxet/CssMin">CssMin</a>, <a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
 <li>Clone this project into your <code>./vendor/</code> directory.</li>
 </ol><h4>With composer</h4>
 
@@ -88,7 +88,7 @@ This module manages the concept of the environment/production development.</p>
 </pre></div>
 </li>
 <li>
-<p>Due to bug in lessphp &amp; CssMin you have to use Nodge's Lessphp &amp; neilime's CssMin forks, add this repository in your composer.json:</p>
+<p>As lessphp does not rewrite urls (<a href="https://github.com/leafo/lessphp/pull/291">pull request #291</a>) you have to use Nodge's Lessphp fork, add this repository in your composer.json:</p>
 
 <div class="highlight"><pre><span class="s2">"repositories"</span><span class="err">:</span> <span class="p">[</span>
     <span class="p">{</span>
