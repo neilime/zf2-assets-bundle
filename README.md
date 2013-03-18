@@ -26,7 +26,7 @@ Requirements
 
 * [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
 * [lessphp](https://github.com/Nodge/lessphp) (latest master).
-* [CssMin](https://github.com/neilime/CssMin) (latest master).
+* [CssMin](https://github.com/natxet/CssMin) (latest master).
 * [JsMin](https://github.com/nick4fake/JsMin) (latest master).
 
 Installation
@@ -36,7 +36,7 @@ Installation
 
 #### By cloning project
 
-1. Install the [lessphp fork](https://github.com/Nodge/lessphp) (latest master), [CssMin fork](https://github.com/neilime/CssMin), [JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
+1. Install the [lessphp fork](https://github.com/Nodge/lessphp), [CssMin](https://github.com/natxet/CssMin), [JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
 2. Clone this project into your `./vendor/` directory.
 
 #### With composer
@@ -49,17 +49,13 @@ Installation
     }
     ```
     
-2. Due to bug in lessphp & CssMin you have to use Nodge's Lessphp & neilime's CssMin forks, add this repository in your composer.json:
+2. As lessphp does not rewrite urls ([pull request #291](https://github.com/leafo/lessphp/pull/291)) you have to use Nodge's Lessphp fork, add this repository in your composer.json:
 	
 	```json
     "repositories": [
 	    {
 	        "type": "vcs",
 	        "url": "http://github.com/Nodge/lessphp"
-	    },
-	    {
-	        "type": "vcs",
-	        "url": "http://github.com/neilime/CssMin"
 	    }
 	]
 	```
