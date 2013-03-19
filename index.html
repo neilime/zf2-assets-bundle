@@ -179,12 +179,13 @@ mkdir cache
 <li>
 <em>AssetsBundle</em> :</li>
 </ol><ul>
-<li>boolean <code>production</code>: Define the application environment (development =&gt; false). Default true.</li>
-<li>string <code>basePath</code> : (optionnal) only needed if "cacheUrl" use "@zfBaseUrl". If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used</li>
-<li>string <code>cachePath</code> : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".</li>
-<li>string <code>assetsPath</code> : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".</li>
-<li>string <code>cacheUrl</code> : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".</li>
-<li>array <code>mediaExt</code> : Put here all medias extensions to be cached. Default array('jpg','png','gif','cur','ttf','eot','svg','woff').</li>
+<li>boolean <code>production</code>: Define the application environment (development =&gt; false). Default <code>true</code>.</li>
+<li>string <code>basePath</code> : (optionnal) only needed if <code>cacheUrl</code> use <code>@zfBaseUrl</code>. If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used</li>
+<li>string <code>cachePath</code> : cache directory absolute path, you can use the <code>@zfRootPath</code> constant corresponding to current working directory. Default <code>@zfRootPath/public/cache</code>.</li>
+<li>string <code>assetsPath</code> : assets directory absolute path, allows you to define relative path for assets config. You can use the constant <code>@zfRootPath</code> corresponding to current working directory. Default <code>@zfRootPath/public</code>.</li>
+<li>string <code>cacheUrl</code> : cache directory base url, you can use the constant <code>@zfBaseUrl</code> corresponding to application base url . Default <code>@zfBaseUrl/assets/cache/</code>.</li>
+<li>array <code>mediaExt</code> : Put here all medias extensions to be cached. Default <code>array('jpg','png','gif','cur','ttf','eot','svg','woff')</code>.</li>
+<li>boolean <code>recursiveSearch</code>: If you define a folder as required asset, it will search for matching assets in that folder and its subfolders. Default <code>false</code>.</li>
 </ul><ol>
 <li>
 <p>Assets :</p>
