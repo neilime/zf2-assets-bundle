@@ -66,6 +66,7 @@ return array(
     	'assetsPath' => '@zfRootPath/public',//assets directory absolute path (allows you to define relative path for assets config)
     	'cacheUrl' => '@zfBaseUrl/assets/cache/',//cache directory base url
     	'mediaExt' => array('jpeg','jpg','png','gif','cur','ttf','eot','svg','woff'),//Put here all media extensions to be cached
+    	'recursiveSearch' => false,
     	'rendererToStrategy' => array(
             'Zend\View\Renderer\PhpRenderer'  => '\AssetsBundle\View\Strategy\ViewHelperStrategy',
             'Zend\View\Renderer\FeedRenderer' => '\AssetsBundle\View\Strategy\NoneStrategy',

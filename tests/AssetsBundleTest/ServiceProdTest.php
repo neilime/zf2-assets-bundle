@@ -7,6 +7,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 	private $configuration = array(
 		'asset_bundle' => array(
 			'production' => true,
+			'recursiveSearch' => true,
 			'basePath' => '/',
 			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
 			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
@@ -111,7 +112,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
-		
+
 		//Css cache file
 		$this->assertFileExists($this->service->getCachePath().$sCssFile);
 		$this->assertEquals(
@@ -156,7 +157,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
-		
+
 		//Css cache file
 		$this->assertFileExists($this->service->getCachePath().$sCssFile);
 		$this->assertEquals(
@@ -181,6 +182,9 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 		#Images
 		$this->assertFileExists($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.gif');
 		$this->assertFileExists($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.png');
+
+		#Subfolders
+		$this->assertFileExists($this->service->getCachePath().'/AssetsBundleTest/_files/images//subfolder/test-sub-media.jpg');
 
 		//Check optimisation
 

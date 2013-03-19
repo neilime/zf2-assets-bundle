@@ -305,11 +305,15 @@ class Service{
 					break;
 				case self::ASSET_MEDIA:
 					if(in_array(
-					$sExtension = strtolower(pathinfo($oFile->getFilename(),PATHINFO_EXTENSION)),
-					$this->configuration['mediaExt']
+						$sExtension = strtolower(pathinfo($oFile->getFilename(),PATHINFO_EXTENSION)),
+						$this->configuration['mediaExt']
 					))$aAssets[] = $oFile->getPathname();
 					break;
 			}
+			elseif($oFile->isDir() && !$oFile->isDot() && $this->configuration['recursiveSearch'])$aAssets = array_merge(
+				$aAssets,
+				$this->getAssetsFromDirectory($oFile->getPathname(), $sTypeAsset)
+			);
 		}
 		return $aAssets;
 	}
