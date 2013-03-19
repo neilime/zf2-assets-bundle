@@ -686,7 +686,7 @@ class Service{
 	}
 
 	/**
-	 * Rewrite url to match with cache path
+	 * Rewrite url to match with cache path if needed
 	 * @param array $aMatches
 	 * @throws \Exception
 	 * @return string
@@ -696,10 +696,12 @@ class Service{
 
 		//Remove quotes & double quotes from url
 		$sUrl = trim(str_ireplace(array('"','\''),'', $aMatches[1]));
-		if(strpos($sUrl,'?') !== false)list($sUrl, $sArguments) = explode('?', $sUrl);
 
-		//Url is absolute
-		if(strpos('/', $sUrl) === 0) return $aMatches[0];
+		//Url is absolute or an external links
+		if(preg_match('/^\/|http/', $sUrl))return $aMatches[0];
+
+		//Split arguments
+		if(strpos($sUrl,'?') !== false)list($sUrl, $sArguments) = explode('?', $sUrl);
 
 		if(!is_null($sAssetPath)){
 			if(!is_string($sAssetPath))throw new \Exception('Asset path is not valid : '.gettype($sAssetPath));

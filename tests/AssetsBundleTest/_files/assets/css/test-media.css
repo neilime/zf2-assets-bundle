@@ -7,6 +7,9 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700);
+
 #test-media{
 	font-family: FontOne;
 	background-image : url('../../images/test-media.gif');

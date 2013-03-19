@@ -39,6 +39,9 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 	 */
 	private $service;
 
+	/**
+	 * @var \Zend\Mvc\Router\RouteMatch
+	 */
 	private $routeMatch;
 
 	/**
@@ -108,7 +111,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
-
+		
 		//Css cache file
 		$this->assertFileExists($this->service->getCachePath().$sCssFile);
 		$this->assertEquals(
@@ -153,7 +156,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
-
+		
 		//Css cache file
 		$this->assertFileExists($this->service->getCachePath().$sCssFile);
 		$this->assertEquals(
