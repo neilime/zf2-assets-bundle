@@ -431,7 +431,7 @@ class Service{
 					array('','.css'),
 					$sAssetsPath
 				);
-				$sAssetRelativePath = $this->hasAssetsPath()?str_ireplace(
+				else $sAssetRelativePath = $this->hasAssetsPath()?str_ireplace(
 					array($this->getAssetsPath(),getcwd(),DIRECTORY_SEPARATOR),
 					array('','','_'),
 					$sAssetsPath
@@ -587,7 +587,7 @@ class Service{
 			
 			//Define cache path
 			$sCacheMediaPath = $this->hasAssetsPath()
-				?str_ireplace($this->getCachePath(),$this->getCachePath(),$sMediaPath)
+				?str_ireplace($this->getAssetsPath(),$this->getCachePath(),$sMediaPath)
 				:$sMediaPath;
 
 			//If media is not in asset directory
