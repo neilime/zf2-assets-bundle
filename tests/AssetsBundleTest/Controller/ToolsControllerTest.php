@@ -109,6 +109,7 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
 
     		//Less cache files
     		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.less');
+
     		$this->assertEquals(
     			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.less'),
     			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.less')

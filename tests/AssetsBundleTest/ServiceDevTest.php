@@ -95,6 +95,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		//Css cache files
 		foreach($aCssFiles as $sCssFile){
 			$this->assertFileExists($this->service->getCachePath().$sCssFile);
+
 			$this->assertEquals(
 				file_get_contents($this->service->getCachePath().$sCssFile),
 				file_get_contents($sCacheExpectedPath.'/'.$sCssFile)
@@ -104,6 +105,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		//Less cache files
 		foreach($aLessFiles as $sLessFile){
 			$this->assertFileExists($this->service->getCachePath().'/'.$sLessFile);
+
 			$this->assertEquals(
 				file_get_contents($this->service->getCachePath().'/'.$sLessFile),
 				file_get_contents($sCacheExpectedPath.'/'.$sLessFile)

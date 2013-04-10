@@ -51,7 +51,7 @@ class Service{
 	 */
 	public function __construct(array $aConfiguration){
 		//Check configuration entries
-		if(!isset($aConfiguration['cachePath'],$aConfiguration['cacheUrl'],$aConfiguration['assetsPath'],$aConfiguration['rendererToStrategy'],$aConfiguration['mediaExt']))throw new \InvalidArgumentException('Error in configuration');
+		if(!isset($aConfiguration['cachePath'],$aConfiguration['cacheUrl'],$aConfiguration['rendererToStrategy'],$aConfiguration['mediaExt']))throw new \InvalidArgumentException('Error in configuration');
 
 		//Check configuration values
 		if(strpos($aConfiguration['cacheUrl'],'@zfBaseUrl') !== false){
@@ -60,11 +60,14 @@ class Service{
 			$aConfiguration['cacheUrl'] = $aConfiguration['basePath'].'/'.ltrim(str_ireplace('@zfBaseUrl','', $aConfiguration['cacheUrl']),'/');
 		}
 
-		if(!is_dir($sCachePath = $this->getRealPath($aConfiguration['cachePath'])))throw new \InvalidArgumentException('cachePath is not a valid directory : '.$aConfiguration['cachePath']);
+		if(!is_dir($sCachePath = $this->getRealPath($aConfiguration['cachePath'])))throw new \InvalidArgumentException('"cachePath" config expects a valid directory path, "'.$aConfiguration['cachePath'].'" given');
 		else $aConfiguration['cachePath'] = $sCachePath.DIRECTORY_SEPARATOR;
 
-		if(!is_dir($sAssetsPath = $this->getRealPath($aConfiguration['assetsPath'])))throw new \InvalidArgumentException('assetsPath is not a valid directory : '.$aConfiguration['assetsPath']);
-		else $aConfiguration['assetsPath'] = $sAssetsPath.DIRECTORY_SEPARATOR;
+		if(isset($aConfiguration['assetsPath'])){
+			if(is_dir($sAssetsPath = $this->getRealPath($aConfiguration['assetsPath'])))$aConfiguration['assetsPath'] = $sAssetsPath.DIRECTORY_SEPARATOR;
+			else throw new \InvalidArgumentException('"assetsPath" config expects a valid directory path, "'.$aConfiguration['assetsPath'].'" given');
+		}
+		else $aConfiguration['assetsPath'] = null;
 
 		if(!is_array($aConfiguration['rendererToStrategy']))throw new \InvalidArgumentException('rendererToStrategy is not an array : '.gettype($aConfiguration['rendererToStrategy']));
 		if(!is_array($aConfiguration['mediaExt']))throw new \InvalidArgumentException('mediaExt is not an array : '.gettype($aConfiguration['mediaExt']));
@@ -180,12 +183,31 @@ class Service{
 		));
 		return isset($this->assetFilters[$sFilterType]) && $this->assetFilters[$sFilterType] instanceof \AssetsBundle\Service\Filter\FilterInterface;
 	}
-
+	
 	/**
+	 * 
+	 * @throws \LogicException
 	 * @return string
 	 */
 	public function getCachePath(){
+		if(!isset($this->configuration['cachePath']))throw new \LogicException('"cachePath" config is undefined');
 		return $this->configuration['cachePath'];
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function hasAssetsPath(){
+		return !empty($this->configuration['assetsPath']);
+	}
+	
+	/**
+	 * @throws \LogicException
+	 * @return string
+	 */
+	public function getAssetsPath(){
+		if(!$this->hasAssetsPath())throw new \LogicException('"assetsPath" config is undefined');
+		return $this->configuration['assetsPath'];
 	}
 
 	/**
@@ -409,9 +431,13 @@ class Service{
 					array('','.css'),
 					$sAssetsPath
 				);
-				else $sAssetRelativePath = str_ireplace(
-					array($this->configuration['assetsPath'],getcwd(),DIRECTORY_SEPARATOR),
+				else $sAssetRelativePath = $this->hasAssetsPath()?str_ireplace(
+					array($this->getAssetsPath(),getcwd(),DIRECTORY_SEPARATOR),
 					array('','','_'),
+					$sAssetsPath
+				):str_ireplace(
+					array(getcwd(),DIRECTORY_SEPARATOR),
+					array('','_'),
 					$sAssetsPath
 				);
 
@@ -558,8 +584,11 @@ class Service{
 		foreach($aMediasPath as $sMediaPath){
 			//Absolute path
 			if(!($sMediaPath = $this->getRealPath($sMediaPath)))throw new \Exception('File not found : '.$sMediaPath);
+			
 			//Define cache path
-			$sCacheMediaPath = str_ireplace($this->configuration['assetsPath'],$this->getCachePath(),$sMediaPath);
+			$sCacheMediaPath = $this->hasAssetsPath()
+				?str_ireplace($this->getAssetsPath(),$this->getCachePath(),$sMediaPath)
+				:$sMediaPath;
 
 			//If media is not in asset directory
 			if($sCacheMediaPath === $sMediaPath)$sCacheMediaPath = str_ireplace(getcwd(),$this->getCachePath(),$sMediaPath);
@@ -670,22 +699,16 @@ class Service{
 		if(empty($sPath) || !is_string($sPath))throw new \Exception('Path is not valid : '.gettype($sPath));
 
 		//If path is "/", assets path is prefered
-		if($sPath === '/'){
-			if(!isset($this->configuration['assetsPath']))throw new \Exception('Asset Path is undefined');
-			return $this->configuration['assetsPath'];
-		}
+		if($sPath === '/' && $this->hasAssetsPath())return $this->getAssetsPath();
 
 		if(file_exists($sPath))return realpath($sPath);
 
 		if(strpos($sPath,'@zfRootPath') !== false)$sPath = str_ireplace('@zfRootPath',getcwd(),$sPath);
-		if(strpos($sPath,'@zfAssetsPath') !== false){
-			if(!isset($this->configuration['assetsPath']))throw new \Exception('Asset Path is undefined');
-			$sPath = str_ireplace('@zfAssetsPath',$this->configuration['assetsPath'],$sPath);
-		}
+		if(strpos($sPath,'@zfAssetsPath') !== false)$sPath = str_ireplace('@zfAssetsPath',$this->getAssetsPath(),$sPath);
 		if(($sRealPath = realpath($sPath)) !== false)return $sRealPath;
 		//Try to guess real path with root path or asset path (if defined)
 		if(file_exists($sRealPath = getcwd().DIRECTORY_SEPARATOR.$sPath))return realpath($sRealPath);
-		elseif(isset($this->configuration['assetsPath']) && file_exists($sRealPath = $this->configuration['assetsPath'].$sPath))return realpath($sRealPath);
+		elseif($this->hasAssetsPath() && file_exists($sRealPath = $this->getAssetsPath().$sPath))return realpath($sRealPath);
 		else return false;
 	}
 

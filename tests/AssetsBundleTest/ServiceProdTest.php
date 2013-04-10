@@ -221,6 +221,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 
     	//Less cache file
     	$this->assertFileExists($this->service->getCachePath().$sLessFile);
+
     	$this->assertEquals(
     		file_get_contents($this->service->getCachePath().$sLessFile),
     		file_get_contents($sCacheExpectedPath.'/'.$sLessFile)
