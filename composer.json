@@ -16,10 +16,6 @@
         {
 	        "type": "vcs",
 	        "url": "http://github.com/Nodge/lessphp"
-	    },
-	    {
-	        "type": "vcs",
-	        "url": "http://github.com/neilime/CssMin"
 	    }
 	],
 	"suggest": {
