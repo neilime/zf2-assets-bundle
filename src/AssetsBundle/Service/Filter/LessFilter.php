@@ -7,17 +7,22 @@ class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	protected $lessParser;
 
 	/**
+	 * @var string
+	 */
+	protected $assetsPath;
+
+	/**
 	 * Constructor
 	 * @param array $aConfiguration
 	 * @throws \Exception
 	 */
 	public function __construct(array $aConfiguration){
 		//Check configuration entries
-		if(!isset($aConfiguration['assetsPath']))throw new \Exception('Error in configuration');
-		if(!is_dir($aConfiguration['assetsPath'] = $this->getRealPath($aConfiguration['assetsPath'])))throw new \Exception('assetsPath is not a valid directory : '.$aConfiguration['assetsPath']);
-		else $aConfiguration['assetsPath'] .= DIRECTORY_SEPARATOR;
+		if(isset($aConfiguration['assetsPath']))$this->setAssetsPath($aConfiguration['assetsPath']);
+
 		$this->lessParser = new \lessc();
-		$this->lessParser->addImportDir($aConfiguration['assetsPath']);
+		if($this->hasAssetsPath())$this->lessParser->addImportDir($this->getAssetsPath());
+
 		$this->lessParser->addImportDir(getcwd());
 		$this->lessParser->setAllowUrlRewrite(true);
 	}
@@ -31,6 +36,36 @@ class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	public function run($sContent){
 		if(!is_string($sContent))throw new \Exception('Content is not a string : '.gettype($sContent));
 		return trim($this->lessParser->compile($sContent));
+	}
+
+	/**
+	 * @param string $sAssetsPath
+	 * @throws \InvalidArgumentException
+	 * @throws \Exception
+	 * @return \AssetsBundle\Service\Filter\LessFilter
+	 */
+	public function setAssetsPath($sAssetsPath){
+		if(!is_string($sAssetsPath))throw new \InvalidArgumentException('Assets path expects string, "'.gettype($sAssetsPath).'" given');
+		if(is_dir($sAssetsPath = $this->getRealPath($sAssetsPath)))$sAssetsPath .= DIRECTORY_SEPARATOR;
+		else throw new \Exception('Assets path "'.$sAssetsPath.'"is not a valid directory');
+		$this->assetsPath = $sAssetsPath;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function hasAssetsPath(){
+		return is_string($this->assetsPath);
+	}
+
+	/**
+	 * @throws \LogicException
+	 * @return string
+	 */
+	public function getAssetsPath(){
+		if($this->hasAssetsPath())return $this->assetsPath;
+		throw new \LogicException('Assets path is undefined');
 	}
 
 	/**
