@@ -3,13 +3,16 @@ namespace AssetsBundle\Service\Filter;
 class CssFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 
 	/**
-	 * @param string $sContent
 	 * @see \AssetsBundle\Service\Filter\FilterInterface::run()
-	 * @throws \Exception
+	 * @param string $sContent
+	 * @throws \InvalidArgumentException
+	 * @throws \LogicException
 	 * @return string
 	 */
 	public function run($sContent){
-		if(!is_string($sContent))throw new \Exception('Content is not a string : '.gettype($sContent));
+		if(!is_string($sContent))throw new \InvalidArgumentException('Content is not a string : '.gettype($sContent));
+		if(!class_exists('CssMin'))throw new \LogicException('"CssMin" class does not exist');
+
 		return \CssMin::minify(
 			$sContent,
 			array(
