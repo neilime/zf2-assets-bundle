@@ -183,9 +183,9 @@ class Service{
 		));
 		return isset($this->assetFilters[$sFilterType]) && $this->assetFilters[$sFilterType] instanceof \AssetsBundle\Service\Filter\FilterInterface;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws \LogicException
 	 * @return string
 	 */
@@ -193,14 +193,14 @@ class Service{
 		if(!isset($this->configuration['cachePath']))throw new \LogicException('"cachePath" config is undefined');
 		return $this->configuration['cachePath'];
 	}
-	
+
 	/**
 	 * @return boolean
 	 */
 	public function hasAssetsPath(){
 		return !empty($this->configuration['assetsPath']);
 	}
-	
+
 	/**
 	 * @throws \LogicException
 	 * @return string
@@ -584,7 +584,7 @@ class Service{
 		foreach($aMediasPath as $sMediaPath){
 			//Absolute path
 			if(!($sMediaPath = $this->getRealPath($sMediaPath)))throw new \Exception('File not found : '.$sMediaPath);
-			
+
 			//Define cache path
 			$sCacheMediaPath = $this->hasAssetsPath()
 				?str_ireplace($this->getAssetsPath(),$this->getCachePath(),$sMediaPath)
@@ -715,11 +715,13 @@ class Service{
 	/**
 	 * Rewrite url to match with cache path if needed
 	 * @param array $aMatches
-	 * @throws \Exception
+	 * @param string $sAssetPath
+	 * @throws \InvalidArgumentException
+	 * @throws \LogicException
 	 * @return string
 	 */
 	public function rewriteUrl(array $aMatches,$sAssetPath = null){
-		if(!isset($aMatches[1]))throw new \Exception('Url match is not valid');
+		if(!isset($aMatches[1]))throw new \InvalidArgumentException('Url match is not valid');
 
 		//Remove quotes & double quotes from url
 		$sUrl = trim(str_ireplace(array('"','\''),'', $aMatches[1]));
@@ -729,16 +731,26 @@ class Service{
 
 		//Split arguments
 		if(strpos($sUrl,'?') !== false)list($sUrl, $sArguments) = explode('?', $sUrl);
+		if(strpos($sUrl,'@zfAssetsPath') !== false){
+			$sUrlRealPath = str_ireplace('@zfAssetsPath',$this->getAssetsPath(),$sUrl);
+			if(!file_exists($sUrlRealPath))throw new \LogicException('File not found : '.$sUrlRealPath);
+			$sUrlRealPath = realpath($sUrlRealPath);
+			return str_ireplace($sUrl,str_ireplace($this->getAssetsPath(), $this->configuration['cacheUrl'], $sUrlRealPath).(empty($sArguments)?'':'?'.$sArguments),$aMatches[0]);
+		}
 
 		if(!is_null($sAssetPath)){
-			if(!is_string($sAssetPath))throw new \Exception('Asset path is not valid : '.gettype($sAssetPath));
-			if(!file_exists($sAssetPath))throw new \Exception('File not found : '.$sAssetPath);
+			if(!is_string($sAssetPath))throw new \InvalidArgumentException('Asset path is not valid : '.gettype($sAssetPath));
+			if(!file_exists($sAssetPath))throw new \InvalidArgumentException('File not found : '.$sAssetPath);
+
 			if(($sUrlRealPath = realpath(dirname($sAssetPath).DIRECTORY_SEPARATOR.$sUrl)) === false)$sUrlRealPath = $sUrl;
 		}
-		elseif(($sUrlRealPath = realpath(getcwd().DIRECTORY_SEPARATOR.$sUrl)) === false)throw new \Exception($sUrl.' is not a valid path');
+		else{
+			if(($sUrlRealPath = realpath(getcwd().DIRECTORY_SEPARATOR.$sUrl)) === false)throw new \LogicException($sUrl.' is not a valid path');
+			if($this->hasAssetsPath())$sUrlRealPath = str_ireplace($this->getAssetsPath(),'', $sUrlRealPath);
+		}
 		return str_ireplace(
 			$sUrl,
-			$this->configuration['cacheUrl'].str_ireplace(DIRECTORY_SEPARATOR, '/', ltrim(str_ireplace(getcwd(),'', $sUrlRealPath),DIRECTORY_SEPARATOR)).(empty($sArguments)?'':'?'.$sArguments),
+			$this->configuration['cacheUrl'].str_ireplace(DIRECTORY_SEPARATOR, '/',ltrim(str_ireplace(getcwd(),'', $sUrlRealPath),DIRECTORY_SEPARATOR)).(empty($sArguments)?'':'?'.$sArguments),
 			$aMatches[0]
 		);
 	}
