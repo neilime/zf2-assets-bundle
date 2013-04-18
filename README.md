@@ -8,16 +8,16 @@ Created by Neilime
 Introduction
 ------------
 
-AssetsBundle is a module for ZF2 allowing asset managment (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
+AssetsBundle is a module for ZF2 allowing asset management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
 This module manages the concept of the environment/production development.
 
-In developpement : 
- - Files are not bundling for easier debugging.
+In development : 
+ - Files are not bundled for easier debugging.
  - Less files are compiled when updated or if an "@import" inside is updated
  
 In production :
  
- - All files are bundling and cached one time only if needed.
+ - All files are bundled and cached once only if needed.
 
 P.S. Sorry for my english. If You wish to help me with this project or correct my english description - You are welcome :)
 
@@ -125,7 +125,7 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
 	 ->prependFile($this->basePath() . '/js/bootstrap.min.js')
      ->prependFile($this->basePath() . '/js/jquery.min.js')
      ```
-5. Save & Resfresh.
+5. Save & Refresh.
 
 # Configuration
 
@@ -201,8 +201,8 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
    	
 3. Custom Js :
 
-	This function allows you to dynamically include javascript files. For exemple, files specific to a user settings.
-	In this case, your controller that need these file have to extends "AssetsBundle\Mvc\ControllerAbstractActionController".
+	This function allows you to dynamically include javascript files. For exemple, files specific to user settings.
+	In this case, your controller that need these file have to extend "AssetsBundle\Mvc\ControllerAbstractActionController".
 	
 	Then create a jscustomAction function into your controller : 
 	
