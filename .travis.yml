@@ -1,9 +1,9 @@
 language: php
 
 php:
- - 5.3.3
- - 5.3
- - 5.4
+ - "5.3.3"
+ - "5.3"
+ - "5.4"
 
 before_install:
  - composer self-update
@@ -11,7 +11,3 @@ before_install:
 
 before_script:
  - cd tests
- - cp phpunit.xml.dist phpunit.xml
-
-script:
- - phpunit AssetsBundleTest
