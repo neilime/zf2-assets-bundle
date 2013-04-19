@@ -12,6 +12,9 @@
             "role": "Developer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/neilime/zf2-assets-bundle/issues"
+    },
     "repositories": [
         {
 	        "type": "vcs",
@@ -33,5 +36,10 @@
             "AssetsBundle": "src"
         },
         "classmap" : ["Module.php"]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
 }
