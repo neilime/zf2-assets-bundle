@@ -183,6 +183,8 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 	For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
 	but you can specify an absolute path or use the constants "@zfAssetsPath" and "@zfRootPath".
 	If you specify a directory, all files matching the asset type (css, less, js, media) will be included.
+	You can use php files as assets, there will be interpret.
+	
 	You can define an inclusion order like this :
 	
 	```php

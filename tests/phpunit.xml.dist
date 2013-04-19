@@ -9,6 +9,7 @@
     <testsuites>
         <testsuite name="src">
             <directory suffix=".php">./AssetsBundleTest/</directory>
+            <exclude>./AssetsBundleTest/_files/</exclude>
         </testsuite>
     </testsuites>
     <filter>

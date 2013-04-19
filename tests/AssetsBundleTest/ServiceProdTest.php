@@ -12,7 +12,10 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
 			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
 			'assets' => array(
-				'css' => array('css/test.css'),
+				'css' => array(
+					'css/test.css',
+					'css/css.php'
+				),
 				'less' => array('less/test.less'),
 				'js' => array('js/test.js'),
 				'index' => array(
@@ -116,22 +119,22 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 		//Css cache file
 		$this->assertFileExists($this->service->getCachePath().$sCssFile);
 		$this->assertEquals(
-			file_get_contents($this->service->getCachePath().$sCssFile),
-			file_get_contents($sCacheExpectedPath.'/'.$sCssFile)
+			file_get_contents($sCacheExpectedPath.'/'.$sCssFile),
+			file_get_contents($this->service->getCachePath().$sCssFile)
 		);
 
 		//Less cache file
 		$this->assertFileExists($this->service->getCachePath().$sLessFile);
 		$this->assertEquals(
-			file_get_contents($this->service->getCachePath().$sLessFile),
-			file_get_contents($sCacheExpectedPath.'/'.$sLessFile)
+			file_get_contents($sCacheExpectedPath.'/'.$sLessFile),
+			file_get_contents($this->service->getCachePath().$sLessFile)
 		);
 
 		//Js cache file
 		$this->assertFileExists($this->service->getCachePath().$sJsFile);
 		$this->assertEquals(
-			file_get_contents($this->service->getCachePath().$sJsFile),
-			file_get_contents($sCacheExpectedPath.'/'.$sJsFile)
+			file_get_contents($sCacheExpectedPath.'/'.$sJsFile),
+			file_get_contents($this->service->getCachePath().$sJsFile)
 		);
 
 		//Empty cache directory
@@ -161,15 +164,15 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 		//Css cache file
 		$this->assertFileExists($this->service->getCachePath().$sCssFile);
 		$this->assertEquals(
-			file_get_contents($this->service->getCachePath().$sCssFile),
-			file_get_contents($sCacheExpectedPath.'/'.$sCssFile)
+			file_get_contents($sCacheExpectedPath.'/'.$sCssFile),
+			file_get_contents($this->service->getCachePath().$sCssFile)
 		);
 
 		//Less cache file
 		$this->assertFileExists($this->service->getCachePath().'/'.$sLessFile);
 		$this->assertEquals(
-			file_get_contents($this->service->getCachePath().'/'.$sLessFile),
-			file_get_contents($sCacheExpectedPath.'/'.$sLessFile)
+			file_get_contents($sCacheExpectedPath.'/'.$sLessFile),
+			file_get_contents($this->service->getCachePath().'/'.$sLessFile)
 		);
 
 		//Media cache files

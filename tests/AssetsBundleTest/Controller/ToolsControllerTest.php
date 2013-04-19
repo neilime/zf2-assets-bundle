@@ -13,7 +13,10 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
 			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
 			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
 			'assets' => array(
-				'css' => array('css/test.css'),
+				'css' => array(
+					'css/test.css',
+					'css/css.php'
+				),
 				'less' => array('less/test.less'),
 				'js' => array('js/test.js'),
 				'index' => array(
@@ -103,23 +106,23 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
     		//Css cache files
     		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.css');
     		$this->assertEquals(
-    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.css'),
-    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.css')
+    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.css'),
+    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.css')
     		);
 
     		//Less cache files
     		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.less');
 
     		$this->assertEquals(
-    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.less'),
-    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.less')
+    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.less'),
+    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.less')
     		);
 
     		//Js cache files
     		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.js');
     		$this->assertEquals(
-    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.js'),
-    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.js')
+    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.js'),
+    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.js')
     		);
     	}
     }

@@ -341,6 +341,26 @@ class Service{
 	}
 
 	/**
+	 * Attempts to retrieve contents from asset file
+	 * @param string $sAssetPath
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
+	 * @return boolean|Ambigous <boolean, string>
+	 */
+	public function assetGetContents($sAssetPath){
+		if(!is_readable($sAssetPath))throw new \InvalidArgumentException('Asset path "'.$sAssetPath.'" is not readable');
+		if(strtolower(pathinfo($sAssetPath,PATHINFO_EXTENSION)) === 'php'){
+			ob_start();
+			if(false === include $sAssetPath)throw new \RuntimeException('Error appends while including asset file "'.$sAssetPath.'"');
+			return ob_get_clean();
+		}
+		elseif(($sAssetContents = file_get_contents($sAssetPath)))return $sAssetContents;
+		throw new \RuntimeException('Unable to retrieve asset contents from file "'.$sAssetPath.'"');
+
+	}
+
+
+	/**
 	 * Render Js and css assets
 	 * @return \AssetsBundle\Service\Service
 	 */
@@ -443,8 +463,7 @@ class Service{
 
 				//Rewrite urls for CSS files
 				if($sTypeAsset === self::ASSET_CSS && !preg_match('/\.less$/', $sAssetsPath)){
-					if(($sAssetContent = file_get_contents($sAssetsPath)) === false)throw new \Exception('Unable to get file contents : '.$sAssetsPath);
-
+					$sAssetContent = $this->assetGetContents($sAssetsPath);
 					$aRewriteUrlCallback = array($this,'rewriteUrl');
 					if(!file_put_contents($this->getCachePath().$sAssetRelativePath,preg_replace_callback(
 						'/url\(([^\)]+)\)/',
@@ -462,7 +481,7 @@ class Service{
 			}
 
 			//Production : optimize assets
-			if(($sAssetContent = file_get_contents($sAssetsPath)) === false)throw new \Exception('Unable to get file contents : '.$sAssetsPath);
+			$sAssetContent = $this->assetGetContents($sAssetsPath);
 
 			switch($sTypeAsset){
 				case self::ASSET_CSS:
@@ -525,7 +544,8 @@ class Service{
 				}
 				//If file is up to date, check if it doesn't contain @imports
 				else{
-					if(($sAssetContent = file_get_contents($sAssetsPath)) === false)throw new \Exception('Unable to get file content : '.$sAssetsPath);
+					$sAssetContent = $this->assetGetContents($sAssetsPath);
+
 					if(preg_match_all('/@import([^;]*);/', $sAssetContent, $aImports,PREG_PATTERN_ORDER)){
 						$sAssetDirPath = realpath(pathinfo($sAssetsPath,PATHINFO_DIRNAME)).DIRECTORY_SEPARATOR;
 						foreach($aImports[1] as $sImport){
