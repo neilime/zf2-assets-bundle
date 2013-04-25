@@ -7,8 +7,8 @@ $oXml = new SimpleXMLElement(file_get_contents($sInputFile));
 $iTotalElements = 0;
 $iCheckedElements = 0;
 foreach($oXml->xpath('//metrics') as $aMetric){
-	$iTotalElements += (int) $metric['elements'];
-	$iCheckedElements += (int) $metric['coveredelements'];
+	$iTotalElements += (int) $aMetric['elements'];
+	$iCheckedElements += (int) $aMetric['coveredelements'];
 }
 if(($iCoverage = ($iCheckedElements / $iTotalElements) * 100) < $iPercentage){
 	echo 'Code coverage is '.$iCoverage.'%, which is below the accepted '.$iPercentage.'%'.PHP_EOL;
