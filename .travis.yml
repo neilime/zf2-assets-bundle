@@ -11,3 +11,7 @@ before_install:
 
 before_script:
  - cd tests
+ 
+script:
+ - phpunit
+ - php ./coverage-checker.php ./clover.xml 100

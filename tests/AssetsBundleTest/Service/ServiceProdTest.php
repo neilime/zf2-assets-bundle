@@ -1,5 +1,5 @@
 <?php
-namespace AssetsBundleTest;
+namespace AssetsBundleTest\Service;
 class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @var array
@@ -8,9 +8,6 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 		'asset_bundle' => array(
 			'production' => true,
 			'recursiveSearch' => true,
-			'basePath' => '/',
-			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
-			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
 			'assets' => array(
 				'css' => array(
 					'css/test.css',
@@ -52,31 +49,35 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
     protected function setUp(){
-        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
-
-        $aConfiguration = $oServiceManager->get('Config');
-        unset($aConfiguration['asset_bundle']['assets']);
-
-        $this->configuration = \Zend\Stdlib\ArrayUtils::merge($aConfiguration,$this->configuration);
-        $bAllowOverride = $oServiceManager->getAllowOverride();
-        if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-        $oServiceManager->setService('Config',$this->configuration)->setAllowOverride($bAllowOverride);
-
-        //Define service
-        $oServiceFactory = new \AssetsBundle\Factory\ServiceFactory();
-        $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'index','action' => 'index'));
-        $this->service = $oServiceFactory->createService($oServiceManager)
-        ->setRenderer(new \Zend\View\Renderer\PhpRenderer())
-        ->setControllerName($this->routeMatch->getParam('controller'))
-        ->setActionName($this->routeMatch->getParam('action'));
+       $this->createService();
     }
 
-    public function testService(){
-    	//Test service instance
+    protected function createService(){
+    	$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+
+    	$aConfiguration = $oServiceManager->get('Config');
+    	unset($aConfiguration['asset_bundle']['assets']);
+
+    	$bAllowOverride = $oServiceManager->getAllowOverride();
+    	if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
+
+    	$oServiceManager->setService('Config',\Zend\Stdlib\ArrayUtils::merge($aConfiguration,$this->configuration))->setAllowOverride($bAllowOverride);
+
+    	//Define service
+    	$oServiceFactory = new \AssetsBundle\Factory\ServiceFactory();
+    	$this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'index','action' => 'index'));
+    	$this->service = $oServiceFactory->createService($oServiceManager)
+    	->setRenderer(new \Zend\View\Renderer\PhpRenderer())
+    	->setControllerName($this->routeMatch->getParam('controller'))
+    	->setActionName($this->routeMatch->getParam('action'));
+    }
+
+   	public function testService(){
+   		//Test service instance
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service);
 
     	//Test cache path
-    	$this->assertEquals(realpath(__DIR__.'/_files/cache').DIRECTORY_SEPARATOR, $this->service->getCachePath());
+    	$this->assertEquals(realpath(__DIR__.'/../_files/cache').DIRECTORY_SEPARATOR, $this->service->getCachePath());
 
     	//Test assets configuration
     	$this->assertTrue($this->service->controllerHasAssetConfiguration('index'));
@@ -100,11 +101,9 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
     }
 
     public function testRenderSimpleAssets(){
-		$sCacheExpectedPath = __DIR__.'/_files/prod-cache-expected';
-		$sCacheName = $this->service->getCacheFileName();
 
 		//Cache file name
-		$this->assertEquals($sCacheName, md5($this->routeMatch->getParam('controller').\AssetsBundle\Service\Service::NO_ACTION));
+		$this->assertEquals($sCacheName = $this->service->getCacheFileName(), md5($this->routeMatch->getParam('controller').\AssetsBundle\Service\Service::NO_ACTION));
 
 		$sCssFile = $sCacheName.'.css';
 		$sLessFile = $sCacheName.'.less';
@@ -116,34 +115,43 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
-		//Css cache file
-		$this->assertFileExists($this->service->getCachePath().$sCssFile);
-		$this->assertEquals(
-			file_get_contents($sCacheExpectedPath.'/'.$sCssFile),
-			file_get_contents($this->service->getCachePath().$sCssFile)
-		);
+		//Check assets content
+		$this->assertAssetCacheContent(array($sCssFile,$sLessFile,$sJsFile));
 
-		//Less cache file
-		$this->assertFileExists($this->service->getCachePath().$sLessFile);
-		$this->assertEquals(
-			file_get_contents($sCacheExpectedPath.'/'.$sLessFile),
-			file_get_contents($this->service->getCachePath().$sLessFile)
-		);
+		//Retrieve assets last modified date
+		$this->assertNotEquals($iLastModified = filemtime($this->service->getCachePath().$sCssFile),false);
 
-		//Js cache file
-		$this->assertFileExists($this->service->getCachePath().$sJsFile);
-		$this->assertEquals(
-			file_get_contents($sCacheExpectedPath.'/'.$sJsFile),
-			file_get_contents($this->service->getCachePath().$sJsFile)
-		);
+		sleep(1);
+
+		//Render assets
+		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
+
+		//Check if assets are not rendered again
+		$this->assertEquals($iLastModified,filemtime($this->service->getCachePath().$sCssFile));
+
+		//Remove js cache file
+		unlink($this->service->getCachePath().$sJsFile);
+
+		sleep(1);
+
+		//Render assets
+		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
+
+		//Check if assets has been rendered this time
+		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getCachePath().$sCssFile),false);
+		$this->assertGreaterThan($iLastModified,$iNewLastModified);
+
+		//Render assets
+		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
+
+		//Check if assets are not rendered again
+		$this->assertEquals($iLastModified = $iNewLastModified,filemtime($this->service->getCachePath().$sCssFile));
 
 		//Empty cache directory
 		$this->emptyCacheDirectory();
     }
 
 	public function testRenderAssetsWithMedias(){
-		$sCacheExpectedPath = __DIR__.'/_files/prod-cache-expected';
-
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName('test-media'));
 		$this->assertEquals('test-media', $this->service->getActionName());
 
@@ -154,6 +162,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 
 		$sCssFile = $sCacheName.'.css';
 		$sLessFile = $sCacheName.'.less';
+		$sJsFile = $sCacheName.'.js';
 
 		//Empty cache directory
 		$this->emptyCacheDirectory();
@@ -161,19 +170,8 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
-		//Css cache file
-		$this->assertFileExists($this->service->getCachePath().$sCssFile);
-		$this->assertEquals(
-			file_get_contents($sCacheExpectedPath.'/'.$sCssFile),
-			file_get_contents($this->service->getCachePath().$sCssFile)
-		);
-
-		//Less cache file
-		$this->assertFileExists($this->service->getCachePath().'/'.$sLessFile);
-		$this->assertEquals(
-			file_get_contents($sCacheExpectedPath.'/'.$sLessFile),
-			file_get_contents($this->service->getCachePath().'/'.$sLessFile)
-		);
+		//Check assets content
+		$this->assertAssetCacheContent(array($sCssFile,$sLessFile,$sJsFile));
 
 		//Media cache files
 
@@ -194,9 +192,9 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 		//Gd2 compression
 		if(function_exists('imagecreatefromstring')){
 			//Sizes
-			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.png'),filesize(__DIR__.'/_files/images/test-media.png'));
-			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.jpg'),filesize(__DIR__.'/_files/images/test-media.jpg'));
-			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.gif'),filesize(__DIR__.'/_files/images/test-media.gif'));
+			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.png'),filesize(__DIR__.'/../_files/images/test-media.png'));
+			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.jpg'),filesize(__DIR__.'/../_files/images/test-media.jpg'));
+			$this->assertGreaterThan(filesize($this->service->getCachePath().'/AssetsBundleTest/_files/images/test-media.gif'),filesize(__DIR__.'/../_files/images/test-media.gif'));
 		}
 
 		//Empty cache directory
@@ -204,17 +202,11 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
     }
 
     public function testRenderMixins(){
-    	$sCacheExpectedPath = __DIR__.'/_files/prod-cache-expected';
-
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName('test-mixins'));
     	$this->assertEquals('test-mixins', $this->service->getActionName());
 
     	//Test Cache file name
     	$this->assertEquals($this->service->getCacheFileName(), md5($this->routeMatch->getParam('controller').'test-mixins'));
-
-    	$sCacheName = $this->service->getCacheFileName();
-
-    	$sLessFile = $sCacheName.'.less';
 
     	//Empty cache directory
     	$this->emptyCacheDirectory();
@@ -222,16 +214,26 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
     	//Render assets
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
-    	//Less cache file
-    	$this->assertFileExists($this->service->getCachePath().$sLessFile);
-
-    	$this->assertEquals(
-    		file_get_contents($this->service->getCachePath().$sLessFile),
-    		file_get_contents($sCacheExpectedPath.'/'.$sLessFile)
-    	);
+    	//Check assets content
+    	$this->assertAssetCacheContent(array($this->service->getCacheFileName().'.less'));
 
     	//Empty cache directory
     	$this->emptyCacheDirectory();
+    }
+
+    /**
+     * @param array $aAssetsFiles
+     */
+    protected function assertAssetCacheContent(array $aAssetsFiles){
+    	$sCacheExpectedPath = __DIR__.'/../_files/prod-cache-expected';
+    	foreach($aAssetsFiles as $sAssetFile){
+    		$this->assertFileExists($this->service->getCachePath().$sAssetFile);
+    		$this->assertFileExists($sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile);
+    		$this->assertEquals(
+    				file_get_contents($sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile),
+    				file_get_contents($this->service->getCachePath().$sAssetFile)
+    		);
+    	}
     }
 
     protected function emptyCacheDirectory(){

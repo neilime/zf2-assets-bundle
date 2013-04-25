@@ -1,17 +1,18 @@
 <?php
 namespace AssetsBundleTest\Controller;
-use AssetsBundle\Controller\ToolsController;
+class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase{
+	/**
+	 * @var array
+	 */
+	protected $originalConfiguration;
 
-class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @var array
 	 */
 	private $configuration = array(
 		'asset_bundle' => array(
 			'production' => true,
-			'basePath' => '/',
-			'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
-			'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets',
+			'recursiveSearch' => true,
 			'assets' => array(
 				'css' => array(
 					'css/test.css',
@@ -40,56 +41,32 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
 	);
 
 	/**
-	 * @var \AssetsBundle\Controller\ToolsController
-	 */
-	protected $controller;
-
-	/**
-	 * @var \Zend\Http\Request
-	 */
-	protected $request;
-
-	/**
-	 * @var \Zend\Mvc\Router\RouteMatch
-	 */
-	protected $routeMatch;
-
-	/**
-	 * @var \Zend\Mvc\MvcEvent
-	 */
-	protected $event;
-
-	/**
 	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
-    protected function setUp(){
-        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+    public function setUp(){
+        $this->setApplicationConfig(\AssetsBundleTest\Bootstrap::getConfig());
+        parent::setUp();
 
-        $aConfiguration = $oServiceManager->get('Config');
+        $oServiceLocator = $this->getApplicationServiceLocator();
+
+        $aConfiguration = $this->originalConfiguration = $oServiceLocator->get('Config');
         unset($aConfiguration['asset_bundle']['assets']);
 
         $this->configuration = \Zend\Stdlib\ArrayUtils::merge($aConfiguration,$this->configuration);
-        $bAllowOverride = $oServiceManager->getAllowOverride();
-        if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-        $oServiceManager->setService('Config',$this->configuration)->setAllowOverride($bAllowOverride);
-
-        $this->controller = new \AssetsBundle\Controller\ToolsController();
-        $this->request = new \Zend\Http\Request();
-        $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'tools'));
-        $this->event = new \Zend\Mvc\MvcEvent();
-        $this->event
-        	->setRouter(\Zend\Mvc\Router\Http\TreeRouteStack::factory(isset($this->configuration['router'])?$this->configuration['router']:array()))
-        	->setRouteMatch($this->routeMatch);
-        $this->controller->setEvent($this->event);
-        $this->controller->setServiceLocator($oServiceManager);
+        $bAllowOverride = $oServiceLocator->getAllowOverride();
+        if(!$bAllowOverride)$oServiceLocator->setAllowOverride(true);
+        $oServiceLocator->setService('Config',$this->configuration)->setAllowOverride($bAllowOverride);
     }
 
-   	public function testRenderAssets(){
-    	$this->routeMatch->setParam('action', 'renderassets');
-    	$this->controller->dispatch($this->request);
-    	$this->assertEquals(200, $this->controller->getResponse()->getStatusCode());
+   	public function testRenderAssetsAction(){
+    	$this->dispatch('render');
+    	$this->assertResponseStatusCode(0);
+    	$this->assertModuleName('AssetsBundle');
+    	$this->assertControllerName('AssetsBundle\Controller\Tools');
+    	$this->assertControllerClass('ToolsController');
+    	$this->assertMatchedRouteName('render-assets');
 
-    	$oAssetsBundleService = $this->controller->getServiceLocator()->get('AssetsBundleService');
+    	$oAssetsBundleService = $this->getApplicationServiceLocator()->get('AssetsBundleService');
 
     	//Test service instance
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$oAssetsBundleService);
@@ -98,12 +75,14 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
 
     	//Test cache files
     	foreach(array(
-    		$oAssetsBundleService->getCacheFileName('index',\AssetsBundle\Service\Service::NO_ACTION),
-    		$oAssetsBundleService->getCacheFileName('index','test-media'),
-    		$oAssetsBundleService->getCacheFileName(\AssetsBundle\Service\Service::NO_CONTROLLER,\AssetsBundle\Service\Service::NO_ACTION),
+    		'index-no_action' => $oAssetsBundleService->getCacheFileName('index',\AssetsBundle\Service\Service::NO_ACTION),
+    		'index-test-media' => $oAssetsBundleService->getCacheFileName('index','test-media'),
+    		'index-test-mixins' => $oAssetsBundleService->getCacheFileName('index','test-mixins'),
+    		'no_controller-no_action' => $oAssetsBundleService->getCacheFileName(\AssetsBundle\Service\Service::NO_CONTROLLER,\AssetsBundle\Service\Service::NO_ACTION),
     	) as $sCacheFile){
 
     		//Css cache files
+    		$this->assertFileExists($sCacheExpectedPath.'/'.$sCacheFile.'.css');
     		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.css');
     		$this->assertEquals(
     			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.css'),
@@ -111,14 +90,15 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
     		);
 
     		//Less cache files
+    		$this->assertFileExists($sCacheExpectedPath.'/'.$sCacheFile.'.less');
     		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.less');
-
     		$this->assertEquals(
     			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.less'),
     			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.less')
     		);
 
     		//Js cache files
+    		$this->assertFileExists($sCacheExpectedPath.'/'.$sCacheFile.'.js');
     		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.js');
     		$this->assertEquals(
     			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.js'),
@@ -127,14 +107,42 @@ class ToolsControllerTest extends \PHPUnit_Framework_TestCase{
     	}
     }
 
-   	public function testEmptyCache(){
-    	$this->routeMatch->setParam('action', 'emptycache');
-    	$this->controller->dispatch($this->request);
-    	$this->assertEquals(200, $this->controller->getResponse()->getStatusCode());
+    public function testRenderAssetsWithoutConfiguration(){
+    	$oServiceLocator = $this->getApplicationServiceLocator();
 
-    	//Test cache directory has only .gitignore file
-		$aFiles = scandir(dirname(__DIR__).'/_files/cache');
-		$this->assertCount(3, $aFiles);
-		$this->assertContains('.gitignore', $aFiles);
+        $aConfiguration = $oServiceLocator->get('Config');
+        unset($aConfiguration['asset_bundle']);
+
+        $bAllowOverride = $oServiceLocator->getAllowOverride();
+        if(!$bAllowOverride)$oServiceLocator->setAllowOverride(true);
+        $oServiceLocator->setService('Config',$aConfiguration)->setAllowOverride($bAllowOverride);
+
+    	$this->dispatch('render');
+    	$this->assertResponseStatusCode(1);
+    	$this->assertModuleName('AssetsBundle');
+    	$this->assertControllerName('AssetsBundle\Controller\Tools');
+    	$this->assertControllerClass('ToolsController');
+    	$this->assertMatchedRouteName('render-assets');
+    }
+
+   	public function testEmptyCache(){
+   		$this->dispatch('empty');
+   		$this->assertResponseStatusCode(0);
+   		$this->assertModuleName('AssetsBundle');
+   		$this->assertControllerName('Assetsbundle\Controller\Tools');
+   		$this->assertControllerClass('ToolsController');
+   		$this->assertMatchedRouteName('empty-cache');
+
+   		//Test cache directory has only .gitignore file
+   		$aFiles = scandir(dirname(__DIR__).'/_files/cache');
+   		$this->assertCount(3, $aFiles);
+   		$this->assertContains('.gitignore', $aFiles);
+    }
+
+    public function tearDown(){
+    	$oServiceLocator = $this->getApplicationServiceLocator();
+    	$bAllowOverride = $oServiceLocator->getAllowOverride();
+    	if(!$bAllowOverride)$oServiceLocator->setAllowOverride(true);
+    	$oServiceLocator->setService('Config',$this->originalConfiguration)->setAllowOverride($bAllowOverride);
     }
 }

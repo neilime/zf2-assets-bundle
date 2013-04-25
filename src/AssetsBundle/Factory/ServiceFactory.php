@@ -3,8 +3,8 @@ namespace AssetsBundle\Factory;
 class ServiceFactory implements \Zend\ServiceManager\FactoryInterface{
 
 	/**
-	 * @param \Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator
 	 * @see \Zend\ServiceManager\FactoryInterface::createService()
+	 * @param \Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator
 	 * @throws \UnexpectedValueException
 	 * @return \AssetsBundle\Service\Service
 	 */

@@ -16,6 +16,12 @@ class Service{
 	protected $configuration;
 
 	/**
+	 * Clean assets configuration
+	 * @var array
+	 */
+	protected $assetsConfiguration;
+
+	/**
 	 * @var string
 	 */
 	protected $controllerName;
@@ -54,6 +60,9 @@ class Service{
 		if(!isset($aConfiguration['cachePath'],$aConfiguration['cacheUrl'],$aConfiguration['rendererToStrategy'],$aConfiguration['mediaExt']))throw new \InvalidArgumentException('Error in configuration');
 
 		//Check configuration values
+		if(!isset($aConfiguration['assets']))$aConfiguration['assets'] = array();
+		elseif(!is_array($aConfiguration['assets']))throw new \InvalidArgumentException('Assets configuration expects array, "'.$aConfiguration['assets'].'" given');
+
 		if(strpos($aConfiguration['cacheUrl'],'@zfBaseUrl') !== false){
 			if(!isset($aConfiguration['basePath']))throw new \InvalidArgumentException('Base path is undefined in configuration');
 			$aConfiguration['basePath'] = rtrim($aConfiguration['basePath'], '/');
@@ -63,22 +72,29 @@ class Service{
 		if(!is_dir($sCachePath = $this->getRealPath($aConfiguration['cachePath'])))throw new \InvalidArgumentException('"cachePath" config expects a valid directory path, "'.$aConfiguration['cachePath'].'" given');
 		else $aConfiguration['cachePath'] = $sCachePath.DIRECTORY_SEPARATOR;
 
-		if(isset($aConfiguration['assetsPath'])){
-			if(is_dir($sAssetsPath = $this->getRealPath($aConfiguration['assetsPath'])))$aConfiguration['assetsPath'] = $sAssetsPath.DIRECTORY_SEPARATOR;
-			else throw new \InvalidArgumentException('"assetsPath" config expects a valid directory path, "'.$aConfiguration['assetsPath'].'" given');
-		}
-		else $aConfiguration['assetsPath'] = null;
-
 		if(!is_array($aConfiguration['rendererToStrategy']))throw new \InvalidArgumentException('rendererToStrategy is not an array : '.gettype($aConfiguration['rendererToStrategy']));
 		if(!is_array($aConfiguration['mediaExt']))throw new \InvalidArgumentException('mediaExt is not an array : '.gettype($aConfiguration['mediaExt']));
 
+		if(isset($aConfiguration['assetsPath'])){
+			$sAssetsPath = $aConfiguration['assetsPath'];
+			unset($aConfiguration['assetsPath']);
+		}
+
 		$this->configuration = $aConfiguration;
+		$this->setAssetsPath(isset($sAssetsPath)?$sAssetsPath:null);
 
 		//Check filters
 		if(isset($aConfiguration['filters'])){
 			if(!is_array($aConfiguration['filters']))throw new \InvalidArgumentException('Filters configuration expects array, "'.gettype($aConfiguration['filters']).'" given');
 			$this->setFilters($aConfiguration['filters']);
 		}
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isProduction(){
+		return !!$this->configuration['production'];
 	}
 
 	/**
@@ -162,7 +178,7 @@ class Service{
 	 */
 	public function getFilter($sFilterType){
 		if(!self::assetTypeExists($sFilterType) && !in_array($sFilterType,$this->configuration['mediaExt']))throw new \InvalidArgumentException(sprintf(
-			'Filter\'s type is not valid expects "%s" or "%s", "%s" given',
+			'Filter\'s type expects "%s", "%s" given',
 			join(', ',array_merge(array(self::ASSET_CSS,self::ASSET_JS,self::ASSET_LESS),$this->configuration['mediaExt'])),
 			$sFilterType
 		));
@@ -177,7 +193,7 @@ class Service{
 	 */
 	public function hasFilter($sFilterType){
 		if(!self::assetTypeExists($sFilterType) && !in_array($sFilterType,$this->configuration['mediaExt']))throw new \InvalidArgumentException(sprintf(
-			'Filter\'s type is not valid expects "%s" or "%s", "%s" given',
+			'Filter\'s type is not valid expects "%s", "%s" given',
 			join(', ',array_merge(array(self::ASSET_CSS,self::ASSET_JS,self::ASSET_LESS),$this->configuration['mediaExt'])),
 			$sFilterType
 		));
@@ -185,13 +201,24 @@ class Service{
 	}
 
 	/**
-	 *
 	 * @throws \LogicException
 	 * @return string
 	 */
 	public function getCachePath(){
 		if(!isset($this->configuration['cachePath']))throw new \LogicException('"cachePath" config is undefined');
 		return $this->configuration['cachePath'];
+	}
+
+	/**
+	 * @param string|null $sAssetsPath
+	 * @throws \InvalidArgumentException
+	 * @return \AssetsBundle\Service\Service
+	 */
+	public function setAssetsPath($sAssetsPath = null){
+		if(is_null($sAssetsPath))$this->configuration['assetsPath'] = null;
+		elseif(is_dir($sAssetsRealPath = $this->getRealPath($sAssetsPath)))$this->configuration['assetsPath'] = $sAssetsRealPath.DIRECTORY_SEPARATOR;
+		else throw new \InvalidArgumentException('"assetsPath" config expects a valid directory path, "'.$sAssetsRealPath.'" given');
+		return $this;
 	}
 
 	/**
@@ -214,6 +241,7 @@ class Service{
 	 * @return array
 	 */
 	public function getAssetsConfiguration(){
+		if(isset($this->assetsConfiguration[$this->getControllerName().'-'.$this->getActionName()]))return $this->assetsConfiguration[$this->getControllerName().'-'.$this->getActionName()];
 		$aAssets = array(
 			self::ASSET_CSS => array(),
 			self::ASSET_LESS => array(),
@@ -245,7 +273,46 @@ class Service{
 				if(!empty($aActionConfiguration[self::ASSET_MEDIA]) && is_array($aActionConfiguration[self::ASSET_MEDIA]))$aAssets[self::ASSET_MEDIA] = array_merge($aAssets[self::ASSET_MEDIA],$aActionConfiguration[self::ASSET_MEDIA]);
 			}
 		}
-		return $aAssets;
+
+		$aAssets[self::ASSET_MEDIA] = $this->getValidAssets(array_unique($aAssets[self::ASSET_MEDIA]),self::ASSET_MEDIA);
+		$aAssets[self::ASSET_LESS] = $this->getValidAssets(array_unique($aAssets[self::ASSET_LESS]),self::ASSET_LESS);
+		$aAssets[self::ASSET_CSS] = $this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_CSS])),self::ASSET_CSS);
+		$aAssets[self::ASSET_JS] = $this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_JS])),self::ASSET_JS);
+
+		return $this->assetsConfiguration[$this->getControllerName().'-'.$this->getActionName()] = $aAssets;
+	}
+
+	/**
+	 * Check if assets configuration is the same as last saved configuration
+	 * @throws \RuntimeException
+	 * @return boolean
+	 */
+	public function assetsConfigurationHasChanged(array $aAssetsType = null){
+		$aAssetsType = $aAssetsType?array_unique($aAssetsType):array(self::ASSET_CSS,self::ASSET_LESS,self::ASSET_JS,self::ASSET_MEDIA);
+
+		//Configuration file
+		if(($sConfigContent = file_get_contents($sConfigFilePath = $this->getConfigurationFilePath())) === false)throw new \RuntimeException('Unable to get in file content from file "'.$sConfigFilePath.'"');
+		if(
+			($aConfig = @json_decode($sConfigContent,true)) === false
+			|| !is_array($aConfig)
+		)throw new \RuntimeException('Configuration is not a well formed json array "'.$sConfigContent.'"');
+
+		//Get assets configuration
+		$aAssets = $this->getAssetsConfiguration();
+
+		//Check if configuration has changed for each type of asset
+		foreach($aAssetsType as $sAssetType){
+			if(!$this->assetTypeExists($sAssetType))throw new \InvalidArgumentException('Asset type "'.$sAssetType.'" does not exist');
+			if(empty($aAssets[$sAssetType]) && !empty($aConfig[$sAssetType]))return true;
+			elseif(!empty($aAssets[$sAssetType])){
+				if(empty($aConfig[$sAssetType]))return true;
+				elseif(
+					array_diff($aAssets[$sAssetType], $aConfig[$sAssetType])
+					|| array_diff($aConfig[$sAssetType],$aAssets[$sAssetType])
+				)return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -287,6 +354,17 @@ class Service{
 		);
 	}
 
+
+	/**
+	 * Retrieve configuration file name for given controller name and action name
+	 * @param string $sControllerName : (optionnal)
+	 * @param string $sActionName : (optionnal)
+	 * @return string
+	 */
+	public function getConfigurationFilePath($sControllerName = null, $sActionName = null){
+		return $this->getCachePath().$this->getCacheFileName($sControllerName,$sActionName).'.conf';
+	}
+
 	/**
 	 * Retrieve assets realpath
 	 * @param array $aAssets
@@ -298,7 +376,7 @@ class Service{
 		if(!self::assetTypeExists($sTypeAsset))throw new \Exception('Asset\'s type is undefined : '.$sTypeAsset);
 		$aReturn = array();
 		foreach($aAssets as $sAssetsPath){
-			if(!($sRealAssetsPath =  $this->getRealPath($sAssetsPath)))throw new \Exception('Asset file not found : '.$sAssetsPath);
+			if(!($sRealAssetsPath =  $this->getRealPath($sAssetsPath)))throw new \InvalidArgumentException('Asset\'s file "'.$sAssetsPath.'" does not exist');
 			if(is_dir($sRealAssetsPath))$aReturn = array_merge($aReturn,$this->getAssetsFromDirectory($sRealAssetsPath, $sTypeAsset));
 			else $aReturn[] = $sRealAssetsPath;
 		}
@@ -349,66 +427,74 @@ class Service{
 	 */
 	public function assetGetContents($sAssetPath){
 		if(!is_readable($sAssetPath))throw new \InvalidArgumentException('Asset path "'.$sAssetPath.'" is not readable');
-		if(strtolower(pathinfo($sAssetPath,PATHINFO_EXTENSION)) === 'php'){
+		elseif(strtolower(pathinfo($sAssetPath,PATHINFO_EXTENSION)) === 'php'){
 			ob_start();
 			if(false === include $sAssetPath)throw new \RuntimeException('Error appends while including asset file "'.$sAssetPath.'"');
-			return ob_get_clean();
+			$sAssetContents = ob_get_clean();
 		}
-		elseif(($sAssetContents = file_get_contents($sAssetPath)))return $sAssetContents;
-		throw new \RuntimeException('Unable to retrieve asset contents from file "'.$sAssetPath.'"');
+		elseif(($sAssetContents = file_get_contents($sAssetPath)) === false)throw new \RuntimeException('Unable to retrieve asset contents from file "'.$sAssetPath.'"');
+		return $sAssetContents;
+
 
 	}
 
-
 	/**
-	 * Render Js and css assets
+	 * Render assets
+	 * @throws \RuntimeException
 	 * @return \AssetsBundle\Service\Service
 	 */
 	public function renderAssets(){
-		//Retreive cache file name
+		//Retrieve cache file name
 		$sCacheName = $this->getCacheFileName();
 
-		//Production : check already cached files
-		if($this->configuration['production']){
-			$sCssCacheFile = $sCacheName.'.'.self::ASSET_CSS;
-			$sJsCacheFile = $sCacheName.'.'.self::ASSET_JS;
+		//Production : check if cache files exist
+		$sJsCacheFile = $sCacheName.'.'.self::ASSET_JS;
+		$sCssCacheFile = $sCacheName.'.'.self::ASSET_CSS;
+		if(
+			$this->isProduction()
+			&& $this->getRealPath($this->getCachePath().$sCssCacheFile)
+			&& $this->getRealPath($this->getCachePath().$sJsCacheFile)
+		)return $this->displayAssets(array(
+			self::ASSET_CSS => $sCssCacheFile,
+			self::ASSET_JS => $sJsCacheFile,
+		));
 
-			//Assets are already cache
-			if($this->getRealPath($this->getCachePath().$sCssCacheFile)
-			&& $this->getRealPath($this->getCachePath().$sJsCacheFile))return $this->displayAssets(array(
-				self::ASSET_CSS => $sCssCacheFile,
-				self::ASSET_JS => $sJsCacheFile,
-			));
-		}
 
-		$aAssets = $this->getAssetsConfiguration();
+		$aAssetsToRender = $aAssetsConfiguration = $this->getAssetsConfiguration();
 
 		//Manage images caching
-		$this->cacheMedias($this->getValidAssets(array_unique($aAssets[self::ASSET_MEDIA]),self::ASSET_MEDIA));
+		$this->cacheMedias($aAssetsToRender[self::ASSET_MEDIA]);
 
 		//Manage less files caching
-		$aAssets[self::ASSET_CSS][] = $this->cacheLess($this->getValidAssets(array_unique($aAssets[self::ASSET_LESS]),self::ASSET_LESS),$sCacheName);
+		$aAssetsToRender[self::ASSET_CSS][] = $this->cacheLess($aAssetsToRender[self::ASSET_LESS],$sCacheName);
 
 		//Manage css & js file caching
-		return $this->displayAssets(array_unique(array_filter(array_merge(
-			$this->cacheAssets($this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_CSS])),self::ASSET_CSS),self::ASSET_CSS,$sCacheName),
-			$this->cacheAssets($this->getValidAssets(array_unique(array_filter($aAssets[self::ASSET_JS])),self::ASSET_JS),self::ASSET_JS,$sCacheName)
+		$this->displayAssets(array_unique(array_filter(array_merge(
+			$this->cacheAssets(array_filter($aAssetsToRender[self::ASSET_CSS]),self::ASSET_CSS,$sCacheName),
+			$this->cacheAssets($aAssetsToRender[self::ASSET_JS],self::ASSET_JS,$sCacheName)
 		))));
+
+		//Write assets configuration into configuration file
+		if(!file_put_contents($sConfigFilePath = $this->getConfigurationFilePath(),json_encode($aAssetsConfiguration)))throw new \RuntimeException('Unable to write in file "'.$sConfigFilePath.'"');
+
+		return $this;
 	}
 
 	/**
 	 * Optimise and cache "Css" & "Js" assets
-	 * @param array $aAssetsPath : file to cache
+	 * @param array $aAssetsPath : files to cache
 	 * @param string $sTypeAsset : asset's type to cache (self::ASSET_CSS or self::ASSET_JS)
 	 * @param string $sCacheName : cache file name
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
+	 * @throws \LogicException
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	private function cacheAssets(array $aAssetsPath,$sTypeAsset,$sCacheName){
-		if(!is_array($aAssetsPath))throw new \Exception('AssetsPath is not an array : '.gettype($aAssetsPath));
-		if(!self::assetTypeExists($sTypeAsset))throw new \Exception('Asset\'s type is undefined : '.$sTypeAsset);
-		if(!is_string($sCacheName))throw new \Exception('CacheName expects string, '.gettype($aAssetsPath).' given');
-		if(empty($sCacheName))throw new \Exception('CacheName is empty');
+		if(!is_array($aAssetsPath))throw new \InvalidArgumentException('AssetsPath expects an array, "'.gettype($aAssetsPath).'" given');
+		if(!self::assetTypeExists($sTypeAsset))throw new \InvalidArgumentException('Asset\'s type "'.$sTypeAsset.'" is undefined');
+		if(!is_string($sCacheName))throw new \InvalidArgumentException('CacheName expects string, "'.gettype($aAssetsPath).'" given');
+		if(empty($sCacheName))throw new \InvalidArgumentException('CacheName is empty');
 
 		$aReturn = array();
 
@@ -422,29 +508,13 @@ class Service{
 		//Allows service store existing assets
 		$aAssetsExists = array();
 
-		//Production : check if cache file is up to date
-		if($this->configuration['production']
-		&& file_exists($this->getCachePath().$sCacheFile)
-		&& ($iLastModifiedCache = filemtime($this->getCachePath().$sCacheFile)) !== false){
-			$bCacheOk = true;
-			foreach($aAssetsPath as $sAssetsPath){
-				if(!($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
-				$aAssetsExists[] = $sAssetsPath;
-				if(($iLastModified = filemtime($sAssetsPath)) === false || $iLastModified > $iLastModifiedCache){
-					$bCacheOk = false;
-					break;
-				}
-			}
-			if($bCacheOk)return array($sCacheFile);
-		}
-
 		$bHasContent = false;
 		foreach($aAssetsPath as $sAssetsPath){
 			//Absolute path
-			if(!in_array($sAssetsPath,$aAssetsExists) && !($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
+			if(!in_array($sAssetsPath,$aAssetsExists) && !($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \LogicException('File "'.$sAssetsPath.'" does not exist');
 
 			//Developpement : don't optimize assets
-			if(!$this->configuration['production']){
+			if(!$this->isProduction()){
 				//If asset is already a cache file
 				if(strpos($sAssetsPath,$this->getCachePath()) !== false)$sAssetRelativePath = str_ireplace(
 					array($this->getCachePath(),'.less'),
@@ -471,7 +541,7 @@ class Service{
 							return call_user_func($aRewriteUrlCallback,$aMatches,$sAssetsPath);
 						},
 						$sAssetContent
-					)))throw new \Exception('Unable to write in file : '.$this->getCachePath().$sAssetRelativePath);
+					)))throw new \RuntimeException('Unable to write in file : '.$this->getCachePath().$sAssetRelativePath);
 
 				}
 				else $this->copyIntoCache($sAssetsPath, $this->getCachePath().$sAssetRelativePath);
@@ -512,31 +582,36 @@ class Service{
 			$sCacheContent = trim($sCacheContent);
 			if(empty($sCacheContent))continue;
 			else $bHasContent = true;
-			if(!file_put_contents($this->getCachePath().$sCacheFile,$sCacheContent.PHP_EOL,FILE_APPEND))throw new \Exception('Unable to write in file : '.$this->getCachePath().$sCacheFile);
+			if(!file_put_contents($this->getCachePath().$sCacheFile,$sCacheContent.PHP_EOL,FILE_APPEND))throw new \RuntimeException('Unable to write in file : '.$this->getCachePath().$sCacheFile);
 		}
-		return $this->configuration['production']?($bHasContent?array($sCacheFile):array()):$aCacheAssets;
+		return $this->isProduction()?($bHasContent?array($sCacheFile):array()):$aCacheAssets;
 	}
 
 	/**
 	 * Optimise and cache "Less" assets
 	 * @param array $aAssetsPath : assets to cache
 	 * @param string $sCacheName : cache file name
-	 * @throws \Exception
-	 * @return \AssetsBundle\Service\Service
+	 * @throws \LogicException
+	 * @return string|null
 	 */
 	private function cacheLess(array $aAssetsPath, $sCacheName){
 		//Create global import file for Less assets
 		$sCacheFile = $sCacheName.'.'.self::ASSET_LESS;
-		if(!$this->configuration['production'])$sCacheFile = 'dev_'.$sCacheFile;
+		if(!$this->isProduction())$sCacheFile = 'dev_'.$sCacheFile;
 
 		//Allows service to store existing assets
 		$aAssetsExists = array();
 
 		//Check if cache file has to been updated
-		if(file_exists($this->getCachePath().$sCacheFile) && ($iLastModifiedCache = filemtime($this->getCachePath().$sCacheFile)) !== false){
+		if(
+			is_readable($this->getConfigurationFilePath())
+			&& !$this->assetsConfigurationHasChanged(array(self::ASSET_LESS))
+			&& file_exists($this->getCachePath().$sCacheFile)
+			&& ($iLastModifiedCache = filemtime($this->getCachePath().$sCacheFile)) !== false
+		){
 			$bCacheOk = true;
 			foreach($aAssetsPath as $sAssetsPath){
-				if(!($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
+				if(!($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \LogicException('File "'.$sAssetsPath.'" does not exist');
 				$aAssetsExists[] = $sAssetsPath;
 				if(($iLastModified = filemtime($sAssetsPath)) === false || $iLastModified > $iLastModifiedCache){
 					$bCacheOk = false;
@@ -554,7 +629,7 @@ class Service{
 							if(
 								!($sImportPath = $this->getRealPath($sImport))
 								&& !file_exists($sImportPath = $sAssetDirPath.$sImport) //Relative path to less file directory
-							)throw new \Exception('File not found : '.$sImportPath);
+							)throw new \LogicException('File "'.$sImportPath.'" referenced in "'.$sAssetsPath.' does not exists');
 							if(($iLastModified = filemtime($sImportPath)) === false || $iLastModified > $iLastModifiedCache){
 								$bCacheOk = false;
 								break;
@@ -566,10 +641,11 @@ class Service{
 			}
 			if($bCacheOk)return $this->getCachePath().$sCacheFile;
 		}
+
 		$sImportContent = '';
 		foreach($aAssetsPath as $sAssetsPath){
 			//Absolute path
-			if(!in_array($sAssetsPath,$aAssetsExists) && !($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \Exception('File not found : '.$sAssetsPath);
+			if(!in_array($sAssetsPath,$aAssetsExists) && !($sAssetsPath = $this->getRealPath($sAssetsPath)))throw new \LogicException('File "'.$sAssetsPath.'" does not exist');
 			$sImportContent .= '@import "'.str_ireplace(getcwd(), '', $sAssetsPath).'";'.PHP_EOL;
 		};
 		$sImportContent = trim($sImportContent);
@@ -590,7 +666,7 @@ class Service{
 			$sImportContent
 		);
 
-		if(!file_put_contents($sCacheFile = $this->getCachePath().$sCacheFile,$sImportContent))throw new \Exception('Unable to write in file : '.$sCacheFile);
+		if(!file_put_contents($sCacheFile = $this->getCachePath().$sCacheFile,$sImportContent))throw new \LogicException('Unable to write in file "'.$sCacheFile.'"');
 		return $sCacheFile;
 	}
 
@@ -655,9 +731,11 @@ class Service{
 	/**
 	 * Check if asset's type is valid
 	 * @param string $sAssetType
+	 * @throws \InvalidArgumentException
 	 * @return boolean
 	 */
 	private static function assetTypeExists($sAssetType){
+		if(!is_string($sAssetType))throw new \InvalidArgumentException('Asset type expects string, "'.gettype($sAssetType).'" given');
 		switch($sAssetType){
 			case self::ASSET_CSS:
 			case self::ASSET_LESS:
@@ -670,30 +748,31 @@ class Service{
 	}
 
 	/**
-	 * Check if a file is already cached and if it's not outdated
+	 * Check if a file is already cached and if it is up to date
 	 * @param string $sFilePath
 	 * @param string $sCachePath
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 * @return boolean
 	 */
 	private function hasToCache($sFilePath,$sCachePath){
-		if(!file_exists($sFilePath))throw new \Exception('File not found : '.$sFilePath);
+		if(!file_exists($sFilePath))throw new \InvalidArgumentException('File "'.$sFilePath.'" does not exist');
 		return
-		!file_exists($sCachePath)
-		|| ($iLastModified = filemtime($sFilePath)) === false
-		|| ($iLastModifiedCompare = filemtime($sCachePath)) === false
-		|| $iLastModified > $iLastModifiedCompare;
+			!file_exists($sCachePath)
+			|| ($iLastModified = filemtime($sFilePath)) === false
+			|| ($iLastModifiedCompare = filemtime($sCachePath)) === false
+			|| $iLastModified > $iLastModifiedCompare;
 	}
 
 	/**
 	 * Allows service to move a file in cache directory, keeping the same directory structure
 	 * @param string $sFilePath
 	 * @param string $sCachePath
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
 	 * @return \AssetsBundle\Service\Service
 	 */
 	private function copyIntoCache($sFilePath,$sCachePath){
-		if(!file_exists($sFilePath))throw new \Exception('File not found : '.$sFilePath);
+		if(!file_exists($sFilePath))\InvalidArgumentException('File "'.$sFilePath.'" does not exist');
 		if(!$this->hasToCache($sFilePath,$sCachePath))return $this;
 		//Create directory structure if it doesn't exist in cache
 		if(!is_dir($sDirPath = pathinfo($sCachePath,PATHINFO_DIRNAME))){
@@ -702,21 +781,21 @@ class Service{
 			foreach(explode(DIRECTORY_SEPARATOR,str_ireplace($sCurrentPath,'',$sDirPath)) as $sDirPathPart){
 				//Create current directory if it doesn't exist
 				if(!is_dir($sCurrentPath = $sCurrentPath.DIRECTORY_SEPARATOR.$sDirPathPart)
-				&& !mkdir($sCurrentPath))throw new \Exception('Unable to create directory : '.$sCurrentPath);
+				&& !mkdir($sCurrentPath))throw new \RuntimeException('Unable to create directory : '.$sCurrentPath);
 			}
 		}
-		if(!copy($sFilePath,$sCachePath) || !file_exists($sCachePath))throw new \Exception('Unable to create file : '.$sCachePath);
+		if(!copy($sFilePath,$sCachePath) || !file_exists($sCachePath))throw new \RuntimeException('Unable to create file : '.$sCachePath);
 		return $this;
 	}
 
 	/**
 	 * Try to retrieve realpath for a given path (manage @zfRootPath & @zfAssetsPath)
 	 * @param string $sPath
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 * @return string|boolean : real path or false if not found
 	 */
-	private function getRealPath($sPath){
-		if(empty($sPath) || !is_string($sPath))throw new \Exception('Path is not valid : '.gettype($sPath));
+	public function getRealPath($sPath){
+		if(empty($sPath) || !is_string($sPath))throw new \InvalidArgumentException('Path is not valid : '.gettype($sPath));
 
 		//If path is "/", assets path is prefered
 		if($sPath === '/' && $this->hasAssetsPath())return $this->getAssetsPath();
@@ -751,14 +830,13 @@ class Service{
 
 		//Split arguments
 		if(strpos($sUrl,'?') !== false)list($sUrl, $sArguments) = explode('?', $sUrl);
+
 		if(strpos($sUrl,'@zfAssetsPath') !== false){
 			$sUrlRealPath = str_ireplace('@zfAssetsPath',$this->getAssetsPath(),$sUrl);
 			if(!file_exists($sUrlRealPath))throw new \LogicException('File not found : '.$sUrlRealPath);
 			$sUrlRealPath = realpath($sUrlRealPath);
-			return str_ireplace($sUrl,str_ireplace($this->getAssetsPath(), $this->configuration['cacheUrl'], $sUrlRealPath).(empty($sArguments)?'':'?'.$sArguments),$aMatches[0]);
 		}
-
-		if(!is_null($sAssetPath)){
+		elseif(!is_null($sAssetPath)){
 			if(!is_string($sAssetPath))throw new \InvalidArgumentException('Asset path is not valid : '.gettype($sAssetPath));
 			if(!file_exists($sAssetPath))throw new \InvalidArgumentException('File not found : '.$sAssetPath);
 
@@ -768,9 +846,14 @@ class Service{
 			if(($sUrlRealPath = realpath(getcwd().DIRECTORY_SEPARATOR.$sUrl)) === false)throw new \LogicException($sUrl.' is not a valid path');
 			if($this->hasAssetsPath())$sUrlRealPath = str_ireplace($this->getAssetsPath(),'', $sUrlRealPath);
 		}
+
 		return str_ireplace(
 			$sUrl,
-			$this->configuration['cacheUrl'].str_ireplace(DIRECTORY_SEPARATOR, '/',ltrim(str_ireplace(getcwd(),'', $sUrlRealPath),DIRECTORY_SEPARATOR)).(empty($sArguments)?'':'?'.$sArguments),
+			$this->configuration['cacheUrl'].str_ireplace(DIRECTORY_SEPARATOR, '/',ltrim(str_ireplace(
+					array($this->getAssetsPath(),getcwd()),
+					'',
+					$sUrlRealPath
+			),DIRECTORY_SEPARATOR)).(empty($sArguments)?'':'?'.$sArguments),
 			$aMatches[0]
 		);
 	}

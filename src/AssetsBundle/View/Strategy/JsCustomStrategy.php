@@ -1,7 +1,12 @@
 <?php
 namespace AssetsBundle\View\Strategy;
-class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface{
+class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface, \Zend\ServiceManager\ServiceLocatorAwareInterface{
 	const ACTION_JS_CUSTOM = 'jscustom';
+
+	/**
+	 * @var \Zend\ServiceManager\ServiceLocatorInterface
+	 */
+	protected $serviceLocator;
 
 	/**
      * @var \Zend\Stdlib\CallbackHandler[]
@@ -9,21 +14,46 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface{
     protected $listeners = array();
 
     /**
-     * @var \AssetsBundle\View\Renderer\JsRenderer
+     * @var \AssetsBundle\View\Renderer\JsCustomRenderer
      */
     protected $renderer;
 
     /**
-     * @var string
+     * @param \AssetsBundle\View\Renderer\JsCustomRenderer $oRenderer
+     * @return \AssetsBundle\View\Strategy\JsCustomStrategy
      */
-    protected $action;
+    public function setRenderer(\AssetsBundle\View\Renderer\JsCustomRenderer $oRenderer){
+		$this->renderer = $oRenderer;
+		return $this;
+    }
 
     /**
-     * Constructor
-     * @param \AssetsBundle\View\Renderer\JsRenderer $oRenderer
+     * @throws \LogicException
+     * @return \AssetsBundle\View\Renderer\JsCustomRenderer
      */
-    public function __construct(\AssetsBundle\View\Renderer\JsRenderer $oRenderer){
-    	$this->renderer = $oRenderer;
+    public function getRenderer(){
+    	if($this->renderer instanceof \AssetsBundle\View\Renderer\JsCustomRenderer)return $this->renderer;
+    	throw new \LogicException('Renderer is undefined');
+    }
+
+    /**
+     * Set service locator
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator
+     * @return \AssetsBundle\View\Strategy\JsCustomStrategy
+     */
+    public function setServiceLocator(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator){
+    	$this->serviceLocator = $oServiceLocator;
+    	return $this;
+    }
+
+    /**
+     * Get service locator
+     * @throws \LogicException
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+    */
+    public function getServiceLocator(){
+    	if($this->serviceLocator instanceof \Zend\ServiceManager\ServiceLocatorInterface)return $this->serviceLocator;
+    	throw new \LogicException('Service locator is undefined');
     }
 
     /**
@@ -35,7 +65,6 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface{
     public function attach(\Zend\EventManager\EventManagerInterface $oEvents, $iPriority = 1){
     	$this->listeners[] = $oEvents->attach(\Zend\View\ViewEvent::EVENT_RENDERER, array($this, 'selectRenderer'), $iPriority);
         $this->listeners[] = $oEvents->attach(\Zend\View\ViewEvent::EVENT_RESPONSE, array($this, 'injectResponse'), $iPriority);
-        $this->listeners['Application'] = \Zend\EventManager\StaticEventManager::getInstance()->attach('Application',\Zend\Mvc\MvcEvent::EVENT_DISPATCH,array($this,'setAction'));
     }
 
     /**
@@ -44,45 +73,44 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface{
      * @return void
      */
     public function detach(\Zend\EventManager\EventManagerInterface $oEvents){
-        if(\Zend\EventManager\StaticEventManager::getInstance()->detach('Application', $this->listeners['Application']))unset($this->listeners['Application']);
         foreach($this->listeners as $iIndex => $oListener){
             if($oEvents->detach($oListener))unset($this->listeners[$iIndex]);
         }
     }
 
     /**
-     * Set current MVC action
-     * @param \Zend\Mvc\MvcEvent $oEvent
-     * @return \AssetsBundle\View\Strategy\JsCustomStrategy
-     */
-    public function setAction(\Zend\Mvc\MvcEvent $oEvent){
-    	$this->action = $oEvent->getRouteMatch()->getParam('action');
-    	return $this;
-    }
-
-
-    /**
-     * Check if JsRenderer has to be used (MVC action = self::ACTION_JS_CUSTOM)
+     * Check if JsCustomStrategy has to be used (MVC action = self::ACTION_JS_CUSTOM)
      * @param \Zend\View\ViewEvent $oEvent
-     * @throws \Exception
+     * @throws \LogicException
      * @return void|\AssetsBundle\View\Renderer\JsRenderer
      */
     public function selectRenderer(\Zend\View\ViewEvent $oEvent){
-		if($this->action === self::ACTION_JS_CUSTOM){
-			$aJsFiles = $oEvent->getModel()->getVariable('jsFiles');
-			if(!is_array($aJsFiles))throw new \Exception('JsFiles is not an array : '.gettype($aJsFiles));
-			return $this->renderer;
+    	if(
+    		$this->getServiceLocator()->has('router')
+    		&& ($oRouter = $this->getServiceLocator()->get('router')) instanceof \Zend\Mvc\Router\RouteInterface
+    		&& ($oRequest = $oEvent->getRequest()) instanceof \Zend\Http\Request
+    		&& ($oRouteMatch = $oRouter->match($oRequest)) instanceof \Zend\Mvc\Router\RouteMatch
+    		&& $oRouteMatch->getParam('action') === self::ACTION_JS_CUSTOM
+    	){
+    		if(!($oViewModel = $oEvent->getModel()) instanceof \Zend\View\Model\ViewModel)throw new \UnexpectedValueException(sprintf(
+				'Event model expects an instance of "Zend\View\Model\ViewModel", "%s" given',
+				is_object($oViewModel)?get_class($oViewModel):gettype($oViewModel)
+			));
+			elseif(($oException = $oViewModel->getVariable('exception')) instanceof \Exception)throw new \RuntimeException('An exception occured in view model', $oException->getCode(), $oException);
+
+    		$aJsCustomFiles = $oEvent->getModel()->getVariable('jsCustomFiles');
+    		if(!is_array($aJsCustomFiles))throw new \LogicException('jsCustomFiles expects an array, "'.gettype($aJsCustomFiles).'" given');
+			return $this->getRenderer();
 		}
-    	return;
     }
 
     /**
      * @param \Zend\View\ViewEvent $oEvent
-     * @throws \Exception
+     * @throws \UnexpectedValueException
      */
     public function injectResponse(\Zend\View\ViewEvent $oEvent){
-    	if($oEvent->getRenderer() !== $this->renderer)return;
-    	if(!is_string($sResult = $oEvent->getResult()))throw new \Exception('Result is not a string : '.gettype($sResult));
+    	if($oEvent->getRenderer() !== $this->getRenderer())return;
+    	if(!is_string($sResult = $oEvent->getResult()))throw new \UnexpectedValueException('Result expects string, "'.gettype($sResult).'" given');
         //Inject javascript in the response
         $oEvent->getResponse()->setContent($sResult)->getHeaders()->addHeaderLine('content-type','text/javascript');
     }

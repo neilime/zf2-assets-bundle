@@ -22,14 +22,16 @@ abstract class AbstractImageFilter implements \AssetsBundle\Service\Filter\Filte
 
 	/**
 	 * @param callable $sImageFunction
-	 * @throws \LogicException
+	 * @throws \InvalidArgumentException
+	 * @return \AssetsBundle\Service\Filter\AbstractImageFilter
 	 */
 	public function setImageFunction($sImageFunction){
-		//Check if imageFunction function exists
-		if(!is_callable($sImageFunction))throw new \LogicException(sprintf(
+		//Check if imageFunction function is callable
+		if(!is_callable($sImageFunction))throw new \InvalidArgumentException(sprintf(
 			'Image function expects callable value, "%s" given',
 			is_scalar($sImageFunction)?$sImageFunction:(is_object($sImageFunction)?get_class($sImageFunction):gettype($sImageFunction))
 		));
+		$this->imageFunction = $sImageFunction;
 		return $this;
 	}
 

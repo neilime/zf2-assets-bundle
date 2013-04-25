@@ -1,14 +1,17 @@
 <?php
 namespace AssetsBundle\Controller;
 class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
-    public function renderassetsAction(){
-        $oServiceLocator = $this->getServiceLocator();
-        try{
-            $oModuleManager = $oServiceLocator->get('modulemanager');
-        }
-        catch(\Zend\ServiceManager\Exception\ServiceNotFoundException $oException){
-            return $this->sendError('Cannot get Zend\ModuleManager\ModuleManager instance. Is your application using it?');
-        }
+    public function renderAssetsAction(){
+    	//Retrieve configuration
+    	$aConfiguration = $this->getServiceLocator()->get('Config');
+    	if(!isset($aConfiguration['asset_bundle'])){
+    		$oView = new \Zend\View\Model\ConsoleModel();
+    		$oView->setErrorLevel(1);
+    		return $oView->setResult('AssetsBundle configuration is undefined'.PHP_EOL);
+    	}
+    	$aConfiguration = $aConfiguration['asset_bundle'];
+
+    	$oServiceLocator = $this->getServiceLocator();
         $oConsole = $this->getServiceLocator()->get('console');
 
         //Initialize AssetsBundle service
@@ -17,11 +20,6 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
 
         //Empty cache directory
         $this->emptycacheAction();
-
-        //Retrieve configuration
-        $aConfiguration = $this->getServiceLocator()->get('config');
-        if(!isset($aConfiguration['asset_bundle'])) return $this->sendError('AssetsBundle configuration is undefined');
-       	$aConfiguration  = $aConfiguration['asset_bundle'];
 
        	$oConsole->writeLine('');
        	$oConsole->writeLine('Start rendering assets : ', \Zend\Console\ColorInterface::GREEN);
@@ -83,15 +81,5 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
 			elseif($oFileinfo->getBasename() !== '.gitignore')unlink($oFileinfo->getRealPath());
 		}
 		$oConsole = $this->getServiceLocator()->get('console')->writeLine('Cache directory is empty', \Zend\Console\ColorInterface::GREEN);
-    }
-
-    /**
-     * @param string $sMessage
-     * @return \Zend\View\Model\ConsoleModel
-     */
-    private function sendError($sMessage){
-        $oView = new \Zend\View\Model\ConsoleModel();
-        $oView->setErrorLevel(2);
-        return $oView->setResult($sMessage.PHP_EOL);
     }
 }

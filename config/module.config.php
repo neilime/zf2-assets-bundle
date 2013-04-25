@@ -30,7 +30,7 @@ return array(
 						'route'    => 'render',
 						'defaults' => array(
 							'controller' => 'AssetsBundle\Controller\Tools',
-							'action' => 'renderassets'
+							'action' => 'renderAssets'
 						)
 					)
 				),
@@ -39,7 +39,7 @@ return array(
 						'route'    => 'empty',
 						'defaults' => array(
 							'controller' => 'AssetsBundle\Controller\Tools',
-							'action' => 'emptycache'
+							'action' => 'emptyCache'
 						)
 					)
 				)
@@ -55,9 +55,8 @@ return array(
         	'JpegFilter' => '\AssetsBundle\Factory\Filter\JpegFilterFactory',
         	'GifFilter' => '\AssetsBundle\Factory\Filter\GifFilterFactory',
         	'AssetsBundleService' => '\AssetsBundle\Factory\ServiceFactory',
-            'ViewJsCustomStrategy' => function(){
-            	return new \AssetsBundle\View\Strategy\JsCustomStrategy(new \AssetsBundle\View\Renderer\JsRenderer());
-            }
+            'ViewJsCustomStrategy' => '\AssetsBundle\Factory\ViewHelperStrategyFactory',
+        	'JsCustomRenderer' => '\AssetsBundle\Factory\JsCustomRendererFactory'
         )
     ),
     'asset_bundle' => array(

@@ -12,5 +12,5 @@
 
 #test-media{
 	font-family: FontOne;
-	background-image : url('../../images/test-media.gif');
+	background-image : url('@zfAssetsPath/../images/test-media-css.gif');
 }

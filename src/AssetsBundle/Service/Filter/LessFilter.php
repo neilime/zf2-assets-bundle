@@ -16,7 +16,7 @@ class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	 * @param array $aConfiguration
 	 * @throws \Exception
 	 */
-	public function __construct(array $aConfiguration){
+	public function __construct(array $aConfiguration = null){
 		//Check configuration entries
 		if(isset($aConfiguration['assetsPath']))$this->setAssetsPath($aConfiguration['assetsPath']);
 
@@ -41,15 +41,15 @@ class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	/**
 	 * @param string $sAssetsPath
 	 * @throws \InvalidArgumentException
-	 * @throws \Exception
 	 * @return \AssetsBundle\Service\Filter\LessFilter
 	 */
 	public function setAssetsPath($sAssetsPath){
 		if(!is_string($sAssetsPath))throw new \InvalidArgumentException('Assets path expects string, "'.gettype($sAssetsPath).'" given');
-		if(is_dir($sAssetsPath = $this->getRealPath($sAssetsPath)))$sAssetsPath .= DIRECTORY_SEPARATOR;
-		else throw new \Exception('Assets path "'.$sAssetsPath.'"is not a valid directory');
-		$this->assetsPath = $sAssetsPath;
-		return $this;
+		if(is_dir($sAssetsRealPath = $this->getRealPath($sAssetsPath))){
+			$this->assetsPath = $sAssetsRealPath.DIRECTORY_SEPARATOR;
+			return $this;
+		}
+		throw new \InvalidArgumentException('Assets path "'.$sAssetsPath.'" is not a valid directory');
 	}
 
 	/**
