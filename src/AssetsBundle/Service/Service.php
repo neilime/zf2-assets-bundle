@@ -850,9 +850,9 @@ class Service{
 		return str_ireplace(
 			$sUrl,
 			$this->configuration['cacheUrl'].str_ireplace(DIRECTORY_SEPARATOR, '/',ltrim(str_ireplace(
-					array($this->getAssetsPath(),getcwd()),
-					'',
-					$sUrlRealPath
+				$this->hasAssetsPath()?array($this->getAssetsPath(),getcwd()):getcwd(),
+				'',
+				$sUrlRealPath
 			),DIRECTORY_SEPARATOR)).(empty($sArguments)?'':'?'.$sArguments),
 			$aMatches[0]
 		);
