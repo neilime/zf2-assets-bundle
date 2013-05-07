@@ -108,8 +108,7 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     	$this->assertControllerName('AssetsBundleTest\Controller\Test');
     	$this->assertControllerClass('TestController');
     	$this->assertMatchedRouteName('jscustom/definition');
-    	file_put_contents(dirname(__DIR__).'/_files/prod-cache-expected/jscustom.js',
-    	$this->getResponse()->getContent());
+
     	$this->assertResponseHeaderContains('content-type','text/javascript');
     	$this->assertEquals(
     		file_get_contents(dirname(__DIR__).'/_files/prod-cache-expected/jscustom.js'),
