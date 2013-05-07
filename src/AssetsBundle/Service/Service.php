@@ -709,7 +709,7 @@ class Service{
 	 * @return \AssetsBundle\Service\Service
 	 */
 	public function displayAssets(array $aAssets){
-		if(!array_key_exists($sRendererName = get_class($this->getRenderer()), $this->configuration['rendererToStrategy']))throw new \Exception(\Exception::ERREUR_TYPE_ENTITE);
+		if(!array_key_exists($sRendererName = get_class($this->getRenderer()), $this->configuration['rendererToStrategy']))throw new \InvalidArgumentException('There is no registered strategy for renderer "'.$sRendererName.'"');
 		if(!isset($this->strategy[$sRendererName])) {
 			$sStrategyClass = $this->configuration['rendererToStrategy'][$sRendererName];
 			if(!class_exists($sStrategyClass, true))throw new \Exception('Strategy Class not found : '.$sStrategyClass);
