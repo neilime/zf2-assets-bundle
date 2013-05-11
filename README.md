@@ -4,6 +4,8 @@ AssetsBundle, v1.0
 [![Build Status](https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master)](https://travis-ci.org/neilime/zf2-assets-bundle)
 ![Code coverage](https://raw.github.com/zf2-boiler-app/app-test/master/ressources/100%25-code-coverage.png "100% code coverage")
 
+NOTE : If you want to contribute don't hesitate, I'll review any PR.
+
 Introduction
 ------------
 
@@ -17,8 +19,6 @@ In development :
 In production :
  
  - All files are bundled and cached once only if needed.
-
-P.S. Sorry for my english. If You wish to help me with this project or correct my english description - You are welcome :)
 
 Requirements
 ------------
