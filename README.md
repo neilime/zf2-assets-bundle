@@ -2,8 +2,7 @@ AssetsBundle, v1.0
 =======
 
 [![Build Status](https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master)](https://travis-ci.org/neilime/zf2-assets-bundle)
-
-_100% Code Coverage_
+![Code coverage](https://raw.github.com/zf2-boiler-app/app-test/master/ressources/100%25-code-coverage.png "100% code coverage")
 
 Introduction
 ------------
