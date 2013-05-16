@@ -18,6 +18,14 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
         $oAssetsBundleService = $oServiceLocator->get('AssetsBundleService')
         ->setRenderer(new \Zend\View\Renderer\PhpRenderer());
 
+        //Start process
+
+        $oConsole->writeLine('');
+        $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::GRAY);
+        $oConsole->writeLine('Render all assets for '.($oAssetsBundleService->isProduction()?'production':'development'), \Zend\Console\ColorInterface::GREEN);
+        $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::GRAY);
+        $oConsole->writeLine('');
+
         //Empty cache directory
         $this->emptycacheAction();
 
