@@ -54,7 +54,6 @@ class JsCustomRendererTest extends \PHPUnit_Framework_TestCase{
 
 		//Reset singleton
 		\Zend\EventManager\StaticEventManager::resetInstance();
-		\Zend\View\Helper\Placeholder\Registry::unsetRegistry();
 
 		//Do not cache module config on testing environment
 		$aApplicationConfig = \AssetsBundleTest\Bootstrap::getConfig();

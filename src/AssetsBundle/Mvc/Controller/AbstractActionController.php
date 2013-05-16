@@ -17,7 +17,19 @@ abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractAct
 			elseif($aJsFiles = $this->jsCustomAction($this->params('action'))){
 				//Check js files
 				foreach($aJsFiles as &$sJsFile){
-					if($sJsFilePath = $oAssetsBundleService->getRealPath($sJsFile))$sJsFile = $sJsFilePath;
+					if($sJsFilePath = $oAssetsBundleService->getRealPath($sJsFile)){
+						//Retrieve js file relative path
+						$sJsFileRelativePath = $oAssetsBundleService->getAssetRelativePath($sJsFilePath);
+
+						//Copy js file into cache
+						$oAssetsBundleService->copyIntoCache($sJsFilePath, $oAssetsBundleService->getCachePath().$sJsFileRelativePath);
+
+						//Define last modified
+						$iLastModified = file_exists($sAbsolutePath = $oAssetsBundleService->getCachePath().DIRECTORY_SEPARATOR.$sJsFileRelativePath)?filemtime($sAbsolutePath):time();
+
+						//Define js file relative url
+						$sJsFile = $oAssetsBundleService->getCacheUrl().$sJsFileRelativePath.(strpos($sJsFileRelativePath, '?')?'&':'?').($iLastModified?:time());
+					}
 					else throw new \LogicException('File "'.$sJsFile.'" does not exist');
 				}
 				$this->layout()->jsCustomFiles = array_merge(

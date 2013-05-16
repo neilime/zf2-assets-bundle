@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Code Coverage for C:\Users\emilien\workspace-zf2\zf2-assets-bundle\src\AssetsBundle/Factory/Filter/JpegFilterFactory.php</title>
+  <title>Code Coverage for C:\Users\emilien\workspace-zf2\zf2-assets-bundle\src\AssetsBundle/Factory/JsCustomStrategyFactory.php</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -19,8 +19,7 @@
       <ul class="breadcrumb">
         <li><a href="index.html">C:\Users\emilien\workspace-zf2\zf2-assets-bundle\src\AssetsBundle</a> <span class="divider">/</span></li>
         <li><a href="Factory.html">Factory</a> <span class="divider">/</span></li>
-        <li><a href="Factory_Filter.html">Filter</a> <span class="divider">/</span></li>
-        <li class="active">JpegFilterFactory.php</li>
+        <li class="active">JsCustomStrategyFactory.php</li>
 
       </ul>
      </div>
@@ -62,11 +61,11 @@
        </div>
 </td>
       <td class="success small"><div align="right">100.00%</div></td>
-      <td class="success small"><div align="right">1&nbsp;/&nbsp;1</div></td>
+      <td class="success small"><div align="right">2&nbsp;/&nbsp;2</div></td>
      </tr>
 
      <tr>
-      <td class="success">JpegFilterFactory</td>
+      <td class="success">JsCustomStrategyFactory</td>
       <td class="success big">       <div class="progress progress-success" style="width: 100px;">
         <div class="bar" style="width: 100.00%;"></div>
        </div>
@@ -85,7 +84,7 @@
        </div>
 </td>
       <td class="success small"><div align="right">100.00%</div></td>
-      <td class="success small"><div align="right">1&nbsp;/&nbsp;1</div></td>
+      <td class="success small"><div align="right">2&nbsp;/&nbsp;2</div></td>
      </tr>
 
      <tr>
@@ -102,7 +101,7 @@
        </div>
 </td>
       <td class="success small"><div align="right">100.00%</div></td>
-      <td class="success small"><div align="right">1&nbsp;/&nbsp;1</div></td>
+      <td class="success small"><div align="right">2&nbsp;/&nbsp;2</div></td>
      </tr>
 
 
@@ -111,17 +110,18 @@
    <table class="table table-borderless table-condensed">
     <tbody>
      <tr><td><div align="right"><a name="1"></a><a href="#1">1</a></div></td><td class="codeLine">&lt;?php</td></tr>
-     <tr><td><div align="right"><a name="2"></a><a href="#2">2</a></div></td><td class="codeLine">namespace AssetsBundle\Factory\Filter;</td></tr>
-     <tr><td><div align="right"><a name="3"></a><a href="#3">3</a></div></td><td class="codeLine">class JpegFilterFactory implements \Zend\ServiceManager\FactoryInterface{</td></tr>
+     <tr><td><div align="right"><a name="2"></a><a href="#2">2</a></div></td><td class="codeLine">namespace AssetsBundle\Factory;</td></tr>
+     <tr><td><div align="right"><a name="3"></a><a href="#3">3</a></div></td><td class="codeLine">class JsCustomStrategyFactory implements \Zend\ServiceManager\FactoryInterface{</td></tr>
      <tr><td><div align="right"><a name="4"></a><a href="#4">4</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="5"></a><a href="#5">5</a></div></td><td class="codeLine">    /**</td></tr>
-     <tr><td><div align="right"><a name="6"></a><a href="#6">6</a></div></td><td class="codeLine">     * @param \Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator</td></tr>
-     <tr><td><div align="right"><a name="7"></a><a href="#7">7</a></div></td><td class="codeLine">     * @see \Zend\ServiceManager\FactoryInterface::createService()</td></tr>
-     <tr><td><div align="right"><a name="8"></a><a href="#8">8</a></div></td><td class="codeLine">     * @return \AssetsBundle\Service\Filter\PngFilter</td></tr>
+     <tr><td><div align="right"><a name="6"></a><a href="#6">6</a></div></td><td class="codeLine">     * @see \Zend\ServiceManager\FactoryInterface::createService()</td></tr>
+     <tr><td><div align="right"><a name="7"></a><a href="#7">7</a></div></td><td class="codeLine">     * @param \Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator</td></tr>
+     <tr><td><div align="right"><a name="8"></a><a href="#8">8</a></div></td><td class="codeLine">     * @return \AssetsBundle\View\Strategy\JsCustomStrategy</td></tr>
      <tr><td><div align="right"><a name="9"></a><a href="#9">9</a></div></td><td class="codeLine">     */</td></tr>
      <tr><td><div align="right"><a name="10"></a><a href="#10">10</a></div></td><td class="codeLine">    public function createService(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator){</td></tr>
-     <tr class="success popin" data-title="8 tests cover line 11" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testTestActionInProduction&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testTestActionInDevelopment&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testFileErrorActionInDevelopment&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testJsCustomAction&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\ToolsControllerTest::testRenderAssetsAction&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\ToolsControllerTest::testEmptyCache&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Factory\ServiceFactoryTest::testCreateServiceWithoutBasePath&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\View\Strategy\JsCustomRendererTest::testSelectRendererWithWrongModel&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="11"></a><a href="#11">11</a></div></td><td class="codeLine">        return new \AssetsBundle\Service\Filter\JpegFilter();</td></tr>
-     <tr><td><div align="right"><a name="12"></a><a href="#12">12</a></div></td><td class="codeLine">    }</td></tr>
+     <tr class="success popin" data-title="8 tests cover line 11" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testTestActionInProduction&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testTestActionInDevelopment&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testFileErrorActionInDevelopment&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testJsCustomAction&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\ToolsControllerTest::testRenderAssetsAction&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\ToolsControllerTest::testRenderAssetsWithoutConfiguration&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\ToolsControllerTest::testEmptyCache&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\View\Strategy\JsCustomRendererTest::testSelectRendererWithWrongModel&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="11"></a><a href="#11">11</a></div></td><td class="codeLine">        $oJsCustomStrategy = new \AssetsBundle\View\Strategy\JsCustomStrategy();</td></tr>
+     <tr class="success popin" data-title="8 tests cover line 12" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testTestActionInProduction&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testTestActionInDevelopment&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testFileErrorActionInDevelopment&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\JsCustomControllerTest::testJsCustomAction&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\ToolsControllerTest::testRenderAssetsAction&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\ToolsControllerTest::testRenderAssetsWithoutConfiguration&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\Controller\ToolsControllerTest::testEmptyCache&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;AssetsBundleTest\View\Strategy\JsCustomRendererTest::testSelectRendererWithWrongModel&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="12"></a><a href="#12">12</a></div></td><td class="codeLine">        return $oJsCustomStrategy-&gt;setServiceLocator($oServiceLocator)-&gt;setRenderer($oServiceLocator-&gt;get('JsCustomRenderer'));</td></tr>
+     <tr><td><div align="right"><a name="13"></a><a href="#13">13</a></div></td><td class="codeLine">    }</td></tr>
 
     </tbody>
    </table>

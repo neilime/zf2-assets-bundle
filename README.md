@@ -204,46 +204,42 @@ If you specify a directory, all files matching the asset type (css, less, js, me
 3. Custom Js :
 
 	This function allows you to dynamically include javascript files. For exemple, files specific to user settings.
-	In this case, your controller that need these file have to extend "AssetsBundle\Mvc\ControllerAbstractActionController".
+	In this case, your controller that need these file have to extend `AssetsBundle\Mvc\Controller\AbstractActionController`.
+	
+	__Attention !__ Jscustom process does not cache javascript, due to performance reasons
 	
 	Then create a jscustomAction function into your controller : 
 	
 	```php
-	<?php
 	public function jscustomAction($sAction = null){
-    	$aConfiguration = $this->getServiceLocator()->get('config');
-    	if(!isset($aConfiguration['asset_bundle']))throw new \Exception('AssetBundle config is not defined');
-    	if(empty($sAction)){
-    		//Test if you are in production
-    		if(!$aConfiguration['asset_bundle']['production'])throw new \Exception('action must be defined in development mode');
-    		$sAction = $this->params('js_action');
-    		if(empty($sAction))throw new \Exception('Action is not defined');
-    		$bReturnFiles = false;
-    	}
-    	else $bReturnFiles = true;
-    	$aJsFiles = array();
+		//Check params, it's not mandatory
+		if(empty($sAction)){
+			$sAction = $this->params('js_action');
+			if(empty($sAction))throw new \InvalidArgumentException('Action param is empty');
+		}
 
-    	switch($sAction){
-    		case 'application':
-				//Here you can specify js files to include
-				$aJsFiles[] = 'js/dynamicFile.js';
-    			break;
-    	}
-    	if($bReturnFiles)return $aJsFiles;
-    	else{
-    		$this->layout()->jsFiles = $aJsFiles;
-    		return false;
-    	}
-    }
-	```
+		$aJsFiles = array();
+		switch(strtolower($sAction)){
+			case 'myActionName':
+				//Put here all js files needed for "myActionName" action
+				$aJsFiles[] = 'js/test.js';
+				$aJsFiles[] = 'js/test.php';
+				break;
+		}
+		return $aJsFiles;
+	}
+	```	
 
 	Edit layout file:
 		
 	```php
 	//Into head
-	if(!empty($this->jsCustomUrl))$this->plugin('InlineScript')->appendFile($this->jsCustomUrl.'?'.time());//Set time() force browser not to cache file, it's not mandatory
+	
+	//Production case
+	if(!empty($this->jsCustomUrl))$this->plugin('InlineScript')->appendFile($this->jsCustomUrl.'?'.time()); //Set time() force browser not to cache file, it's not mandatory
+	//Development case
 	elseif(is_array($this->jsCustomFiles))foreach($this->jsCustomFiles as $sJsCustomFile){
-		$this->plugin('InlineScript')->appendFile($sJsCustomFile.'?'.time());//Set time() force browser not to cache file, it's not mandatory
+		$this->plugin('InlineScript')->appendFile($sJsCustomFile);
 	}
 	```
 	
