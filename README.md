@@ -183,7 +183,23 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 but you can specify an absolute path or use the constants "@zfAssetsPath" and "@zfRootPath".
 If you specify a directory, all files matching the asset type (css, less, js, media) will be included.
 	
-- You can use `php` files as assets, there will be interpret.
+- You can use `.php` files as assets, there will be interpret.
+
+- You can use url for `js` and `css` assets :
+
+	```php
+	<?php
+	return array(
+		//...
+    	'assets' => array(
+			'js' => array('http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'),
+			//...
+    	)    			
+    	//...
+    );
+    ```
+    
+    This example includes `Mootools` from _Google Hosted Libraries_
 	
 - You can define an inclusion order like this :
 	

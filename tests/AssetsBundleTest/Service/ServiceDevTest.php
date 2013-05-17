@@ -28,6 +28,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 							'less/test-mixins.less',
 							'less/test-mixins-use.less'
 						)
+					),
+					'test-assets-from-url' => array(
+						'js' => array(
+							'http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'
+						),
+						'css' => array(
+							'http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css'
+						)
 					)
 				)
 			)
@@ -209,6 +217,21 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		$this->emptyCacheDirectory();
     }
 
+    public function testRenderTestAssetsFromUrl(){
+    	//Change action name
+    	$this->routeMatch->setParam('action','test-assets-from-url');
+    	$this->service->setActionName($this->routeMatch->getParam('action'));
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+
+    	//Render assets
+    	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+    }
+
    /**
      * @expectedException InvalidArgumentException
      */
@@ -224,7 +247,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     	$this->service->hasFilter('wrong');
     }
 
-    public function testRenderWithoutAssestPath(){
+    public function testRenderWithoutAssetsPath(){
 
     	//Change assets config
     	$this->createService(array('css' => array(

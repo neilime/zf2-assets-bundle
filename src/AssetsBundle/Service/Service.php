@@ -385,7 +385,18 @@ class Service{
 		if(!self::assetTypeExists($sTypeAsset))throw new \InvalidArgumentException('Asset\'s type is undefined : '.$sTypeAsset);
 		$aReturn = array();
 		foreach($aAssets as $sAssetPath){
-			if(!($sRealAssetsPath =  $this->getRealPath($sAssetPath)))throw new \InvalidArgumentException('Asset\'s file "'.$sAssetPath.'" does not exist');
+
+			//Attempt to retrieve asset's real path
+			if(!($sRealAssetsPath =  $this->getRealPath($sAssetPath))){
+				if(strpos($sAssetPath, '://') === false)throw new \InvalidArgumentException('Asset\'s file "'.$sAssetPath.'" does not exist');
+				elseif($sTypeAsset === self::ASSET_LESS)throw new \InvalidArgumentException('Less assets does not support urls, "'.$sAssetPath.'" given');
+
+				if(($oFileHandle = @fopen($sAssetPath, 'r')) === false)throw new \RuntimeException('Unable to retrieve asset contents from url "'.$sAssetPath.'"');
+				fclose($oFileHandle);
+				$sRealAssetsPath = $sAssetPath;
+			}
+
+			//Asset path is a directory
 			if(is_dir($sRealAssetsPath))$aReturn = array_merge($aReturn,$this->getAssetsFromDirectory($sRealAssetsPath, $sTypeAsset));
 			else $aReturn[] = $sRealAssetsPath;
 		}
@@ -435,7 +446,15 @@ class Service{
 	 * @return boolean|Ambigous <boolean, string>
 	 */
 	public function assetGetContents($sAssetPath){
-		if(!is_readable($sAssetPath))throw new \InvalidArgumentException('Asset path "'.$sAssetPath.'" is not readable');
+		if(!is_readable($sAssetPath)){
+			if(($oFileHandle = @fopen($sAssetPath, 'r')) === false)throw new \InvalidArgumentException('Asset\'s file "'.$sAssetPath.'" does not exist');
+			$sAssetContents = '';
+			while(($sContent = fgets($oFileHandle)) !== false) {
+				$sAssetContents .= $sContent.PHP_EOL;
+			}
+			if(!feof($oFileHandle))throw new \RuntimeException('Unable to retrieve asset contents from file "'.$sAssetPath.'"');
+			fclose($oFileHandle);
+		}
 		elseif(strtolower(pathinfo($sAssetPath,PATHINFO_EXTENSION)) === 'php'){
 			ob_start();
 			if(false === include $sAssetPath)throw new \RuntimeException('Error appends while including asset file "'.$sAssetPath.'"');
@@ -538,40 +557,47 @@ class Service{
 		$sCacheFile = $sCacheName.'.'.$sTypeAsset;
 		$aCacheAssets = array();
 
-		//Allows service store existing assets
-		$aAssetsExists = array();
-
 		$bHasContent = false;
 		foreach($aAssetsPath as $sAssetPath){
-			//Absolute path
-			if(!in_array($sAssetPath,$aAssetsExists) && !($sAssetPath = $this->getRealPath($sAssetPath)))throw new \LogicException('File "'.$sAssetPath.'" does not exist');
 
 			//Developpement : don't optimize assets
 			if(!$this->isProduction()){
 
-				$sAssetRelativePath = $this->getAssetRelativePath($sAssetPath);
+				if($sAssetRealPath = $this->getRealPath($sAssetPath)){
+					$sAssetRelativePath = $this->getAssetRelativePath($sAssetRealPath);
 
-				//Rewrite urls for CSS files
-				if($sTypeAsset === self::ASSET_CSS && !preg_match('/\.less$/', $sAssetPath)){
-					$sAssetContent = $this->assetGetContents($sAssetPath);
-					$aRewriteUrlCallback = array($this,'rewriteUrl');
-					if(!file_put_contents($this->getCachePath().$sAssetRelativePath,preg_replace_callback(
-						'/url\(([^\)]+)\)/',
-						function($aMatches) use($aRewriteUrlCallback,$sAssetPath){
-							return call_user_func($aRewriteUrlCallback,$aMatches,$sAssetPath);
-						},
-						$sAssetContent
-					)))throw new \RuntimeException('Unable to write in file : '.$this->getCachePath().$sAssetRelativePath);
+					//Rewrite urls for CSS files
+					if($sTypeAsset === self::ASSET_CSS && !preg_match('/\.less$/', $sAssetRealPath)){
+						$sAssetContent = $this->assetGetContents($sAssetRealPath);
+						$aRewriteUrlCallback = array($this,'rewriteUrl');
+						if(!file_put_contents($this->getCachePath().$sAssetRelativePath,preg_replace_callback(
+								'/url\(([^\)]+)\)/',
+								function($aMatches) use($aRewriteUrlCallback,$sAssetRealPath){
+									return call_user_func($aRewriteUrlCallback,$aMatches,$sAssetRealPath);
+								},
+								$sAssetContent
+						)))throw new \RuntimeException('Unable to write in file : '.$this->getCachePath().$sAssetRelativePath);
 
+					}
+					else $this->copyIntoCache($sAssetRealPath, $this->getCachePath().$sAssetRelativePath);
+					$aCacheAssets[] = $sAssetRelativePath;
 				}
-				else $this->copyIntoCache($sAssetPath, $this->getCachePath().$sAssetRelativePath);
-
-				$aCacheAssets[] = $sAssetRelativePath;
+				else{
+					if(($oFileHandle = @fopen($sAssetPath, 'r')) === false)throw new \LogicException('Asset\'s file "'.$sAssetPath.'" does not exist');
+					fclose($oFileHandle);
+					$aCacheAssets[] = $sAssetPath;
+				}
 				continue;
 			}
 
+			//Absolute path
+			if(!($sAssetRealPath = $this->getRealPath($sAssetPath))){
+				if(($oFileHandle = @fopen($sAssetPath, 'r')) === false)throw new \LogicException('Asset\'s file "'.$sAssetPath.'" does not exist');
+				$sAssetRealPath = $sAssetPath;
+			}
+
 			//Production : optimize assets
-			$sAssetContent = $this->assetGetContents($sAssetPath);
+			$sAssetContent = $this->assetGetContents($sAssetRealPath);
 
 			switch($sTypeAsset){
 				case self::ASSET_CSS:
@@ -579,12 +605,12 @@ class Service{
 					set_time_limit(30);
 
 					//Rewrite urls for CSS files
-					if(!preg_match('/\.less$/', $sAssetPath)){
+					if(!preg_match('/\.less$/', $sAssetRealPath)){
 						$aRewriteUrlCallback = array($this,'rewriteUrl');
 						$sAssetContent = preg_replace_callback(
 							'/url\(([^\)]+)\)/',
-							function($aMatches) use($aRewriteUrlCallback,$sAssetPath){
-								return call_user_func($aRewriteUrlCallback,$aMatches,$sAssetPath);
+							function($aMatches) use($aRewriteUrlCallback,$sAssetRealPath){
+								return call_user_func($aRewriteUrlCallback,$aMatches,$sAssetRealPath);
 							},
 							$sAssetContent
 						);
@@ -858,12 +884,18 @@ class Service{
 		}
 		elseif(!is_null($sAssetPath)){
 			if(!is_string($sAssetPath))throw new \InvalidArgumentException('Asset path is not valid : '.gettype($sAssetPath));
-			if(!file_exists($sAssetPath))throw new \InvalidArgumentException('File not found : '.$sAssetPath);
-
-			if(($sUrlRealPath = realpath(dirname($sAssetPath).DIRECTORY_SEPARATOR.$sUrl)) === false)$sUrlRealPath = $sUrl;
+			if(!file_exists($sAssetPath)){
+				if(strpos($sAssetPath,'://') === false)throw new \InvalidArgumentException('File "'.$sAssetPath.'" does not exists');
+				return str_ireplace(
+					$sUrl,
+					dirname($sAssetPath).DIRECTORY_SEPARATOR.$sUrl,
+					$aMatches[0]
+				);
+			}
+			elseif(($sUrlRealPath = realpath(dirname($sAssetPath).DIRECTORY_SEPARATOR.$sUrl)) === false)$sUrlRealPath = $sUrl;
 		}
 		else{
-			if(($sUrlRealPath = realpath(getcwd().DIRECTORY_SEPARATOR.$sUrl)) === false)throw new \LogicException($sUrl.' is not a valid path');
+			if(($sUrlRealPath = realpath(getcwd().DIRECTORY_SEPARATOR.$sUrl)) === false)throw new \LogicException('"'.$sUrl.'" is not a valid path');
 			if($this->hasAssetsPath())$sUrlRealPath = str_ireplace($this->getAssetsPath(),'', $sUrlRealPath);
 		}
 
