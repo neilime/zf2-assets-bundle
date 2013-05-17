@@ -511,7 +511,7 @@ class Service{
 			self::ASSET_JS => $sJsCacheFile,
 		));
 
-
+		//Retrieve assets configuration
 		$aAssetsToRender = $aAssetsConfiguration = $this->getAssetsConfiguration();
 
 		//Manage images caching
@@ -559,6 +559,8 @@ class Service{
 
 		$bHasContent = false;
 		foreach($aAssetsPath as $sAssetPath){
+			//Reset time limit
+			set_time_limit();
 
 			//Developpement : don't optimize assets
 			if(!$this->isProduction()){
