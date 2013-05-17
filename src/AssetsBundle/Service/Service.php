@@ -560,7 +560,7 @@ class Service{
 		$bHasContent = false;
 		foreach($aAssetsPath as $sAssetPath){
 			//Reset time limit
-			set_time_limit();
+			set_time_limit(0);
 
 			//Developpement : don't optimize assets
 			if(!$this->isProduction()){
@@ -603,9 +603,6 @@ class Service{
 
 			switch($sTypeAsset){
 				case self::ASSET_CSS:
-					//Reset time limit
-					set_time_limit(30);
-
 					//Rewrite urls for CSS files
 					if(!preg_match('/\.less$/', $sAssetRealPath)){
 						$aRewriteUrlCallback = array($this,'rewriteUrl');
@@ -622,8 +619,6 @@ class Service{
 
 					break;
 				case self::ASSET_JS:
-					//Reset time limit
-					set_time_limit(30);
 					$sCacheContent = trim($this->hasFilter(self::ASSET_JS)?$this->getFilter(self::ASSET_JS)->run($sAssetContent):$sAssetContent).PHP_EOL.'//'.PHP_EOL;
 					break;
 			}
@@ -699,7 +694,7 @@ class Service{
 		$sImportContent = trim($sImportContent);
 
 		//Reset time limit
-		set_time_limit(30);
+		set_time_limit(0);
 
 		//If content is empty, stop rendering process
 		if(
