@@ -38,7 +38,7 @@ class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	public function run($sContent){
 		if(!is_string($sContent))throw new \InvalidArgumentException('Content expects string, "'.gettype($sContent).'" given');
 		$iExecTime = strlen($sContent)*self::EXEC_TIME_PER_CHAR;
-		if($iExecTime > ini_get('max_execution_time'))set_time_limit(round($iExecTime,PHP_ROUND_HALF_UP));
+		if($iExecTime > ini_get('max_execution_time'))set_time_limit(0);
 		return trim($this->lessParser->compile($sContent));
 	}
 
