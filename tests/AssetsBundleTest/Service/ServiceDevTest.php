@@ -31,10 +31,10 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 					),
 					'test-assets-from-url' => array(
 						'js' => array(
-							'http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'
+							'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'
 						),
 						'css' => array(
-							'http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css'
+							'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'
 						)
 					)
 				)
