@@ -82,27 +82,21 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
     	) as $sCacheFile){
 
     		//Css cache files
-    		$this->assertFileExists($sCacheExpectedPath.'/'.$sCacheFile.'.css');
-    		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.css');
-    		$this->assertEquals(
-    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.css'),
-    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.css')
+    		$this->assertFileEquals(
+    			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.css',
+    			$oAssetsBundleService->getCachePath().$sCacheFile.'.css'
     		);
 
     		//Less cache files
-    		$this->assertFileExists($sCacheExpectedPath.'/'.$sCacheFile.'.less');
-    		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.less');
-    		$this->assertEquals(
-    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.less'),
-    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.less')
+    		$this->assertFileEquals(
+    			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.less',
+    			$oAssetsBundleService->getCachePath().$sCacheFile.'.less'
     		);
 
     		//Js cache files
-    		$this->assertFileExists($sCacheExpectedPath.'/'.$sCacheFile.'.js');
-    		$this->assertFileExists($oAssetsBundleService->getCachePath().$sCacheFile.'.js');
-    		$this->assertEquals(
-    			file_get_contents($sCacheExpectedPath.'/'.$sCacheFile.'.js'),
-    			file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.js')
+    		$this->assertFileEquals(
+    			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.js',
+    			$oAssetsBundleService->getCachePath().$sCacheFile.'.js'
     		);
     	}
     }
