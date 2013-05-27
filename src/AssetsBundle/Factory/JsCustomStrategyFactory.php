@@ -1,6 +1,6 @@
 <?php
 namespace AssetsBundle\Factory;
-class ViewHelperStrategyFactory implements \Zend\ServiceManager\FactoryInterface{
+class JsCustomStrategyFactory implements \Zend\ServiceManager\FactoryInterface{
 
 	/**
 	 * @see \Zend\ServiceManager\FactoryInterface::createService()
@@ -8,7 +8,7 @@ class ViewHelperStrategyFactory implements \Zend\ServiceManager\FactoryInterface
 	 * @return \AssetsBundle\View\Strategy\JsCustomStrategy
 	 */
 	public function createService(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator){
-		$oViewHelperStrategy = new \AssetsBundle\View\Strategy\JsCustomStrategy();
-		return $oViewHelperStrategy->setServiceLocator($oServiceLocator)->setRenderer($oServiceLocator->get('JsCustomRenderer'));
+		$oJsCustomStrategy = new \AssetsBundle\View\Strategy\JsCustomStrategy();
+		return $oJsCustomStrategy->setServiceLocator($oServiceLocator)->setRenderer($oServiceLocator->get('JsCustomRenderer'));
 	}
 }

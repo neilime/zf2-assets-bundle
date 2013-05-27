@@ -28,6 +28,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 							'less/test-mixins.less',
 							'less/test-mixins-use.less'
 						)
+					),
+					'test-assets-from-url' => array(
+						'js' => array(
+							'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'
+						),
+						'css' => array(
+							'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'
+						)
 					)
 				)
 			)
@@ -209,6 +217,21 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		$this->emptyCacheDirectory();
     }
 
+    public function testRenderTestAssetsFromUrl(){
+    	//Change action name
+    	$this->routeMatch->setParam('action','test-assets-from-url');
+    	$this->service->setActionName($this->routeMatch->getParam('action'));
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+
+    	//Render assets
+    	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+    }
+
    /**
      * @expectedException InvalidArgumentException
      */
@@ -224,7 +247,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     	$this->service->hasFilter('wrong');
     }
 
-    public function testRenderWithoutAssestPath(){
+    public function testRenderWithoutAssetsPath(){
 
     	//Change assets config
     	$this->createService(array('css' => array(
@@ -244,11 +267,9 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     protected function assertAssetCacheContent(array $aAssetsFiles){
     	$sCacheExpectedPath = __DIR__.'/../_files/dev-cache-expected';
     	foreach($aAssetsFiles as $sAssetFile){
-	    	$this->assertFileExists($this->service->getCachePath().$sAssetFile);
-	    	$this->assertFileExists($sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile);
-	    	$this->assertEquals(
-	    		file_get_contents($sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile),
-	    		file_get_contents($this->service->getCachePath().$sAssetFile)
+	    	$this->assertFileEquals(
+	    		$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
+	    		$this->service->getCachePath().$sAssetFile
 	    	);
     	}
     }

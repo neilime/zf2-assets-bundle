@@ -59,6 +59,7 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     	$this->assertControllerName('AssetsBundleTest\Controller\Test');
     	$this->assertControllerClass('TestController');
     	$this->assertMatchedRouteName('test');
+    	$this->assertEquals('/jscustom/AssetsBundleTest%5CController%5CTest/test',$this->getResponse()->getContent());
     }
 
     public function testTestActionInDevelopment(){
@@ -79,6 +80,14 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     	$this->assertControllerName('AssetsBundleTest\Controller\Test');
     	$this->assertControllerClass('TestController');
     	$this->assertMatchedRouteName('test');
+    	$this->assertEquals(print_r(array(
+    		'/assets/cache/js_jscustom.js?',
+			'/assets/cache/js_jscustom.php?'
+    	),true),preg_replace('/\?([0-9]*)/','?', $this->getResponse()->getContent()));
+
+    	$oAssetsBundleService = $this->getApplicationServiceLocator()->get('AssetsBundleService');
+    	$this->assertFileExists($oAssetsBundleService->getCachePath().'js_jscustom.js');
+    	$this->assertFileExists($oAssetsBundleService->getCachePath().'js_jscustom.php');
     }
 
     public function testFileErrorActionInDevelopment(){
@@ -102,7 +111,7 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     }
 
     public function testJsCustomAction(){
-    	$this->dispatch('/jscustom/AssetsBundleTest\\Controller\\Test/test');
+    	$this->dispatch('/jscustom/AssetsBundleTest%5CController%5CTest/test');
     	$this->assertResponseStatusCode(200);
     	$this->assertModuleName('AssetsBundleTest');
     	$this->assertControllerName('AssetsBundleTest\Controller\Test');

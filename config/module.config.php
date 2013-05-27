@@ -55,7 +55,7 @@ return array(
         	'JpegFilter' => '\AssetsBundle\Factory\Filter\JpegFilterFactory',
         	'GifFilter' => '\AssetsBundle\Factory\Filter\GifFilterFactory',
         	'AssetsBundleService' => '\AssetsBundle\Factory\ServiceFactory',
-            'ViewJsCustomStrategy' => '\AssetsBundle\Factory\ViewHelperStrategyFactory',
+            'JsCustomStrategy' => '\AssetsBundle\Factory\JsCustomStrategyFactory',
         	'JsCustomRenderer' => '\AssetsBundle\Factory\JsCustomRendererFactory'
         )
     ),
@@ -80,5 +80,5 @@ return array(
     		'gif' => 'GifFilter'
     	)
     ),
-    'view_manager' => array('strategies' => array('ViewJsCustomStrategy'))
+    'view_manager' => array('strategies' => array('JsCustomStrategy'))
 );

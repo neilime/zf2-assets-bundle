@@ -2,7 +2,8 @@
 namespace AssetsBundleTest\Controller;
 class TestController extends \AssetsBundle\Mvc\Controller\AbstractActionController{
 	public function testAction(){
-		return $this->getResponse();
+		$oView = new \Zend\View\Model\ViewModel();
+		return $oView->setTemplate('test')->setTerminal(true);
 	}
 
 	public function filerrorAction(){
@@ -17,9 +18,7 @@ class TestController extends \AssetsBundle\Mvc\Controller\AbstractActionControll
 		if(empty($sAction)){
 			$sAction = $this->params('js_action');
 			if(empty($sAction))throw new \InvalidArgumentException('Action param is empty');
-			$bReturnFiles = false;
 		}
-		else $bReturnFiles = true;
 
 		$aJsFiles = array();
 		switch(strtolower($sAction)){

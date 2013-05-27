@@ -25,5 +25,10 @@ return array(
 		'invokables' => array(
 			'AssetsBundleTest\Controller\Test' => 'AssetsBundleTest\Controller\TestController',
 		)
+	),
+	'view_manager' => array(
+		'template_map' => array(
+			'test' => __DIR__.'/AssetsBundleTest/_files/views/test.phtml'
+		)
 	)
 );

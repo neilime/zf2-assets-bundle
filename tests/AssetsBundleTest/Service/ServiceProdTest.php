@@ -29,6 +29,19 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 							'less/test-mixins.less',
 							'less/test-mixins-use.less'
 						)
+					),
+					'test-assets-from-url' => array(
+						'js' => array(
+							'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'
+						),
+						'css' => array(
+							'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'
+						)
+					),
+					'test-huge-assets' => array(
+						'less' => array(
+							'less/bootstrap.less'
+						)
 					)
 				)
 			)
@@ -206,7 +219,48 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
     	$this->assertEquals('test-mixins', $this->service->getActionName());
 
     	//Test Cache file name
-    	$this->assertEquals($this->service->getCacheFileName(), md5($this->routeMatch->getParam('controller').'test-mixins'));
+    	$this->assertEquals($this->service->getCacheFileName(), md5($this->routeMatch->getParam('controller').$this->service->getActionName()));
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+
+    	//Render assets
+    	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
+
+    	//Check assets content
+    	$this->assertAssetCacheContent(array($this->service->getCacheFileName().'.less'));
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+    }
+
+    public function testRenderTestAssetsFromUrl(){
+    	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName('test-assets-from-url'));
+    	$this->assertEquals('test-assets-from-url', $this->service->getActionName());
+
+    	//Test Cache file name
+    	$this->assertEquals($this->service->getCacheFileName(), md5($this->routeMatch->getParam('controller').$this->service->getActionName()));
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+
+    	//Render assets
+    	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
+
+    	//Check assets content
+    	$this->assertAssetCacheContent(array($this->service->getCacheFileName().'.js'));
+    	$this->assertAssetCacheContent(array($this->service->getCacheFileName().'.css'));
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+    }
+
+    public function testRenderTestHugeAssets(){
+    	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setActionName('test-huge-assets'));
+    	$this->assertEquals('test-huge-assets', $this->service->getActionName());
+
+    	//Test Cache file name
+    	$this->assertEquals($this->service->getCacheFileName(), md5($this->routeMatch->getParam('controller').$this->service->getActionName()));
 
     	//Empty cache directory
     	$this->emptyCacheDirectory();
@@ -227,11 +281,9 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
     protected function assertAssetCacheContent(array $aAssetsFiles){
     	$sCacheExpectedPath = __DIR__.'/../_files/prod-cache-expected';
     	foreach($aAssetsFiles as $sAssetFile){
-    		$this->assertFileExists($this->service->getCachePath().$sAssetFile);
-    		$this->assertFileExists($sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile);
-    		$this->assertEquals(
-    				file_get_contents($sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile),
-    				file_get_contents($this->service->getCachePath().$sAssetFile)
+    		$this->assertFileEquals(
+    			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
+    			$this->service->getCachePath().$sAssetFile
     		);
     	}
     }
