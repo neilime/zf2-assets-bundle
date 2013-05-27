@@ -267,7 +267,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     protected function assertAssetCacheContent(array $aAssetsFiles){
     	$sCacheExpectedPath = __DIR__.'/../_files/dev-cache-expected';
     	foreach($aAssetsFiles as $sAssetFile){
-	    	$this->assertFileEquals(
+    		$this->assertFileEquals(
 	    		$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
 	    		$this->service->getCachePath().$sAssetFile
 	    	);
