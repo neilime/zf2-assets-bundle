@@ -82,21 +82,21 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
     	) as $sCacheFile){
 
     		//Css cache files
-    		$this->assertFileEquals(
+    		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.css',
-    			$oAssetsBundleService->getCachePath().$sCacheFile.'.css'
+    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.css'))
     		);
 
     		//Less cache files
-    		$this->assertFileEquals(
+    		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.less',
-    			$oAssetsBundleService->getCachePath().$sCacheFile.'.less'
+    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.less'))
     		);
 
     		//Js cache files
-    		$this->assertFileEquals(
+    		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.js',
-    			$oAssetsBundleService->getCachePath().$sCacheFile.'.js'
+    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getCachePath().$sCacheFile.'.js'))
     		);
     	}
     }
