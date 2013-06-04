@@ -19,6 +19,13 @@ return array(
 				'route' => '/file-error',
 				'defaults' => array('controller' => 'AssetsBundleTest\Controller\Test','action' => 'fileError')
 			)
+		),
+		'empty' => array(
+			'type' => 'Zend\Mvc\Router\Http\Literal',
+			'options' => array(
+				'route' => '/empty',
+				'defaults' => array('controller' => 'AssetsBundleTest\Controller\Test','action' => 'empty')
+			)
 		)
 	)),
 	'controllers' => array(

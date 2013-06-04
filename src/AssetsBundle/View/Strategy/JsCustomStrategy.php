@@ -99,7 +99,10 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface,
 			elseif(($oException = $oViewModel->getVariable('exception')) instanceof \Exception)throw new \RuntimeException('An exception occured in view model', $oException->getCode(), $oException);
 
     		$aJsCustomFiles = $oEvent->getModel()->getVariable('jsCustomFiles');
-    		if(!is_array($aJsCustomFiles))throw new \LogicException('jsCustomFiles expects an array, "'.gettype($aJsCustomFiles).'" given');
+
+    		//jsCustomFiles is empty
+    		if(!is_array($aJsCustomFiles))$oEvent->getModel()->setVariable('jsCustomFiles',array());
+
 			return $this->getRenderer();
 		}
     }

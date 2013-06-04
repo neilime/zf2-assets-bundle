@@ -14,6 +14,10 @@ class TestController extends \AssetsBundle\Mvc\Controller\AbstractActionControll
 		return $this->getResponse();
 	}
 
+	public function emptyAction(){
+		return $this->getResponse();
+	}
+
 	public function jscustomAction($sAction = null){
 		if(empty($sAction)){
 			$sAction = $this->params('js_action');
@@ -28,6 +32,8 @@ class TestController extends \AssetsBundle\Mvc\Controller\AbstractActionControll
 				break;
 			case 'fileerror':
 				$aJsFiles[] = 'js/error.js';
+				break;
+			case 'empty':
 				break;
 		}
 		return $aJsFiles;

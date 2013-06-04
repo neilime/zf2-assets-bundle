@@ -3,7 +3,10 @@ namespace AssetsBundle\Mvc\Controller;
 abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionController{
 	public function onDispatch(\Zend\Mvc\MvcEvent $oEvent){
 		$oReturn = parent::onDispatch($oEvent);
-		if($this->params('action') === 'jscustom')$oEvent->getViewModel()->setVariable('jsCustomFiles', $oReturn);
+		if($this->params('action') === 'jscustom'){
+			if(!is_array($oReturn))throw new \LogicException('jscustomAction return expects an array, "'.gettype($oReturn).'" given');
+			$oEvent->getViewModel()->setVariable('jsCustomFiles', $oReturn);
+		}
 		elseif(
 			!$this->getRequest()->isXmlHttpRequest()
 			&& method_exists($this, 'jscustomAction')
@@ -14,24 +17,29 @@ abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractAct
 				array('controller' => $this->params('controller'), 'js_action' => $this->params('action')),
 				array('name' => 'jscustom/definition')
 			);
-			elseif($aJsFiles = $this->jsCustomAction($this->params('action'))){
-				//Check js files
-				foreach($aJsFiles as &$sJsFile){
-					if($sJsFilePath = $oAssetsBundleService->getRealPath($sJsFile)){
-						//Retrieve js file relative path
-						$sJsFileRelativePath = $oAssetsBundleService->getAssetRelativePath($sJsFilePath);
+			else{
+				if($aJsFiles = $this->jsCustomAction($this->params('action'))){
+					if(!is_array($aJsFiles))throw new \LogicException('Js files expects an array, "'.gettype($aJsFiles).'" given');
+					//Check js files
+					foreach($aJsFiles as &$sJsFile){
+						if($sJsFilePath = $oAssetsBundleService->getRealPath($sJsFile)){
+							//Retrieve js file relative path
+							$sJsFileRelativePath = $oAssetsBundleService->getAssetRelativePath($sJsFilePath);
 
-						//Copy js file into cache
-						$oAssetsBundleService->copyIntoCache($sJsFilePath, $oAssetsBundleService->getCachePath().$sJsFileRelativePath);
+							//Copy js file into cache
+							$oAssetsBundleService->copyIntoCache($sJsFilePath, $oAssetsBundleService->getCachePath().$sJsFileRelativePath);
 
-						//Define last modified
-						$iLastModified = file_exists($sAbsolutePath = $oAssetsBundleService->getCachePath().DIRECTORY_SEPARATOR.$sJsFileRelativePath)?filemtime($sAbsolutePath):time();
+							//Define last modified
+							$iLastModified = file_exists($sAbsolutePath = $oAssetsBundleService->getCachePath().DIRECTORY_SEPARATOR.$sJsFileRelativePath)?filemtime($sAbsolutePath):time();
 
-						//Define js file relative url
-						$sJsFile = $oAssetsBundleService->getCacheUrl().$sJsFileRelativePath.(strpos($sJsFileRelativePath, '?')?'&':'?').($iLastModified?:time());
+							//Define js file relative url
+							$sJsFile = $oAssetsBundleService->getCacheUrl().$sJsFileRelativePath.(strpos($sJsFileRelativePath, '?')?'&':'?').($iLastModified?:time());
+						}
+						else throw new \LogicException('File "'.$sJsFile.'" does not exist');
 					}
-					else throw new \LogicException('File "'.$sJsFile.'" does not exist');
 				}
+				else $aJsFiles = array();
+
 				$this->layout()->jsCustomFiles = array_merge(
 					is_array($this->layout()->jsCustomFiles)?$this->layout()->jsCustomFiles:array(),
 					$aJsFiles
