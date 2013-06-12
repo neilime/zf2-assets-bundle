@@ -180,7 +180,8 @@ mkdir cache
 <em>AssetsBundle</em> :</li>
 </ol><ul>
 <li>boolean <code>production</code>: Define the application environment (development =&gt; false). Default <code>true</code>.</li>
-<li>string <code>basePath</code> : (optionnal) only needed if <code>cacheUrl</code> use <code>@zfBaseUrl</code>. If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used</li>
+<li>mixed <code>lastModifiedTime</code>: (optionnal) Allows you to define an arbitrary asset's last modified time in production. Default <code>null</code> : last modified time is calculated for each asset.</li>
+<li>string <code>basePath</code> : (optionnal) only needed if <code>cacheUrl</code> use <code>@zfBaseUrl</code>. If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used.</li>
 <li>string <code>cachePath</code> : cache directory absolute path, you can use the <code>@zfRootPath</code> constant corresponding to current working directory. Default <code>@zfRootPath/public/cache</code>.</li>
 <li>string <code>assetsPath</code> : assets directory absolute path, allows you to define relative path for assets config. You can use the constant <code>@zfRootPath</code> corresponding to current working directory. Default <code>@zfRootPath/public</code>.</li>
 <li>string <code>cacheUrl</code> : cache directory base url, you can use the constant <code>@zfBaseUrl</code> corresponding to application base url . Default <code>@zfBaseUrl/assets/cache/</code>.</li>
