@@ -60,7 +60,8 @@ return array(
         )
     ),
     'asset_bundle' => array(
-		'production' => true,//Define here environment (Developpement => false)
+		'production' => true,//Application environment (Developpement => false)
+    	'lastModifiedTime' => null, //Arbitrary last modified time in production
     	'cachePath' => '@zfRootPath/public/cache',//cache directory absolute path
     	'assetsPath' => '@zfRootPath/public',//assets directory absolute path (allows you to define relative path for assets config)
     	'cacheUrl' => '@zfBaseUrl/assets/cache/',//cache directory base url

@@ -133,6 +133,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 1. _AssetsBundle_ :
 
  * boolean `production`: Define the application environment (development => false). Default `true`.
+ * mixed `lastModifiedTime`: //Allows you to define an arbitrary asset's last modified time in production.  Default `null`, last modified time is calculated for each asset
  * string `basePath` : (optionnal) only needed if `cacheUrl` use `@zfBaseUrl`. If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used
  * string `cachePath` : cache directory absolute path, you can use the `@zfRootPath` constant corresponding to current working directory. Default `@zfRootPath/public/cache`.
  * string `assetsPath` : (optionnal) assets directory absolute path, allows you to define relative path for assets config. You can use the constant `@zfRootPath` corresponding to current working directory. Default `@zfRootPath/public`.

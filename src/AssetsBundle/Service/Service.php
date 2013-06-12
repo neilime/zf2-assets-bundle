@@ -760,12 +760,16 @@ class Service{
 			if(!($this->strategy[$sRendererName] instanceof \AssetsBundle\View\Strategy\StrategyInterface))throw new \Exception('Strategy doesn\'t implement \AssetsBundle\View\Strategy\StrategyInterface : '.$sStrategyClass);
 		}
 
-		/** @var $oStrategy \Neilime\AsseticBundle\View\StrategyInterface */
+		//Arbitrary last modified time in production
+		$iLastModifiedTime = $this->isProduction() && !empty($this->configuration['lastModifiedTime'])?$this->configuration['lastModifiedTime']:null;
+
+		//Retrieve rendering strategy
 		$oStrategy = $this->strategy[$sRendererName]->setBaseUrl($this->getCacheUrl())->setRenderer($this->getRenderer());
+
 		foreach($aAssets as $sAssetPath){
 			$oStrategy->renderAsset(
 				$sAssetPath,
-				file_exists($sAbsolutePath = $this->getCachePath().DIRECTORY_SEPARATOR.$sAssetPath)?filemtime($sAbsolutePath):time()
+				$iLastModifiedTime?:(file_exists($sAbsolutePath = $this->getCachePath().DIRECTORY_SEPARATOR.$sAssetPath)?filemtime($sAbsolutePath):time())
 			);
 		}
 		return $this;
