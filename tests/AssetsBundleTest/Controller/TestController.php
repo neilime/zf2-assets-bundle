@@ -18,6 +18,10 @@ class TestController extends \AssetsBundle\Mvc\Controller\AbstractActionControll
 		return $this->getResponse();
 	}
 
+	public function exceptionAction(){
+		return $this->getResponse();
+	}
+
 	public function jscustomAction($sAction = null){
 		if(empty($sAction)){
 			$sAction = $this->params('js_action');
@@ -35,6 +39,8 @@ class TestController extends \AssetsBundle\Mvc\Controller\AbstractActionControll
 				break;
 			case 'empty':
 				break;
+			case 'exception':
+				throw new \Exception('jscustomAction exception');
 		}
 		return $aJsFiles;
 	}

@@ -48,9 +48,9 @@ class JsCustomRendererTest extends \PHPUnit_Framework_TestCase{
 
 		//Reset server datas
 		$_SESSION = array();
-		$_GET     = array();
-		$_POST    = array();
-		$_COOKIE  = array();
+		$_GET = array();
+		$_POST = array();
+		$_COOKIE = array();
 
 		//Reset singleton
 		\Zend\EventManager\StaticEventManager::resetInstance();
@@ -68,7 +68,6 @@ class JsCustomRendererTest extends \PHPUnit_Framework_TestCase{
 		$oRequest->setMethod(\Zend\Http\Request::METHOD_GET)
 		->setUri($oUri)
 		->setRequestUri($oUri->getPath());
-
 
 		$oApplication->run();
 

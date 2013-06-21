@@ -96,7 +96,7 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface,
 				'Event model expects an instance of "Zend\View\Model\ViewModel", "%s" given',
 				is_object($oViewModel)?get_class($oViewModel):gettype($oViewModel)
 			));
-			elseif(($oException = $oViewModel->getVariable('exception')) instanceof \Exception)throw new \RuntimeException('An exception occured in view model', $oException->getCode(), $oException);
+    		elseif(($oException = $oViewModel->getVariable('exception')) instanceof \Exception)return;
 
     		$aJsCustomFiles = $oEvent->getModel()->getVariable('jsCustomFiles');
 

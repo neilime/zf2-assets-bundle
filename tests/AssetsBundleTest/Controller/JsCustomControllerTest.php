@@ -144,4 +144,20 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     		str_replace(PHP_EOL,"\n",$this->getResponse()->getContent())
     	);
     }
+
+    public function testJsCustomActionWithException(){
+    	$this->dispatch('/jscustom/AssetsBundleTest%5CController%5CTest/exception');
+    	$this->assertResponseStatusCode(500);
+    	$this->assertModuleName('AssetsBundleTest');
+    	$this->assertControllerName('AssetsBundleTest\Controller\Test');
+    	$this->assertControllerClass('TestController');
+    	$this->assertMatchedRouteName('jscustom/definition');
+
+    	$this->assertResponseHeaderContains('content-type','text/javascript');
+
+    	$this->assertStringEqualsFile(
+    		dirname(__DIR__).'/_files/prod-cache-expected/jscustom-exception.js',
+    		str_replace(PHP_EOL,"\n",$this->getResponse()->getContent())
+    	);
+    }
 }
