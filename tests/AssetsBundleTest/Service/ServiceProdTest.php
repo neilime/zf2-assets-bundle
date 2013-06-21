@@ -244,6 +244,19 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
     	//Empty cache directory
     	$this->emptyCacheDirectory();
 
+    	if($this->assertTrue(extension_loaded('openssl')));
+
+    	//Test external files contents
+    	$this->assertStringEqualsFile(
+    		__DIR__.'/../_files/prod-cache-expected/mootools.js',
+    		str_replace(PHP_EOL,"\n",file_get_contents('https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'))
+    	);
+
+    	$this->assertStringEqualsFile(
+    		__DIR__.'/../_files/prod-cache-expected/bootstrap.css',
+    		str_replace(PHP_EOL,"\n",file_get_contents('https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'))
+    	);
+
     	//Render assets
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
