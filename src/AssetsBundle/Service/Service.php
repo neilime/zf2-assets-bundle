@@ -878,6 +878,9 @@ class Service{
 		//Split arguments
 		if(strpos($sUrl,'?') !== false)list($sUrl, $sArguments) = explode('?', $sUrl);
 
+		//Split anchor
+		if(strpos($sUrl,'#') !== false)list($sUrl, $sAnchor) = explode('#', $sUrl);
+
 		if(strpos($sUrl,'@zfAssetsPath') !== false){
 			$sUrlRealPath = str_ireplace('@zfAssetsPath',$this->getAssetsPath(),$sUrl);
 			if(!file_exists($sUrlRealPath))throw new \LogicException('File not found : '.$sUrlRealPath);
@@ -906,7 +909,7 @@ class Service{
 				$this->hasAssetsPath()?array($this->getAssetsPath(),getcwd()):getcwd(),
 				'',
 				$sUrlRealPath
-			),DIRECTORY_SEPARATOR)).(empty($sArguments)?'':'?'.$sArguments),
+			),DIRECTORY_SEPARATOR)).(empty($sArguments)?'':'?'.$sArguments).(empty($sAnchor)?'':'#'.$sAnchor),
 			$aMatches[0]
 		);
 	}
