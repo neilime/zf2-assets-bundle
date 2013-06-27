@@ -24,7 +24,7 @@ Requirements
 ------------
 
 * [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
-* [lessphp](https://github.com/Nodge/lessphp) (latest master).
+* [lessphp](https://github.com/neilime/lessphp) (latest master).
 * [CssMin](https://github.com/natxet/CssMin) (latest master).
 * [JsMin](https://github.com/nick4fake/JsMin) (latest master).
 
@@ -48,13 +48,13 @@ Installation
     }
     ```
     
-2. As lessphp does not rewrite urls ([pull request #291](https://github.com/leafo/lessphp/pull/291)) you have to use Nodge's Lessphp fork, add this repository in your composer.json:
+2. As lessphp does not rewrite urls ([pull request #291](https://github.com/leafo/lessphp/pull/291)) you have to use neilime's Lessphp fork, add this repository in your composer.json:
 	
 	```json
     "repositories": [
 	    {
 	        "type": "vcs",
-	        "url": "http://github.com/Nodge/lessphp"
+	        "url": "http://github.com/neilime/lessphp"
 	    }
 	]
 	```

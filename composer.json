@@ -18,7 +18,7 @@
     "repositories": [
         {
 	        "type": "vcs",
-	        "url": "http://github.com/Nodge/lessphp"
+	        "url": "http://github.com/neilime/lessphp"
 	    }
 	],
 	"suggest": {
@@ -26,8 +26,8 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.*",
-        "leafo/lessphp": "dev-master",
+        "zendframework/zendframework": "dev-master",
+        "neilime/lessphp": "dev-master",
         "natxet/CssMin": "dev-master",
         "nick4fake/jsmin": "dev-master"
     },
