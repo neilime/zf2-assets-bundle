@@ -27,7 +27,7 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "dev-master",
-        "neilime/lessphp": "dev-master",
+        "leafo/lessphp": "dev-master",
         "natxet/CssMin": "dev-master",
         "nick4fake/jsmin": "dev-master"
     },
