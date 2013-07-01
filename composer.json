@@ -15,6 +15,7 @@
     "support": {
         "issues": "https://github.com/neilime/zf2-assets-bundle/issues"
     },
+    "minimum-stability" : "stable",
     "repositories": [
         {
 	        "type": "vcs",
