@@ -16,19 +16,13 @@
         "issues": "https://github.com/neilime/zf2-assets-bundle/issues"
     },
     "minimum-stability" : "stable",
-    "repositories": [
-        {
-	        "type": "vcs",
-	        "url": "http://github.com/neilime/lessphp"
-	    }
-	],
 	"suggest": {
         "ext-gd2": "GD library to compress png files"
     },
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*@stable",
-        "leafo/lessphp": "dev-master",
+        "neilime/lessphp": "dev-master",
         "natxet/CssMin": "dev-master",
         "nick4fake/jsmin": "dev-master"
     },
