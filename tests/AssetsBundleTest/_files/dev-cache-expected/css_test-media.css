@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'FontOne';
-  src: url('/assets/cache/AssetsBundleTest/_files/fonts/fontawesome-webfont.eot?v=3.0.1?v=3.0.1');
-  src: url('/assets/cache/AssetsBundleTest/_files/fonts/fontawesome-webfont.eot?#iefix&v=3.0.1?#iefix&v=3.0.1') format('embedded-opentype'),
-    url('/assets/cache/AssetsBundleTest/_files/fonts/fontawesome-webfont.woff?v=3.0.1?v=3.0.1') format('woff'),
-    url('/assets/cache/AssetsBundleTest/_files/fonts/fontawesome-webfont.ttf?v=3.0.1?v=3.0.1') format('truetype');
+  src: url('/cache/AssetsBundleTest/_files/fonts/fontawesome-webfont.eot?v=3.0.1?v=3.0.1');
+  src: url('/cache/AssetsBundleTest/_files/fonts/fontawesome-webfont.eot?#iefix&v=3.0.1?#iefix&v=3.0.1') format('embedded-opentype'),
+    url('/cache/AssetsBundleTest/_files/fonts/fontawesome-webfont.woff?v=3.0.1?v=3.0.1') format('woff'),
+    url('/cache/AssetsBundleTest/_files/fonts/fontawesome-webfont.ttf?v=3.0.1?v=3.0.1') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -12,5 +12,5 @@
 
 #test-media{
 	font-family: FontOne;
-	background-image : url('/assets/cache/AssetsBundleTest/_files/images/test-media-css.gif');
+	background-image : url('/cache/AssetsBundleTest/_files/images/test-media-css.gif');
 }

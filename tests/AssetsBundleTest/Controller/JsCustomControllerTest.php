@@ -81,8 +81,8 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     	$this->assertControllerClass('TestController');
     	$this->assertMatchedRouteName('test');
     	$this->assertEquals(print_r(array(
-    		'/assets/cache/js_jscustom.js?',
-			'/assets/cache/js_jscustom.php?'
+    		'/cache/js_jscustom.js?',
+			'/cache/js_jscustom.php?'
     	),true),preg_replace('/\?([0-9]*)/','?', $this->getResponse()->getContent()));
 
     	$oAssetsBundleService = $this->getApplicationServiceLocator()->get('AssetsBundleService');

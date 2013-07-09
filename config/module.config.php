@@ -64,7 +64,7 @@ return array(
     	'lastModifiedTime' => null, //Arbitrary last modified time in production
     	'cachePath' => '@zfRootPath/public/cache',//cache directory absolute path
     	'assetsPath' => '@zfRootPath/public',//assets directory absolute path (allows you to define relative path for assets config)
-    	'cacheUrl' => '@zfBaseUrl/assets/cache/',//cache directory base url
+    	'cacheUrl' => '@zfBaseUrl/cache/',//cache directory base url
     	'mediaExt' => array('jpeg','jpg','png','gif','cur','ttf','eot','svg','woff'),//Put here all media extensions to be cached
     	'recursiveSearch' => false,
     	'rendererToStrategy' => array(
