@@ -40,39 +40,38 @@
       </nav>
       <section>
         <h1>
-<a name="assetsbundle" class="anchor" href="#assetsbundle"><span class="octicon octicon-link"></span></a>AssetsBundle</h1>
+<a name="assetsbundle-v20" class="anchor" href="#assetsbundle-v20"><span class="octicon octicon-link"></span></a>AssetsBundle, v2.0</h1>
 
-<p><a href="https://travis-ci.org/neilime/zf2-assets-bundle"><img src="https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master" alt="Build Status"></a></p>
+<p><a href="https://travis-ci.org/neilime/zf2-assets-bundle"><img src="https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master" alt="Build Status"></a>
+<img src="https://raw.github.com/zf2-boiler-app/app-test/master/ressources/100%25-code-coverage.png" alt="Code coverage" title="100% code coverage"></p>
 
-<p>Created by Neilime</p>
+<p>NOTE : If you want to contribute don't hesitate, I'll review any PR.</p>
 
 <h2>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p>AssetsBundle is module for ZF2 allowing asset managment (bundling &amp; caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
+<p>AssetsBundle is a module for ZF2 allowing asset management (bundling &amp; caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
 This module manages the concept of the environment/production development.</p>
 
-<p>In developpement : </p>
+<p>In development : </p>
 
 <ul>
-<li>Files are not bundling for easier debugging.</li>
+<li>Files are not bundled for easier debugging.</li>
 <li>Less files are compiled when updated or if an "<a href="https://github.com/import" class="user-mention">@import</a>" inside is updated</li>
 </ul><p>In production :</p>
 
 <ul>
-<li>All files are bundling and cached one time only if needed.</li>
-</ul><p>P.S. Sorry for my english. If You wish to help me with this project or correct my english description - You are welcome :)</p>
-
-<h2>
+<li>All files are bundled and cached once only if needed.</li>
+</ul><h2>
 <a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
 
 <ul>
 <li>
 <a href="https://github.com/zendframework/zf2">Zend Framework 2</a> (latest master)</li>
 <li>
-<a href="https://github.com/Nodge/lessphp">lessphp</a> (latest master).</li>
+<a href="https://github.com/neilime/lessphp">lessphp</a> (latest master).</li>
 <li>
-<a href="https://github.com/neilime/CssMin">CssMin</a> (latest master).</li>
+<a href="https://github.com/natxet/CssMin">CssMin</a> (latest master).</li>
 <li>
 <a href="https://github.com/nick4fake/JsMin">JsMin</a> (latest master).</li>
 </ul><h2>
@@ -85,7 +84,7 @@ This module manages the concept of the environment/production development.</p>
 <a name="by-cloning-project" class="anchor" href="#by-cloning-project"><span class="octicon octicon-link"></span></a>By cloning project</h4>
 
 <ol>
-<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a> (latest master), <a href="https://github.com/neilime/CssMin">CssMin fork</a>, <a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
+<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a>, <a href="https://github.com/natxet/CssMin">CssMin</a>, <a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
 <li>Clone this project into your <code>./vendor/</code> directory.</li>
 </ol><h4>
 <a name="with-composer" class="anchor" href="#with-composer"><span class="octicon octicon-link"></span></a>With composer</h4>
@@ -97,6 +96,17 @@ This module manages the concept of the environment/production development.</p>
 <div class="highlight"><pre><span class="s2">"require"</span><span class="err">:</span> <span class="p">{</span>
     <span class="nt">"neilime/zf2-assets-bundle"</span><span class="p">:</span> <span class="s2">"dev-master"</span>
 <span class="p">}</span>
+</pre></div>
+</li>
+<li>
+<p>As lessphp does not rewrite urls (<a href="https://github.com/leafo/lessphp/pull/291">pull request #291</a>) you have to use neilime's Lessphp fork, add this repository in your composer.json:</p>
+
+<div class="highlight"><pre><span class="s2">"repositories"</span><span class="err">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"vcs"</span><span class="p">,</span>
+        <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://github.com/neilime/lessphp"</span>
+    <span class="p">}</span>
+<span class="p">]</span>
 </pre></div>
 </li>
 <li>
@@ -174,7 +184,7 @@ mkdir cache
  <span class="o">-&gt;</span><span class="na">prependFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/js/jquery.min.js'</span><span class="p">)</span>
 </pre></div>
 </li>
-<li><p>Save &amp; Resfresh.</p></li>
+<li><p>Save &amp; Refresh.</p></li>
 </ol><h1>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h1>
 
@@ -184,17 +194,19 @@ mkdir cache
 <li>
 <em>AssetsBundle</em> :</li>
 </ol><ul>
-<li>boolean <code>production</code>: Define the application environment (development =&gt; false). Default true.</li>
-<li>string <code>basePath</code> : (optionnal) only needed if "cacheUrl" use "@zfBaseUrl". If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used</li>
-<li>string <code>cachePath</code> : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".</li>
-<li>string <code>assetsPath</code> : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".</li>
-<li>string <code>cacheUrl</code> : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".</li>
-<li>array <code>mediaExt</code> : Put here all medias extensions to be cached. Default array('jpg','png','gif','cur','ttf','eot','svg','woff').</li>
+<li>boolean <code>production</code>: Define the application environment (development =&gt; false). Default <code>true</code>.</li>
+<li>mixed <code>lastModifiedTime</code>: (optionnal) Allows you to define an arbitrary asset's last modified time in production.  Default <code>null</code> : last modified time is calculated for each asset.</li>
+<li>string <code>basePath</code> : (optionnal) only needed if <code>cacheUrl</code> use <code>@zfBaseUrl</code>. If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used.</li>
+<li>string <code>cachePath</code> : cache directory absolute path, you can use the <code>@zfRootPath</code> constant corresponding to current working directory. Default <code>@zfRootPath/public/cache</code>.</li>
+<li>string <code>assetsPath</code> : (optionnal) assets directory absolute path, allows you to define relative path for assets config. You can use the constant <code>@zfRootPath</code> corresponding to current working directory. Default <code>@zfRootPath/public</code>.</li>
+<li>string <code>cacheUrl</code> : cache directory base url, you can use the constant <code>@zfBaseUrl</code> corresponding to application base url . Default <code>@zfBaseUrl/assets/cache/</code>.</li>
+<li>array <code>mediaExt</code> : Put here all medias extensions to be cached. Default <code>array('jpg','png','gif','cur','ttf','eot','svg','woff')</code>.</li>
+<li>boolean <code>recursiveSearch</code>: If you define a folder as required asset, it will search for matching assets in that folder and its subfolders. Default <code>false</code>.</li>
 </ul><ol>
 <li>
 <p>Assets :</p>
 
-<p>You can define assets for controllers / action</p>
+<p>You can define assets for modules / controllers / action</p>
 
 <p>Exemple : </p>
 
@@ -206,34 +218,63 @@ mkdir cache
             <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define css files to include</span>
             <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define js files to include</span>
             <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define less files to include</span>
-            <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span> <span class="c1">//Define images to manage</span>
+            <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define images to manage</span>
 
-            <span class="c1">//Controller assets</span>
-            <span class="s1">'Test/Controller/Name'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="c1">//Module assets</span>
+            <span class="s1">'Test'</span> <span class="o">=&gt;</span>  <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                 <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                 <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                 <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
-                <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
+                <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
 
-                <span class="c1">//Action assets</span>
-                <span class="s1">'ActionName'</span><span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="c1">//Controller assets</span>
+                <span class="s1">'Test\Controller\Name'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                     <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                     <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                     <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
-                    <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
+                    <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+
+                    <span class="c1">//Action assets</span>
+                    <span class="s1">'ActionName'</span><span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                        <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+                        <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+                        <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
+                        <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
+                    <span class="p">),</span>
+                    <span class="c1">//...</span>
+                <span class="p">),</span>
+                <span class="c1">//...</span>
+            <span class="p">),</span>
             <span class="c1">//...</span>
         <span class="p">)</span>
     <span class="p">),</span>
     <span class="c1">//...</span>
 <span class="p">);</span>
 </pre></div>
-
-<p>For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
+</li>
+</ol><ul>
+<li><p>For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
 but you can specify an absolute path or use the constants "@zfAssetsPath" and "@zfRootPath".
-If you specify a directory, all files matching the asset type (css, less, js, media) will be included.
-You can define an inclusion order like this :</p>
+If you specify a directory, all files matching the asset type (css, less, js, media) will be included.</p></li>
+<li><p>You can use <code>.php</code> files as assets, there will be interpret.</p></li>
+<li>
+<p>You can use url for <code>js</code> and <code>css</code> assets :</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+    <span class="c1">//...</span>
+    <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'</span><span class="p">),</span>
+        <span class="c1">//...</span>
+    <span class="p">)</span>               
+    <span class="c1">//...</span>
+<span class="p">);</span>
+</pre></div>
+
+<p>This example includes <code>Mootools</code> from <em>Google Hosted Libraries</em></p>
+</li>
+<li>
+<p>You can define an inclusion order like this :</p>
 
 <div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
@@ -248,48 +289,45 @@ You can define an inclusion order like this :</p>
 
 <p>This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"</p>
 </li>
+</ul><ol>
 <li>
 <p>Custom Js :</p>
 
-<p>This function allows you to dynamically include javascript files. For exemple, files specific to a user settings.
-In this case, your controller that need these file have to extends "AssetsBundle\Mvc\ControllerAbstractActionController".</p>
+<p>This function allows you to dynamically include javascript files. For exemple, files specific to user settings.
+In this case, your controller that need these file have to extend <code>AssetsBundle\Mvc\Controller\AbstractActionController</code>.</p>
+
+<p><strong>Attention !</strong> Jscustom process does not cache javascript, due to performance reasons</p>
 
 <p>Then create a jscustomAction function into your controller : </p>
 
-<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">public</span> <span class="k">function</span> <span class="nf">jscustomAction</span><span class="p">(</span><span class="nv">$sAction</span> <span class="o">=</span> <span class="k">null</span><span class="p">){</span>
-    <span class="nv">$aConfiguration</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getServiceLocator</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'config'</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$aConfiguration</span><span class="p">[</span><span class="s1">'asset_bundle'</span><span class="p">]))</span><span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">'AssetBundle config is not defined'</span><span class="p">);</span>
+<div class="highlight"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">jscustomAction</span><span class="p">(</span><span class="nv">$sAction</span> <span class="o">=</span> <span class="k">null</span><span class="p">){</span>
+    <span class="c1">//Check params, it's not mandatory</span>
     <span class="k">if</span><span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">)){</span>
-        <span class="c1">//Test if you are in production</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nv">$aConfiguration</span><span class="p">[</span><span class="s1">'asset_bundle'</span><span class="p">][</span><span class="s1">'production'</span><span class="p">])</span><span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">'action must be defined in development mode'</span><span class="p">);</span>
         <span class="nv">$sAction</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">(</span><span class="s1">'js_action'</span><span class="p">);</span>
-        <span class="k">if</span><span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">))</span><span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">'Action is not defined'</span><span class="p">);</span>
-        <span class="nv">$bReturnFiles</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">))</span><span class="k">throw</span> <span class="k">new</span> <span class="nx">\InvalidArgumentException</span><span class="p">(</span><span class="s1">'Action param is empty'</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="k">else</span> <span class="nv">$bReturnFiles</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
-    <span class="nv">$aJsFiles</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 
-    <span class="k">switch</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">){</span>
-        <span class="k">case</span> <span class="s1">'application'</span><span class="o">:</span>
-            <span class="c1">//Here you can specify js files to include</span>
-            <span class="nv">$aJsFiles</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">'js/dynamicFile.js'</span><span class="p">;</span>
+    <span class="nv">$aJsFiles</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+    <span class="k">switch</span><span class="p">(</span><span class="nx">strtolower</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">)){</span>
+        <span class="k">case</span> <span class="s1">'myActionName'</span><span class="o">:</span>
+            <span class="c1">//Put here all js files needed for "myActionName" action</span>
+            <span class="nv">$aJsFiles</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">'js/test.js'</span><span class="p">;</span>
+            <span class="nv">$aJsFiles</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">'js/test.php'</span><span class="p">;</span>
             <span class="k">break</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="nv">$bReturnFiles</span><span class="p">)</span><span class="k">return</span> <span class="nv">$aJsFiles</span><span class="p">;</span>
-    <span class="k">else</span><span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">jsFiles</span> <span class="o">=</span> <span class="nv">$aJsFiles</span><span class="p">;</span>
-        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
-    <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$aJsFiles</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 
 <p>Edit layout file:</p>
 
 <div class="highlight"><pre><span class="c1">//Into head</span>
-<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomUrl</span><span class="p">))</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">plugin</span><span class="p">(</span><span class="s1">'InlineScript'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">appendFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomUrl</span><span class="o">.</span><span class="s1">'?'</span><span class="o">.</span><span class="nb">time</span><span class="p">());</span><span class="c1">//Set time() force browser not to cache file, it's not mandatory</span>
+
+<span class="c1">//Production case</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomUrl</span><span class="p">))</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">plugin</span><span class="p">(</span><span class="s1">'InlineScript'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">appendFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomUrl</span><span class="o">.</span><span class="s1">'?'</span><span class="o">.</span><span class="nb">time</span><span class="p">());</span> <span class="c1">//Set time() force browser not to cache file, it's not mandatory</span>
+<span class="c1">//Development case</span>
 <span class="k">elseif</span><span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomFiles</span><span class="p">))</span><span class="k">foreach</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomFiles</span> <span class="k">as</span> <span class="nv">$sJsCustomFile</span><span class="p">){</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">plugin</span><span class="p">(</span><span class="s1">'InlineScript'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">appendFile</span><span class="p">(</span><span class="nv">$sJsCustomFile</span><span class="o">.</span><span class="s1">'?'</span><span class="o">.</span><span class="nb">time</span><span class="p">());</span><span class="c1">//Set time() force browser not to cache file, it's not mandatory</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">plugin</span><span class="p">(</span><span class="s1">'InlineScript'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">appendFile</span><span class="p">(</span><span class="nv">$sJsCustomFile</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </li>
@@ -311,13 +349,13 @@ Empty cache directory
 <h3>
 <a name="rendering-all-assets" class="anchor" href="#rendering-all-assets"><span class="octicon octicon-link"></span></a>Rendering all assets</h3>
 
-<pre><code>zf.php render
+<pre><code>php public/index.php render
 </code></pre>
 
 <h3>
 <a name="empty-cache-directory" class="anchor" href="#empty-cache-directory"><span class="octicon octicon-link"></span></a>Empty cache directory</h3>
 
-<pre><code>zf.php empty     
+<pre><code>php public/index.php empty     
 </code></pre>
       </section>
       <footer>
