@@ -71,9 +71,7 @@ This module manages the concept of the environment/production development.</p>
 <li>
 <a href="https://github.com/neilime/lessphp">lessphp</a> (latest master).</li>
 <li>
-<a href="https://github.com/natxet/CssMin">CssMin</a> (latest master).</li>
-<li>
-<a href="https://github.com/nick4fake/JsMin">JsMin</a> (latest master).</li>
+<a href="https://github.com/mrclay/minify">Minify</a> (latest master).</li>
 </ul><h2>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
@@ -84,7 +82,7 @@ This module manages the concept of the environment/production development.</p>
 <a name="by-cloning-project" class="anchor" href="#by-cloning-project"><span class="octicon octicon-link"></span></a>By cloning project</h4>
 
 <ol>
-<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a>, <a href="https://github.com/natxet/CssMin">CssMin</a>, <a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
+<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a>, <a href="https://github.com/mrclay/minify">Minify</a> by cloning them into <code>./vendor/</code>.</li>
 <li>Clone this project into your <code>./vendor/</code> directory.</li>
 </ol><h4>
 <a name="with-composer" class="anchor" href="#with-composer"><span class="octicon octicon-link"></span></a>With composer</h4>
@@ -96,17 +94,6 @@ This module manages the concept of the environment/production development.</p>
 <div class="highlight"><pre><span class="s2">"require"</span><span class="err">:</span> <span class="p">{</span>
     <span class="nt">"neilime/zf2-assets-bundle"</span><span class="p">:</span> <span class="s2">"dev-master"</span>
 <span class="p">}</span>
-</pre></div>
-</li>
-<li>
-<p>As lessphp does not rewrite urls (<a href="https://github.com/leafo/lessphp/pull/291">pull request #291</a>) you have to use neilime's Lessphp fork, add this repository in your composer.json:</p>
-
-<div class="highlight"><pre><span class="s2">"repositories"</span><span class="err">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-        <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"vcs"</span><span class="p">,</span>
-        <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://github.com/neilime/lessphp"</span>
-    <span class="p">}</span>
-<span class="p">]</span>
 </pre></div>
 </li>
 <li>
