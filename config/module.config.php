@@ -48,9 +48,9 @@ return array(
 	),
 	'service_manager' => array(
         'factories' => array(
-            'CssFilter' => '\AssetsBundle\Factory\Filter\CssFilterFactory',
+            'LessFilter' => '\AssetsBundle\Factory\Filter\LessFilterFactory',
+        	'CssFilter' => '\AssetsBundle\Factory\Filter\CssFilterFactory',
         	'JsFilter' => '\AssetsBundle\Factory\Filter\JsFilterFactory',
-        	'LessFilter' => '\AssetsBundle\Factory\Filter\LessFilterFactory',
         	'PngFilter' => '\AssetsBundle\Factory\Filter\PngFilterFactory',
         	'JpegFilter' => '\AssetsBundle\Factory\Filter\JpegFilterFactory',
         	'GifFilter' => '\AssetsBundle\Factory\Filter\GifFilterFactory',
@@ -60,22 +60,18 @@ return array(
         )
     ),
     'asset_bundle' => array(
-		'production' => true,//Application environment (Developpement => false)
+		'production' => true, //Application environment (Developpement => false)
     	'lastModifiedTime' => null, //Arbitrary last modified time in production
-    	'cachePath' => '@zfRootPath/public/cache',//cache directory absolute path
-    	'assetsPath' => '@zfRootPath/public',//assets directory absolute path (allows you to define relative path for assets config)
-    	'cacheUrl' => '@zfBaseUrl/cache/',//cache directory base url
-    	'mediaExt' => array('jpeg','jpg','png','gif','cur','ttf','eot','svg','woff'),//Put here all media extensions to be cached
-    	'recursiveSearch' => false,
-    	'rendererToStrategy' => array(
-            'Zend\View\Renderer\PhpRenderer'  => '\AssetsBundle\View\Strategy\ViewHelperStrategy',
-            'Zend\View\Renderer\FeedRenderer' => '\AssetsBundle\View\Strategy\NoneStrategy',
-            'Zend\View\Renderer\JsonRenderer' => '\AssetsBundle\View\Strategy\NoneStrategy'
-        ),
+    	'cachePath' => '@zfRootPath/public/cache',//Cache directory absolute path
+    	'assetsPath' => '@zfRootPath/public', //Assets directory absolute path (allows you to define relative path for assets config)
+    	'baseUrl' => null, //Base URL of the application
+    	'cacheUrl' => '@zfBaseUrl/cache/', //Cache directory base url
+    	'mediaExt' => array('jpeg','jpg','png','gif','cur','ttf','eot','svg','woff'), //Put here all media extensions to be cached
+    	'recursiveSearch' => false, //Allows search for matching assets in required folder and its subfolders
     	'filters' => array(
+    		\AssetsBundle\Service\Service::ASSET_LESS  => 'LessFilter',
     		\AssetsBundle\Service\Service::ASSET_CSS => 'CssFilter',
     		\AssetsBundle\Service\Service::ASSET_JS => 'JsFilter',
-    		\AssetsBundle\Service\Service::ASSET_LESS => 'LessFilter',
     		'png' => 'PngFilter',
     		'jpg' => 'JpegFilter','jpeg' => 'JpegFilter',
     		'gif' => 'GifFilter'

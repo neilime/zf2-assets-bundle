@@ -23,8 +23,7 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*@stable",
         "neilime/lessphp": "v0.4",
-        "natxet/CssMin": "dev-master",
-        "nick4fake/jsmin": "dev-master"
+        "mrclay/minify": "2.*@stable"
     },
     "autoload": {
         "psr-0": {

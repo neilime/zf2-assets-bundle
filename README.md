@@ -143,7 +143,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 
 2. Assets :
 
- You can define assets for controllers / action
+ You can define assets for modules / controllers / action
  
  Exemple : 
  
@@ -156,24 +156,34 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
     			'css' => array(), //Define css files to include
     			'js' => array(), //Define js files to include
     			'less' => array(), //Define less files to include
-    			'media' => array() //Define images to manage
-    			    			
-    			//Controller assets
-    			'Test/Controller/Name' => array(
+    			'media' => array(), //Define images to manage
+    			
+    			//Module assets
+    			'Test' =>  => array(
     				'css' => array(),
 	    			'js' => array(),
 	    			'less' => array(), 
-	    			'media' => array()
-	    			
-	    			//Action assets
-	    			'ActionName'=> array(
+	    			'media' => array(),
+    			    			
+	    			//Controller assets
+	    			'Test\Controller\Name' => array(
 	    				'css' => array(),
 		    			'js' => array(),
 		    			'less' => array(), 
-		    			'media' => array()
-    				)
-    			)
-    			//...
+		    			'media' => array(),
+		    			
+		    			//Action assets
+		    			'ActionName'=> array(
+		    				'css' => array(),
+			    			'js' => array(),
+			    			'less' => array(), 
+			    			'media' => array()
+	    				),
+	    				//...
+	    			),
+	    			//...
+	    		),
+	    		//...
     		)
 	    ),
 	    //...

@@ -12,12 +12,12 @@ class ServiceFactory implements \Zend\ServiceManager\FactoryInterface{
 		$aConfiguration = $oServiceLocator->get('Config');
 		if(!isset($aConfiguration['asset_bundle']))throw new \UnexpectedValueException('AssetsBundle configuration is undefined');
 
-		//Define base path
-		if(!isset($aConfiguration['asset_bundle']['basePath'])){
-			if(($oRequest = $oServiceLocator->get('request')) instanceof \Zend\Http\PhpEnvironment\Request)$aConfiguration['asset_bundle']['basePath'] = $oRequest->getBasePath();
+		//Define base URL of the application
+		if(!isset($aConfiguration['asset_bundle']['baseUrl'])){
+			if(($oRequest = $oServiceLocator->get('request')) instanceof \Zend\Http\PhpEnvironment\Request)$aConfiguration['asset_bundle']['baseUrl'] = $oRequest->getBaseUrl();
 			else{
 				$oRequest = new \Zend\Http\PhpEnvironment\Request();
-				$aConfiguration['asset_bundle']['basePath'] = $oRequest->getBasePath();
+				$aConfiguration['asset_bundle']['baseUrl'] = $oRequest->getBaseUrl();
 			}
 		}
 
@@ -29,6 +29,6 @@ class ServiceFactory implements \Zend\ServiceManager\FactoryInterface{
 				elseif(class_exists($oFilter))$aConfiguration['asset_bundle']['filters'][$sFilterType] = new $oFilter();
 			}
 		}
-		return new \AssetsBundle\Service\Service($aConfiguration['asset_bundle']);
+		return \AssetsBundle\Service\Service::factory($aConfiguration['asset_bundle']);
 	}
 }

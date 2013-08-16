@@ -1,7 +1,7 @@
 <?php
 return array(
 	'asset_bundle' => array(
-		'basePath' => '/',
+		'baseUrl' => '/',
 		'cachePath' => '@zfRootPath/AssetsBundleTest/_files/cache',
 		'assetsPath' => '@zfRootPath/AssetsBundleTest/_files/assets'
 	),
@@ -37,7 +37,7 @@ return array(
 	)),
 	'controllers' => array(
 		'invokables' => array(
-			'AssetsBundleTest\Controller\Test' => 'AssetsBundleTest\Controller\TestController',
+			'AssetsBundleTest\Controller\Test' => 'AssetsBundleTest\Controller\TestController'
 		)
 	),
 	'view_manager' => array(

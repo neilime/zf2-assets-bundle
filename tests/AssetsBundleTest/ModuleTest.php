@@ -20,7 +20,7 @@ class ModuleTest extends \PHPUnit_Framework_TestCase{
 		->setViewModel(new \Zend\View\Model\ViewModel())
 		->setApplication(\AssetsBundleTest\Bootstrap::getServiceManager()->get('Application'))
 		->setRouter(\Zend\Mvc\Router\Http\TreeRouteStack::factory(isset($aConfiguration['router'])?$aConfiguration['router']:array()))
-		->setRouteMatch(new \Zend\Mvc\Router\RouteMatch(array('controller' => 'index','action' => 'index')));
+		->setRouteMatch(new \Zend\Mvc\Router\RouteMatch(array('controller' => 'test-module','action' => 'test-module\index-controller')));
 	}
 
 	public function testGetConsoleBanner(){

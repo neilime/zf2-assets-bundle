@@ -15,14 +15,14 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
         $oConsole = $this->getServiceLocator()->get('console');
 
         //Initialize AssetsBundle service
-        $oAssetsBundleService = $oServiceLocator->get('AssetsBundleService')
-        ->setRenderer(new \Zend\View\Renderer\PhpRenderer());
+        $oAssetsBundleService = $oServiceLocator->get('AssetsBundleService');
+        $oAssetsBundleService->getOptions()->setRenderer(new \Zend\View\Renderer\PhpRenderer());
 
         //Start process
 
         $oConsole->writeLine('');
         $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::GRAY);
-        $oConsole->writeLine('Render all assets for '.($oAssetsBundleService->isProduction()?'production':'development'), \Zend\Console\ColorInterface::GREEN);
+        $oConsole->writeLine('Render all assets for '.($oAssetsBundleService->getOptions()->isProduction()?'production':'development'), \Zend\Console\ColorInterface::GREEN);
         $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::GRAY);
         $oConsole->writeLine('');
 
@@ -41,34 +41,50 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
         );
 
         //Render all assets
-        foreach(array_diff_key($aConfiguration['assets'], $aUnwantedKeys) as $sControllerName => $aConfig){
+        foreach(array_diff_key($aConfiguration['assets'], $aUnwantedKeys) as $sModuleName => $aConfig){
+        	//Render module global assets
         	$oConsole->write(' * ',\Zend\Console\ColorInterface::GRAY);
-        	$oConsole->write($sControllerName.' : ',\Zend\Console\ColorInterface::LIGHT_BLUE);
-        	$oConsole->write(\AssetsBundle\Service\Service::NO_ACTION.PHP_EOL,\Zend\Console\ColorInterface::LIGHT_WHITE);
+        	$oConsole->write('['.$sModuleName.']',\Zend\Console\ColorInterface::LIGHT_CYAN);
+        	$oConsole->write('[No controller]',\Zend\Console\ColorInterface::LIGHT_BLUE);
+        	$oConsole->write('[No action]'.PHP_EOL,\Zend\Console\ColorInterface::LIGHT_WHITE);
+        	$oAssetsBundleService->getOptions()
+        		->setModuleName($sModuleName)
+        		->setControllerName(\AssetsBundle\Service\ServiceOptions::NO_CONTROLLER)
+        		->setActionName(\AssetsBundle\Service\ServiceOptions::NO_ACTION);
+        	$oAssetsBundleService->renderAssets();
 
-        	//Render assets for no_actions
-       		$oAssetsBundleService->setControllerName($sControllerName)
-       		->setActionName(\AssetsBundle\Service\Service::NO_ACTION)
-       		->renderAssets();
+        	foreach(array_diff_key($aConfiguration['assets'][$sModuleName], $aUnwantedKeys) as $sControllerName => $aConfig){
+        		$oConsole->write(' * ',\Zend\Console\ColorInterface::GRAY);
+        		$oConsole->write('['.$sModuleName.']',\Zend\Console\ColorInterface::LIGHT_CYAN);
+        		$oConsole->write('['.$sControllerName.']',\Zend\Console\ColorInterface::LIGHT_BLUE);
+	        	$oConsole->write('[No action]'.PHP_EOL,\Zend\Console\ColorInterface::LIGHT_WHITE);
 
-       		foreach(array_diff_key($aConfiguration['assets'][$sControllerName], $aUnwantedKeys) as $sActionName => $aActionConfiguration){
-       			$oConsole->write(' * ',\Zend\Console\ColorInterface::GRAY);
-       			$oConsole->write($sControllerName.' : ',\Zend\Console\ColorInterface::LIGHT_BLUE);
-       			$oConsole->write($sActionName.PHP_EOL,\Zend\Console\ColorInterface::LIGHT_WHITE);
+	        	//Render assets for no_actions
+	       		$oAssetsBundleService->getOptions()->setControllerName($sControllerName)->setActionName(\AssetsBundle\Service\ServiceOptions::NO_ACTION);
+	       		$oAssetsBundleService->renderAssets();
 
-       			$oAssetsBundleService->setActionName($sActionName)->renderAssets();
-       		}
+	       		foreach(array_diff_key($aConfiguration['assets'][$sModuleName][$sControllerName], $aUnwantedKeys) as $sActionName => $aActionConfiguration){
+	       			$oConsole->write(' * ',\Zend\Console\ColorInterface::GRAY);
+	        		$oConsole->write('['.$sModuleName.']',\Zend\Console\ColorInterface::LIGHT_CYAN);
+	        		$oConsole->write('['.$sControllerName.']',\Zend\Console\ColorInterface::LIGHT_BLUE);
+	       			$oConsole->write('['.$sActionName.']'.PHP_EOL,\Zend\Console\ColorInterface::LIGHT_WHITE);
+
+	       			$oAssetsBundleService->getOptions()->setActionName($sActionName);
+	       			$oAssetsBundleService->renderAssets();
+	       		}
+        	}
        	}
 
+        //Render global assets
        	$oConsole->write(' * ',\Zend\Console\ColorInterface::GRAY);
-       	$oConsole->write(\AssetsBundle\Service\Service::NO_CONTROLLER.' : ',\Zend\Console\ColorInterface::LIGHT_BLUE);
-       	$oConsole->write(\AssetsBundle\Service\Service::NO_ACTION.PHP_EOL,\Zend\Console\ColorInterface::LIGHT_WHITE);
-
-        //Render assets for no_controller
-        $oAssetsBundleService
-        ->setControllerName(\AssetsBundle\Service\Service::NO_CONTROLLER)
-        ->setActionName(\AssetsBundle\Service\Service::NO_ACTION)
-        ->renderAssets();
+       	$oConsole->write('[No module]',\Zend\Console\ColorInterface::LIGHT_BLUE);
+       	$oConsole->write('[No controller]',\Zend\Console\ColorInterface::LIGHT_BLUE);
+       	$oConsole->write('[No action]'.PHP_EOL,\Zend\Console\ColorInterface::LIGHT_WHITE);
+        $oAssetsBundleService->getOptions()
+	        ->setModuleName(\AssetsBundle\Service\ServiceOptions::NO_MODULE)
+	        ->setControllerName(\AssetsBundle\Service\ServiceOptions::NO_CONTROLLER)
+	        ->setActionName(\AssetsBundle\Service\ServiceOptions::NO_ACTION);
+       	$oAssetsBundleService->renderAssets();
 
         $oConsole->writeLine('');
         $oConsole->writeLine('---------------', \Zend\Console\ColorInterface::GRAY);
@@ -82,12 +98,17 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
 
     	//Empty cache directory except .gitignore
 		foreach(new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($oAssetsBundleService->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS),
+			new \RecursiveDirectoryIterator($oAssetsBundleService->getOptions()->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::CHILD_FIRST
 		) as $oFileinfo){
 			if($oFileinfo->isDir())rmdir($oFileinfo->getRealPath());
 			elseif($oFileinfo->getBasename() !== '.gitignore')unlink($oFileinfo->getRealPath());
 		}
-		$oConsole = $this->getServiceLocator()->get('console')->writeLine('Cache directory is empty', \Zend\Console\ColorInterface::GREEN);
+		$oConsole = $this->getServiceLocator()->get('console');
+		$oConsole->writeLine('');
+		$oConsole->writeLine('========================', \Zend\Console\ColorInterface::GRAY);
+		$oConsole->writeLine('Cache directory is empty', \Zend\Console\ColorInterface::GREEN);
+		$oConsole->writeLine('========================', \Zend\Console\ColorInterface::GRAY);
+		$oConsole->writeLine('');
     }
 }

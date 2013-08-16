@@ -1,6 +1,6 @@
 <?php
 namespace AssetsBundleTest\Service;
-class ServiceTest extends \PHPUnit_Framework_TestCase{
+class ServiceDevTest extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @var array
 	 */
@@ -14,27 +14,30 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 				),
 				'less' => array('less/test.less'),
 				'js' => array('js/test.js'),
-				'index' => array(
-					'test-media' => array(
-						'css' => array('css/test-media.css'),
-						'less' => array('less/test-media.less'),
-						'media' => array(
-							'@zfRootPath/AssetsBundleTest/_files/fonts',
-							'@zfRootPath/AssetsBundleTest/_files/images'
-						)
-					),
-					'test-mixins' => array(
-						'less' => array(
-							'less/test-mixins.less',
-							'less/test-mixins-use.less'
-						)
-					),
-					'test-assets-from-url' => array(
-						'js' => array(
-							'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'
+
+				'test-module' => array(
+					'test-module\index-controller' => array(
+						'test-media' => array(
+							'css' => array('css/test-media.css'),
+							'less' => array('less/test-media.less'),
+							'media' => array(
+								'@zfRootPath/AssetsBundleTest/_files/fonts',
+								'@zfRootPath/AssetsBundleTest/_files/images'
+							)
 						),
-						'css' => array(
-							'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'
+						'test-mixins' => array(
+							'less' => array(
+								'less/test-mixins.less',
+								'less/test-mixins-use.less'
+							)
+						),
+						'test-assets-from-url' => array(
+							'js' => array(
+								'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'
+							),
+							'css' => array(
+								'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'
+							)
 						)
 					)
 				)
@@ -56,12 +59,12 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
     protected function setUp(){
-        $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'index','action' => 'index'));
+        $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'test-module\index-controller','action' => 'index'));
         $this->createService();
     }
 
     /**
-     * @param boolean $bAddNewLess
+     * @param array $aAssetsConfiguration
      */
     protected function createService(array $aAssetsConfiguration = null){
     	$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
@@ -78,11 +81,61 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
     	//Define service
     	$oServiceFactory = new \AssetsBundle\Factory\ServiceFactory();
-    	$this->service = $oServiceFactory->createService($oServiceManager)
+    	$this->service = $oServiceFactory->createService($oServiceManager);
+    	$this->service->getOptions()
     		->setRenderer(new \Zend\View\Renderer\PhpRenderer())
+    		->setModuleName(current(explode('\\',$this->routeMatch->getParam('controller'))))
     		->setControllerName($this->routeMatch->getParam('controller'))
     		->setActionName($this->routeMatch->getParam('action'));
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFactoryWithWrongFilters(){
+    	\AssetsBundle\Service\Service::factory(array('filters' => 'wrong'));
+    }
+
+    public function testFactoryWithCustomRendererToStrategy(){
+    	\AssetsBundle\Service\Service::factory(array('rendererToStrategy' => array('zendviewrendererphprenderer'  => new \AssetsBundle\View\Strategy\ViewHelperStrategy())));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFactoryWithWrongRendererToStrategy(){
+    	\AssetsBundle\Service\Service::factory(array('rendererToStrategy' => 'wrong'));
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testGetOptionsUndefined(){
+    	$oService = new \AssetsBundle\Service\Service();
+    	$oService->getOptions();
+    }
+
+    public function testService(){
+    	//Test service instance
+    	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service);
+
+    	//Test cache path
+    	$this->assertEquals(realpath(__DIR__.'/../_files/cache').DIRECTORY_SEPARATOR, $this->service->getOptions()->getCachePath());
+
+    	//Test assets configuration
+    	$this->assertTrue($this->service->moduleHasAssetConfiguration('test-module'));
+    	$this->assertFalse($this->service->moduleHasAssetConfiguration('wrong-module'));
+
+    	$this->assertTrue($this->service->controllerHasAssetConfiguration('test-module\index-controller'));
+    	$this->assertFalse($this->service->controllerHasAssetConfiguration('wrong-controller'));
+
+    	$this->assertTrue($this->service->actionHasAssetConfiguration('test-media'));
+    	$this->assertFalse($this->service->actionHasAssetConfiguration('wrong-action'));
+    }
+
+   	public function testAssetTypeExists(){
+   		$this->assertFalse($this->service->assetTypeExists('wrong'));
+   	}
 
     public function testRenderSimpleAssets(){
 		//Empty cache directory
@@ -94,19 +147,19 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		//Css cache files
 		$this->assertAssetCacheContent(array(
 			'css_test.css',
-			'dev_2ccf05a7ef21d1b5cf2cf0ab67167023.css',
+			'dev_'.$this->service->getCacheFileName().'.css',
 			'css_full-dir_full-dir.css'
 		));
 
 		//Less cache files
-		$sLessFile = 'dev_2ccf05a7ef21d1b5cf2cf0ab67167023.less';
+		$sLessFile = 'dev_'.$this->service->getCacheFileName().'.less';
 		$this->assertAssetCacheContent(array($sLessFile));
 
 		//Js cache files
 		$this->assertAssetCacheContent(array('js_test.js'));
 
 		//Retrieve assets last modified date
-		$this->assertNotEquals($iLastModified = filemtime($this->service->getCachePath().$sLessFile),false);
+		$this->assertNotEquals($iLastModified = filemtime($this->service->getOptions()->getCachePath().$sLessFile),false);
 
 		sleep(1);
 
@@ -114,7 +167,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
 		//Check if assets are not rendered again
-		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getCachePath().$sLessFile),false);
+		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getOptions()->getCachePath().$sLessFile),false);
 		$this->assertEquals($iLastModified,$iNewLastModified);
 
 		sleep(1);
@@ -129,7 +182,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
 		//Check if assets has been rendered this time
 		$iLastModified = $iNewLastModified;
-		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getCachePath().$sLessFile),false);
+		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getOptions()->getCachePath().$sLessFile),false);
 		$this->assertGreaterThan($iLastModified,$iNewLastModified);
 
 		sleep(1);
@@ -139,17 +192,17 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
 		//Check if assets are not rendered again
 		$iLastModified = $iNewLastModified;
-		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getCachePath().$sLessFile),false);
+		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getOptions()->getCachePath().$sLessFile),false);
 		$this->assertEquals($iLastModified,$iNewLastModified);
 
 		//Update less assets
-		file_put_contents($this->service->getAssetsPath().'less/test.less',file_get_contents($this->service->getAssetsPath().'less/test.less'));
+		file_put_contents($this->service->getOptions()->getAssetsPath().'less/test.less',file_get_contents($this->service->getOptions()->getAssetsPath().'less/test.less'));
 
 		//Render assets
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
 		//Check if assets has been rendered this time
-		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getCachePath().$sLessFile),false);
+		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getOptions()->getCachePath().$sLessFile),false);
 		$this->assertGreaterThan($iLastModified,$iNewLastModified);
 
 		sleep(1);
@@ -159,11 +212,11 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
 		//Check if assets are not rendered again
 		$iLastModified = $iNewLastModified;
-		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getCachePath().$sLessFile),false);
+		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getOptions()->getCachePath().$sLessFile),false);
 		$this->assertEquals($iLastModified,$iNewLastModified);
 
 		//Update less import assets
-		file_put_contents($this->service->getAssetsPath().'less/import.less',file_get_contents($this->service->getAssetsPath().'less/import.less'));
+		file_put_contents($this->service->getOptions()->getAssetsPath().'less/import.less',file_get_contents($this->service->getOptions()->getAssetsPath().'less/import.less'));
 
 		sleep(1);
 
@@ -172,7 +225,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 
 		//Check if assets are not rendered again
 		$iLastModified = $iNewLastModified;
-		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getCachePath().$sLessFile),false);
+		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getOptions()->getCachePath().$sLessFile),false);
 		$this->assertGreaterThan($iLastModified,$iNewLastModified);
 
 		sleep(1);
@@ -181,7 +234,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
 
 		//Check if assets has been rendered this time
-		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getCachePath().$sLessFile),false);
+		$this->assertNotEquals($iNewLastModified = filemtime($this->service->getOptions()->getCachePath().$sLessFile),false);
 		$this->assertGreaterThan($iLastModified,$iNewLastModified);
 
 		//Empty cache directory
@@ -191,7 +244,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 	public function testRenderAssetsWithMedias(){
 		//Change action name
 		$this->routeMatch->setParam('action','test-media');
-		$this->service->setActionName($this->routeMatch->getParam('action'));
+		$this->service->getOptions()->setActionName($this->routeMatch->getParam('action'));
 
 		//Empty cache directory
 		$this->emptyCacheDirectory();
@@ -203,12 +256,12 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
 		$this->assertAssetCacheContent(array(
 			'css_test-media.css',
 			'css_test.css',
-			'dev_ebcddd147f42ba536510ab2d0f1a5069.css',
+			'dev_'.$this->service->getCacheFileName().'.css',
 			'css_full-dir_full-dir.css'
 		));
 
 		//Less cache files
-		$this->assertAssetCacheContent(array('dev_ebcddd147f42ba536510ab2d0f1a5069.less'));
+		$this->assertAssetCacheContent(array('dev_'.$this->service->getCacheFileName().'.less'));
 
 		//Js cache files
 		$this->assertAssetCacheContent(array('js_test.js'));
@@ -220,7 +273,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     public function testRenderTestAssetsFromUrl(){
     	//Change action name
     	$this->routeMatch->setParam('action','test-assets-from-url');
-    	$this->service->setActionName($this->routeMatch->getParam('action'));
+    	$this->service->getOptions()->setActionName($this->routeMatch->getParam('action'));
 
     	//Empty cache directory
     	$this->emptyCacheDirectory();
@@ -232,30 +285,15 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     	$this->emptyCacheDirectory();
     }
 
-   /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testGetFilterWithWrongAssetType(){
-    	$this->service->getFilter('wrong');
-
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testHasFilterWithWrongAssetType(){
-    	$this->service->hasFilter('wrong');
-    }
-
     public function testRenderWithoutAssetsPath(){
 
     	//Change assets config
     	$this->createService(array('css' => array(
-    		$this->service->getAssetsPath().'css/test.css'
+    		$this->service->getOptions()->getAssetsPath().'css/test.css'
     	)));
 
     	//Unset assets path config
-    	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->setAssetsPath(null));
+    	$this->assertInstanceOf('AssetsBundle\Service\ServiceOptions',$this->service->getOptions()->setAssetsPath(null));
 
     	//Render assets
     	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
@@ -266,10 +304,14 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
      */
     protected function assertAssetCacheContent(array $aAssetsFiles){
     	$sCacheExpectedPath = __DIR__.'/../_files/dev-cache-expected';
+
     	foreach($aAssetsFiles as $sAssetFile){
+    		file_put_contents(
+    		$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
+    			str_replace(PHP_EOL,"\n",file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile)));
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
-    			str_replace(PHP_EOL,"\n",file_get_contents($this->service->getCachePath().$sAssetFile))
+    			str_replace(PHP_EOL,"\n",file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile))
     		);
     	}
     }
@@ -277,7 +319,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase{
     protected function emptyCacheDirectory(){
     	//Empty cache directory except .gitignore
     	foreach(new \RecursiveIteratorIterator(
-    		new \RecursiveDirectoryIterator($this->service->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS),
+    		new \RecursiveDirectoryIterator($this->service->getOptions()->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS),
     		\RecursiveIteratorIterator::CHILD_FIRST
     	) as $oFileinfo){
     		if($oFileinfo->isDir())rmdir($oFileinfo->getRealPath());

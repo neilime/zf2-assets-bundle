@@ -14,7 +14,7 @@ class ViewHelperStrategy extends \AssetsBundle\View\Strategy\AbstractStrategy{
             	$this->getRenderer()->plugin('InlineScript')->appendFile($sPath);
                 break;
             case 'css':
-                $this->getRenderer()->plugin('HeadLink')->appendStylesheet($sPath);
+                $this->getRenderer()->plugin('HeadLink')->appendStylesheet($sPath,'all');
                 break;
         }
     }

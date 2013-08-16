@@ -13,7 +13,7 @@ abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractAct
 		){
 			$oAssetsBundleService = $this->getServiceLocator()->get('AssetsBundleService');
 
-			if($oAssetsBundleService->isProduction())$this->layout()->jsCustomUrl = $this->getEvent()->getRouter()->assemble(
+			if($oAssetsBundleService->getOptions()->isProduction())$this->layout()->jsCustomUrl = $this->getEvent()->getRouter()->assemble(
 				array('controller' => $this->params('controller'), 'js_action' => $this->params('action')),
 				array('name' => 'jscustom/definition')
 			);
@@ -21,19 +21,21 @@ abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractAct
 				if($aJsFiles = $this->jsCustomAction($this->params('action'))){
 					if(!is_array($aJsFiles))throw new \LogicException('Js files expects an array, "'.gettype($aJsFiles).'" given');
 					//Check js files
+					$sCachePath = $oAssetsBundleService->getOptions()->getCachePath();
+					$sCacheUrl = $oAssetsBundleService->getOptions()->getCacheUrl();
 					foreach($aJsFiles as &$sJsFile){
-						if($sJsFilePath = $oAssetsBundleService->getRealPath($sJsFile)){
+						if($sJsFilePath = $oAssetsBundleService->getOptions()->getRealPath($sJsFile)){
 							//Retrieve js file relative path
 							$sJsFileRelativePath = $oAssetsBundleService->getAssetRelativePath($sJsFilePath);
 
 							//Copy js file into cache
-							$oAssetsBundleService->copyIntoCache($sJsFilePath, $oAssetsBundleService->getCachePath().$sJsFileRelativePath);
+							$oAssetsBundleService->copyIntoCache($sJsFilePath, $sCachePath.$sJsFileRelativePath);
 
 							//Define last modified
-							$iLastModified = file_exists($sAbsolutePath = $oAssetsBundleService->getCachePath().DIRECTORY_SEPARATOR.$sJsFileRelativePath)?filemtime($sAbsolutePath):time();
+							$iLastModified = file_exists($sAbsolutePath = $sCachePath.DIRECTORY_SEPARATOR.$sJsFileRelativePath)?filemtime($sAbsolutePath):time();
 
 							//Define js file relative url
-							$sJsFile = $oAssetsBundleService->getCacheUrl().$sJsFileRelativePath.(strpos($sJsFileRelativePath, '?')?'&':'?').($iLastModified?:time());
+							$sJsFile = $sCacheUrl.$sJsFileRelativePath.(strpos($sJsFileRelativePath, '?')?'&':'?').($iLastModified?:time());
 						}
 						else throw new \LogicException('File "'.$sJsFile.'" does not exist');
 					}

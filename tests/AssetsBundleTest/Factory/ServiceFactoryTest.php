@@ -20,10 +20,9 @@ class ServiceFactoryTest extends \PHPUnit_Framework_TestCase{
 		$this->configuration = \AssetsBundleTest\Bootstrap::getServiceManager()->get('Config');
 	}
 
-	public function testCreateServiceWithoutBasePath(){
-
+	public function testCreateServiceWithoutBaseUrl(){
 		$aConfiguration = $this->configuration;
-		unset($aConfiguration['asset_bundle']['basePath']);
+		unset($aConfiguration['asset_bundle']['baseUrl']);
 
 		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
 		$bAllowOverride = $oServiceManager->getAllowOverride();
@@ -48,38 +47,7 @@ class ServiceFactoryTest extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @expectedException InvalidArgumentException
 	 */
-	public function testCreateServiceWithWrongAssetTypeFilter(){
-		$aConfiguration = $this->configuration;
-		$aConfiguration['asset_bundle']['filters']['wrong'] = 'AssetsBundle\Service\Filter\CssFilter';
-
-		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
-		$bAllowOverride = $oServiceManager->getAllowOverride();
-		if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-		$oServiceManager->setService('Config',$aConfiguration)->setAllowOverride($bAllowOverride);
-
-		$this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
-	}
-
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
-	public function testCreateServiceWithWrongTypeFilter(){
-		$aConfiguration = $this->configuration;
-		$aConfiguration['asset_bundle']['filters']['css'] = 'Wrong';
-
-		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
-		$bAllowOverride = $oServiceManager->getAllowOverride();
-		if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-		$oServiceManager->setService('Config',$aConfiguration)->setAllowOverride($bAllowOverride);
-
-		$this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
-	}
-
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testCreateServiceWithWrongAssetsPath(){
-
 		$aConfiguration = $this->configuration;
 		$aConfiguration['asset_bundle']['assetsPath'] = 'wrong';
 

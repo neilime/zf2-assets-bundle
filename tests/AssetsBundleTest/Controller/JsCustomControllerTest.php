@@ -86,8 +86,8 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     	),true),preg_replace('/\?([0-9]*)/','?', $this->getResponse()->getContent()));
 
     	$oAssetsBundleService = $this->getApplicationServiceLocator()->get('AssetsBundleService');
-    	$this->assertFileExists($oAssetsBundleService->getCachePath().'js_jscustom.js');
-    	$this->assertFileExists($oAssetsBundleService->getCachePath().'js_jscustom.php');
+    	$this->assertFileExists($oAssetsBundleService->getOptions()->getCachePath().'js_jscustom.js');
+    	$this->assertFileExists($oAssetsBundleService->getOptions()->getCachePath().'js_jscustom.php');
     }
 
     public function testFileErrorActionInDevelopment(){
@@ -154,7 +154,6 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     	$this->assertMatchedRouteName('jscustom/definition');
 
     	$this->assertResponseHeaderContains('content-type','text/javascript');
-
     	$this->assertStringEqualsFile(
     		dirname(__DIR__).'/_files/prod-cache-expected/jscustom-exception.js',
     		str_replace(PHP_EOL,"\n",$this->getResponse()->getContent())

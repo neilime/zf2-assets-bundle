@@ -72,7 +72,7 @@ class JsCustomRenderer implements \Zend\View\Renderer\RendererInterface, \Zend\S
 		$oAssetsBundleService = $this->getServiceLocator()->get('AssetsBundleService');
 		foreach($aJsFiles as $sJsFile){
 			if(!is_string($sJsFile))throw new \LogicException('Js file expects a string, "'.gettype($sJsFile).'" given');
-			elseif(!is_readable($sJsFilePath = $oAssetsBundleService->getRealPath($sJsFile)))throw new \LogicException('File "'.$sJsFile.'" is unreadable');
+			elseif(!is_readable($sJsFilePath = $oAssetsBundleService->getOptions()->getRealPath($sJsFile)))throw new \LogicException('File "'.$sJsFile.'" is unreadable');
 			elseif(strtolower(pathinfo($sJsFilePath,PATHINFO_EXTENSION)) === 'php'){
 				ob_start();
 				if(false === include $sJsFilePath)throw new \RuntimeException('Error appends while including asset file "'.$sJsFilePath.'"');
