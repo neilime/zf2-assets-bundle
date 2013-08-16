@@ -24,9 +24,14 @@
       <div id="banner">
         <span id="logo"></span>
 
-         <a href="https://github.com/neilime/zf2-assets-bundle/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-	    <a href="https://github.com/neilime/zf2-assets-bundle/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-        <a href="https://github.com/neilime/zf2-assets-bundle" id="view-on-github" class="button"><span>View On GitHub</span></a>
+        <a href="https://github.com/neilime/zf2-assets-bundle" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/neilime/zf2-assets-bundle/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/neilime/zf2-assets-bundle/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
       </div><!-- end banner -->
 
     <div class="wrapper">
@@ -34,13 +39,15 @@
         <ul></ul>
       </nav>
       <section>
-        <h1>AssetsBundle</h1>
+        <h1>
+<a name="assetsbundle" class="anchor" href="#assetsbundle"><span class="octicon octicon-link"></span></a>AssetsBundle</h1>
 
 <p><a href="https://travis-ci.org/neilime/zf2-assets-bundle"><img src="https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master" alt="Build Status"></a></p>
 
 <p>Created by Neilime</p>
 
-<h2>Introduction</h2>
+<h2>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
 <p>AssetsBundle is module for ZF2 allowing asset managment (bundling &amp; caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
 This module manages the concept of the environment/production development.</p>
@@ -56,7 +63,8 @@ This module manages the concept of the environment/production development.</p>
 <li>All files are bundling and cached one time only if needed.</li>
 </ul><p>P.S. Sorry for my english. If You wish to help me with this project or correct my english description - You are welcome :)</p>
 
-<h2>Requirements</h2>
+<h2>
+<a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
 
 <ul>
 <li>
@@ -64,19 +72,23 @@ This module manages the concept of the environment/production development.</p>
 <li>
 <a href="https://github.com/Nodge/lessphp">lessphp</a> (latest master).</li>
 <li>
-<a href="https://github.com/natxet/CssMin">CssMin</a> (latest master).</li>
+<a href="https://github.com/neilime/CssMin">CssMin</a> (latest master).</li>
 <li>
 <a href="https://github.com/nick4fake/JsMin">JsMin</a> (latest master).</li>
-</ul><h2>Installation</h2>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<h3>Main Setup</h3>
+<h3>
+<a name="main-setup" class="anchor" href="#main-setup"><span class="octicon octicon-link"></span></a>Main Setup</h3>
 
-<h4>By cloning project</h4>
+<h4>
+<a name="by-cloning-project" class="anchor" href="#by-cloning-project"><span class="octicon octicon-link"></span></a>By cloning project</h4>
 
 <ol>
-<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a>, <a href="https://github.com/natxet/CssMin">CssMin</a>, <a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
+<li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a> (latest master), <a href="https://github.com/neilime/CssMin">CssMin fork</a>, <a href="https://github.com/nick4fake/JsMin">JsMin</a> by cloning them into <code>./vendor/</code>.</li>
 <li>Clone this project into your <code>./vendor/</code> directory.</li>
-</ol><h4>With composer</h4>
+</ol><h4>
+<a name="with-composer" class="anchor" href="#with-composer"><span class="octicon octicon-link"></span></a>With composer</h4>
 
 <ol>
 <li>
@@ -88,23 +100,13 @@ This module manages the concept of the environment/production development.</p>
 </pre></div>
 </li>
 <li>
-<p>As lessphp does not rewrite urls (<a href="https://github.com/leafo/lessphp/pull/291">pull request #291</a>) you have to use Nodge's Lessphp fork, add this repository in your composer.json:</p>
-
-<div class="highlight"><pre><span class="s2">"repositories"</span><span class="err">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-        <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"vcs"</span><span class="p">,</span>
-        <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://github.com/Nodge/lessphp"</span>
-    <span class="p">}</span>
-<span class="p">]</span>
-</pre></div>
-</li>
-<li>
 <p>Now tell composer to download AssetsBundle by running the command:</p>
 
 <div class="highlight"><pre><span class="nv">$ </span>php composer.phar update
 </pre></div>
 </li>
-</ol><h4>Post installation</h4>
+</ol><h4>
+<a name="post-installation" class="anchor" href="#post-installation"><span class="octicon octicon-link"></span></a>Post installation</h4>
 
 <ol>
 <li>
@@ -120,10 +122,12 @@ This module manages the concept of the environment/production development.</p>
 <span class="p">);</span>
 </pre></div>
 </li>
-</ol><h1>How to use <em>AssetsBundle</em>
+</ol><h1>
+<a name="how-to-use-assetsbundle" class="anchor" href="#how-to-use-assetsbundle"><span class="octicon octicon-link"></span></a>How to use <em>AssetsBundle</em>
 </h1>
 
-<h2>Simple configuration example</h2>
+<h2>
+<a name="simple-configuration-example" class="anchor" href="#simple-configuration-example"><span class="octicon octicon-link"></span></a>Simple configuration example</h2>
 
 <p>This example shows how to convert "ZF2 Skeleton Application" to manage assets via AssetsBundle.</p>
 
@@ -171,7 +175,8 @@ mkdir cache
 </pre></div>
 </li>
 <li><p>Save &amp; Resfresh.</p></li>
-</ol><h1>Configuration</h1>
+</ol><h1>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h1>
 
 <p>The default configuration is setup to run with "Application ZF2 Skeleton"</p>
 
@@ -179,14 +184,12 @@ mkdir cache
 <li>
 <em>AssetsBundle</em> :</li>
 </ol><ul>
-<li>boolean <code>production</code>: Define the application environment (development =&gt; false). Default <code>true</code>.</li>
-<li>mixed <code>lastModifiedTime</code>: (optionnal) Allows you to define an arbitrary asset's last modified time in production. Default <code>null</code> : last modified time is calculated for each asset.</li>
-<li>string <code>basePath</code> : (optionnal) only needed if <code>cacheUrl</code> use <code>@zfBaseUrl</code>. If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used.</li>
-<li>string <code>cachePath</code> : cache directory absolute path, you can use the <code>@zfRootPath</code> constant corresponding to current working directory. Default <code>@zfRootPath/public/cache</code>.</li>
-<li>string <code>assetsPath</code> : assets directory absolute path, allows you to define relative path for assets config. You can use the constant <code>@zfRootPath</code> corresponding to current working directory. Default <code>@zfRootPath/public</code>.</li>
-<li>string <code>cacheUrl</code> : cache directory base url, you can use the constant <code>@zfBaseUrl</code> corresponding to application base url . Default <code>@zfBaseUrl/assets/cache/</code>.</li>
-<li>array <code>mediaExt</code> : Put here all medias extensions to be cached. Default <code>array('jpg','png','gif','cur','ttf','eot','svg','woff')</code>.</li>
-<li>boolean <code>recursiveSearch</code>: If you define a folder as required asset, it will search for matching assets in that folder and its subfolders. Default <code>false</code>.</li>
+<li>boolean <code>production</code>: Define the application environment (development =&gt; false). Default true.</li>
+<li>string <code>basePath</code> : (optionnal) only needed if "cacheUrl" use "@zfBaseUrl". If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used</li>
+<li>string <code>cachePath</code> : cache directory absolute path, you can use the "@zfRootPath" constant corresponding to current working directory. Default "@zfRootPath/public/cache".</li>
+<li>string <code>assetsPath</code> : assets directory absolute path, allows you to define relative path for assets config. You can use the constant "@zfRootPath" corresponding to current working directory. Default "@zfRootPath/public".</li>
+<li>string <code>cacheUrl</code> : cache directory base url, you can use the constant "@zfBaseUrl" corresponding to application base url . Default "@zfBaseUrl/assets/cache/".</li>
+<li>array <code>mediaExt</code> : Put here all medias extensions to be cached. Default array('jpg','png','gif','cur','ttf','eot','svg','woff').</li>
 </ul><ol>
 <li>
 <p>Assets :</p>
@@ -290,31 +293,36 @@ In this case, your controller that need these file have to extends "AssetsBundle
 <span class="p">}</span>
 </pre></div>
 </li>
-</ol><h1>Tools</h1>
+</ol><h1>
+<a name="tools" class="anchor" href="#tools"><span class="octicon octicon-link"></span></a>Tools</h1>
 
 <p><em>AssetsBundle</em> provides console tools.</p>
 
-<h2>Features</h2>
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <pre><code>Rendering all assets
 Empty cache directory
 </code></pre>
 
-<h2>Usage</h2>
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<h3>Rendering all assets</h3>
+<h3>
+<a name="rendering-all-assets" class="anchor" href="#rendering-all-assets"><span class="octicon octicon-link"></span></a>Rendering all assets</h3>
 
-<pre><code>php public/index.php render
+<pre><code>zf.php render
 </code></pre>
 
-<h3>Empty cache directory</h3>
+<h3>
+<a name="empty-cache-directory" class="anchor" href="#empty-cache-directory"><span class="octicon octicon-link"></span></a>Empty cache directory</h3>
 
-<pre><code>php public/index.php empty     
+<pre><code>zf.php empty     
 </code></pre>
       </section>
       <footer>
         <p>Project maintained by <a href="https://github.com/neilime">neilime</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
