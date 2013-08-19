@@ -29,6 +29,15 @@ class ServiceFactory implements \Zend\ServiceManager\FactoryInterface{
 				elseif(class_exists($oFilter))$aConfiguration['asset_bundle']['filters'][$sFilterType] = new $oFilter();
 			}
 		}
+
+		//Retrieve render strategies
+		if(isset($aConfiguration['asset_bundle']['rendererToStrategy'])
+		&& is_array($aConfiguration['asset_bundle']['rendererToStrategy']))foreach($aConfiguration['asset_bundle']['rendererToStrategy'] as $sRendererName => $oRendererStrategy){
+			if(is_string($oRendererStrategy)){
+				if($oServiceLocator->has($oRendererStrategy))$aConfiguration['asset_bundle']['rendererToStrategy'][$sRendererName] = $oServiceLocator->get($oRendererStrategy);
+				elseif(class_exists($oRendererStrategy))$aConfiguration['asset_bundle']['rendererToStrategy'][$sRendererName] = new $oRendererStrategy();
+			}
+		}
 		return \AssetsBundle\Service\Service::factory($aConfiguration['asset_bundle']);
 	}
 }
