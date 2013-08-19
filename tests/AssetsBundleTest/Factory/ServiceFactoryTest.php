@@ -44,6 +44,18 @@ class ServiceFactoryTest extends \PHPUnit_Framework_TestCase{
 		$this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
 	}
 
+	public function testCreateServiceWithClassnameRendererToStrategy(){
+		$aConfiguration = $this->configuration;
+		$aConfiguration['asset_bundle']['rendererToStrategy']['zendviewrendererphprenderer'] = '\AssetsBundle\View\Strategy\ViewHelperStrategy';
+
+		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+		$bAllowOverride = $oServiceManager->getAllowOverride();
+		if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
+		$oServiceManager->setService('Config',$aConfiguration)->setAllowOverride($bAllowOverride);
+
+		$this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
+	}
+
 	/**
 	 * @expectedException InvalidArgumentException
 	 */
