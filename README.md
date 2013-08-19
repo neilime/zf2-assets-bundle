@@ -1,4 +1,4 @@
-AssetsBundle, v1.0
+AssetsBundle, v2.0
 =======
 
 [![Build Status](https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master)](https://travis-ci.org/neilime/zf2-assets-bundle)
@@ -25,8 +25,7 @@ Requirements
 
 * [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
 * [lessphp](https://github.com/neilime/lessphp) (latest master).
-* [CssMin](https://github.com/natxet/CssMin) (latest master).
-* [JsMin](https://github.com/nick4fake/JsMin) (latest master).
+* [Minify](https://github.com/mrclay/minify) (latest master).
 
 Installation
 ------------
@@ -35,7 +34,7 @@ Installation
 
 #### By cloning project
 
-1. Install the [lessphp fork](https://github.com/Nodge/lessphp), [CssMin](https://github.com/natxet/CssMin), [JsMin](https://github.com/nick4fake/JsMin) by cloning them into `./vendor/`.
+1. Install the [lessphp fork](https://github.com/Nodge/lessphp), [Minify](https://github.com/mrclay/minify) by cloning them into `./vendor/`.
 2. Clone this project into your `./vendor/` directory.
 
 #### With composer
@@ -47,19 +46,8 @@ Installation
         "neilime/zf2-assets-bundle": "dev-master"
     }
     ```
-    
-2. As lessphp does not rewrite urls ([pull request #291](https://github.com/leafo/lessphp/pull/291)) you have to use neilime's Lessphp fork, add this repository in your composer.json:
-	
-	```json
-    "repositories": [
-	    {
-	        "type": "vcs",
-	        "url": "http://github.com/neilime/lessphp"
-	    }
-	]
-	```
 
-3. Now tell composer to download AssetsBundle by running the command:
+2. Now tell composer to download AssetsBundle by running the command:
 
     ```bash
     $ php composer.phar update
