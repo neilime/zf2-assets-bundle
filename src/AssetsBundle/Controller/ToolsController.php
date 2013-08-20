@@ -77,7 +77,7 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
 
         //Render global assets
        	$oConsole->write(' * ',\Zend\Console\ColorInterface::GRAY);
-       	$oConsole->write('[No module]',\Zend\Console\ColorInterface::LIGHT_BLUE);
+       	$oConsole->write('[No module]',\Zend\Console\ColorInterface::LIGHT_CYAN);
        	$oConsole->write('[No controller]',\Zend\Console\ColorInterface::LIGHT_BLUE);
        	$oConsole->write('[No action]'.PHP_EOL,\Zend\Console\ColorInterface::LIGHT_WHITE);
         $oAssetsBundleService->getOptions()
