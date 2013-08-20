@@ -22,7 +22,7 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*@stable",
-        "neilime/lessphp": "v0.4",
+        "neilime/lessphp": "0.*@stable",
         "mrclay/minify": "2.*@stable"
     },
     "autoload": {

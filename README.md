@@ -1,4 +1,4 @@
-AssetsBundle, v2.1
+AssetsBundle, v3.0
 =======
 
 [![Build Status](https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master)](https://travis-ci.org/neilime/zf2-assets-bundle)

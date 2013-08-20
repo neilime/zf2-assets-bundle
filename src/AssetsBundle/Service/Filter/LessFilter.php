@@ -4,11 +4,6 @@ class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	const EXEC_TIME_PER_CHAR = 0.0005;
 
 	/**
-	 * @var \lessc
-	 */
-	protected $lessParser;
-
-	/**
 	 * @var string
 	 */
 	protected $assetsPath;
@@ -21,12 +16,6 @@ class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 	public function __construct(array $aConfiguration = null){
 		//Check configuration entries
 		if(isset($aConfiguration['assetsPath']))$this->setAssetsPath($aConfiguration['assetsPath']);
-
-		$this->lessParser = new \lessc();
-		if($this->hasAssetsPath())$this->lessParser->addImportDir($this->getAssetsPath());
-
-		$this->lessParser->addImportDir(getcwd());
-		$this->lessParser->setAllowUrlRewrite(true);
 	}
 
 	/**
@@ -39,7 +28,12 @@ class LessFilter implements \AssetsBundle\Service\Filter\FilterInterface{
 		if(!is_string($sContent))throw new \InvalidArgumentException('Content expects string, "'.gettype($sContent).'" given');
 		$iExecTime = strlen($sContent)*self::EXEC_TIME_PER_CHAR;
 		if($iExecTime > ini_get('max_execution_time'))set_time_limit(0);
-		return trim($this->lessParser->compile($sContent));
+		$oLessParser = new \lessc();
+		if($this->hasAssetsPath())$oLessParser->addImportDir($this->getAssetsPath());
+
+		$oLessParser->addImportDir(getcwd());
+		$oLessParser->setAllowUrlRewrite(true);
+		return trim($oLessParser->compile($sContent));
 	}
 
 	/**

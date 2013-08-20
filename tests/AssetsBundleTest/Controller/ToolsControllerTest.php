@@ -81,29 +81,32 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
     		'test-module\index-controller-test-media' => $oAssetsBundleService->getCacheFileName('test-module','test-module\index-controller','test-media'),
     		'test-module\index-controller-test-mixins' => $oAssetsBundleService->getCacheFileName('test-module','test-module\index-controller','test-mixins'),
     		'no_controller-no_action' => $oAssetsBundleService->getCacheFileName(\AssetsBundle\Service\ServiceOptions::NO_MODULE,\AssetsBundle\Service\ServiceOptions::NO_CONTROLLER,\AssetsBundle\Service\ServiceOptions::NO_ACTION),
-    	) as $sCacheFile){
+    	) as $sCachePart => $sCacheFile){
 
     		//Css cache files
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.css',
-    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.css'))
+    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.css')),
+    			$sCachePart.' - '.$sCacheFile.'.css'
     		);
 
     		//Less cache files
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.less',
-    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.less'))
+    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.less')),
+    			$sCachePart.' - '.$sCacheFile.'.less'
     		);
 
     		//Js cache files
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.js',
-    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.js'))
+    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.js')),
+    			$sCachePart.' - '.$sCacheFile.'.js'
     		);
     	}
     }
 
-    public function testRenderAssetsWithoutConfiguration(){
+	public function testRenderAssetsWithoutConfiguration(){
     	$oServiceLocator = $this->getApplicationServiceLocator();
 
         $aConfiguration = $oServiceLocator->get('Config');
