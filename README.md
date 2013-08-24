@@ -101,8 +101,8 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
 	```php
 	<?php
 	return array(
-		//...
-		'asset_bundle' => array(
+	    //...
+	    'asset_bundle' => array(
 	    	'assets' => array(
     			'css' => array('css'),
     			'js' => array(
@@ -153,8 +153,10 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
  	```php
 	<?php
 	return array(
-		//...
-    	'assets' => array(
+            //...
+            'asset_bundle' => array(
+                //...
+    	        'assets' => array(
     			//Common assets    			
     			'css' => array(), //Define css files to include
     			'js' => array(), //Define js files to include
@@ -187,7 +189,9 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 	    			//...
 	    		),
 	    		//...
-    		)
+    		    )
+	        ),
+	        //...
 	    ),
 	    //...
 	);
@@ -201,35 +205,42 @@ If you specify a directory, all files matching the asset type (css, less, js, me
 
 - You can use url for `js` and `css` assets :
 
-	```php
-	<?php
-	return array(
-		//...
-    	'assets' => array(
-			'js' => array('http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'),
-			//...
-    	)    			
-    	//...
-    );
+    ```php
+    <?php
+        return array(
+            //...
+            'asset_bundle' => array(
+                //...
+                'assets' => array(
+                    'js' => array('http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'),
+                    //...
+                )
+                //...
+            )
+            //...
+        );
     ```
     
     This example includes `Mootools` from _Google Hosted Libraries_
 	
 - You can define an inclusion order like this :
 	
-	```php
-	<?php
-	return array(
-		//...
-    	'assets' => array(
-			'js' => array('js/firstFile.js','js'),
-			//...
-    	)    			
-    	//...
-    );
+    ```php
+    <?php
+        return array(
+            //...
+            'asset_bundle' => array(
+                //...
+                'assets' => array(
+                    'js' => array('js/firstFile.js','js'),
+                    //...
+                )
+            )
+            //...
+        );
     ```
     
-   	This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"
+    This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"
    	
 3. Custom Js :
 
