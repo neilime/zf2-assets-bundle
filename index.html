@@ -121,6 +121,19 @@ This module manages the concept of the environment/production development.</p>
 <span class="p">);</span>
 </pre></div>
 </li>
+<li>
+<p>Insert css &amp; js files into your layout page</p>
+
+<p>Into the <code>&lt;head&gt;</code> part :</p>
+
+<div class="highlight"><pre><span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">headScript</span><span class="p">();</span>
+</pre></div>
+
+<p>At the bottom of the <code>&lt;body&gt;</code> part :</p>
+
+<div class="highlight"><pre><span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">inlineScript</span><span class="p">();</span>
+</pre></div>
+</li>
 </ol><h1>
 <a name="how-to-use-assetsbundle" class="anchor" href="#how-to-use-assetsbundle"><span class="octicon octicon-link"></span></a>How to use <em>AssetsBundle</em>
 </h1>
@@ -201,29 +214,32 @@ mkdir cache
 
 <div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
-    <span class="c1">//...</span>
-    <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-            <span class="c1">//Common assets             </span>
+        <span class="c1">//...</span>
+        <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="c1">//...</span>
+            <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="c1">//Common assets included in every pages             </span>
             <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define css files to include</span>
             <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define js files to include</span>
             <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define less files to include</span>
             <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define images to manage</span>
 
-            <span class="c1">//Module assets</span>
-            <span class="s1">'Test'</span> <span class="o">=&gt;</span>  <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="c1">//Modules specific assets</span>
+            <span class="s1">'Test'</span> <span class="o">=&gt;</span>  <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span> <span class="c1">// "Test" is the name of the module</span>
+
                 <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                 <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                 <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
                 <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
 
-                <span class="c1">//Controller assets</span>
+                <span class="c1">//Controller specific assets</span>
                 <span class="s1">'Test\Controller\Name'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                     <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                     <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                     <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
                     <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
 
-                    <span class="c1">//Action assets</span>
+                    <span class="c1">//Action specific assets</span>
                     <span class="s1">'ActionName'</span><span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                         <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                         <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
@@ -235,7 +251,9 @@ mkdir cache
                 <span class="c1">//...</span>
             <span class="p">),</span>
             <span class="c1">//...</span>
-        <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="c1">//...</span>
     <span class="p">),</span>
     <span class="c1">//...</span>
 <span class="p">);</span>
@@ -250,14 +268,18 @@ If you specify a directory, all files matching the asset type (css, less, js, me
 <p>You can use url for <code>js</code> and <code>css</code> assets :</p>
 
 <div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
-    <span class="c1">//...</span>
-    <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'</span><span class="p">),</span>
+    <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
         <span class="c1">//...</span>
-    <span class="p">)</span>               
-    <span class="c1">//...</span>
-<span class="p">);</span>
+        <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="c1">//...</span>
+            <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'</span><span class="p">),</span>
+                <span class="c1">//...</span>
+            <span class="p">)</span>
+            <span class="c1">//...</span>
+        <span class="p">)</span>
+        <span class="c1">//...</span>
+    <span class="p">);</span>
 </pre></div>
 
 <p>This example includes <code>Mootools</code> from <em>Google Hosted Libraries</em></p>
@@ -266,14 +288,17 @@ If you specify a directory, all files matching the asset type (css, less, js, me
 <p>You can define an inclusion order like this :</p>
 
 <div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
-    <span class="c1">//...</span>
-    <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'js/firstFile.js'</span><span class="p">,</span><span class="s1">'js'</span><span class="p">),</span>
+    <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
         <span class="c1">//...</span>
-    <span class="p">)</span>               
-    <span class="c1">//...</span>
-<span class="p">);</span>
+        <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="c1">//...</span>
+            <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'js/firstFile.js'</span><span class="p">,</span><span class="s1">'js'</span><span class="p">),</span>
+                <span class="c1">//...</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1">//...</span>
+    <span class="p">);</span>
 </pre></div>
 
 <p>This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"</p>
