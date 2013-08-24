@@ -80,7 +80,7 @@ Installation
     
     At the bottom of the `<body>` part :
     ```php
-    echo $this->headScript();
+    echo $this->inlineScript();
     ```
     
 # How to use _AssetsBundle_
