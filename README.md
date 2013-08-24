@@ -157,27 +157,28 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
             'asset_bundle' => array(
                 //...
     	        'assets' => array(
-    			//Common assets    			
+    			//Common assets included in every pages   			
     			'css' => array(), //Define css files to include
     			'js' => array(), //Define js files to include
     			'less' => array(), //Define less files to include
     			'media' => array(), //Define images to manage
     			
-    			//Module assets
-    			'Test' =>  => array(
+    			//Modules specific assets
+    			'Test' =>  => array( // "Test" is the name of the module
+    				
     				'css' => array(),
 	    			'js' => array(),
 	    			'less' => array(), 
 	    			'media' => array(),
     			    			
-	    			//Controller assets
+	    			//Controller specific assets
 	    			'Test\Controller\Name' => array(
 	    				'css' => array(),
 		    			'js' => array(),
 		    			'less' => array(), 
 		    			'media' => array(),
 		    			
-		    			//Action assets
+		    			//Action specific assets
 		    			'ActionName'=> array(
 		    				'css' => array(),
 			    			'js' => array(),
