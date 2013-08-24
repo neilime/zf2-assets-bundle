@@ -69,6 +69,19 @@ Installation
         // ...
     );
     ```
+   
+2. Insert css & js files into your layout page
+
+    Into the `<head>` part :
+    ```php
+    echo $this->headScript();
+    ```
+    
+    
+    At the bottom of the `<body>` part :
+    ```php
+    echo $this->headScript();
+    ```
     
 # How to use _AssetsBundle_
 
