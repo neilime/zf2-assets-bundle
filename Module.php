@@ -34,9 +34,10 @@ class Module implements
 		$oRouter = $oEvent->getRouteMatch();
 		if($oRouter instanceof \Zend\Mvc\Router\RouteMatch){
 			if($sControllerName = $oRouter->getParam('controller'))$sModuleName = current(explode('\\',ltrim($sControllerName,'\\')));
+			$sActionName = $oRouter->getParam('action');
 			$oOptions = $oAssetsBundleService->getOptions()
-				->setControllerName($sControllerName)
-				->setActionName($oRouter->getParam('action'));
+				->setControllerName($sControllerName);
+			if(!empty($sActionName))$oOptions->setActionName($sActionName);
 			if(!empty($sModuleName))$oOptions->setModuleName($sModuleName);
 		}
 		$oAssetsBundleService->renderAssets();
