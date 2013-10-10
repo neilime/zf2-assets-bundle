@@ -33,7 +33,24 @@ class Module implements
 		/* @var $oRouter \Zend\Mvc\Router\RouteMatch */
 		$oRouter = $oEvent->getRouteMatch();
 		if($oRouter instanceof \Zend\Mvc\Router\RouteMatch){
-			if($sControllerName = $oRouter->getParam('controller'))$sModuleName = current(explode('\\',ltrim($sControllerName,'\\')));
+			if($sControllerName = $oRouter->getParam('controller'))
+			{
+				if(strpos($sControllerName, '\\'))
+				{
+					$sModuleName = current(explode('\\', ltrim($sControllerName, '\\')));
+				}
+				if(!isset($sModuleName) || empty($sModuleName))
+				{
+					$config = $oEvent->getApplication()->getServiceManager()->get('Config');
+					if(isset($config['controllers']['invokables']) && is_array($config['controllers']['invokables']))
+					{
+						if(array_key_exists($sControllerName, $config['controllers']['invokables']))
+						{
+						    $sModuleName = current(explode('\\', ltrim($config['controllers']['invokables'][$sControllerName], '\\')));
+						}
+					}
+				}
+			}
 			$sActionName = $oRouter->getParam('action');
 			$oOptions = $oAssetsBundleService->getOptions()
 				->setControllerName($sControllerName);
