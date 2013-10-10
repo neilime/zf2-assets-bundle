@@ -27,13 +27,19 @@ class Module implements
 	 * @param \Zend\Mvc\MvcEvent $oEvent
 	 */
 	public function renderAssets(\Zend\Mvc\MvcEvent $oEvent){
-		$oAssetsBundleService = $oEvent->getApplication()->getServiceManager()->get('AssetsBundleService');
-		$oAssetsBundleService->getOptions()->setRenderer($oEvent->getApplication()->getServiceManager()->get('ViewRenderer'));
+		$oServiceManager = $oEvent->getApplication()->getServiceManager();
+		$oAssetsBundleService = $oServiceManager->get('AssetsBundleService');
+		$oAssetsBundleService->getOptions()->setRenderer($oServiceManager->get('ViewRenderer'));
 
 		/* @var $oRouter \Zend\Mvc\Router\RouteMatch */
 		$oRouter = $oEvent->getRouteMatch();
 		if($oRouter instanceof \Zend\Mvc\Router\RouteMatch){
-			if($sControllerName = $oRouter->getParam('controller'))$sModuleName = current(explode('\\',ltrim($sControllerName,'\\')));
+
+			//Retrieve controller
+			if(
+				($sControllerName = $oRouter->getParam('controller'))
+				&& ($sControllerClass = get_class($oServiceManager->get('ControllerLoader')->get($sControllerName)))
+			)$sModuleName = substr($sControllerClass, 0, strpos($sControllerClass, '\\'));
 			$sActionName = $oRouter->getParam('action');
 			$oOptions = $oAssetsBundleService->getOptions()
 				->setControllerName($sControllerName);
