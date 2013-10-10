@@ -133,7 +133,7 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
 
 The default configuration is setup to run with "Application ZF2 Skeleton"
 
-1. _AssetsBundle_ :
+### 1. _AssetsBundle_
 
  * boolean `production`: Define the application environment (development => false). Default `true`.
  * mixed `lastModifiedTime`: (optionnal) Allows you to define an arbitrary asset's last modified time in production.  Default `null` : last modified time is calculated for each asset.
@@ -144,7 +144,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
  * array `mediaExt` : Put here all medias extensions to be cached. Default `array('jpg','png','gif','cur','ttf','eot','svg','woff')`.
  * boolean `recursiveSearch`: If you define a folder as required asset, it will search for matching assets in that folder and its subfolders. Default `false`.
 
-2. Assets :
+### 2. Assets
 
  You can define assets for modules / controllers / action
  
@@ -243,7 +243,7 @@ If you specify a directory, all files matching the asset type (css, less, js, me
     
     This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"
    	
-3. Custom Js :
+### 3. Custom Js
 
 	This function allows you to dynamically include javascript files. For exemple, files specific to user settings.
 	In this case, your controller that need these file have to extend `AssetsBundle\Mvc\Controller\AbstractActionController`.
