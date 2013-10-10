@@ -146,11 +146,11 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 
 ### 2. Assets
 
- You can define assets for modules / controllers / action
+You can define assets for modules / controllers / action
  
- Exemple : 
+Exemple : 
  
- 	```php
+ ```php
 	<?php
 	return array(
             //...
@@ -196,7 +196,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 	    ),
 	    //...
 	);
-	```
+```
 	
 - For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
 but you can specify an absolute path or use the constants "@zfAssetsPath" and "@zfRootPath".
@@ -245,45 +245,45 @@ If you specify a directory, all files matching the asset type (css, less, js, me
    	
 ### 3. Custom Js
 
-	This function allows you to dynamically include javascript files. For exemple, files specific to user settings.
-	In this case, your controller that need these file have to extend `AssetsBundle\Mvc\Controller\AbstractActionController`.
+This function allows you to dynamically include javascript files. For exemple, files specific to user settings.
+In this case, your controller that need these file have to extend `AssetsBundle\Mvc\Controller\AbstractActionController`.
 	
-	__Attention !__ Jscustom process does not cache javascript, due to performance reasons
+__Attention !__ Jscustom process does not cache javascript, due to performance reasons
 	
-	Then create a jscustomAction function into your controller : 
+Then create a jscustomAction function into your controller : 
 	
-	```php
-	public function jscustomAction($sAction = null){
-		//Check params, it's not mandatory
-		if(empty($sAction)){
-			$sAction = $this->params('js_action');
-			if(empty($sAction))throw new \InvalidArgumentException('Action param is empty');
-		}
-
-		$aJsFiles = array();
-		switch(strtolower($sAction)){
-			case 'myActionName':
-				//Put here all js files needed for "myActionName" action
-				$aJsFiles[] = 'js/test.js';
-				$aJsFiles[] = 'js/test.php';
-				break;
-		}
-		return $aJsFiles;
+```php
+public function jscustomAction($sAction = null){
+	//Check params, it's not mandatory
+	if(empty($sAction)){
+		$sAction = $this->params('js_action');
+		if(empty($sAction))throw new \InvalidArgumentException('Action param is empty');
 	}
-	```	
 
-	Edit layout file:
+	$aJsFiles = array();
+	switch(strtolower($sAction)){
+		case 'myActionName':
+			//Put here all js files needed for "myActionName" action
+			$aJsFiles[] = 'js/test.js';
+			$aJsFiles[] = 'js/test.php';
+			break;
+	}
+	return $aJsFiles;
+}
+```	
+
+Edit layout file:
 		
-	```php
-	//Into head
-	
-	//Production case
-	if(!empty($this->jsCustomUrl))$this->plugin('InlineScript')->appendFile($this->jsCustomUrl.'?'.time()); //Set time() force browser not to cache file, it's not mandatory
-	//Development case
-	elseif(is_array($this->jsCustomFiles))foreach($this->jsCustomFiles as $sJsCustomFile){
-		$this->plugin('InlineScript')->appendFile($sJsCustomFile);
-	}
-	```
+```php
+//Into head
+
+//Production case
+if(!empty($this->jsCustomUrl))$this->plugin('InlineScript')->appendFile($this->jsCustomUrl.'?'.time()); //Set time() force browser not to cache file, it's not mandatory
+//Development case
+elseif(is_array($this->jsCustomFiles))foreach($this->jsCustomFiles as $sJsCustomFile){
+	$this->plugin('InlineScript')->appendFile($sJsCustomFile);
+}
+```
 	
 # Tools
 
