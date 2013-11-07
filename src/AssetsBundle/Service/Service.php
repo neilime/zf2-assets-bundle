@@ -674,7 +674,14 @@ class Service{
 				:$sMediaPath;
 
 			//If media is not in asset directory
-			if($sCacheMediaPath === $sMediaPath)$sCacheMediaPath = str_ireplace(getcwd(),$sCachePath,$sMediaPath);
+			if($sCacheMediaPath === $sMediaPath){
+
+				$sCacheMediaPath = str_ireplace(getcwd(),$sCachePath,$sMediaPath);
+
+				//If media is not in application directory
+				if($sCacheMediaPath === $sMediaPath)$sCacheMediaPath = $sCachePath.DIRECTORY_SEPARATOR.$sMediaPath;
+
+			}
 
 			//Media isn't cached or it's deprecated
 			if($this->hasToCache($sMediaPath,$sCacheMediaPath)){

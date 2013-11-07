@@ -312,8 +312,6 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
     protected function assertAssetCacheContent(array $aAssetsFiles){
     	$sCacheExpectedPath = __DIR__.'/../_files/prod-cache-expected';
     	foreach($aAssetsFiles as $sAssetFile){
-    		file_put_contents($sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
-    			str_replace(PHP_EOL,"\n",file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile)));
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
     			str_replace(PHP_EOL,"\n",file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile))

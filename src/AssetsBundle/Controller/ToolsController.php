@@ -19,7 +19,6 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
         $oAssetsBundleService->getOptions()->setRenderer(new \Zend\View\Renderer\PhpRenderer());
 
         //Start process
-
         $oConsole->writeLine('');
         $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::GRAY);
         $oConsole->writeLine('Render all assets for '.($oAssetsBundleService->getOptions()->isProduction()?'production':'development'), \Zend\Console\ColorInterface::GREEN);
@@ -51,6 +50,7 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
         		->setModuleName($sModuleName)
         		->setControllerName(\AssetsBundle\Service\ServiceOptions::NO_CONTROLLER)
         		->setActionName(\AssetsBundle\Service\ServiceOptions::NO_ACTION);
+
         	$oAssetsBundleService->renderAssets();
 
         	foreach(array_diff_key($aConfiguration['assets'][$sModuleName], $aUnwantedKeys) as $sControllerName => $aConfig){
