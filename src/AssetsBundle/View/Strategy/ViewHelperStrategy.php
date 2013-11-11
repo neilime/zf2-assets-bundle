@@ -8,7 +8,10 @@ class ViewHelperStrategy extends \AssetsBundle\View\Strategy\AbstractStrategy{
 	public function renderAsset($sPath,$iLastModified){
     	$sExtension = strtolower(pathinfo($sPath, PATHINFO_EXTENSION));
 
-    	$sPath = $this->getBaseUrl().$sPath.(strpos($sPath, '?')?'&':'?').($iLastModified?:time());
+        // Is an absolute path?
+        if(!preg_match('/^https?:\/\//', $sPath))
+            $sPath = $this->getBaseUrl().$sPath.(strpos($sPath, '?')?'&':'?').($iLastModified?:time());
+
         switch($sExtension){
             case 'js':
             	$this->getRenderer()->plugin('InlineScript')->appendFile($sPath);
