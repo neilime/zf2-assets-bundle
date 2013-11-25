@@ -358,9 +358,10 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase{
     	$sCacheExpectedPath = __DIR__.'/../_files/dev-cache-expected';
     	foreach($aAssetsFiles as $sAssetFile){
     		$this->assertFileExists($this->service->getOptions()->getCachePath().$sAssetFile);
+
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
-    			str_replace(PHP_EOL,"\n",file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile))
+    			preg_replace('/'.preg_quote(str_replace(DIRECTORY_SEPARATOR,'/',getcwd()),'/').'/','/current-dir',file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile))
     		);
     	}
     }
