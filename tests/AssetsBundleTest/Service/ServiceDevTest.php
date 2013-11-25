@@ -8,14 +8,13 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase{
 		'asset_bundle' => array(
 			'production' => false,
 			'assets' => array(
-				'css' => array(
-					'css/test.css',
-					'css/full-dir'
-				),
-				'less' => array('less/test.less'),
-				'js' => array('js/test.js'),
-
 				'test-module' => array(
+					'css' => array(
+						'@zfRootPath/AssetsBundleTest/_files/assets/css/test.css',
+						'@zfRootPath/AssetsBundleTest/_files/assets/css/full-dir'
+					),
+					'less' => array('@zfRootPath/AssetsBundleTest/_files/assets/less/test.less'),
+					'js' => array('@zfRootPath/AssetsBundleTest/_files/assets/js/test.js'),
 					'test-module\index-controller' => array(
 						'test-media' => array(
 							'css' => array('css/test-media.css'),
@@ -38,7 +37,18 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase{
 							'css' => array(
 								'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'
 							)
+						),
+						'test-uncached-media' => array(
+							'less' => array('less/test-media.less'),
 						)
+					)
+				),
+				'without-assets-path-module' => array(
+					'css' => array('@zfRootPath/AssetsBundleTest/_files/assets/css/test-media-without-assets-path.css'),
+					'less' => array('@zfRootPath/AssetsBundleTest/_files/assets/less/test-media.less'),
+					'media' => array(
+						'@zfRootPath/AssetsBundleTest/_files/fonts',
+						'@zfRootPath/AssetsBundleTest/_files/images'
 					)
 				)
 			)
@@ -270,6 +280,48 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase{
 		$this->emptyCacheDirectory();
     }
 
+    public function testRenderAssetsWithMediasWithoutAssetsPath(){
+    	$sAssetsPath =  $this->service->getOptions()->getAssetsPath();
+    	$this->service->getOptions()->setAssetsPath(null);
+
+    	//Change action name
+    	$this->service->getOptions()->setModuleName('without-assets-path-module');
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+
+    	//Render assets
+    	$this->assertInstanceOf('AssetsBundle\Service\Service',$this->service->renderAssets());
+
+    	//Css cache files
+    	$this->assertAssetCacheContent(array(
+    		'_AssetsBundleTest__files_assets_css_test-media-without-assets-path.css'
+    	));
+
+    	//Less cache files
+    	$this->assertAssetCacheContent(array('dev_'.$this->service->getCacheFileName().'.less'));
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+
+    	$this->service->getOptions()->setAssetsPath($sAssetsPath);
+    }
+
+    /**
+     * @expectedException LogicException
+     */
+    public function testRenderAssetsWithUncachedMedias(){
+    	//Change action name
+    	$this->routeMatch->setParam('action','test-uncached-media');
+    	$this->service->getOptions()->setActionName($this->routeMatch->getParam('action'));
+
+    	//Empty cache directory
+    	$this->emptyCacheDirectory();
+
+    	//Render assets
+    	$this->service->renderAssets();
+    }
+
     public function testRenderTestAssetsFromUrl(){
     	//Change action name
     	$this->routeMatch->setParam('action','test-assets-from-url');
@@ -305,6 +357,7 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase{
     protected function assertAssetCacheContent(array $aAssetsFiles){
     	$sCacheExpectedPath = __DIR__.'/../_files/dev-cache-expected';
     	foreach($aAssetsFiles as $sAssetFile){
+    		$this->assertFileExists($this->service->getOptions()->getCachePath().$sAssetFile);
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
     			str_replace(PHP_EOL,"\n",file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile))

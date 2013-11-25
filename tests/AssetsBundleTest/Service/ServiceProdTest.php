@@ -21,6 +21,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 							'css' => array('css/test-media.css'),
 							'less' => array('less/test-media.less'),
 							'media' => array(
+								'img',
 								'@zfRootPath/AssetsBundleTest/_files/fonts',
 								'@zfRootPath/AssetsBundleTest/_files/images'
 							)
@@ -42,6 +43,9 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 						'test-huge-assets' => array(
 							'less' => array(
 								'less/bootstrap.less'
+							),
+							'media' => array(
+								'img'
 							)
 						)
 					)
@@ -201,26 +205,27 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
 		//Media cache files
 
 		#Fonts
-		$this->assertFileExists($this->service->getOptions()->getCachePath().'/AssetsBundleTest/_files/fonts/fontawesome-webfont.eot');
-		$this->assertFileExists($this->service->getOptions()->getCachePath().'/AssetsBundleTest/_files/fonts/fontawesome-webfont.ttf');
-		$this->assertFileExists($this->service->getOptions()->getCachePath().'/AssetsBundleTest/_files/fonts/fontawesome-webfont.woff');
+		$this->assertFileExists($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/fonts')).'/fontawesome-webfont.eot');
+		$this->assertFileExists($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/fonts')).DIRECTORY_SEPARATOR.'fontawesome-webfont.ttf');
+		$this->assertFileExists($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/fonts')).DIRECTORY_SEPARATOR.'fontawesome-webfont.woff');
 
 		#Images
-		$this->assertFileExists($this->service->getOptions()->getCachePath().'/AssetsBundleTest/_files/images/test-media.gif');
-		$this->assertFileExists($this->service->getOptions()->getCachePath().'/AssetsBundleTest/_files/images/test-media.png');
+		$this->assertFileExists($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/images')).'/test-media.png');
+		$this->assertFileExists($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/images')).'/test-media.jpg');
+		$this->assertFileExists($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/images')).'/test-media.gif');
 
 		#Subfolders
-		$this->assertFileExists($this->service->getOptions()->getCachePath().'/AssetsBundleTest/_files/images//subfolder/test-sub-media.jpg');
+		$this->assertFileExists($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/images/subfolder')).'/test-sub-media.jpg');
 
 		//Check optimisation
 
 		//Gd2 compression
-		if(function_exists('imagecreatefromstring')){
-			//Sizes
-			$this->assertGreaterThan(filesize($this->service->getOptions()->getCachePath().'/AssetsBundleTest/_files/images/test-media.png'),filesize(__DIR__.'/../_files/images/test-media.png'));
-			$this->assertGreaterThan(filesize($this->service->getOptions()->getCachePath().'/AssetsBundleTest/_files/images/test-media.jpg'),filesize(__DIR__.'/../_files/images/test-media.jpg'));
-			$this->assertGreaterThan(filesize($this->service->getOptions()->getCachePath().'/AssetsBundleTest/_files/images/test-media.gif'),filesize(__DIR__.'/../_files/images/test-media.gif'));
-		}
+		$this->assertTrue(function_exists('imagecreatefromstring'),'Function "imagecreatefromstring" must exits for tests');
+
+		//Sizes
+		$this->assertGreaterThan(filesize($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/images')).'/test-media.png'),filesize(__DIR__.'/../_files/images/test-media.png'));
+		$this->assertGreaterThan(filesize($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/images')).'/test-media.jpg'),filesize(__DIR__.'/../_files/images/test-media.jpg'));
+		$this->assertGreaterThan(filesize($this->service->getOptions()->getCachePath().md5(realpath(getcwd().'/AssetsBundleTest/_files/images')).'/test-media.gif'),filesize(__DIR__.'/../_files/images/test-media.gif'));
 
 		//Empty cache directory
 		$this->emptyCacheDirectory();
@@ -312,6 +317,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
     protected function assertAssetCacheContent(array $aAssetsFiles){
     	$sCacheExpectedPath = __DIR__.'/../_files/prod-cache-expected';
     	foreach($aAssetsFiles as $sAssetFile){
+    		$this->assertFileExists($this->service->getOptions()->getCachePath().$sAssetFile);
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
     			str_replace(PHP_EOL,"\n",file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile))

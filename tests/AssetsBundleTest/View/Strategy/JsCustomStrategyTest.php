@@ -1,6 +1,6 @@
 <?php
 namespace AssetsBundleTest\View\Strategy;
-class JsCustomRendererTest extends \PHPUnit_Framework_TestCase{
+class JsCustomStrategyTest extends \PHPUnit_Framework_TestCase{
 
 	/**
 	 * @var \AssetsBundle\View\Strategy\JsCustomStrategy
