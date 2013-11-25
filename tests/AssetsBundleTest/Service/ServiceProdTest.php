@@ -320,7 +320,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase{
     		$this->assertFileExists($this->service->getOptions()->getCachePath().$sAssetFile);
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sAssetFile,
-    			str_replace(PHP_EOL,"\n",file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile))
+    			preg_replace('/cache\/([0-9a-f]{32})\//','cache/encrypted-file-tree/',file_get_contents($this->service->getOptions()->getCachePath().$sAssetFile))
     		);
     	}
     }

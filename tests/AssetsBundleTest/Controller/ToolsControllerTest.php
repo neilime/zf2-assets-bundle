@@ -86,21 +86,21 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
     		//Css cache files
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.css',
-    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.css')),
+    			preg_replace('/cache\/([0-9a-f]{32})\//','cache/encrypted-file-tree/',file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.css')),
     			$sCachePart.' - '.$sCacheFile.'.css'
     		);
 
     		//Less cache files
     		$this->assertStringEqualsFile(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.less',
-    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.less')),
+    			preg_replace('/cache\/([0-9a-f]{32})\//','cache/encrypted-file-tree/',file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.less')),
     			$sCachePart.' - '.$sCacheFile.'.less'
     		);
 
     		//Js cache files
-    		$this->assertStringEqualsFile(
+    		$this->assertFileEquals(
     			$sCacheExpectedPath.DIRECTORY_SEPARATOR.$sCacheFile.'.js',
-    			str_replace(PHP_EOL,"\n",file_get_contents($oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.js')),
+    			$oAssetsBundleService->getOptions()->getCachePath().$sCacheFile.'.js',
     			$sCachePart.' - '.$sCacheFile.'.js'
     		);
     	}
