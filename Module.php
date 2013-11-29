@@ -69,14 +69,6 @@ class Module implements
 	}
 
 	/**
-	 * @param \Zend\Console\Adapter\AdapterInterface $oConsole
-	 * @return string
-	 */
-	public function getConsoleBanner(\Zend\Console\Adapter\AdapterInterface $oConsole){
-		return 'AssetsBundle - Command line Tool';
-	}
-
-	/**
 	 * @see \Zend\ModuleManager\Feature\ConsoleUsageProviderInterface::getConsoleUsage()
 	 * @param \Zend\Console\Adapter\AdapterInterface $oConsole
 	 * @return array
