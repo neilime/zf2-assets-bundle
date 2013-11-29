@@ -23,10 +23,6 @@ class ModuleTest extends \PHPUnit_Framework_TestCase{
 		->setRouteMatch(new \Zend\Mvc\Router\RouteMatch(array('controller' => 'test-module','action' => 'test-module\index-controller')));
 	}
 
-	public function testGetConsoleBanner(){
-		$this->assertEquals('AssetsBundle - Command line Tool',$this->module->getConsoleBanner(\AssetsBundleTest\Bootstrap::getServiceManager()->get('console')));
-	}
-
 	public function testGetConsoleUsager(){
 		$this->assertTrue(is_array($this->module->getConsoleUsage(\AssetsBundleTest\Bootstrap::getServiceManager()->get('console'))));
 	}
