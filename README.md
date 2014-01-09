@@ -88,7 +88,7 @@ Installation
 
 ## Simple configuration example
 
-This example shows how to convert "ZF2 Skeleton Application" to manage assets via AssetsBundle.
+This example shows how to convert [ZF2 Skeleton Application](https://github.com/zendframework/ZendSkeletonApplication) to manage assets via AssetsBundle.
 
 1. After installing skeleton application, install _AssetsBundle_ as explained above.
 
@@ -110,7 +110,7 @@ This example shows how to convert "ZF2 Skeleton Application" to manage assets vi
     				'js/jquery.min.js',
     				'js/bootstrap.min.js'
     			),
-    			'media' => array('images')
+    			'media' => array('img','fonts')
 	    	)
 	    ),
 	    //...
