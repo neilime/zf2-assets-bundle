@@ -14,3 +14,9 @@
 	font-family: FontOne;
 	background-image : url('@zfAssetsPath/../images/test-media-css.gif');
 }
+
+#test-media-base64{
+	font-family: FontOne;
+	background-image : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAABCAYAAAD9yd/wAAAAHElEQVR42lXGwQkAAACCwPZfyeHKb8KBAWrR/QDr+RJVVNWLAAAAAABJRU5ErkJggg==');
+}
+
