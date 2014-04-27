@@ -24,7 +24,7 @@ class ServiceFactory implements \Zend\ServiceManager\FactoryInterface{
 		}
                 
                 //set the request uri
-                $aConfiguration['asset_bundle']['requestUri'] = $oRequest->getUri()->toString();
+                if($oRequest instanceof \Zend\Http\PhpEnvironment\Request)$aConfiguration['asset_bundle']['requestUri'] = $oRequest->getUri()->toString();
 
 		//Retrieve filters
 		if(isset($aConfiguration['asset_bundle']['filters'])

@@ -444,11 +444,14 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 
                 //cache is set with a full url
                 if(!empty($cacheUrlHost)) {
-                    $requestUri = new \Zend\Uri\Uri($this->getRequestUri());
-                    $requestUriHost = $requestUri->getHost();
-                    //cacheUrlHost is different than the requestUriHost
-                    if($requestUriHost !== $cacheUrlHost) {
-                        return true;
+                    $requestUri = $this->getRequestUri();
+                    if(!empty($requestUri)){
+                        $requestUri = new \Zend\Uri\Uri($this->getRequestUri());
+                        $requestUriHost = $requestUri->getHost();
+                        //cacheUrlHost is different than the requestUriHost
+                        if($requestUriHost !== $cacheUrlHost) {
+                            return true;
+                        }
                     }
                 }
             } catch(\Exception $e){/*cacheUrl not set*/}
