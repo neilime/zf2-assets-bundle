@@ -527,8 +527,23 @@ class Service {
         //Production : check if cache files exist
         if ($this->getOptions()->isProduction()) {
             $sJsCacheFile = $sCacheName . '.' . self::ASSET_JS;
-            $sCssCacheFile = $sCacheName . '.' . self::ASSET_CSS;
+            $sCssCacheFile = $sCacheName . '.' . self::ASSET_CSS;           
             $sCachePath = $this->getOptions()->getCachePath();
+            
+            $cacheUrl = new \Zend\Uri\Uri($this->getOptions()->getCacheUrl());
+            $cacheUrlHost = $cacheUrl->getHost();
+            //cache is set with a full url
+            if(!empty($cacheUrlHost)) {
+                $requestUri = new \Zend\Uri\Uri($this->getOptions()->getRequestUri());
+                $requestUriHost = $requestUri->getHost();
+                //cacheUrlHost is different than the requestUriHost
+                if($requestUriHost !== $cacheUrlHost) {
+                    //render the assets as they may be in a cdn and not in the server
+                    return $this
+                                ->displayAssets(array($sCssCacheFile), self::ASSET_CSS)
+                                ->displayAssets(array($sJsCacheFile), self::ASSET_JS);
+                }
+            }
             if (
                     $this->getOptions()->getRealPath($sCachePath . $sCssCacheFile) && $this->getOptions()->getRealPath($sCachePath . $sJsCacheFile)
             ) {
@@ -537,7 +552,7 @@ class Service {
                                 ->displayAssets(array($sJsCacheFile), self::ASSET_JS);
             }
         }
-
+        
         //Retrieve assets configuration
         $aAssetsToRender = $aAssetsConfiguration = $this->getAssetsConfiguration();
 

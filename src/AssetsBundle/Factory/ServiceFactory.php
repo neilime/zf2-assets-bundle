@@ -13,13 +13,16 @@ class ServiceFactory implements \Zend\ServiceManager\FactoryInterface{
 		if(!isset($aConfiguration['asset_bundle']))throw new \UnexpectedValueException('AssetsBundle configuration is undefined');
 
 		//Define base URL of the application
-		if(!isset($aConfiguration['asset_bundle']['baseUrl'])){
+		if(!isset($aConfiguration['asset_bundle']['baseUrl'])){                       
 			if(($oRequest = $oServiceLocator->get('request')) instanceof \Zend\Http\PhpEnvironment\Request)$aConfiguration['asset_bundle']['baseUrl'] = $oRequest->getBaseUrl();
 			else{
 				$oRequest = new \Zend\Http\PhpEnvironment\Request();
 				$aConfiguration['asset_bundle']['baseUrl'] = $oRequest->getBaseUrl();
 			}
 		}
+                
+                //set the request uri
+                $aConfiguration['asset_bundle']['requestUri'] = $oRequest->getUri()->toString();
 
 		//Retrieve filters
 		if(isset($aConfiguration['asset_bundle']['filters'])

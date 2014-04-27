@@ -40,6 +40,12 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 	 * @var string
 	 */
 	protected $cacheUrl;
+        
+        /**
+	 * The current request uri
+	 * @var string
+	 */
+	protected $requestUri;
 
 	/**
 	 * Media extensions to be cached
@@ -233,8 +239,26 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 		if(is_string($this->cacheUrl))return $this->cacheUrl;
 		throw new \LogicException('"Cache url" option is undefined');
 	}
+        
+        /**
+         *
+         * @param string $uri 
+         */
+        public function setRequestUri($uri)
+        {
+            $this->requestUri = $uri;
+        }
+        
+        /**
+         *
+         * @return string 
+         */
+        public function getRequestUri()
+        {
+            return $this->requestUri;
+        }
 
-	/**
+                /**
 	 * @param array $aMediaExt
 	 * @throws \InvalidArgumentException
 	 * @return \AssetsBundle\Service\ServiceOptions
