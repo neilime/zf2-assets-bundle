@@ -1,8 +1,0 @@
-function jscustom(){
-	
-}
-
-	function jscustomPHP(){
-
-	}
-

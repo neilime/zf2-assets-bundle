@@ -1,92 +1,90 @@
 <?php
+
 namespace AssetsBundleTest\Factory;
-class ServiceFactoryTest extends \PHPUnit_Framework_TestCase{
 
-	/**
-	 * @var array
-	 */
-	protected $configuration;
+class ServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @var \AssetsBundle\Factory\ServiceFactory
-	 */
-	protected $serviceFactory;
+    /**
+     * @var array
+     */
+    protected $configuration;
 
-	/**
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp(){
-		$this->serviceFactory = new \AssetsBundle\Factory\ServiceFactory();
-		$this->configuration = \AssetsBundleTest\Bootstrap::getServiceManager()->get('Config');
-	}
+    /**
+     * @var \AssetsBundle\Factory\ServiceFactory
+     */
+    protected $serviceFactory;
 
-	public function testCreateServiceWithoutBaseUrl(){
-		$aConfiguration = $this->configuration;
-		unset($aConfiguration['asset_bundle']['baseUrl']);
+    /**
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp() {
+        $this->serviceFactory = new \AssetsBundle\Factory\ServiceFactory();
+        $this->configuration = \AssetsBundleTest\Bootstrap::getServiceManager()->get('Config');
+    }
 
-		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
-		$bAllowOverride = $oServiceManager->getAllowOverride();
-		if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-		$oServiceManager->setService('Config',$aConfiguration)->setAllowOverride($bAllowOverride);
+    public function testCreateServiceWithoutBaseUrl() {
+        $aConfiguration = $this->configuration;
+        unset($aConfiguration['assets_bundle']['baseUrl']);
 
-		$this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
-	}
+        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+        $bAllowOverride = $oServiceManager->getAllowOverride();
+        if (!$bAllowOverride) {
+            $oServiceManager->setAllowOverride(true);
+        }
+        $oServiceManager->setService('Config', $aConfiguration)->setAllowOverride($bAllowOverride);
 
-	public function testCreateServiceWithClassnameFilter(){
-		$aConfiguration = $this->configuration;
-		$aConfiguration['asset_bundle']['filters']['css'] = 'AssetsBundle\Service\Filter\CssFilter';
+        $this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
+    }
 
-		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
-		$bAllowOverride = $oServiceManager->getAllowOverride();
-		if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-		$oServiceManager->setService('Config',$aConfiguration)->setAllowOverride($bAllowOverride);
+    public function testCreateServiceWithClassnameFilter() {
+        $aConfiguration = $this->configuration;
+        $aConfiguration['assets_bundle']['filters']['css'] = 'AssetsBundle\AssetFile\AssetFileFilter\CssAssetFileFilter';
 
-		$this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
-	}
+        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+        $bAllowOverride = $oServiceManager->getAllowOverride();
+        if (!$bAllowOverride) {
+            $oServiceManager->setAllowOverride(true);
+        }
+        $oServiceManager->setService('Config', $aConfiguration)->setAllowOverride($bAllowOverride);
 
-	public function testCreateServiceWithClassnameRendererToStrategy(){
-		$aConfiguration = $this->configuration;
-		$aConfiguration['asset_bundle']['rendererToStrategy']['zendviewrendererphprenderer'] = '\AssetsBundle\View\Strategy\ViewHelperStrategy';
+        $this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
+    }
 
-		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
-		$bAllowOverride = $oServiceManager->getAllowOverride();
-		if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-		$oServiceManager->setService('Config',$aConfiguration)->setAllowOverride($bAllowOverride);
+    public function testCreateServiceWithClassnameRendererToStrategy() {
+        $aConfiguration = $this->configuration;
+        $aConfiguration['assets_bundle']['rendererToStrategy']['zendviewrendererphprenderer'] = '\AssetsBundle\View\Strategy\ViewHelperStrategy';
 
-		$this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
-	}
+        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+        $bAllowOverride = $oServiceManager->getAllowOverride();
+        if (!$bAllowOverride) {
+            $oServiceManager->setAllowOverride(true);
+        }
+        $oServiceManager->setService('Config', $aConfiguration)->setAllowOverride($bAllowOverride);
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
-	public function testCreateServiceWithWrongAssetsPath(){
-		$aConfiguration = $this->configuration;
-		$aConfiguration['asset_bundle']['assetsPath'] = 'wrong';
+        $this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
+    }
 
-		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
-		$bAllowOverride = $oServiceManager->getAllowOverride();
-		if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-		$oServiceManager->setService('Config',$aConfiguration)->setAllowOverride($bAllowOverride);
+    public function testCreateServiceWithoutAssetsPath() {
+        $aConfiguration = $this->configuration;
+        unset($aConfiguration['assets_bundle']['assetsPath']);
 
-		$this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
-	}
+        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+        $bAllowOverride = $oServiceManager->getAllowOverride();
+        if (!$bAllowOverride) {
+            $oServiceManager->setAllowOverride(true);
+        }
+        $oServiceManager->setService('Config', $aConfiguration)->setAllowOverride($bAllowOverride);
 
-	public function testCreateServiceWithoutAssetsPath(){
-		$aConfiguration = $this->configuration;
-		unset($aConfiguration['asset_bundle']['assetsPath']);
+        $this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
+    }
 
-		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
-		$bAllowOverride = $oServiceManager->getAllowOverride();
-		if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-		$oServiceManager->setService('Config',$aConfiguration)->setAllowOverride($bAllowOverride);
+    public function tearDown() {
+        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+        $bAllowOverride = $oServiceManager->getAllowOverride();
+        if (!$bAllowOverride) {
+            $oServiceManager->setAllowOverride(true);
+        }
+        $oServiceManager->setService('Config', $this->configuration)->setAllowOverride($bAllowOverride);
+    }
 
-		$this->serviceFactory->createService(\AssetsBundleTest\Bootstrap::getServiceManager());
-	}
-
-	public function tearDown(){
-		$oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
-		$bAllowOverride = $oServiceManager->getAllowOverride();
-		if(!$bAllowOverride)$oServiceManager->setAllowOverride(true);
-		$oServiceManager->setService('Config',$this->configuration)->setAllowOverride($bAllowOverride);
-	}
 }

@@ -11,15 +11,15 @@ NOTE : If you want to contribute don't hesitate, I'll review any PR.
 Introduction
 ------------
 
-AssetsBundle is a module for ZF2 allowing asset management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
+AssetsBundle is a module for ZF2 allowing asset management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions (di).
 This module manages the concept of the environment/production development.
 
-In development : 
+In development :
  - Files are not bundled for easier debugging.
  - Less files are compiled when updated or if an "@import" inside is updated
- 
+
 In production :
- 
+
  - All files are bundled and cached once only if needed.
  - Assets path are encrypted to mask file tree (with the exception of files in the "assets" directory)
 
@@ -70,20 +70,20 @@ Installation
         // ...
     );
     ```
-   
+
 2. Insert css & js files into your layout page
 
     Into the `<head>` part :
     ```php
     echo $this->headScript();
     ```
-    
-    
+
+
     At the bottom of the `<body>` part :
     ```php
     echo $this->inlineScript();
     ```
-    
+
 # How to use _AssetsBundle_
 
 ## Simple configuration example
@@ -98,12 +98,12 @@ This example shows how to convert [ZF2 Skeleton Application](https://github.com/
   mkdir cache
   ```
 3. Edit the application module configuration file `module/Application/config/module.config.php`, adding the configuration fragment below:
-	
+
 	```php
 	<?php
 	return array(
 	    //...
-	    'asset_bundle' => array(
+	    'assets_bundle' => array(
 	    	'assets' => array(
     			'css' => array('css'),
     			'js' => array(
@@ -120,11 +120,11 @@ This example shows how to convert [ZF2 Skeleton Application](https://github.com/
 	```php
 	 <?php
 	//Remove these lines
-	
+
 	->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
 	->prependStylesheet($this->basePath() . '/css/style.css')
 	->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
-	
+
 	 ->prependFile($this->basePath() . '/js/bootstrap.min.js')
      ->prependFile($this->basePath() . '/js/jquery.min.js')
      ```
@@ -148,42 +148,42 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
 ### 2. Assets
 
 You can define assets for modules / controllers / action
- 
-Exemple : 
- 
+
+Exemple :
+
  ```php
 	<?php
 	return array(
             //...
-            'asset_bundle' => array(
+            'assets_bundle' => array(
                 //...
     	        'assets' => array(
-    			//Common assets included in every pages   			
+    			//Common assets included in every pages
     			'css' => array(), //Define css files to include
     			'js' => array(), //Define js files to include
     			'less' => array(), //Define less files to include
     			'media' => array(), //Define images to manage
-    			
+
     			//Modules specific assets
     			'Test' =>  => array( // "Test" is the name of the module
-    				
+
     				'css' => array(),
 	    			'js' => array(),
-	    			'less' => array(), 
+	    			'less' => array(),
 	    			'media' => array(),
-    			    			
+
 	    			//Controller specific assets
 	    			'Test\Controller\Name' => array(
 	    				'css' => array(),
 		    			'js' => array(),
-		    			'less' => array(), 
+		    			'less' => array(),
 		    			'media' => array(),
-		    			
+
 		    			//Action specific assets
 		    			'ActionName'=> array(
 		    				'css' => array(),
 			    			'js' => array(),
-			    			'less' => array(), 
+			    			'less' => array(),
 			    			'media' => array()
 	    				),
 	    				//...
@@ -198,11 +198,11 @@ Exemple :
 	    //...
 	);
 ```
-	
-- For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
+
+- For each asset, you can specify files or directories. All these elements are related to the asset path by default,
 but you can specify an absolute path or use the constants "@zfAssetsPath" and "@zfRootPath".
 If you specify a directory, all files matching the asset type (css, less, js, media) will be included.
-	
+
 - You can use `.php` files as assets, there will be interpret.
 
 - You can use url for `js` and `css` assets :
@@ -211,7 +211,7 @@ If you specify a directory, all files matching the asset type (css, less, js, me
     <?php
         return array(
             //...
-            'asset_bundle' => array(
+            'assets_bundle' => array(
                 //...
                 'assets' => array(
                     'js' => array('http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'),
@@ -222,16 +222,16 @@ If you specify a directory, all files matching the asset type (css, less, js, me
             //...
         );
     ```
-    
+
     This example includes `Mootools` from _Google Hosted Libraries_
-	
+
 - You can define an inclusion order like this :
-	
+
     ```php
     <?php
         return array(
             //...
-            'asset_bundle' => array(
+            'assets_bundle' => array(
                 //...
                 'assets' => array(
                     'js' => array('js/firstFile.js','js'),
@@ -241,18 +241,18 @@ If you specify a directory, all files matching the asset type (css, less, js, me
             //...
         );
     ```
-    
+
     This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"
-   	
+
 ### 3. Custom Js
 
 This function allows you to dynamically include javascript files. For exemple, files specific to user settings.
 In this case, your controller that need these file have to extend `AssetsBundle\Mvc\Controller\AbstractActionController`.
-	
+
 __Attention !__ Jscustom process does not cache javascript, due to performance reasons
-	
-Then create a jscustomAction function into your controller : 
-	
+
+Then create a jscustomAction function into your controller :
+
 ```php
 public function jscustomAction($sAction = null){
 	//Check params, it's not mandatory
@@ -271,10 +271,10 @@ public function jscustomAction($sAction = null){
 	}
 	return $aJsFiles;
 }
-```	
+```
 
 Edit layout file:
-		
+
 ```php
 //Into head
 
@@ -285,7 +285,7 @@ elseif(is_array($this->jsCustomFiles))foreach($this->jsCustomFiles as $sJsCustom
 	$this->plugin('InlineScript')->appendFile($sJsCustomFile);
 }
 ```
-	
+
 # Tools
 
 _AssetsBundle_ provides console tools.
@@ -300,7 +300,7 @@ _AssetsBundle_ provides console tools.
 ### Rendering all assets
 
     php public/index.php render
-    
+
 ### Empty cache directory
 
-    php public/index.php empty     
+    php public/index.php empty

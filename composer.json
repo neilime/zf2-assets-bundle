@@ -16,7 +16,7 @@
         "issues": "https://github.com/neilime/zf2-assets-bundle/issues"
     },
     "minimum-stability" : "stable",
-	"suggest": {
+    "suggest": {
         "ext-gd2": "GD library to compress png files"
     },
     "require": {

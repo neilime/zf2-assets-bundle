@@ -1,0 +1,21 @@
+@FontAwesomePath:   "../../fonts";
+@font-face {
+  font-family: 'FontTwo';
+  src: url('@{FontAwesomePath}/fontawesome-webfont.eot?v=3.0.1');
+  src: url('@{FontAwesomePath}/fontawesome-webfont.eot?#iefix&v=3.0.1') format('embedded-opentype'),
+    url('@{FontAwesomePath}/fontawesome-webfont.woff?v=3.0.1') format('woff'),
+    url('@{FontAwesomePath}/fontawesome-webfont.ttf?v=3.0.1') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+#test-media-less{
+	.test-less{
+		 font-family: FontTwo;
+		 background-image : url('../../images/test-media.gif');
+	}
+	.test-less-png{
+		 font-family: FontTwo;
+		 background-image : url('../../images/test-media.png');
+	}
+}
