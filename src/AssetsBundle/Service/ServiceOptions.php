@@ -40,6 +40,18 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 	 * @var string
 	 */
 	protected $cacheUrl;
+        
+        /**
+	 * The current request uri
+	 * @var string
+	 */
+	protected $requestUri;
+	
+	 /**
+         * if the cache url is a cdn url
+         * @var boolean 
+         */
+        protected $isCdnUrl;
 
 	/**
 	 * Media extensions to be cached
@@ -141,7 +153,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 	 */
 	public function setCachePath($sCachePath){
 		if(is_string($sCachePath)){
-			if(!is_dir($sRealCachePath = $this->getRealPath($sCachePath)))throw new \InvalidArgumentException('Cache path" option expects a valid directory path, "'.$sCachePath.'" given');
+                        $sRealCachePath = $this->getRealPath($sCachePath);
+			if(!$this->isCdnUrl() && !is_dir($sRealCachePath))throw new \InvalidArgumentException('Cache path" option expects a valid directory path, "'.$sCachePath.'" given');
 			else $this->cachePath = $sRealCachePath.DIRECTORY_SEPARATOR;
 			return $this;
 		}
@@ -233,8 +246,26 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 		if(is_string($this->cacheUrl))return $this->cacheUrl;
 		throw new \LogicException('"Cache url" option is undefined');
 	}
+        
+        /**
+         *
+         * @param string $uri 
+         */
+        public function setRequestUri($uri)
+        {
+            $this->requestUri = $uri;
+        }
+        
+        /**
+         *
+         * @return string 
+         */
+        public function getRequestUri()
+        {
+            return $this->requestUri;
+        }
 
-	/**
+                /**
 	 * @param array $aMediaExt
 	 * @throws \InvalidArgumentException
 	 * @return \AssetsBundle\Service\ServiceOptions
@@ -406,4 +437,41 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 		if($this->hasAssetsPath() && file_exists($sRealPath = $this->getAssetsPath().$sPath))return $this->resolvedPaths[$sOriginalPath] = realpath($sRealPath);
 		return false;
 	}
+        
+        /**
+         * If the cacheUrl host is different than the request uri host
+         * 
+         * @return boolean 
+         */
+        public function isCdnUrl(){
+            try{
+                if($this->isCdnUrl === null){
+
+                    $cacheUrl = new \Zend\Uri\Uri($this->getCacheUrl());
+                    $cacheUrlHost = $cacheUrl->getHost();
+
+                    //cache is set with a full url
+                    if(!empty($cacheUrlHost)) {
+                        $requestUri = $this->getRequestUri();
+                        if(!empty($requestUri)){
+                            $requestUri = new \Zend\Uri\Uri($this->getRequestUri());
+                            $requestUriHost = $requestUri->getHost();
+                            //cacheUrlHost is different than the requestUriHost
+                            if($requestUriHost !== $cacheUrlHost) {
+                                $this->isCdnUrl = true;
+                            }
+                        }
+                    }
+                    
+                    if($this->isCdnUrl !== true){
+                        $this->isCdnUrl = false;
+                    }
+                }
+            } catch(\Exception $e){
+                /*cacheUrl not set*/
+                $this->isCdnUrl = false;
+            }
+            
+            return $this->isCdnUrl;
+        }
 }

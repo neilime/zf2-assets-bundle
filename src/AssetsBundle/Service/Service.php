@@ -74,6 +74,10 @@ class Service {
             }
             unset($aOptions['rendererToStrategy']);
         }
+        
+        //reverse the order of the params...
+        //cacheUrl needs to be set before cachePath
+        arsort($aOptions);
 
         $oAssetsBundleService = new static(new \AssetsBundle\Service\ServiceOptions($aOptions));
 
@@ -527,8 +531,17 @@ class Service {
         //Production : check if cache files exist
         if ($this->getOptions()->isProduction()) {
             $sJsCacheFile = $sCacheName . '.' . self::ASSET_JS;
-            $sCssCacheFile = $sCacheName . '.' . self::ASSET_CSS;
+            $sCssCacheFile = $sCacheName . '.' . self::ASSET_CSS;           
             $sCachePath = $this->getOptions()->getCachePath();
+            
+            //if the cacheUrl host is different than the request uri host
+            if($this->getOptions()->isCdnUrl()) {
+                //render the assets as they may not be on the server
+                return $this
+                            ->displayAssets(array($sCssCacheFile), self::ASSET_CSS)
+                            ->displayAssets(array($sJsCacheFile), self::ASSET_JS);
+            }
+            
             if (
                     $this->getOptions()->getRealPath($sCachePath . $sCssCacheFile) && $this->getOptions()->getRealPath($sCachePath . $sJsCacheFile)
             ) {
@@ -537,7 +550,7 @@ class Service {
                                 ->displayAssets(array($sJsCacheFile), self::ASSET_JS);
             }
         }
-
+        
         //Retrieve assets configuration
         $aAssetsToRender = $aAssetsConfiguration = $this->getAssetsConfiguration();
 
