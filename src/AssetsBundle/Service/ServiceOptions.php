@@ -445,7 +445,7 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
          */
         public function isCdnUrl(){
             try{
-                if($this->cachePath === null){
+                if($this->isCdnUrl === null){
 
                     $cacheUrl = new \Zend\Uri\Uri($this->getCacheUrl());
                     $cacheUrlHost = $cacheUrl->getHost();
@@ -463,15 +463,15 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
                         }
                     }
                     
-                    if($this->cacheUrl !== true){
-                        $this->cacheUrl = false;
+                    if($this->isCdnUrl !== true){
+                        $this->isCdnUrl = false;
                     }
                 }
             } catch(\Exception $e){
                 /*cacheUrl not set*/
-                $this->cacheUrl = false;
+                $this->isCdnUrl = false;
             }
             
-            return $this->cacheUrl;
+            return $this->isCdnUrl;
         }
 }
