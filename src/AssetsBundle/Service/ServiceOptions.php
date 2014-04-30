@@ -46,6 +46,12 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 	 * @var string
 	 */
 	protected $requestUri;
+	
+	 /**
+         * if the cache url is a cdn url
+         * @var boolean 
+         */
+        protected $isCdnUrl;
 
 	/**
 	 * Media extensions to be cached
@@ -439,22 +445,33 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
          */
         public function isCdnUrl(){
             try{
-                $cacheUrl = new \Zend\Uri\Uri($this->getCacheUrl());
-                $cacheUrlHost = $cacheUrl->getHost();
+                if($this->cachePath === null){
 
-                //cache is set with a full url
-                if(!empty($cacheUrlHost)) {
-                    $requestUri = $this->getRequestUri();
-                    if(!empty($requestUri)){
-                        $requestUri = new \Zend\Uri\Uri($this->getRequestUri());
-                        $requestUriHost = $requestUri->getHost();
-                        //cacheUrlHost is different than the requestUriHost
-                        if($requestUriHost !== $cacheUrlHost) {
-                            return true;
+                    $cacheUrl = new \Zend\Uri\Uri($this->getCacheUrl());
+                    $cacheUrlHost = $cacheUrl->getHost();
+
+                    //cache is set with a full url
+                    if(!empty($cacheUrlHost)) {
+                        $requestUri = $this->getRequestUri();
+                        if(!empty($requestUri)){
+                            $requestUri = new \Zend\Uri\Uri($this->getRequestUri());
+                            $requestUriHost = $requestUri->getHost();
+                            //cacheUrlHost is different than the requestUriHost
+                            if($requestUriHost !== $cacheUrlHost) {
+                                $this->isCdnUrl = true;
+                            }
                         }
                     }
+                    
+                    if($this->cacheUrl !== true){
+                        $this->cacheUrl = false;
+                    }
                 }
-            } catch(\Exception $e){/*cacheUrl not set*/}
-            return false;
+            } catch(\Exception $e){
+                /*cacheUrl not set*/
+                $this->cacheUrl = false;
+            }
+            
+            return $this->cacheUrl;
         }
 }
