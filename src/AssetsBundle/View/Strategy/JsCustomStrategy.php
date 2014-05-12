@@ -4,8 +4,6 @@ namespace AssetsBundle\View\Strategy;
 
 class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface, \Zend\ServiceManager\ServiceLocatorAwareInterface {
 
-    const ACTION_JS_CUSTOM = 'jscustom';
-
     /**
      * @var \Zend\ServiceManager\ServiceLocatorInterface
      */
@@ -88,14 +86,19 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface,
     }
 
     /**
-     * Check if JsCustomStrategy has to be used (MVC action = self::ACTION_JS_CUSTOM)
+     * Check if JsCustomStrategy has to be used (MVC action = \AssetsBundle\Mvc\Controller\AbstractActionController::JS_CUSTOM_ACTION)
      * @param \Zend\View\ViewEvent $oEvent
      * @throws \LogicException
      * @return void|\AssetsBundle\View\Renderer\JsRenderer
      */
     public function selectRenderer(\Zend\View\ViewEvent $oEvent) {
         if (
-                $this->getServiceLocator()->has('router') && ($oRouter = $this->getServiceLocator()->get('router')) instanceof \Zend\Mvc\Router\RouteInterface && ($oRequest = $oEvent->getRequest()) instanceof \Zend\Http\Request && ($oRouteMatch = $oRouter->match($oRequest)) instanceof \Zend\Mvc\Router\RouteMatch && $oRouteMatch->getParam('action') === self::ACTION_JS_CUSTOM
+        //Retrieve router
+                $this->getServiceLocator()->has('router') && ($oRouter = $this->getServiceLocator()->get('router')) instanceof \Zend\Mvc\Router\RouteInterface
+                //Retrieve request
+                && ($oRequest = $oEvent->getRequest()) instanceof \Zend\Http\Request
+                //Retrieve route match
+                && ($oRouteMatch = $oRouter->match($oRequest)) instanceof \Zend\Mvc\Router\RouteMatch && $oRouteMatch->getParam('action') === \AssetsBundle\Mvc\Controller\AbstractActionController::JS_CUSTOM_ACTION
         ) {
             if (!($oViewModel = $oEvent->getModel()) instanceof \Zend\View\Model\ViewModel) {
                 throw new \UnexpectedValueException(sprintf(
@@ -125,8 +128,21 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface,
         if (!is_string($sResult = $oEvent->getResult())) {
             throw new \UnexpectedValueException('Result expects string, "' . gettype($sResult) . '" given');
         }
+        //jsCustomFiles is empty
+        if (!is_array($aJsCustomFiles = $oEvent->getModel()->getVariable('jsCustomFiles'))) {
+            throw new \UnexpectedValueException('"jsCustomFiles" view\'s variable expects an array, "' . gettype($aJsCustomFiles) . '" given');
+        }
+
+        $sResponseContent = '';
+        foreach ($aJsCustomFiles as $oAssetFile) {
+            if ($oAssetFile instanceof \AssetsBundle\AssetFile\AssetFile) {
+                $sResponseContent .= $oAssetFile->getAssetFileContents() . PHP_EOL;
+            } else {
+                throw new \UnexpectedValueException('"jsCustomFiles" view\'s variable must contains instance of \AssetsBundle\AssetFile\AssetFile, "' . (is_object($oAssetFile) ? get_class($oAssetFile) : gettype($oAssetFile)) . '" given');
+            }
+        }
         //Inject javascript in the response
-        $oEvent->getResponse()->setContent($sResult)->getHeaders()->addHeaderLine('content-type', 'text/javascript');
+        $oEvent->getResponse()->setContent($sResponseContent)->getHeaders()->addHeaderLine('content-type', 'text/javascript');
     }
 
 }

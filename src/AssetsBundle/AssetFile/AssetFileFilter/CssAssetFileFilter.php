@@ -22,10 +22,12 @@ class CssAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\Abstrac
      */
     public function filterAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
         //Try to retrieve cached filter rendering
-        if ($sCachedFilterRendering = $this->getCachedFilterRendering($oAssetFile)) {
+        if ($sCachedFilterRendering = $this->getCachedFilteredContent($oAssetFile)) {
             return $sCachedFilterRendering;
         }
-        return $this->getCSSmin()->run($oAssetFile->getAssetFileContents());
+        $sFilteredContent = $this->getCSSmin()->run($oAssetFile->getAssetFileContents());
+        $this->cacheFilteredAssetFileContent($oAssetFile, $sFilteredContent);
+        return $sFilteredContent;
     }
 
     /**

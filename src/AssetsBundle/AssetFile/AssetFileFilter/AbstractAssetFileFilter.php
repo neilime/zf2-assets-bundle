@@ -70,18 +70,50 @@ abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions impl
 
     /**
      * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
+     * @return string
+     */
+    public function getCachedFilteredContentFilePath(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
+        return $this->getAssetFileFilterProcessedDirPath() . DIRECTORY_SEPARATOR . md5($sAssetFilePath = $oAssetFile->getAssetFilePath());
+    }
+
+    /**
+     * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
      * @return boolean|string
      */
-    public function getCachedFilterRendering(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
-        if (
-                file_exists($sCachedFilterRenderingPath = $this->getOptions()->getProcessedDirPath() . DIRECTORY_SEPARATOR . md5($sAssetFilePath = $oAssetFile->getAssetFilePath())) && ($iLastModified = $oAssetFile->getAssetFileLastModified()) && ($iLastModifiedCompare = filemtime($sCachedFilterRenderingPath)) === false && $iLastModified <= $iLastModifiedCompare
-        ) {
-            \Zend\Stdlib\ErrorHandler::start();
-            $sCachedFilterRendering = file_get_contents($sCachedFilterRenderingPath);
-            \Zend\Stdlib\ErrorHandler::stop(true);
-            return $sCachedFilterRendering;
+    public function getCachedFilteredContent(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
+        if (file_exists($sCachedFilteredContentFilePath = $this->getCachedFilteredContentFilePath($oAssetFile))) {
+            $oFilteredAssetFile = new \AssetsBundle\AssetFile\AssetFile(array(
+                'assetFilePath' => $sCachedFilteredContentFilePath,
+                'assetFileType' => $oAssetFile->getAssetFileType()
+            ));
+            if (
+            //Retrieve cached filtered asset file last modified timestamp
+                    ($iFilteredAssetFileLastModified = $oFilteredAssetFile->getAssetFileLastModified())
+                    //Retrieve asset file last modified timestamp
+                    && ($iAssetFileLastModified = $oAssetFile->getAssetFileLastModified())
+                    //If  cached filtered asset file is updated
+                    && $iFilteredAssetFileLastModified >= $iAssetFileLastModified
+            ) {
+                return $oFilteredAssetFile->getAssetFileContents();
+            }
         }
         return false;
+    }
+
+    /**
+     * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
+     * @param string $sFilteredContent
+     * @return \AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter
+     * @throws \InvalidArgumentException
+     */
+    public function cacheFilteredAssetFileContent(\AssetsBundle\AssetFile\AssetFile $oAssetFile, $sFilteredContent) {
+        if (is_string($sFilteredContent)) {
+            \Zend\Stdlib\ErrorHandler::start();
+            file_put_contents($this->getCachedFilteredContentFilePath($oAssetFile), $sFilteredContent);
+            \Zend\Stdlib\ErrorHandler::stop(true);
+            return $this;
+        }
+        throw new \InvalidArgumentException('Filtered content expects string, "' . gettype($sFilteredContent) . '" given');
     }
 
     /**

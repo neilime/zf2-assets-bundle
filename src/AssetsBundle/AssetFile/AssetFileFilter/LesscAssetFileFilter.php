@@ -14,16 +14,14 @@ class LesscAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\Abstr
      * @return string
      */
     public function filterAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
-        //Try to retrieve cached filter rendering
-        if ($sCachedFilterRendering = $this->getCachedFilterRendering($oAssetFile)) {
-            return $sCachedFilterRendering;
-        }
-
         $oLessParser = new \lessc();
         $oLessParser->addImportDir(getcwd());
         $oLessParser->setAllowUrlRewrite(true);
-        $sReturn = trim($oLessParser->compile($oAssetFile->getAssetFileContents()));
-        return $sReturn;
+
+        //Prevent time limit errors
+        set_time_limit(0);
+
+        return trim($oLessParser->compile($oAssetFile->getAssetFileContents()));
     }
 
 }

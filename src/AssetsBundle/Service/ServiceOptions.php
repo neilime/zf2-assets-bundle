@@ -102,7 +102,7 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * Disabled contexts
      * @var array
      */
-    protected $disabled = array();
+    protected $disabledContexts = array();
 
     /**
      * View helper plugins by asset file types
@@ -513,11 +513,34 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
     }
 
     /**
+     * @param array $aDisabledContexts
+     * @return \AssetsBundle\Service\ServiceOptions
+     */
+    public function setDisabledContexts(array $aDisabledContexts) {
+        $this->disabledContexts = $aDisabledContexts;
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function isAssetsBundleDisabled() {
-        return
-                isset($this->disabled[$this->getModuleName()]) || isset($this->disabled[$this->getModuleName()][$this->getControllerName()]) || isset($this->disabled[$this->getModuleName()][$this->getControllerName()][$this->getActionName()]);
+        if (isset($this->disabledContexts[$sModuleName = $this->getModuleName()])) {
+            if (is_bool($this->disabledContexts[$sModuleName])) {
+                return $this->disabledContexts[$sModuleName];
+            }
+            if (isset($this->disabledContexts[$sModuleName][$sControllerName = $this->getControllerName()])) {
+                if (is_bool($this->disabledContexts[$sModuleName][$sControllerName])) {
+                    return $this->disabledContexts[$sModuleName][$sControllerName];
+                }
+                if (isset($this->disabledContexts[$sModuleName][$sControllerName][$sActionName = $this->getActionName()])) {
+                    if (is_bool($this->disabledContexts[$sModuleName][$sControllerName][$sActionName])) {
+                        return $this->disabledContexts[$sModuleName][$sControllerName][$sActionName];
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**

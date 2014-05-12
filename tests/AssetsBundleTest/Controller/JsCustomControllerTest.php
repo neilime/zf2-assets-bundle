@@ -173,4 +173,47 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertEquals('', $this->getResponse()->getContent());
     }
 
+    protected function emptyCacheDirectory() {
+        //Empty cache directory except .gitignore
+        foreach (new \RecursiveIteratorIterator(
+        new \RecursiveDirectoryIterator($this->getApplicationServiceLocator()->get('AssetsBundleService')->getOptions()->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+        ) as $oFileinfo) {
+            if ($oFileinfo->isDir()) {
+                rmdir($oFileinfo->getRealPath());
+            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
+                unlink($oFileinfo->getRealPath());
+            }
+        }
+    }
+
+    protected function emptyProcessedDirectory() {
+        //Empty processed directory except .gitignore
+        foreach (new \RecursiveIteratorIterator(
+        new \RecursiveDirectoryIterator($this->getApplicationServiceLocator()->get('AssetsBundleService')->getOptions()->getProcessedDirPath() . DIRECTORY_SEPARATOR . 'lessc', \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+        ) as $oFileinfo) {
+            if ($oFileinfo->isDir()) {
+                rmdir($oFileinfo->getRealPath());
+            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
+                unlink($oFileinfo->getRealPath());
+            }
+        }
+        foreach (new \RecursiveIteratorIterator(
+        new \RecursiveDirectoryIterator($this->getApplicationServiceLocator()->get('AssetsBundleService')->getOptions()->getProcessedDirPath() . DIRECTORY_SEPARATOR . 'config', \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+        ) as $oFileinfo) {
+            if ($oFileinfo->isDir()) {
+                rmdir($oFileinfo->getRealPath());
+            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
+                unlink($oFileinfo->getRealPath());
+            }
+        }
+    }
+
+    public function tearDown() {
+        //Empty cache directory
+        $this->emptyCacheDirectory();
+        //Empty processed directory
+        $this->emptyProcessedDirectory();
+        parent::tearDown();
+    }
+
 }

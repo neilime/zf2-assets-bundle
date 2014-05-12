@@ -70,10 +70,8 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
                 ->setRouteMatch(new \Zend\Mvc\Router\RouteMatch(array('controller' => 'AssetsBundleTest\Controller\Test', 'action' => 'index')));
         $this->createService();
 
-        //Empty cache directory
-        $this->emptyCacheDirectory();
-        //Empty processed directory
-        $this->emptyProcessedDirectory();
+        //Empty cache and processed directories
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
     }
 
     /**
@@ -107,6 +105,41 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
 
         //Test cache path
         $this->assertEquals(realpath(getcwd() . '/_files/cache'), $this->service->getOptions()->getCachePath());
+    }
+
+    public function testCreateServiceWithoutOptions() {
+        $oService = new \AssetsBundle\Service\Service();
+        $this->assertInstanceOf('\AssetsBundle\Service\ServiceOptions', $oService->getOptions());
+    }
+
+    public function testSetOptionsWithExistingAssetFilesManager() {
+        $oService = new \AssetsBundle\Service\Service();
+        $this->assertInstanceOf('\AssetsBundle\AssetFile\AssetFilesManager', $oAssetFileManager = $oService->getAssetFilesManager());
+
+        $oOptions = new \AssetsBundle\Service\ServiceOptions();
+        $oService->setOptions($oOptions);
+
+        $this->assertSame($oOptions, $oAssetFileManager->getOptions());
+    }
+
+    public function testRenderAssetsBundleDisabled() {
+        $this->service->getOptions()->setDisabledContexts(array(
+            'AssetsBundleTest' => true
+        ));
+        //Render assets
+        $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service->renderAssets($this->mvcEvent));
+
+        //Test cache directory has only .gitignore file
+        $this->assertCount(3, $aCacheFiles = scandir(dirname(__DIR__) . '/../_files/cache'));
+        $this->assertContains('.gitignore', $aCacheFiles);
+
+        //Test less directory has only .gitignore file
+        $this->assertCount(3, $aLessFiles = scandir(dirname(__DIR__) . '/../_files/processed/lessc'));
+        $this->assertContains('.gitignore', $aLessFiles);
+
+        //Test config directory has only .gitignore file
+        $this->assertCount(3, $aConfigFiles = scandir(dirname(__DIR__) . '/../_files/processed/config'));
+        $this->assertContains('.gitignore', $aConfigFiles);
     }
 
     public function testRenderSimpleAssets() {
@@ -255,6 +288,16 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testDisplayAssetsWithWrongAssetFileType() {
+        $oReflectionClass = new \ReflectionClass($this->service);
+        $oReflectedMethod = $oReflectionClass->getMethod('displayAssets');
+        $oReflectedMethod->setAccessible(true);
+        $oReflectedMethod->invoke($this->service, array('wrong'));
+    }
+
+    /**
      * @param array $aAssetsFiles
      */
     protected function assertAssetCacheContent(array $aAssetsFiles) {
@@ -272,46 +315,9 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    protected function emptyCacheDirectory() {
-        //Empty cache directory except .gitignore
-        foreach (new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($this->service->getOptions()->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
-        ) as $oFileinfo) {
-            if ($oFileinfo->isDir()) {
-                rmdir($oFileinfo->getRealPath());
-            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
-                unlink($oFileinfo->getRealPath());
-            }
-        }
-    }
-
-    protected function emptyProcessedDirectory() {
-        //Empty processed directory except .gitignore
-        foreach (new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($this->service->getOptions()->getProcessedDirPath() . DIRECTORY_SEPARATOR . 'lessc', \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
-        ) as $oFileinfo) {
-            if ($oFileinfo->isDir()) {
-                rmdir($oFileinfo->getRealPath());
-            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
-                unlink($oFileinfo->getRealPath());
-            }
-        }
-        foreach (new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($this->service->getOptions()->getProcessedDirPath() . DIRECTORY_SEPARATOR . 'config', \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
-        ) as $oFileinfo) {
-            if ($oFileinfo->isDir()) {
-                rmdir($oFileinfo->getRealPath());
-            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
-                unlink($oFileinfo->getRealPath());
-            }
-        }
-    }
-
     public function tearDown() {
-        //Empty cache directory
-        // $this->emptyCacheDirectory();
-        //Empty processed directory
-        // $this->emptyProcessedDirectory();
+        //Empty cache and processed directories
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
         parent::tearDown();
     }
 

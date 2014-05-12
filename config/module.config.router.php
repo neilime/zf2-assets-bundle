@@ -3,9 +3,9 @@
 //Router module config
 return array(
     'routes' => array(
-        'jscustom' => array(
+        \AssetsBundle\Mvc\Controller\AbstractActionController::JS_CUSTOM_ACTION => array(
             'type' => 'literal',
-            'options' => array('route' => '/jscustom'),
+            'options' => array('route' => '/' . \AssetsBundle\Mvc\Controller\AbstractActionController::JS_CUSTOM_ACTION),
             'may_terminate' => true,
             'child_routes' => array(
                 'definition' => array(
@@ -13,7 +13,7 @@ return array(
                     'options' => array(
                         'route' => '/:controller/:js_action',
                         'contraints' => array('controller' => '[a-zA-Z][a-zA-Z0-9_-]*', 'js_action' => '[a-zA-Z][a-zA-Z0-9_-]*'),
-                        'defaults' => array('action' => 'jscustom')
+                        'defaults' => array('action' => \AssetsBundle\Mvc\Controller\AbstractActionController::JS_CUSTOM_ACTION)
                     )
                 )
             )

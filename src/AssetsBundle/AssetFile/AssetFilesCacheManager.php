@@ -141,7 +141,7 @@ class AssetFilesCacheManager {
         }
         //Create dir if not exists
         else {
-            if (!$oAssetFile->isAssetFilePathUrl() && !is_dir($sCacheFileDirPath = dirname($sCacheFilePath))) {
+            if (!is_dir($sCacheFileDirPath = dirname($sCacheFilePath))) {
                 $sCacheFileDirPathBuild = null;
                 foreach (explode(DIRECTORY_SEPARATOR, $sCacheFileDirPath) as $sCacheFileDirPathPart) {
                     if ($sCacheFileDirPathBuild) {

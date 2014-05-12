@@ -71,17 +71,12 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp() {
-        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
+        $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager()->setAllowOverride(true);
 
         $aConfiguration = $oServiceManager->get('Config');
         unset($aConfiguration['assets_bundle']['assets']);
 
-        $bAllowOverride = $oServiceManager->getAllowOverride();
-        if (!$bAllowOverride) {
-            $oServiceManager->setAllowOverride(true);
-        }
-
-        $oServiceManager->setService('Config', \Zend\Stdlib\ArrayUtils::merge($aConfiguration, $this->configuration))->setAllowOverride($bAllowOverride);
+        $oServiceManager->setService('Config', \Zend\Stdlib\ArrayUtils::merge($aConfiguration, $this->configuration));
 
         //Rebuild AssetsBundle service options
         $oServiceOptionsFactory = new \AssetsBundle\Factory\ServiceOptionsFactory();
@@ -129,7 +124,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $sJsFile = $sCacheName . '.js';
 
         //Empty cache directory
-        $this->emptyCacheDirectory();
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
 
         //Initialize MvcEvent
         $oMvcEvent = new \Zend\Mvc\MvcEvent();
@@ -174,9 +169,6 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
 
         //Check if assets are not rendered again
         $this->assertEquals($iLastModified = $iNewLastModified, filemtime($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCssFile));
-
-        //Empty cache directory
-        $this->emptyCacheDirectory();
     }
 
     public function testRenderAssetsWithMedias() {
@@ -189,7 +181,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $sJsFile = $sCacheName . '.js';
 
         //Empty cache directory
-        $this->emptyCacheDirectory();
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
 
         //Initialize MvcEvent
         $oMvcEvent = new \Zend\Mvc\MvcEvent();
@@ -228,9 +220,6 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->assertGreaterThan(filesize($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . md5(realpath(getcwd() . '/_files/images')) . '/test-media.png'), filesize(getcwd() . '/_files/images/test-media.png'));
         $this->assertGreaterThan(filesize($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . md5(realpath(getcwd() . '/_files/images')) . '/test-media.jpg'), filesize(getcwd() . '/_files/images/test-media.jpg'));
         $this->assertGreaterThan(filesize($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . md5(realpath(getcwd() . '/_files/images')) . '/test-media.gif'), filesize(getcwd() . '/_files/images/test-media.gif'));
-
-        //Empty cache directory
-        $this->emptyCacheDirectory();
     }
 
     public function testRenderMixins() {
@@ -241,7 +230,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->service->getOptions()->getCacheFileName(), md5(current(explode('\\', $this->routeMatch->getParam('controller'))) . $this->routeMatch->getParam('controller') . $this->service->getOptions()->getActionName()));
 
         //Empty cache directory
-        $this->emptyCacheDirectory();
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
 
         //Initialize MvcEvent
         $oMvcEvent = new \Zend\Mvc\MvcEvent();
@@ -257,9 +246,6 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
 
         //Check assets content
         $this->assertAssetCacheContent(array($this->service->getOptions()->getCacheFileName() . '.css'));
-
-        //Empty cache directory
-        $this->emptyCacheDirectory();
     }
 
     public function testRenderTestAssetsFromUrl() {
@@ -272,7 +258,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         );
 
         //Empty cache directory
-        $this->emptyCacheDirectory();
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
 
         $this->assertTrue(extension_loaded('openssl'), 'Open SSL must be available for tests');
 
@@ -299,9 +285,6 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         //Check assets content
         $this->assertAssetCacheContent(array($this->service->getOptions()->getCacheFileName() . '.js'));
         $this->assertAssetCacheContent(array($this->service->getOptions()->getCacheFileName() . '.css'));
-
-        //Empty cache directory
-        $this->emptyCacheDirectory();
     }
 
     public function testRenderTestHugeAssets() {
@@ -309,7 +292,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('test-huge-assets', $this->service->getOptions()->getActionName());
 
         //Empty cache directory
-        $this->emptyCacheDirectory();
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
 
         //Initialize MvcEvent
         $oMvcEvent = new \Zend\Mvc\MvcEvent();
@@ -325,9 +308,6 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
 
         //Check assets content
         $this->assertAssetCacheContent(array($this->service->getOptions()->getCacheFileName() . '.css'));
-
-        //Empty cache directory
-        $this->emptyCacheDirectory();
     }
 
     /**
@@ -343,17 +323,9 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    protected function emptyCacheDirectory() {
-        //Empty cache directory except .gitignore
-        foreach (new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($this->service->getOptions()->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
-        ) as $oFileinfo) {
-            if ($oFileinfo->isDir()) {
-                rmdir($oFileinfo->getRealPath());
-            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
-                unlink($oFileinfo->getRealPath());
-            }
-        }
+    public function tearDown() {
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
+        parent::tearDown();
     }
 
 }

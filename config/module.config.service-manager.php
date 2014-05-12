@@ -12,6 +12,7 @@ return array(
         'GifAssetFileFilter' => '\AssetsBundle\Factory\AssetFileFilter\GifAssetFileFilterFactory',
         'AssetsBundleService' => '\AssetsBundle\Factory\ServiceFactory',
         'AssetsBundleServiceOptions' => '\AssetsBundle\Factory\ServiceOptionsFactory',
+        'AssetsBundleToolsService' => '\AssetsBundle\Factory\ToolsServiceFactory',
         'JsCustomStrategy' => '\AssetsBundle\Factory\JsCustomStrategyFactory'
     ),
     'invokables' => array(

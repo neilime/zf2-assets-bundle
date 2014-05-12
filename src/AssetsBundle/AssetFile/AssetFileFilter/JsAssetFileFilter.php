@@ -22,7 +22,7 @@ class JsAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\Abstract
      */
     public function filterAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
         //Try to retrieve cached filter rendering
-        if ($sCachedFilterRendering = $this->getCachedFilterRendering($oAssetFile)) {
+        if ($sCachedFilterRendering = $this->getCachedFilteredContent($oAssetFile)) {
             return $sCachedFilterRendering;
         }
 
@@ -34,7 +34,9 @@ class JsAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\Abstract
         if ($iExecTime > ini_get('max_execution_time')) {
             set_time_limit(0);
         }
-        return trim(\JSMin::minify($sContent));
+        $sFilteredContent = trim(\JSMin::minify($sContent));
+        $this->cacheFilteredAssetFileContent($oAssetFile, $sFilteredContent);
+        return $sFilteredContent;
     }
 
 }

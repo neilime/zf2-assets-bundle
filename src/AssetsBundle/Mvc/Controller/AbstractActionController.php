@@ -5,13 +5,18 @@ namespace AssetsBundle\Mvc\Controller;
 abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionController {
 
     /**
+     * @var string
+     */
+    const JS_CUSTOM_ACTION = 'jscustom';
+
+    /**
      * @param \Zend\Mvc\MvcEvent $oEvent
      * @return mixed
      * @throws \LogicException
      */
     public function onDispatch(\Zend\Mvc\MvcEvent $oEvent) {
         $oReturn = parent::onDispatch($oEvent);
-        if ($this->params('action') === 'jscustom') {
+        if ($this->params('action') === self::JS_CUSTOM_ACTION) {
             if (!is_array($oReturn)) {
                 throw new \LogicException('jscustomAction return expects an array, "' . gettype($oReturn) . '" given');
             }
@@ -25,12 +30,12 @@ abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractAct
             //Check js files
             foreach ($oReturn as &$sJsFilePath) {
                 if ($sJsFilePath = $oOptions->getRealPath($sJsFilePath)) {
-                    //Copy js file into cache
-                    $oAssetFilesCacheManager->cacheAssetFile($oJsAssetFile = new \AssetsBundle\AssetFile\AssetFile(array(
+                    $oJsAssetFile = new \AssetsBundle\AssetFile\AssetFile(array(
                         'asset_file_type' => \AssetsBundle\AssetFile\AssetFile::ASSET_JS,
                         'asset_file_path' => $sJsFilePath
-                    )));
-
+                    ));
+                    //Copy js file into cache
+                    $oAssetFilesCacheManager->cacheAssetFile($oJsAssetFile);
                     $sJsFilePath = $oJsAssetFile;
                 } else {
                     throw new \LogicException('File "' . $sJsFilePath . '" does not exist');
