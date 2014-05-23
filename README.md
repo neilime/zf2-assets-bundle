@@ -4,8 +4,7 @@ AssetsBundle, v3.3.0
 [![Build Status](https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master)](https://travis-ci.org/neilime/zf2-assets-bundle)
 [![Latest Stable Version](https://poser.pugx.org/neilime/zf2-assets-bundle/v/stable.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
 [![Total Downloads](https://poser.pugx.org/neilime/zf2-assets-bundle/downloads.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
-![Code coverage](https://raw.github.com/zf2-boiler-app/app-test/master/ressources/100%25-code-coverage.png "100% code coverage")
-
+[![Coverage Status](https://coveralls.io/repos/neilime/zf2-assets-bundle/badge.png?branch=master)](https://coveralls.io/r/neilime/zf2-assets-bundle?branch=master)
 NOTE : If you want to contribute don't hesitate, I'll review any PR.
 
 Introduction
