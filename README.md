@@ -5,6 +5,7 @@ AssetsBundle, v3.3.0
 [![Latest Stable Version](https://poser.pugx.org/neilime/zf2-assets-bundle/v/stable.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
 [![Total Downloads](https://poser.pugx.org/neilime/zf2-assets-bundle/downloads.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
 [![Coverage Status](https://coveralls.io/repos/neilime/zf2-assets-bundle/badge.png?branch=master)](https://coveralls.io/r/neilime/zf2-assets-bundle?branch=master)
+
 NOTE : If you want to contribute don't hesitate, I'll review any PR.
 
 Introduction
