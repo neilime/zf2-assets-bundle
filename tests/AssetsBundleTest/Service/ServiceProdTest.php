@@ -2,7 +2,8 @@
 
 namespace AssetsBundleTest\Service;
 
-class ServiceProdTest extends \PHPUnit_Framework_TestCase {
+class ServiceProdTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @var array
@@ -70,15 +71,17 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
     /**
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp() {
+    protected function setUp()
+    {
         $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
 
         $aConfiguration = $oServiceManager->get('Config');
         unset($aConfiguration['asset_bundle']['assets']);
 
         $bAllowOverride = $oServiceManager->getAllowOverride();
-        if (!$bAllowOverride)
+        if (!$bAllowOverride) {
             $oServiceManager->setAllowOverride(true);
+        }
 
         $oServiceManager->setService('Config', \Zend\Stdlib\ArrayUtils::merge($aConfiguration, $this->configuration))->setAllowOverride($bAllowOverride);
 
@@ -92,7 +95,8 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
                 ->setActionName($this->routeMatch->getParam('action'));
     }
 
-    public function testService() {
+    public function testService()
+    {
         //Test service instance
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service);
 
@@ -110,7 +114,8 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->service->actionHasAssetConfiguration('wrong-action'));
     }
 
-    public function testSetRoute() {
+    public function testSetRoute()
+    {
         //Module
         $this->assertInstanceOf('AssetsBundle\Service\ServiceOptions', $this->service->getOptions()->setModuleName(current(explode('\\', $this->routeMatch->getParam('controller')))));
         $this->assertEquals('test-module', $this->service->getOptions()->getModuleName());
@@ -129,7 +134,8 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testRenderSimpleAssets() {
+    public function testRenderSimpleAssets()
+    {
 
         //Cache file name
         $this->assertEquals(
@@ -182,7 +188,8 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->emptyCacheDirectory();
     }
 
-    public function testRenderAssetsWithMedias() {
+    public function testRenderAssetsWithMedias()
+    {
         $this->assertInstanceOf('AssetsBundle\Service\ServiceOptions', $this->service->getOptions()->setActionName('test-media'));
         $this->assertEquals('test-media', $this->service->getOptions()->getActionName());
 
@@ -231,7 +238,8 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->emptyCacheDirectory();
     }
 
-    public function testRenderMixins() {
+    public function testRenderMixins()
+    {
         $this->assertInstanceOf('AssetsBundle\Service\ServiceOptions', $this->service->getOptions()->setActionName('test-mixins'));
         $this->assertEquals('test-mixins', $this->service->getOptions()->getActionName());
 
@@ -251,7 +259,8 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->emptyCacheDirectory();
     }
 
-    public function testRenderTestAssetsFromUrl() {
+    public function testRenderTestAssetsFromUrl()
+    {
         $this->assertInstanceOf('AssetsBundle\Service\ServiceOptions', $this->service->getOptions()->setActionName('test-assets-from-url'));
         $this->assertEquals('test-assets-from-url', $this->service->getOptions()->getActionName());
 
@@ -263,17 +272,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         //Empty cache directory
         $this->emptyCacheDirectory();
 
-        if ($this->assertTrue(extension_loaded('openssl')))
-            ;
-
-        //Test external files contents
-        $this->assertStringEqualsFile(
-                __DIR__ . '/../_files/prod-cache-expected/mootools.js', str_replace(PHP_EOL, "\n", file_get_contents('https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'))
-        );
-
-        $this->assertStringEqualsFile(
-                __DIR__ . '/../_files/prod-cache-expected/bootstrap.css', str_replace(PHP_EOL, "\n", file_get_contents('https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'))
-        );
+        $this->assertTrue(extension_loaded('openssl'));
 
         //Render assets
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service->renderAssets());
@@ -286,7 +285,8 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->emptyCacheDirectory();
     }
 
-    public function testRenderTestHugeAssets() {
+    public function testRenderTestHugeAssets()
+    {
         $this->assertInstanceOf('AssetsBundle\Service\ServiceOptions', $this->service->getOptions()->setActionName('test-huge-assets'));
         $this->assertEquals('test-huge-assets', $this->service->getOptions()->getActionName());
 
@@ -311,18 +311,19 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
     /**
      * @param array $aAssetsFiles
      */
-    protected function assertAssetCacheContent(array $aAssetsFiles) {
+    protected function assertAssetCacheContent(array $aAssetsFiles)
+    {
         $sCacheExpectedPath = __DIR__ . '/../_files/prod-cache-expected';
         foreach ($aAssetsFiles as $sAssetFile) {
             $this->assertFileExists($this->service->getOptions()->getCachePath() . $sAssetFile);
-            file_put_contents($sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile, preg_replace('/cache\/([0-9a-f]{32})\//', 'cache/encrypted-file-tree/', file_get_contents($this->service->getOptions()->getCachePath() . $sAssetFile)));
             $this->assertStringEqualsFile(
                     $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile, preg_replace('/cache\/([0-9a-f]{32})\//', 'cache/encrypted-file-tree/', file_get_contents($this->service->getOptions()->getCachePath() . $sAssetFile))
             );
         }
     }
 
-    protected function emptyCacheDirectory() {
+    protected function emptyCacheDirectory()
+    {
         //Empty cache directory except .gitignore
         foreach (new \RecursiveIteratorIterator(
         new \RecursiveDirectoryIterator($this->service->getOptions()->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST

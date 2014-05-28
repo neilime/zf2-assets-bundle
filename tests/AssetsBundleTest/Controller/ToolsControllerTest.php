@@ -2,7 +2,8 @@
 
 namespace AssetsBundleTest\Controller;
 
-class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase {
+class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase
+{
 
     /**
      * @var array
@@ -48,7 +49,8 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
     /**
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    public function setUp() {
+    public function setUp()
+    {
         $this->setApplicationConfig(\AssetsBundleTest\Bootstrap::getConfig());
         parent::setUp();
 
@@ -65,7 +67,8 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         $oServiceLocator->setService('Config', $this->configuration)->setAllowOverride($bAllowOverride);
     }
 
-    public function testRenderAssetsAction() {
+    public function testRenderAssetsAction()
+    {
         $this->dispatch('render');
         $this->assertResponseStatusCode(0);
         $this->assertModuleName('AssetsBundle');
@@ -105,7 +108,8 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         }
     }
 
-    public function testRenderAssetsWithoutConfiguration() {
+    public function testRenderAssetsWithoutConfiguration()
+    {
         $oServiceLocator = $this->getApplicationServiceLocator();
 
         $aConfiguration = $oServiceLocator->get('Config');
@@ -125,7 +129,8 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         $this->assertMatchedRouteName('render-assets');
     }
 
-    public function testRenderAssetsWithWrongConfiguration() {
+    public function testRenderAssetsWithWrongConfiguration()
+    {
         $oServiceLocator = $this->getApplicationServiceLocator();
 
         $aConfiguration = $oServiceLocator->get('Config');
@@ -145,7 +150,8 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         $this->assertMatchedRouteName('render-assets');
     }
 
-    public function testEmptyCache() {
+    public function testEmptyCache()
+    {
         $this->dispatch('empty');
         $this->assertResponseStatusCode(0);
         $this->assertModuleName('AssetsBundle');
@@ -159,7 +165,8 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         $this->assertContains('.gitignore', $aFiles);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $oServiceLocator = $this->getApplicationServiceLocator();
         $bAllowOverride = $oServiceLocator->getAllowOverride();
         if (!$bAllowOverride) {

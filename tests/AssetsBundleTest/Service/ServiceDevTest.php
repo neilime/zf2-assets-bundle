@@ -2,7 +2,8 @@
 
 namespace AssetsBundleTest\Service;
 
-class ServiceDevTest extends \PHPUnit_Framework_TestCase {
+class ServiceDevTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @var array
@@ -71,7 +72,8 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
     /**
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->routeMatch = new \Zend\Mvc\Router\RouteMatch(array('controller' => 'test-module\index-controller', 'action' => 'index'));
         $this->createService();
     }
@@ -79,19 +81,22 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
     /**
      * @param array $aAssetsConfiguration
      */
-    protected function createService(array $aAssetsConfiguration = null) {
+    protected function createService(array $aAssetsConfiguration = null)
+    {
         $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
 
         $aConfiguration = $oServiceManager->get('Config');
         unset($aConfiguration['asset_bundle']['assets']);
 
         $bAllowOverride = $oServiceManager->getAllowOverride();
-        if (!$bAllowOverride)
+        if (!$bAllowOverride) {
             $oServiceManager->setAllowOverride(true);
+        }
 
         $aNewConfig = \Zend\Stdlib\ArrayUtils::merge($aConfiguration, $this->configuration);
-        if ($aAssetsConfiguration)
+        if ($aAssetsConfiguration) {
             $aNewConfig['asset_bundle']['assets'] = $aAssetsConfiguration;
+        }
         $oServiceManager->setService('Config', $aNewConfig)->setAllowOverride($bAllowOverride);
 
         //Define service
@@ -107,30 +112,35 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryWithWrongFilters() {
+    public function testFactoryWithWrongFilters()
+    {
         \AssetsBundle\Service\Service::factory(array('filters' => 'wrong'));
     }
 
-    public function testFactoryWithCustomRendererToStrategy() {
+    public function testFactoryWithCustomRendererToStrategy()
+    {
         \AssetsBundle\Service\Service::factory(array('rendererToStrategy' => array('zendviewrendererphprenderer' => new \AssetsBundle\View\Strategy\ViewHelperStrategy())));
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryWithWrongRendererToStrategy() {
+    public function testFactoryWithWrongRendererToStrategy()
+    {
         \AssetsBundle\Service\Service::factory(array('rendererToStrategy' => 'wrong'));
     }
 
     /**
      * @expectedException \LogicException
      */
-    public function testGetOptionsUndefined() {
+    public function testGetOptionsUndefined()
+    {
         $oService = new \AssetsBundle\Service\Service();
         $oService->getOptions();
     }
 
-    public function testService() {
+    public function testService()
+    {
         //Test service instance
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service);
 
@@ -148,11 +158,13 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->service->actionHasAssetConfiguration('wrong-action'));
     }
 
-    public function testAssetTypeExists() {
+    public function testAssetTypeExists()
+    {
         $this->assertFalse($this->service->assetTypeExists('wrong'));
     }
 
-    public function testRenderSimpleAssets() {
+    public function testRenderSimpleAssets()
+    {
         //Empty cache directory
         $this->emptyCacheDirectory();
 
@@ -256,7 +268,8 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
         $this->emptyCacheDirectory();
     }
 
-    public function testRenderAssetsWithMedias() {
+    public function testRenderAssetsWithMedias()
+    {
         //Change action name
         $this->routeMatch->setParam('action', 'test-media');
         $this->service->getOptions()->setActionName($this->routeMatch->getParam('action'));
@@ -285,7 +298,8 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
         $this->emptyCacheDirectory();
     }
 
-    public function testRenderAssetsWithMediasWithoutAssetsPath() {
+    public function testRenderAssetsWithMediasWithoutAssetsPath()
+    {
         $sAssetsPath = $this->service->getOptions()->getAssetsPath();
         $this->service->getOptions()->setAssetsPath(null);
 
@@ -315,7 +329,8 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException LogicException
      */
-    public function testRenderAssetsWithUncachedMedias() {
+    public function testRenderAssetsWithUncachedMedias()
+    {
         //Change action name
         $this->routeMatch->setParam('action', 'test-uncached-media');
         $this->service->getOptions()->setActionName($this->routeMatch->getParam('action'));
@@ -327,7 +342,8 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
         $this->service->renderAssets();
     }
 
-    public function testRenderTestAssetsFromUrl() {
+    public function testRenderTestAssetsFromUrl()
+    {
         //Change action name
         $this->routeMatch->setParam('action', 'test-assets-from-url');
         $this->service->getOptions()->setActionName($this->routeMatch->getParam('action'));
@@ -342,7 +358,8 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
         $this->emptyCacheDirectory();
     }
 
-    public function testRenderWithoutAssetsPath() {
+    public function testRenderWithoutAssetsPath()
+    {
 
         //Change assets config
         $this->createService(array('css' => array(
@@ -359,18 +376,20 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
     /**
      * @param array $aAssetsFiles
      */
-    protected function assertAssetCacheContent(array $aAssetsFiles) {
+    protected function assertAssetCacheContent(array $aAssetsFiles)
+    {
         $sCacheExpectedPath = __DIR__ . '/../_files/dev-cache-expected';
         foreach ($aAssetsFiles as $sAssetFile) {
             $this->assertFileExists($this->service->getOptions()->getCachePath() . $sAssetFile);
-            file_put_contents($sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile, preg_replace('/' . \AssetsBundle\Service\Service::sanitizeFileName(preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', getcwd()), '/')) . '/', '/current-dir/', file_get_contents($this->service->getOptions()->getCachePath() . $sAssetFile)));
+            file_put_contents($sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile, preg_replace('/' . $this->service->getOptions()->sanitizeFileName(preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', getcwd()), '/')) . '/', '/current-dir/', file_get_contents($this->service->getOptions()->getCachePath() . $sAssetFile)));
             $this->assertStringEqualsFile(
-                    $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile, preg_replace('/' . \AssetsBundle\Service\Service::sanitizeFileName(preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', getcwd()), '/')) . '/', '/current-dir/', file_get_contents($this->service->getOptions()->getCachePath() . $sAssetFile))
+                    $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile, preg_replace('/' . $this->service->getOptions()->sanitizeFileName(preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', getcwd()), '/')) . '/', '/current-dir/', file_get_contents($this->service->getOptions()->getCachePath() . $sAssetFile))
             );
         }
     }
 
-    protected function emptyCacheDirectory() {
+    protected function emptyCacheDirectory()
+    {
         //Empty cache directory except .gitignore
         foreach (new \RecursiveIteratorIterator(
         new \RecursiveDirectoryIterator($this->service->getOptions()->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST

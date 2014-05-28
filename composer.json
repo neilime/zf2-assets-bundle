@@ -2,7 +2,7 @@
     "name": "neilime/zf2-assets-bundle",
     "type": "library",
     "description": "Zend Framework 2 module that provides assets bundling / caching",
-    "keywords": ["assets","bundle","cache","zf2", "css", "js", "less"],
+    "keywords": ["assets", "bundle", "cache", "zf2", "css", "js", "less"],
     "homepage": "http://neilime.github.io/zf2-assets-bundle/",
     "license": "MIT",
     "authors": [
@@ -15,13 +15,13 @@
     "support": {
         "issues": "https://github.com/neilime/zf2-assets-bundle/issues"
     },
-    "minimum-stability" : "stable",
-	"suggest": {
+    "minimum-stability": "stable",
+    "suggest": {
         "ext-gd2": "GD library to compress png files"
     },
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.*@stable",
+        "zendframework/zendframework": "2.1.*@stable",
         "neilime/lessphp": "0.*@stable",
         "mrclay/minify": "2.*@stable"
     },
@@ -29,7 +29,7 @@
         "psr-0": {
             "AssetsBundle": "src"
         },
-        "classmap" : ["Module.php"]
+        "classmap": ["Module.php"]
     },
     "extra": {
         "branch-alias": {

@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\Service;
 
-class Service {
+class Service
+{
 
     //Assets
     const ASSET_CSS = 'css';
@@ -36,7 +37,8 @@ class Service {
      * @param \AssetsBundle\Service\ServiceOptions $oOptions
      * @throws \InvalidArgumentException
      */
-    public function __construct(\AssetsBundle\Service\ServiceOptions $oOptions = null) {
+    public function __construct(\AssetsBundle\Service\ServiceOptions $oOptions = null)
+    {
         if ($oOptions) {
             $this->setOptions($oOptions);
         }
@@ -48,7 +50,8 @@ class Service {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\Service
      */
-    public static function factory($aOptions) {
+    public static function factory($aOptions)
+    {
         if ($aOptions instanceof \Traversable) {
             $aOptions = \Zend\Stdlib\ArrayUtils::iteratorToArray($aOptions);
         } elseif (!is_array($aOptions)) {
@@ -99,7 +102,8 @@ class Service {
      * @param \AssetsBundle\Service\ServiceOptions $oOptions
      * @return \AssetsBundle\Service\Service
      */
-    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions) {
+    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions)
+    {
         $this->options = $oOptions;
         return $this;
     }
@@ -108,7 +112,8 @@ class Service {
      * @throws \LogicException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         if ($this->options instanceof \AssetsBundle\Service\ServiceOptions) {
             return $this->options;
         }
@@ -120,7 +125,8 @@ class Service {
      * @param \AssetsBundle\Service\AssetsFilterManager $oAssetsFilterManager
      * @return \AssetsBundle\Service\Service
      */
-    public function setAssetsFilterManager(\AssetsBundle\Service\AssetsFilterManager $oAssetsFilterManager) {
+    public function setAssetsFilterManager(\AssetsBundle\Service\AssetsFilterManager $oAssetsFilterManager)
+    {
         $this->assetsFilterManager = $oAssetsFilterManager;
         return $this;
     }
@@ -129,7 +135,8 @@ class Service {
      * Retrieve the assets filter manager. Lazy loads an instance if none currently set.
      * @return \AssetsBundle\Service\AssetsFilterManager
      */
-    public function getAssetsFilterManager() {
+    public function getAssetsFilterManager()
+    {
         if (!$this->assetsFilterManager instanceof \AssetsBundle\Service\AssetsFilterManager) {
             $this->setAssetsFilterManager(new \AssetsBundle\Service\AssetsFilterManager());
         }
@@ -141,7 +148,8 @@ class Service {
      * @param \AssetsBundle\Service\RenderStrategyManager $oRenderStrategyManager
      * @return \AssetsBundle\Service\Service
      */
-    public function setRenderStrategyManager(\AssetsBundle\Service\RenderStrategyManager $oRenderStrategyManager) {
+    public function setRenderStrategyManager(\AssetsBundle\Service\RenderStrategyManager $oRenderStrategyManager)
+    {
         $this->renderStrategyManager = $oRenderStrategyManager;
         return $this;
     }
@@ -150,7 +158,8 @@ class Service {
      * Retrieve the render strategy manager. Lazy loads an instance if none currently set.
      * @return \AssetsBundle\Service\RenderStrategyManager
      */
-    public function getRenderStrategyManager() {
+    public function getRenderStrategyManager()
+    {
         if (!$this->renderStrategyManager instanceof \AssetsBundle\Service\RenderStrategyManager) {
             $this->setRenderStrategyManager(new \AssetsBundle\Service\RenderStrategyManager());
         }
@@ -160,7 +169,8 @@ class Service {
     /**
      * @return array
      */
-    public function getAssetsConfiguration() {
+    public function getAssetsConfiguration()
+    {
         //Check if assets configuration is already set
         $sModuleName = $this->getOptions()->getModuleName();
         $sControllerName = $this->getOptions()->getControllerName();
@@ -255,18 +265,14 @@ class Service {
      * @throws \RuntimeException
      * @return boolean
      */
-    public function assetsConfigurationHasChanged(array $aAssetsType = null) {
+    public function assetsConfigurationHasChanged(array $aAssetsType = null)
+    {
         $aAssetsType = $aAssetsType ? array_unique($aAssetsType) : array(self::ASSET_CSS, self::ASSET_LESS, self::ASSET_JS, self::ASSET_MEDIA);
 
-        //Configuration file
-        if (($sConfigContent = file_get_contents($sConfigFilePath = $this->getConfigurationFilePath())) === false) {
-            throw new \RuntimeException('Unable to get in file content from file "' . $sConfigFilePath . '"');
-        }
-        if (
-                ($aConfig = json_decode($sConfigContent, true)) === false || !is_array($aConfig)
-        ) {
-            throw new \RuntimeException('Configuration is not a well formed json array "' . $sConfigContent . '"');
-        }
+        \Zend\Stdlib\ErrorHandler::start();
+        $sConfigContent = file_get_contents($sConfigFilePath = $this->getConfigurationFilePath());
+        $aConfig = json_decode($sConfigContent, true);
+        \Zend\Stdlib\ErrorHandler::stop(true);
 
         //Get assets configuration
         $aAssets = $this->getAssetsConfiguration();
@@ -296,7 +302,8 @@ class Service {
      * @throws \InvalidArgumentException
      * @return boolean
      */
-    public function moduleHasAssetConfiguration($sModuleName) {
+    public function moduleHasAssetConfiguration($sModuleName)
+    {
         if (!is_string($sModuleName) || empty($sModuleName)) {
             throw new \InvalidArgumentException('Module name is not valid');
         }
@@ -309,7 +316,8 @@ class Service {
      * @throws \InvalidArgumentException
      * @return boolean
      */
-    public function controllerHasAssetConfiguration($sControllerName) {
+    public function controllerHasAssetConfiguration($sControllerName)
+    {
         if (!is_string($sControllerName) || empty($sControllerName)) {
             throw new \InvalidArgumentException('Controller name is not valid');
         }
@@ -327,7 +335,8 @@ class Service {
      * @throws \InvalidArgumentException
      * @return boolean
      */
-    public function actionHasAssetConfiguration($sActionName) {
+    public function actionHasAssetConfiguration($sActionName)
+    {
         if (!is_string($sActionName) || empty($sActionName)) {
             throw new \InvalidArgumentException('Action name is not valid');
         }
@@ -349,7 +358,8 @@ class Service {
      * @param string $sActionName : (optionnal)
      * @return string
      */
-    public function getCacheFileName($sModuleName = null, $sControllerName = null, $sActionName = null) {
+    public function getCacheFileName($sModuleName = null, $sControllerName = null, $sActionName = null)
+    {
         $sModuleName = $sModuleName? : $this->getOptions()->getModuleName();
         $sControllerName = $sControllerName? : $this->getOptions()->getControllerName();
         $sActionName = $sActionName? : $this->getOptions()->getActionName();
@@ -367,7 +377,8 @@ class Service {
      * @param string $sActionName : (optionnal)
      * @return string
      */
-    public function getConfigurationFilePath($sModuleName = null, $sControllerName = null, $sActionName = null) {
+    public function getConfigurationFilePath($sModuleName = null, $sControllerName = null, $sActionName = null)
+    {
         return $this->getOptions()->getCachePath() . $this->getCacheFileName($sModuleName, $sControllerName, $sActionName) . '.conf';
     }
 
@@ -379,7 +390,8 @@ class Service {
      * @throws \RuntimeException
      * @return array
      */
-    private function getValidAssets(array $aAssets, $sAssetType) {
+    private function getValidAssets(array $aAssets, $sAssetType)
+    {
         if (!self::assetTypeExists($sAssetType)) {
             throw new \InvalidArgumentException('Asset\'s type is undefined : ' . $sAssetType);
         }
@@ -418,7 +430,8 @@ class Service {
      * @throws \InvalidArgumentException
      * @return array
      */
-    private function getAssetsFromDirectory($sDirPath, $sAssetType) {
+    private function getAssetsFromDirectory($sDirPath, $sAssetType)
+    {
         if (!is_string($sDirPath) || !($sDirPath = $this->getOptions()->getRealPath($sDirPath)) && !is_dir($sDirPath)) {
             throw new \InvalidArgumentException('Directory not found : ' . $sDirPath);
         }
@@ -463,7 +476,8 @@ class Service {
      * @throws \RuntimeException
      * @return string
      */
-    public function assetGetContents($sAssetPath) {
+    public function assetGetContents($sAssetPath)
+    {
         if (!is_string($sAssetPath)) {
             throw new \InvalidArgumentException('Asset path expects string, "' . gettype($sAssetPath) . '" given');
         }
@@ -497,7 +511,8 @@ class Service {
      * @throws \InvalidArgumentException
      * @return string
      */
-    public function getAssetRelativePath($sAssetPath) {
+    public function getAssetRelativePath($sAssetPath)
+    {
         if (!($sAssetRealPath = $this->getOptions()->getRealPath($sAssetPath))) {
             throw new \InvalidArgumentException('File "' . $sAssetPath . '" does not exist');
         }
@@ -520,7 +535,8 @@ class Service {
      * @throws \RuntimeException
      * @return \AssetsBundle\Service\Service
      */
-    public function renderAssets() {
+    public function renderAssets()
+    {
         //Retrieve cache file name
         $sCacheName = $this->getCacheFileName();
 
@@ -572,7 +588,8 @@ class Service {
      * @throws \RuntimeException
      * @return string
      */
-    private function cacheAssets(array $aAssetsPath, $sAssetType, $sCacheName) {
+    private function cacheAssets(array $aAssetsPath, $sAssetType, $sCacheName)
+    {
         if (!is_array($aAssetsPath)) {
             throw new \InvalidArgumentException('AssetsPath expects an array, "' . gettype($aAssetsPath) . '" given');
         }
@@ -685,7 +702,8 @@ class Service {
      * @throws \LogicException
      * @return string|null
      */
-    private function cacheLess(array $aAssetsPath, $sCacheName) {
+    private function cacheLess(array $aAssetsPath, $sCacheName)
+    {
         //Create global import file for Less assets
         $sCachePath = $this->getOptions()->getCachePath();
         $sCacheFile = $sCacheName . '.' . self::ASSET_LESS;
@@ -714,8 +732,9 @@ class Service {
                 else {
                     $sAssetContent = $this->assetGetContents($sAssetPath);
 
+                    $aImports = null;
                     if (preg_match_all('/@import([^;]*);/', $sAssetContent, $aImports, PREG_PATTERN_ORDER)) {
-                        $sAssetDirPath = realpath(pathinfo($sAssetPath, PATHINFO_DIRNAME)) . DIRECTORY_SEPARATOR;
+                        $sAssetDirPath = dirname($sAssetPath) . DIRECTORY_SEPARATOR;
                         foreach ($aImports[1] as $sImport) {
                             $sImport = trim(str_ireplace(array('"', '\'', 'url', '(', ')'), '', $sImport));
                             //Check if file to be imported exists
@@ -778,7 +797,8 @@ class Service {
      * @throws \LogicException
      * @return \AssetsBundle\Service\Service
      */
-    private function cacheMedias(array $aMediasPath) {
+    private function cacheMedias(array $aMediasPath)
+    {
         $oAssetsFilterManager = $this->getAssetsFilterManager();
 
         if ($bHasAssetsPath = $this->getOptions()->hasAssetsPath()) {
@@ -800,7 +820,7 @@ class Service {
             if ($this->getOptions()->isProduction()) {
                 $sMediaCachePath = md5($sMediaCachePath);
             } else {
-                $sMediaCachePath = self::sanitizeFileName($sMediaCachePath);
+                $sMediaCachePath = $this->getOptions()->sanitizeFileName($sMediaCachePath);
             }
 
             //Define media cache absolute path
@@ -812,7 +832,6 @@ class Service {
                 if (!in_array($sExtension, $aMediaExt)) {
                     throw new \LogicException('Extension is not valid (' . join(', ', $aMediaExt) . ') : ' . $sExtension);
                 }
-
                 $this->copyIntoCache($sMediaPath, $sMediaCachePath);
 
                 //If filter is defined for extension
@@ -830,7 +849,8 @@ class Service {
      * @throws \Exception
      * @return \AssetsBundle\Service\Service
      */
-    public function displayAssets(array $aAssets, $sAssetType) {
+    public function displayAssets(array $aAssets, $sAssetType)
+    {
         if (!self::assetTypeExists($sAssetType)) {
             throw new \InvalidArgumentException('Asset\'s type "' . $sAssetType . '" is undefined');
         }
@@ -856,7 +876,8 @@ class Service {
      * @throws \InvalidArgumentException
      * @return boolean
      */
-    public static function assetTypeExists($sAssetType) {
+    public static function assetTypeExists($sAssetType)
+    {
         if (!is_string($sAssetType)) {
             throw new \InvalidArgumentException('Asset type expects string, "' . gettype($sAssetType) . '" given');
         }
@@ -878,12 +899,12 @@ class Service {
      * @throws \InvalidArgumentException
      * @return boolean
      */
-    private function hasToCache($sFilePath, $sCachePath) {
+    private function hasToCache($sFilePath, $sCachePath)
+    {
         if (!file_exists($sFilePath)) {
             throw new \InvalidArgumentException('File "' . $sFilePath . '" does not exist');
         }
-        return
-                !file_exists($sCachePath) || ($iLastModified = filemtime($sFilePath)) === false || ($iLastModifiedCompare = filemtime($sCachePath)) === false || $iLastModified > $iLastModifiedCompare;
+        return !file_exists($sCachePath) || ($iLastModified = filemtime($sFilePath)) === false || ($iLastModifiedCompare = filemtime($sCachePath)) === false || $iLastModified > $iLastModifiedCompare;
     }
 
     /**
@@ -894,7 +915,8 @@ class Service {
      * @throws \RuntimeException
      * @return \AssetsBundle\Service\Service
      */
-    public function copyIntoCache($sFilePath, $sCachePath) {
+    public function copyIntoCache($sFilePath, $sCachePath)
+    {
         if (!file_exists($sFilePath)) {
             \InvalidArgumentException('File "' . $sFilePath . '" does not exist');
         }
@@ -904,7 +926,6 @@ class Service {
         //Create directory structure if it doesn't exist in cache
         if (!is_dir($sDirPath = pathinfo($sCachePath, PATHINFO_DIRNAME))) {
             $sCurrentPath = $this->getOptions()->getCachePath();
-
             //Directory traversal
             foreach (explode(DIRECTORY_SEPARATOR, str_ireplace($sCurrentPath, '', $sDirPath)) as $sDirPathPart) {
                 //Create current directory if it doesn't exist
@@ -925,14 +946,6 @@ class Service {
     }
 
     /**
-     * @param string $sFilename
-     * @return type
-     */
-    public static function sanitizeFileName($sFilename) {
-        return preg_replace(array('/\s+/', '/[^a-zA-Z0-9\-]/', '/-+/', '/^-+/', '/-+$/'), array('-', '', '-', '', ''), $sFilename);
-    }
-
-    /**
      * Rewrite url to match with cache path if needed
      * @param array $aMatches
      * @param string $sAssetPath
@@ -940,7 +953,8 @@ class Service {
      * @throws \LogicException
      * @return string
      */
-    public function rewriteUrl(array $aMatches, $sAssetPath = null) {
+    public function rewriteUrl(array $aMatches, $sAssetPath = null)
+    {
         if (!isset($aMatches[1])) {
             throw new \InvalidArgumentException('Url match is not valid');
         }
@@ -980,7 +994,7 @@ class Service {
             if (!file_exists($sUrlRealPath = str_ireplace('@zfAssetsPath', $sAssetsPath, $sUrl))) {
                 throw new \LogicException('File not found : ' . $sUrlRealPath);
             }
-            $sUrlRealPath = realpath($sUrlRealPath);
+            $sUrlRealPath = $this->getOptions()->getRealPath($sUrlRealPath);
         }
 
         //Url with context path
@@ -997,13 +1011,15 @@ class Service {
                 return str_ireplace(
                         $sUrl, dirname($sAssetPath) . DIRECTORY_SEPARATOR . $sUrl, $aMatches[0]
                 );
-            } elseif (($sUrlRealPath = realpath(dirname($sAssetPath) . DIRECTORY_SEPARATOR . $sUrl)) === false) {
+            } elseif (($sUrlRealPath = $this->getOptions()->getRealPath(dirname($sAssetPath) . DIRECTORY_SEPARATOR . $sUrl)) === false) {
                 $sUrlRealPath = $sUrl;
             }
-        }
-
+        } elseif (
         //Absolute path url
-        elseif (($sUrlRealPath = realpath(getcwd() . DIRECTORY_SEPARATOR . $sUrl)) === false) {
+                ($sUrlRealPath = $this->getOptions()->getRealPath($sUrl)) === false
+                //Relative to current working diretory
+                && ($sUrlRealPath = $this->getOptions()->getRealPath(getcwd() . DIRECTORY_SEPARATOR . $sUrl)) === false
+        ) {
             throw new \LogicException('"' . $sUrl . '" is not a valid path');
         }
 
@@ -1013,11 +1029,7 @@ class Service {
         $sMediaCachePath = $bHasAssetsPath ? preg_replace('/^' . preg_quote($sAssetsPath, '/') . '/', '', dirname($sUrlRealPath)) : dirname($sUrlRealPath);
 
         //In production mask assets files tree
-        if ($this->getOptions()->isProduction()) {
-            $sMediaCachePath = md5($sMediaCachePath);
-        } else {
-            $sMediaCachePath = self::sanitizeFileName($sMediaCachePath);
-        }
+        $sMediaCachePath = $this->getOptions()->isProduction() ? md5($sMediaCachePath) : $this->getOptions()->sanitizeFileName($sMediaCachePath);
 
         //Define media cache absolute path
         $sMediaCachePath = $sCachePath . $sMediaCachePath . DIRECTORY_SEPARATOR . basename($sUrlRealPath);
