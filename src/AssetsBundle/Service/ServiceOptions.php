@@ -154,8 +154,7 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 	public function setCachePath($sCachePath){
 		if(is_string($sCachePath)){
                         $sRealCachePath = $this->getRealPath($sCachePath);
-//                        var_dump($this->isCdnUrl());
-			if(!is_dir($sRealCachePath))throw new \InvalidArgumentException('Cache path" option expects a valid directory path, "'.$sCachePath.'" given');
+			if(!$this->isCdnUrl() && !is_dir($sRealCachePath))throw new \InvalidArgumentException('Cache path" option expects a valid directory path, "'.$sCachePath.'" given');
 			else $this->cachePath = $sRealCachePath.DIRECTORY_SEPARATOR;
 			return $this;
 		}
