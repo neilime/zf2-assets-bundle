@@ -13,11 +13,19 @@ class ToolsController extends \Zend\Mvc\Controller\AbstractActionController{
 
     	$oServiceLocator = $this->getServiceLocator();
         $oConsole = $this->getServiceLocator()->get('console');
-
-        //Initialize AssetsBundle service
-        $oAssetsBundleService = $oServiceLocator->get('AssetsBundleService');
-        $oAssetsBundleService->getOptions()->setRenderer(new \Zend\View\Renderer\PhpRenderer());
-
+        
+        try{
+            //Initialize AssetsBundle service
+            $oAssetsBundleService = $oServiceLocator->get('AssetsBundleService');
+            $oAssetsBundleService->getOptions()->setRenderer(new \Zend\View\Renderer\PhpRenderer());
+        } catch(\Exception $e){
+            
+            $oView = new \Zend\View\Model\ConsoleModel();
+            $oView->setErrorLevel(1);
+            return $oView->setResult($e->getMessage().PHP_EOL);
+        }
+        
+        
         //Start process
         $oConsole->writeLine('');
         $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::GRAY);

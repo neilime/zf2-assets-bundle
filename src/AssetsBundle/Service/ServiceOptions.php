@@ -48,7 +48,7 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 	protected $requestUri;
 	
 	 /**
-         * if the cache url is a cdn url
+         * If the cache url is a cdn url
          * @var boolean 
          */
         protected $isCdnUrl;
@@ -154,7 +154,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
 	public function setCachePath($sCachePath){
 		if(is_string($sCachePath)){
                         $sRealCachePath = $this->getRealPath($sCachePath);
-			if(!$this->isCdnUrl() && !is_dir($sRealCachePath))throw new \InvalidArgumentException('Cache path" option expects a valid directory path, "'.$sCachePath.'" given');
+//                        var_dump($this->isCdnUrl());
+			if(!is_dir($sRealCachePath))throw new \InvalidArgumentException('Cache path" option expects a valid directory path, "'.$sCachePath.'" given');
 			else $this->cachePath = $sRealCachePath.DIRECTORY_SEPARATOR;
 			return $this;
 		}
@@ -469,7 +470,7 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions{
                 }
             } catch(\Exception $e){
                 /*cacheUrl not set*/
-                $this->isCdnUrl = false;
+                //$this->isCdnUrl = false;
             }
             
             return $this->isCdnUrl;
