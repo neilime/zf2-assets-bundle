@@ -379,7 +379,7 @@ class Service
      */
     public function getConfigurationFilePath($sModuleName = null, $sControllerName = null, $sActionName = null)
     {
-        return $this->getOptions()->getCachePath() . $this->getCacheFileName($sModuleName, $sControllerName, $sActionName) . '.conf';
+        return $this->getOptions()->getConfigCachePath() . $this->getCacheFileName($sModuleName, $sControllerName, $sActionName) . '.conf';
     }
 
     /**

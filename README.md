@@ -139,6 +139,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
  * mixed `lastModifiedTime`: (optionnal) Allows you to define an arbitrary asset's last modified time in production.  Default `null` : last modified time is calculated for each asset.
  * string `basePath` : (optionnal) only needed if `cacheUrl` use `@zfBaseUrl`. If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used.
  * string `cachePath` : cache directory absolute path, you can use the `@zfRootPath` constant corresponding to current working directory. Default `@zfRootPath/public/cache`.
+ * string `configCachePath` : configuration cache directory absolute path, you can use the `@zfRootPath` constant corresponding to current working directory. Default `@zfRootPath/data/cache`.
  * string `assetsPath` : (optionnal) assets directory absolute path, allows you to define relative path for assets config. You can use the constant `@zfRootPath` corresponding to current working directory. Default `@zfRootPath/public`.
  * string `cacheUrl` : cache directory base url, you can use the constant `@zfBaseUrl` corresponding to application base url . Default `@zfBaseUrl/assets/cache/`.
  * array `mediaExt` : Put here all medias extensions to be cached. Default `array('jpg','png','gif','cur','ttf','eot','svg','woff')`.

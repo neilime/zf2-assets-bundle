@@ -28,6 +28,12 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions
     protected $cachePath;
 
     /**
+     * Configuration cache directory absolute path
+     * @var string
+     */
+    protected $configCachePath;
+
+    /**
      * Assets directory absolute path (allows you to define relative path for assets config)
      * @var string
      */
@@ -146,6 +152,18 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions
     }
 
     /**
+     * @throws \LogicException
+     * @return string
+     */
+    public function getCachePath()
+    {
+        if (is_string($this->cachePath)) {
+            return $this->cachePath;
+        }
+        throw new \LogicException('"Cache path" option is undefined');
+    }
+
+    /**
      * @param string $sCachePath
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
@@ -167,12 +185,30 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions
      * @throws \LogicException
      * @return string
      */
-    public function getCachePath()
+    public function getConfigCachePath()
     {
-        if (is_string($this->cachePath)) {
-            return $this->cachePath;
+        if (is_string($this->configCachePath)) {
+            return $this->configCachePath;
         }
-        throw new \LogicException('"Cache path" option is undefined');
+        throw new \LogicException('"Config cache path" option is undefined');
+    }
+
+    /**
+     * @param string $sConfigCachePath
+     * @throws \InvalidArgumentException
+     * @return \AssetsBundle\Service\ServiceOptions
+     */
+    public function setConfigCachePath($sConfigCachePath)
+    {
+        if (is_string($sConfigCachePath)) {
+            if (!is_dir($sRealCachePath = $this->getRealPath($sConfigCachePath))) {
+                throw new \InvalidArgumentException('Config cache path" option expects a valid directory path, "' . $sConfigCachePath . '" given');
+            } else {
+                $this->configCachePath = $sRealCachePath . DIRECTORY_SEPARATOR;
+            }
+            return $this;
+        }
+        throw new \InvalidArgumentException('"Config cache path" option expects a string, "' . gettype($sConfigCachePath) . '" given');
     }
 
     /**
