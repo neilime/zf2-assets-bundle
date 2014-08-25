@@ -65,10 +65,12 @@ Installation
         'modules' => array(
             // ...
             'AssetsBundle',
+            // ...
         ),
         // ...
     );
     ```
+You should note that as the ordering of modules matters, you should declare the 'AssetsBundle' module before your application modules to ensure the default settings don't take priority.
 
 2. Insert css & js files into your layout page
 
