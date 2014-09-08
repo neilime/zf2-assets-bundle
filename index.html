@@ -186,7 +186,7 @@ mkdir cache
  <span class="o">-&gt;</span><span class="na">prependFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/js/jquery.min.js'</span><span class="p">)</span>
 </pre></div>
 </li>
-<li><p>Save &amp; Refresh.</p></li>
+<li>Save &amp; Refresh.</li>
 </ol><h1>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h1>
 
@@ -321,7 +321,7 @@ In this case, your controller that need these file have to extend <code>AssetsBu
     <span class="p">}</span>
 
     <span class="nv">$aJsFiles</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-    <span class="k">switch</span><span class="p">(</span><span class="nx">strtolower</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">)){</span>
+    <span class="k">switch</span><span class="p">(</span><span class="nb">strtolower</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">)){</span>
         <span class="k">case</span> <span class="s1">'myActionName'</span><span class="o">:</span>
             <span class="c1">//Put here all js files needed for "myActionName" action</span>
             <span class="nv">$aJsFiles</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">'js/test.js'</span><span class="p">;</span>
@@ -377,6 +377,16 @@ Empty cache directory
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-53063406-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
