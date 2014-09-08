@@ -40,22 +40,23 @@
       </nav>
       <section>
         <h1>
-<a name="assetsbundle-v31" class="anchor" href="#assetsbundle-v31"><span class="octicon octicon-link"></span></a>AssetsBundle, v3.1</h1>
+<a name="assetsbundle-v330" class="anchor" href="#assetsbundle-v330"><span class="octicon octicon-link"></span></a>AssetsBundle, v3.3.0</h1>
 
 <p><a href="https://travis-ci.org/neilime/zf2-assets-bundle"><img src="https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master" alt="Build Status"></a>
 <a href="https://packagist.org/packages/neilime/zf2-assets-bundle"><img src="https://poser.pugx.org/neilime/zf2-assets-bundle/v/stable.png" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/neilime/zf2-assets-bundle"><img src="https://poser.pugx.org/neilime/zf2-assets-bundle/downloads.png" alt="Total Downloads"></a>
-<img src="https://raw.github.com/zf2-boiler-app/app-test/master/ressources/100%25-code-coverage.png" alt="Code coverage" title="100% code coverage"></p>
+<a href="https://packagist.org/packages/neilime/zf2-assets-bundle"><img src="https://poser.pugx.org/neilime/zf2-assets-bundle/downloads.png" alt="Total Downloads"></a></p>
 
 <p>NOTE : If you want to contribute don't hesitate, I'll review any PR.</p>
+
+<p><a href="https://pledgie.com/campaigns/26668"><img alt="Click here to lend your support to: ZF2 AssetsBundle and make a donation at pledgie.com !" src="https://pledgie.com/campaigns/26668.png?skin_name=chrome" border="0"></a></p>
 
 <h2>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p>AssetsBundle is a module for ZF2 allowing asset management (bundling &amp; caching) like Css, Js and Less, dependent on modules, controllers and actions (di). 
+<p>AssetsBundle is a module for ZF2 allowing asset management (bundling &amp; caching) like Css, Js and Less, dependent on modules, controllers and actions (di).
 This module manages the concept of the environment/production development.</p>
 
-<p>In development : </p>
+<p>In development :</p>
 
 <ul>
 <li>Files are not bundled for easier debugging.</li>
@@ -64,6 +65,7 @@ This module manages the concept of the environment/production development.</p>
 
 <ul>
 <li>All files are bundled and cached once only if needed.</li>
+<li>Assets path are encrypted to mask file tree (with the exception of files in the "assets" directory)</li>
 </ul><h2>
 <a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
 
@@ -116,10 +118,13 @@ This module manages the concept of the environment/production development.</p>
     <span class="s1">'modules'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
         <span class="c1">// ...</span>
         <span class="s1">'AssetsBundle'</span><span class="p">,</span>
+        <span class="c1">// ...</span>
     <span class="p">),</span>
     <span class="c1">// ...</span>
 <span class="p">);</span>
 </pre></div>
+
+<p>You should note that as the ordering of modules matters, you should declare the 'AssetsBundle' module before your application modules to ensure the default settings don't take priority.</p>
 </li>
 <li>
 <p>Insert css &amp; js files into your layout page</p>
@@ -141,7 +146,7 @@ This module manages the concept of the environment/production development.</p>
 <h2>
 <a name="simple-configuration-example" class="anchor" href="#simple-configuration-example"><span class="octicon octicon-link"></span></a>Simple configuration example</h2>
 
-<p>This example shows how to convert "ZF2 Skeleton Application" to manage assets via AssetsBundle.</p>
+<p>This example shows how to convert <a href="https://github.com/zendframework/ZendSkeletonApplication">ZF2 Skeleton Application</a> to manage assets via AssetsBundle.</p>
 
 <ol>
 <li><p>After installing skeleton application, install <em>AssetsBundle</em> as explained above.</p></li>
@@ -165,7 +170,7 @@ mkdir cache
                 <span class="s1">'js/jquery.min.js'</span><span class="p">,</span>
                 <span class="s1">'js/bootstrap.min.js'</span>
             <span class="p">),</span>
-            <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'images'</span><span class="p">)</span>
+            <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'img'</span><span class="p">,</span><span class="s1">'fonts'</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="p">),</span>
     <span class="c1">//...</span>
@@ -201,6 +206,7 @@ mkdir cache
 <li>mixed <code>lastModifiedTime</code>: (optionnal) Allows you to define an arbitrary asset's last modified time in production.  Default <code>null</code> : last modified time is calculated for each asset.</li>
 <li>string <code>basePath</code> : (optionnal) only needed if <code>cacheUrl</code> use <code>@zfBaseUrl</code>. If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used.</li>
 <li>string <code>cachePath</code> : cache directory absolute path, you can use the <code>@zfRootPath</code> constant corresponding to current working directory. Default <code>@zfRootPath/public/cache</code>.</li>
+<li>string <code>configCachePath</code> : configuration cache directory absolute path, you can use the <code>@zfRootPath</code> constant corresponding to current working directory. Default <code>@zfRootPath/data/cache</code>.</li>
 <li>string <code>assetsPath</code> : (optionnal) assets directory absolute path, allows you to define relative path for assets config. You can use the constant <code>@zfRootPath</code> corresponding to current working directory. Default <code>@zfRootPath/public</code>.</li>
 <li>string <code>cacheUrl</code> : cache directory base url, you can use the constant <code>@zfBaseUrl</code> corresponding to application base url . Default <code>@zfBaseUrl/assets/cache/</code>.</li>
 <li>array <code>mediaExt</code> : Put here all medias extensions to be cached. Default <code>array('jpg','png','gif','cur','ttf','eot','svg','woff')</code>.</li>
@@ -210,7 +216,7 @@ mkdir cache
 
 <p>You can define assets for modules / controllers / action</p>
 
-<p>Exemple : </p>
+<p>Exemple :</p>
 
 <div class="highlight highlight-php"><pre>    <span class="o">&lt;?</span><span class="nx">php</span>
     <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
@@ -218,7 +224,7 @@ mkdir cache
             <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                 <span class="c1">//...</span>
                 <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                <span class="c1">//Common assets included in every pages             </span>
+                <span class="c1">//Common assets included in every pages</span>
                 <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define css files to include</span>
                 <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define js files to include</span>
                 <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define less files to include</span>
@@ -229,21 +235,21 @@ mkdir cache
 
                     <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                     <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                    <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
+                    <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                     <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
 
                     <span class="c1">//Controller specific assets</span>
                     <span class="s1">'Test\Controller\Name'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                         <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                         <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                        <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
+                        <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                         <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
 
                         <span class="c1">//Action specific assets</span>
                         <span class="s1">'ActionName'</span><span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                             <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                             <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                            <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> 
+                            <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
                             <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
                         <span class="p">),</span>
                         <span class="c1">//...</span>
@@ -260,7 +266,7 @@ mkdir cache
 </pre></div>
 
 <ul>
-<li><p>For each asset, you can specify files or directories. All these elements are related to the asset path by default, 
+<li><p>For each asset, you can specify files or directories. All these elements are related to the asset path by default,
 but you can specify an absolute path or use the constants "@zfAssetsPath" and "@zfRootPath".
 If you specify a directory, all files matching the asset type (css, less, js, media) will be included.</p></li>
 <li><p>You can use <code>.php</code> files as assets, there will be interpret.</p></li>
@@ -311,7 +317,7 @@ In this case, your controller that need these file have to extend <code>AssetsBu
 
 <p><strong>Attention !</strong> Jscustom process does not cache javascript, due to performance reasons</p>
 
-<p>Then create a jscustomAction function into your controller : </p>
+<p>Then create a jscustomAction function into your controller :</p>
 
 <div class="highlight highlight-php"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">jscustomAction</span><span class="p">(</span><span class="nv">$sAction</span> <span class="o">=</span> <span class="k">null</span><span class="p">){</span>
     <span class="c1">//Check params, it's not mandatory</span>
@@ -368,7 +374,7 @@ Empty cache directory
 <h3>
 <a name="empty-cache-directory" class="anchor" href="#empty-cache-directory"><span class="octicon octicon-link"></span></a>Empty cache directory</h3>
 
-<pre><code>php public/index.php empty     
+<pre><code>php public/index.php empty
 </code></pre>
       </section>
       <footer>
