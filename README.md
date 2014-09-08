@@ -7,6 +7,8 @@ AssetsBundle, v3.3.0
 
 NOTE : If you want to contribute don't hesitate, I'll review any PR.
 
+<a href='https://pledgie.com/campaigns/26668'><img alt='Click here to lend your support to: ZF2 AssetsBundle and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/26668.png?skin_name=chrome' border='0' ></a>
+
 Introduction
 ------------
 
