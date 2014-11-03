@@ -150,7 +150,9 @@ class AssetFilesCacheManager {
                     \Zend\Stdlib\ErrorHandler::stop(true);
                 } elseif (!is_writable($sCacheFileDirPathPart)) {
                     \Zend\Stdlib\ErrorHandler::start();
-                    chmod($sCacheFileDirPathPart, 0775);
+                    if (!chmod($sCacheFileDirPathPart, 0775)) {
+                        throw new \RuntimeException('Error occured while changing mode on directory "' . $sCacheFileDirPathPart . '"');
+                    }
                     \Zend\Stdlib\ErrorHandler::stop(true);
                 }
                 $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
