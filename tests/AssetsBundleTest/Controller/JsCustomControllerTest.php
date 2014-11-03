@@ -215,14 +215,14 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     public function assertResponseStatusCode($code) {
         if ($this->useConsoleRequest) {
             if (!in_array($code, array(0, 1))) {
-                throw new PHPUnit_Framework_ExpectationFailedException(
+                throw new \PHPUnit_Framework_ExpectationFailedException(
                 'Console status code assert value must be O (valid) or 1 (error)'
                 );
             }
         }
         $match = $this->getResponseStatusCode();
         if ($code != $match) {
-            throw new PHPUnit_Framework_ExpectationFailedException(sprintf(
+            throw new \PHPUnit_Framework_ExpectationFailedException(sprintf(
                     'Failed asserting response code "%s", actual status code is "%s"', $code, $match
             ));
         }
