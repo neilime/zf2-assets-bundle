@@ -156,18 +156,19 @@ class AssetFilesCacheManager {
                         throw new \RuntimeException('Error occured while creating directory "' . $sCacheFileDirPathPart . '"');
                     }
                     \Zend\Stdlib\ErrorHandler::stop(true);
-                } elseif (!is_writable($sCacheFileDirPathPart)) {
-                    \Zend\Stdlib\ErrorHandler::start();
-                    if (!chmod($sCacheFileDirPathPart, 0775)) {
-                        throw new \RuntimeException('Error occured while changing mode on directory "' . $sCacheFileDirPathPart . '"');
-                    }
-                    \Zend\Stdlib\ErrorHandler::stop(true);
                 }
                 $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
             }
 
             if (!is_dir($sCacheFileDirPath)) {
                 throw new \LogicException('Error occured while created Cache file directory "' . $sCacheFileDirPath . '"');
+            }
+            if (!is_writable($sCacheFileDirPath)) {
+                \Zend\Stdlib\ErrorHandler::start();
+                if (!chmod($sCacheFileDirPath, 0775)) {
+                    throw new \RuntimeException('Error occured while changing mode on directory "' . $sCacheFileDirPath . '"');
+                }
+                \Zend\Stdlib\ErrorHandler::stop(true);
             }
         } elseif (!is_writable($sCacheFileDirPath)) {
             \Zend\Stdlib\ErrorHandler::start();
