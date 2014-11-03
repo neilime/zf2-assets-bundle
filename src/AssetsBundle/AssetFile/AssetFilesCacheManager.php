@@ -119,47 +119,57 @@ class AssetFilesCacheManager {
      */
     public function cacheAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile, \AssetsBundle\AssetFile\AssetFile $oSourceAssetFile = null) {
 
-        //Define source asset file
+        // Define source asset file
         if (!$oSourceAssetFile) {
             $oSourceAssetFile = $oAssetFile;
         }
 
-        //Check that file need to be cached
+        // Check that file need to be cached
         if ($this->isAssetFileCached($oSourceAssetFile)) {
             return $oAssetFile->setAssetFilePath($this->getAssetFileCachePath($oSourceAssetFile));
         }
 
-        //Retrieve asset file cache path
+        // Retrieve asset file cache path
         $sCacheFilePath = $this->getAssetFileCachePath($oSourceAssetFile);
 
-        \Zend\Stdlib\ErrorHandler::start();
         if ($oAssetFile->isAssetFilePathUrl()) {
-            //Open source and destionation files
+            // Open source and destionation files
+            \Zend\Stdlib\ErrorHandler::start();
             $oAssetFileFileHandle = fopen($oAssetFile->getAssetFilePath(), 'rb');
+            \Zend\Stdlib\ErrorHandler::stop(true);
+            if (!$oAssetFileFileHandle) {
+                throw new \LogicException('Unable to open asset file "' . $oAssetFile->getAssetFilePath() . '"');
+            }
             file_put_contents($sCacheFilePath, stream_get_contents($oAssetFileFileHandle));
 
-            //Close source and destination files
+            // Close source and destination files
+            \Zend\Stdlib\ErrorHandler::start();
             fclose($oAssetFileFileHandle);
+            \Zend\Stdlib\ErrorHandler::stop(true);
         }
-        //Create dir if not exists
+        // Create dir if not exists
         else {
             if (!is_dir($sCacheFileDirPath = dirname($sCacheFilePath))) {
                 $sCacheFileDirPathBuild = null;
                 foreach (explode(DIRECTORY_SEPARATOR, $sCacheFileDirPath) as $sCacheFileDirPathPart) {
+                    if (!$sCacheFileDirPathPart) {
+                        continue;
+                    }
                     if ($sCacheFileDirPathBuild) {
                         $sCacheFileDirPathPart = $sCacheFileDirPathBuild . DIRECTORY_SEPARATOR . $sCacheFileDirPathPart;
                     }
                     if (!is_dir($sCacheFileDirPathPart)) {
-                        if (!mkdir($sCacheFileDirPathPart)) {
-                            throw new \RuntimeException('Failed to create directory "' . $sCacheFileDirPathPart . '"');
-                        }
+                        \Zend\Stdlib\ErrorHandler::start();
+                        mkdir($sCacheFileDirPathPart, 0775);
+                        \Zend\Stdlib\ErrorHandler::stop(true);
                     }
                     $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
                 }
             }
+            \Zend\Stdlib\ErrorHandler::start();
             copy($oAssetFile->getAssetFilePath(), $sCacheFilePath);
+            \Zend\Stdlib\ErrorHandler::stop(true);
         }
-        \Zend\Stdlib\ErrorHandler::stop(true);
         return $oAssetFile->setAssetFilePath($sCacheFilePath);
     }
 
