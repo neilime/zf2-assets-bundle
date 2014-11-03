@@ -146,7 +146,9 @@ class AssetFilesCacheManager {
                 }
                 if (!is_dir($sCacheFileDirPathPart)) {
                     \Zend\Stdlib\ErrorHandler::start();
-                    mkdir($sCacheFileDirPathPart, 0775);
+                    if (!mkdir($sCacheFileDirPathPart, 0775)) {
+                        throw new \RuntimeException('Error occured while creating directory "' . $sCacheFileDirPathPart . '"');
+                    }
                     \Zend\Stdlib\ErrorHandler::stop(true);
                 } elseif (!is_writable($sCacheFileDirPathPart)) {
                     \Zend\Stdlib\ErrorHandler::start();
@@ -157,7 +159,9 @@ class AssetFilesCacheManager {
                 }
                 $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
             }
-        } elseif (!is_writable($sCacheFileDirPath)) {
+        }
+
+        if (!is_writable($sCacheFileDirPath)) {
             \Zend\Stdlib\ErrorHandler::start();
             if (!chmod($sCacheFileDirPath, 0775)) {
                 throw new \RuntimeException('Error occured while changing mode on directory "' . $sCacheFileDirPath . '"');
@@ -186,7 +190,11 @@ class AssetFilesCacheManager {
         // Cache local asset file
         else {
             \Zend\Stdlib\ErrorHandler::start();
-            copy($oAssetFile->getAssetFilePath(), $sCacheFilePath);
+            $sAssetFilePath = $oAssetFile->getAssetFilePath();
+            if (!is_file($sAssetFilePath)) {
+                throw new \LogicException('Asset file "' . $sAssetFilePath . '" does not exits');
+            }
+            copy($sAssetFilePath, $sCacheFilePath);
             \Zend\Stdlib\ErrorHandler::stop(true);
         }
         return $oAssetFile->setAssetFilePath($sCacheFilePath);
