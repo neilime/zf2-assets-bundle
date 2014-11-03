@@ -24,7 +24,7 @@ return array(
     'AssetsBundle\Factory\AssetFileFilter\JpegAssetFileFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/AssetFileFilter/JpegAssetFileFilterFactory.php',
     'AssetsBundle\Factory\AssetFileFilter\JsAssetFileFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/AssetFileFilter/JsAssetFileFilterFactory.php',
     'AssetsBundle\Factory\AssetFileFilter\LesscAssetFileFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/AssetFileFilter/LesscAssetFileFilterFactory.php',
-    'AssetsBundle\Factory\AssetFileFilter\LessPhpAssetFileFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/AssetFileFilter/LessPhpAssetFileFilterFactory.php',
+    'AssetsBundle\Factory\AssetFileFilter\LessphpAssetFileFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/AssetFileFilter/LessphpAssetFileFilterFactory.php',
     'AssetsBundle\Factory\AssetFileFilter\PngAssetFileFilterFactory' => __DIR__ . '/src/AssetsBundle/Factory/AssetFileFilter/PngAssetFileFilterFactory.php',
     'AssetsBundle\Factory\JsCustomStrategyFactory' => __DIR__ . '/src/AssetsBundle/Factory/JsCustomStrategyFactory.php',
     'AssetsBundle\Factory\ServiceFactory' => __DIR__ . '/src/AssetsBundle/Factory/ServiceFactory.php',

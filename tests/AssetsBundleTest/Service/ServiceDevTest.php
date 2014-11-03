@@ -35,10 +35,10 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
                         ),
                         'test-assets-from-url' => array(
                             'js' => array(
-                                'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'
+                                'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/_files/assets/js/mootools.js'
                             ),
                             'css' => array(
-                                'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'
+                                'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/_files/assets/css/bootstrap.css'
                             )
                         ),
                         'test-uncached-media' => array(

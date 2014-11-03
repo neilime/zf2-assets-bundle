@@ -4,7 +4,7 @@
 return array(
     'factories' => array(
         'LesscAssetFileFilter' => '\AssetsBundle\Factory\AssetFileFilter\LesscAssetFileFilterFactory',
-        'LessPhpAssetFileFilter' => '\AssetsBundle\Factory\AssetFileFilter\LessPhpAssetFileFilterFactory',
+        'LessphpAssetFileFilter' => '\AssetsBundle\Factory\AssetFileFilter\LessphpAssetFileFilterFactory',
         'CssAssetFileFilter' => '\AssetsBundle\Factory\AssetFileFilter\CssAssetFileFilterFactory',
         'JsAssetFileFilter' => '\AssetsBundle\Factory\AssetFileFilter\JsAssetFileFilterFactory',
         'PngAssetFileFilter' => '\AssetsBundle\Factory\AssetFileFilter\PngAssetFileFilterFactory',

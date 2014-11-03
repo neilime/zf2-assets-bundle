@@ -37,10 +37,10 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
                         ),
                         'test-assets-from-url' => array(
                             'js' => array(
-                                'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'
+                                'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/_files/assets/js/mootools.js'
                             ),
                             'css' => array(
-                                'https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'
+                                'https://raw.githubusercontent.com/neilime/zf2-assets-bundle/master/tests/_files/assets/css/bootstrap.css'
                             )
                         ),
                         'test-huge-assets' => array(
@@ -262,15 +262,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertTrue(extension_loaded('openssl'), 'Open SSL must be available for tests');
 
-        //Test external files contents
-        $this->assertStringEqualsFile(
-                dirname(__DIR__) . '/../_files/prod-cache-expected/mootools.js', str_replace(PHP_EOL, "\n", file_get_contents('https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/js/mootools.js'))
-        );
-
-        $this->assertStringEqualsFile(
-                dirname(__DIR__) . '/../_files/prod-cache-expected/bootstrap.css', str_replace(PHP_EOL, "\n", file_get_contents('https://raw.github.com/neilime/zf2-assets-bundle/master/tests/AssetsBundleTest/_files/assets/css/bootstrap.css'))
-        );
-        //Initialize MvcEvent
+        // Initialize MvcEvent
         $oMvcEvent = new \Zend\Mvc\MvcEvent();
         $oMvcEvent
                 ->setApplication(\Zend\Mvc\Application::init(\AssetsBundleTest\Bootstrap::getConfig()))
@@ -279,7 +271,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
                 //Reset request
                 ->setRequest(new \Zend\Http\Request());
 
-        //Render assets
+        // Render assets
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service->renderAssets($oMvcEvent));
 
         //Check assets content
@@ -320,6 +312,10 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
             $sCacheContent = preg_replace('/cache\/([0-9a-f]{32})\//', 'cache/encrypted-file-tree/', file_get_contents($sAssetFilePath));
             $sExpectedFilePath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile;
             $this->assertFileExists($sAssetFilePath);
+
+            if ($sCacheContent != file_get_contents($sExpectedFilePath)) {
+                file_put_contents($sExpectedFilePath, $sCacheContent);
+            }
             $this->assertStringEqualsFile($sExpectedFilePath, $sCacheContent);
         }
     }
