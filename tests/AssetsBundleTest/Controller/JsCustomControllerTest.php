@@ -87,7 +87,7 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertFalse($oAssetsBundleService->getOptions()->isProduction());
 
         $this->dispatch('/test');
-        $this->assertResponseStatusCode(200);
+        $this->assertResponseStatusCode(200, $this->getResponse()->getContent());
         $this->assertModuleName('AssetsBundleTest');
         $this->assertControllerName('AssetsBundleTest\Controller\Test');
         $this->assertControllerClass('TestController');
