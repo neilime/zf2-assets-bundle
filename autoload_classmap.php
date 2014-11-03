@@ -13,6 +13,7 @@ return array(
     'AssetsBundle\AssetFile\AssetFileFilter\ImageAssetFileFilter\PngImageAssetFileFilter' => __DIR__ . '/src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/PngAssetFileFilter.php',
     'AssetsBundle\AssetFile\AssetFileFilter\JsAssetFileFilter' => __DIR__ . '/src/AssetsBundle/AssetFile/AssetFileFilter/JsAssetFileFilter.php',
     'AssetsBundle\AssetFile\AssetFileFilter\LesscAssetFileFilter' => __DIR__ . '/src/AssetsBundle/AssetFile/AssetFileFilter/LesscAssetFileFilter.php',
+    'AssetsBundle\AssetFile\AssetFileFilter\LessphpAssetFileFilter' => __DIR__ . '/src/AssetsBundle/AssetFile/AssetFileFilter/LessphpAssetFileFilter.php',
     'AssetsBundle\AssetFile\AssetFileFiltersManager' => __DIR__ . '/src/AssetsBundle/AssetFile/AssetFileFiltersManager.php',
     'AssetsBundle\AssetFile\AssetFilesCacheManager' => __DIR__ . '/src/AssetsBundle/AssetFile/AssetFilesCacheManager.php',
     'AssetsBundle\AssetFile\AssetFilesConfiguration' => __DIR__ . '/src/AssetsBundle/AssetFile/AssetFilesConfiguration.php',

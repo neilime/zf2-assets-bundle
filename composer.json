@@ -17,13 +17,19 @@
     },
     "minimum-stability" : "stable",
     "suggest": {
-        "ext-gd2": "GD library to compress png files"
+        "ext-gd2": "GD library to compress png files",
+        "neilime/lessphp": "The lessphp fork, to use the Lessc filter"
     },
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*@stable",
-        "neilime/lessphp": "0.*@stable",
+        "oyejorge/less.php": "1.*@stable",
         "mrclay/minify": "2.*@stable"
+    },
+    "require-dev": {
+    	"phpunit/phpunit": "4.*@stable",
+    	"satooshi/php-coveralls": "0.*@stable",
+        "neilime/lessphp": "0.*@stable"
     },
     "autoload": {
         "psr-0": {

@@ -303,15 +303,11 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
     protected function assertAssetCacheContent(array $aAssetsFiles) {
         $sCacheExpectedPath = getcwd() . '/_files/dev-cache-expected';
         foreach ($aAssetsFiles as $sAssetFile) {
-            $this->assertFileExists($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sAssetFile);
-            $this->assertStringEqualsFile(
-                    //Expected file
-                    $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile,
-                    //Cache content
-                    preg_replace('/' . preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', getcwd()), '/') . '/', '/current-dir', file_get_contents($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sAssetFile)),
-                    //Info for failing assertion
-                    $sAssetFile
-            );
+            $sAssetFilePath = $this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sAssetFile;
+            $sCacheContent = preg_replace('/' . preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', getcwd()), '/') . '/', '/current-dir', file_get_contents($sAssetFilePath));
+            $sExpectedFilePath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile;
+            $this->assertFileExists($sAssetFilePath);
+            $this->assertStringEqualsFile($sExpectedFilePath, $sCacheContent, $sAssetFile);
         }
     }
 

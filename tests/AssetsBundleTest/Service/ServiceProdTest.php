@@ -180,10 +180,10 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $sCssFile = $sCacheName . '.css';
         $sJsFile = $sCacheName . '.js';
 
-        //Empty cache directory
+        // Empty cache directory
         \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
 
-        //Initialize MvcEvent
+        // Initialize MvcEvent
         $oMvcEvent = new \Zend\Mvc\MvcEvent();
         $oMvcEvent
                 ->setApplication(\Zend\Mvc\Application::init(\AssetsBundleTest\Bootstrap::getConfig()))
@@ -192,13 +192,13 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
                 //Reset request
                 ->setRequest(new \Zend\Http\Request());
 
-        //Render assets
+        // Render assets
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service->renderAssets($oMvcEvent));
 
-        //Check assets content
+        // Check assets content
         $this->assertAssetCacheContent(array($sCssFile, $sJsFile));
 
-        //Media cache files
+        // Media cache files
         #Fonts
         $this->assertFileExists($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . md5(realpath(getcwd() . '/_files/fonts')) . '/fontawesome-webfont.eot');
         $this->assertFileExists($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . md5(realpath(getcwd() . '/_files/fonts')) . DIRECTORY_SEPARATOR . 'fontawesome-webfont.ttf');
@@ -316,10 +316,11 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
     protected function assertAssetCacheContent(array $aAssetsFiles) {
         $sCacheExpectedPath = dirname(__DIR__) . '/../_files/prod-cache-expected';
         foreach ($aAssetsFiles as $sAssetFile) {
-            $this->assertFileExists($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sAssetFile);
-            $this->assertStringEqualsFile(
-                    $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile, preg_replace('/cache\/([0-9a-f]{32})\//', 'cache/encrypted-file-tree/', file_get_contents($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sAssetFile))
-            );
+            $sAssetFilePath = $this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sAssetFile;
+            $sCacheContent = preg_replace('/cache\/([0-9a-f]{32})\//', 'cache/encrypted-file-tree/', file_get_contents($sAssetFilePath));
+            $sExpectedFilePath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile;
+            $this->assertFileExists($sAssetFilePath);
+            $this->assertStringEqualsFile($sExpectedFilePath, $sCacheContent);
         }
     }
 

@@ -120,7 +120,9 @@ class AssetFilesCacheManager {
     public function cacheAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile, \AssetsBundle\AssetFile\AssetFile $oSourceAssetFile = null) {
 
         //Define source asset file
-        $oSourceAssetFile = $oSourceAssetFile ? : $oAssetFile;
+        if (!$oSourceAssetFile) {
+            $oSourceAssetFile = $oAssetFile;
+        }
 
         //Check that file need to be cached
         if ($this->isAssetFileCached($oSourceAssetFile)) {
@@ -169,7 +171,7 @@ class AssetFilesCacheManager {
 
         if (file_exists($sAssetFileCachedPath = $this->getAssetFileCachePath($oAssetFile))) {
             \Zend\Stdlib\ErrorHandler::start();
-            //Can't retrieve last modified from url, don't reload it
+            // Can't retrieve last modified from url, don't reload it
             $bIsUpdated = (!($iLastModified = $oAssetFile->getAssetFileLastModified()) && $oAssetFile->isAssetFilePathUrl()) ? true : ($iLastModified && filemtime($sAssetFileCachedPath) >= $iLastModified);
             \Zend\Stdlib\ErrorHandler::stop(true);
             return $bIsUpdated;

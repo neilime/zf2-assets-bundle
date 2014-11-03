@@ -117,25 +117,18 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         //Test cached files
         foreach ($aCachedFiles as $sCachePart => $sCacheFile) {
 
-            //Css cache files
-            $this->assertStringEqualsFile(
-                    //Cache path
-                    $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sCachePart . '.css',
-                    //File contents
-                    preg_replace(array('/cache\/([0-9a-f]{32})\//', '/\?[0-9]+/'), array('cache/encrypted-file-tree/', '?timestamp'), file_get_contents($oAssetsBundleService->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCacheFile . '.css')),
-                    //File name
-                    $sCachePart . ' - ' . $sCacheFile . '.css'
-            );
+            // Css cached files
+            $sCssCacheExpectedPath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sCachePart . '.css';
+            $sCssFilePath = $oAssetsBundleService->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCacheFile . '.css';
+            $sCssFileContent = preg_replace(array('/cache\/([0-9a-f]{32})\//', '/\?[0-9]+/'), array('cache/encrypted-file-tree/', '?timestamp'), file_get_contents($sCssFilePath));
+            $sCssFilename = $sCachePart . ' - ' . $sCacheFile . '.css';
+            $this->assertStringEqualsFile($sCssCacheExpectedPath, $sCssFileContent, $sCssFilename);
 
-            //Js cache files
-            $this->assertFileEquals(
-                    //Expected file
-                    $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sCachePart . '.js',
-                    //Cache file
-                    $oAssetsBundleService->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCacheFile . '.js',
-                    //File name
-                    $sCachePart . ' - ' . $sCacheFile . '.js'
-            );
+            // Js cache files
+            $sJsCacheExpectedPath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sCachePart . '.js';
+            $sJsFilePath = $oAssetsBundleService->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCacheFile . '.js';
+            $sJsFilename = $sCachePart . ' - ' . $sCacheFile . '.js';
+            $this->assertFileEquals($sJsCacheExpectedPath, $sJsFilePath, $sJsFilename);
         }
     }
 

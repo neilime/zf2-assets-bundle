@@ -40,10 +40,10 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
      * @return \AssetsBundle\Service\Service
      */
     public function attach(\Zend\EventManager\EventManagerInterface $oEventManager) {
-        //Assets rendering
+        // Assets rendering
         $this->listeners[] = $oEventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'renderAssets'));
 
-        //MVC errors
+        // MVC errors
         $this->listeners += $oEventManager->attach(array(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, \Zend\Mvc\MvcEvent::EVENT_RENDER_ERROR), array($this, 'consoleError'));
 
         return $this;
@@ -55,12 +55,10 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
      */
     public function detach(\Zend\EventManager\EventManagerInterface $oEventManager) {
         foreach ($this->listeners as $iIndex => $oCallback) {
-
             if ($oEventManager->detach($oCallback)) {
                 unset($this->listeners[$iIndex]);
             }
         }
-
         return $this;
     }
 
@@ -71,30 +69,29 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
      */
     public function renderAssets(\Zend\Mvc\MvcEvent $oEvent) {
 
-        //Retrieve service manager
+        // Retrieve service manager
         $oServiceManager = $oEvent->getApplication()->getServiceManager();
 
-        //Check if asset should be rendered
+        // Check if asset should be rendered
         if (
-        //Assert that request is an Http request
+        // Assert that request is an Http request
                 !(($oRequest = $oEvent->getRequest()) instanceof \Zend\Http\Request)
-                //Not an Ajax request
+                // Not an Ajax request
                 || $oRequest->isXmlHttpRequest()
-                //Renderer is PHP
+                // Renderer is PHP
                 || !($oServiceManager->get('ViewRenderer') instanceof \Zend\View\Renderer\PhpRenderer)
         ) {
             return $this;
         }
 
-
-        //Retrieve options
+        // Retrieve options
         $oOptions = $this->getOptions();
 
-        //Define options from route match
+        // Define options from route match
         $oRouteMatch = $oEvent->getRouteMatch();
         if ($oRouteMatch instanceof \Zend\Mvc\Router\RouteMatch) {
 
-            //Retrieve controller
+            // Retrieve controller
             if (
                     ($sControllerName = $oRouteMatch->getParam('controller')) && ($sControllerClass = get_class($oServiceManager->get('ControllerLoader')->get($sControllerName)))
             ) {
@@ -107,27 +104,27 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
             if ($sActionName = $oRouteMatch->getParam('action')) {
                 $oOptions->setActionName($sActionName);
             }
-            //Assert that rendering should continue depends on route match
+            // Assert that rendering should continue depends on route match
             if ($oOptions->isAssetsBundleDisabled()) {
                 return $this;
             }
         }
 
-        //Defined current view renderer
+        // Defined current view renderer
         $this->getOptions()->setRenderer($oServiceManager->get('ViewRenderer'));
 
-        //Retrieve asset files manager
+        // Retrieve asset files manager
         $oAssetFilesManager = $this->getAssetFilesManager();
 
-        //Render Css and Js assets
+        // Render Css and Js assets
         $this->displayAssets(
-                //Retrieve cached Css assets
+                // Retrieve cached Css assets
                 $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS) +
-                //Retrieve cached Js assets
+                // Retrieve cached Js assets
                 $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_JS)
         );
 
-        //Save current configuration
+        // Save current configuration
         $this->getAssetFilesManager()->getAssetFilesConfiguration()->saveAssetFilesConfiguration();
 
         return $this;
@@ -141,16 +138,16 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
      * @throws \DomainException
      */
     protected function displayAssets(array $aAssetFiles) {
-        //Retrieve options
+        // Retrieve options
         $oOptions = $this->getOptions();
 
-        //Arbitrary last modified time in production
+        // Arbitrary last modified time in production
         $iLastModifiedTime = $oOptions->isProduction() ? $oOptions->getLastModifiedTime() : null;
 
-        //Use to cache loaded plugins
+        // Use to cache loaded plugins
         $aRendererPlugins = array();
 
-        //Render asset files
+        // Render asset files
         foreach ($aAssetFiles as $oAssetFile) {
             if (!($oAssetFile instanceof \AssetsBundle\AssetFile\AssetFile)) {
                 throw new \InvalidArgumentException(sprintf(

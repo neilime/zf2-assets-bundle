@@ -217,7 +217,7 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
 
     /**
      * Check if asset file's type is valid
-     * @param string $sAssetType
+     * @param string $sAssetFileType
      * @throws \InvalidArgumentException
      * @return boolean
      */
