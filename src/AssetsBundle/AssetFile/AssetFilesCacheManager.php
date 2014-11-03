@@ -134,8 +134,14 @@ class AssetFilesCacheManager {
         // Retrieve asset file cache path
         $sCacheFilePath = $this->getAssetFileCachePath($oSourceAssetFile);
 
-        // Create dir if not exists
-        if (!is_dir($sCacheFileDirPath = dirname($sCacheFilePath))) {
+        // Retrieve cache file directory path
+        $sCacheFileDirPath = dirname($sCacheFilePath);
+        if ($sCacheFileDirPath === '.') {
+            throw new \LogicException('Asset file cache path "' . $sCacheFilePath . '" does not provide a paretn directory');
+        }
+
+        // Create directory if not exists
+        if (!is_dir($sCacheFileDirPath)) {
             $sCacheFileDirPathBuild = null;
             foreach (explode(DIRECTORY_SEPARATOR, $sCacheFileDirPath) as $sCacheFileDirPathPart) {
                 if (!$sCacheFileDirPathPart) {
@@ -159,9 +165,7 @@ class AssetFilesCacheManager {
                 }
                 $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
             }
-        }
-
-        if (!is_writable($sCacheFileDirPath)) {
+        } elseif (!is_writable($sCacheFileDirPath)) {
             \Zend\Stdlib\ErrorHandler::start();
             if (!chmod($sCacheFileDirPath, 0775)) {
                 throw new \RuntimeException('Error occured while changing mode on directory "' . $sCacheFileDirPath . '"');
