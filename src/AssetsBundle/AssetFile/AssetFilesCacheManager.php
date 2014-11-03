@@ -165,6 +165,10 @@ class AssetFilesCacheManager {
                 }
                 $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
             }
+
+            if (!is_dir($sCacheFileDirPath)) {
+                throw new \LogicException('Error occured while created Cache file directory "' . $sCacheFileDirPath . '"');
+            }
         } elseif (!is_writable($sCacheFileDirPath)) {
             \Zend\Stdlib\ErrorHandler::start();
             if (!chmod($sCacheFileDirPath, 0775)) {
