@@ -221,12 +221,15 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
             }
         }
         $match = $this->getResponseStatusCode();
+
+        $sMessage = func_num_args() > 1 ? func_get_arg(1) : null;
+
         if ($code != $match) {
             throw new \PHPUnit_Framework_ExpectationFailedException(sprintf(
-                    'Failed asserting response code "%s", actual status code is "%s"', $code, $match
+                    'Failed asserting response code "%s", actual status code is "%s"' . ($sMessage ? ' : ' . $sMessage : ''), $code, $match
             ));
         }
-        $this->assertEquals($code, $match, func_num_args() > 1 ? func_get_arg(1) : null);
+        $this->assertEquals($code, $match, $sMessage);
     }
 
     public function tearDown() {
