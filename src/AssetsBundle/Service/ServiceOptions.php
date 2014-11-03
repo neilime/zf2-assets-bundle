@@ -687,6 +687,11 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
         }
         $sAssetPath = str_replace(array($this->getCachePath(), DIRECTORY_SEPARATOR), array('', '/'), $oAssetFile->getAssetFilePath());
 
+    /**
+     * Current controller name
+     * @var string
+     */
+    protected $controllerName = self::NO_CONTROLLER;
 
         if ($oAssetFile->getAssetFileType() === \AssetsBundle\AssetFile\AssetFile::ASSET_MEDIA) {
             return $this->getCacheUrl() . ltrim($sAssetPath, '/');

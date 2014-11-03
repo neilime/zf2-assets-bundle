@@ -1,7 +1,5 @@
 # CONTRIBUTING
 
-_AssetsBundle_ is 100% covered by tests. Travis-ci build failed if code coverage is not 100%.
-
 ## RUNNING TESTS
 
 To run tests:
@@ -22,4 +20,4 @@ To run tests:
   ```
 
   This will generate code-coverage report witch can be displayed in a browser by opening `tests/_report/index.html` file
-  
+

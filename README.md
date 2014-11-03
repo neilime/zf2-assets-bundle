@@ -4,15 +4,16 @@ AssetsBundle, v3.3.0
 [![Build Status](https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master)](https://travis-ci.org/neilime/zf2-assets-bundle)
 [![Latest Stable Version](https://poser.pugx.org/neilime/zf2-assets-bundle/v/stable.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
 [![Total Downloads](https://poser.pugx.org/neilime/zf2-assets-bundle/downloads.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
-![Code coverage](https://raw.github.com/zf2-boiler-app/app-test/master/ressources/100%25-code-coverage.png "100% code coverage")
 
 NOTE : If you want to contribute don't hesitate, I'll review any PR.
+
+<a href='https://pledgie.com/campaigns/26668'><img alt='Click here to lend your support to: ZF2 AssetsBundle and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/26668.png?skin_name=chrome' border='0' ></a>
 
 Introduction
 ------------
 
-AssetsBundle is a module for ZF2 allowing asset management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions (di).
-This module manages the concept of the environment/production development.
+AssetsBundle is a module for ZF2 allowing asset management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions .
+This module manages the concept of the "development/production" environment.
 
 In development :
  - Files are not bundled for easier debugging.
@@ -66,10 +67,12 @@ Installation
         'modules' => array(
             // ...
             'AssetsBundle',
+            // ...
         ),
         // ...
     );
     ```
+You should note that as the ordering of modules matters, you should declare the 'AssetsBundle' module before your application modules to ensure the default settings don't take priority.
 
 2. Insert css & js files into your layout page
 
@@ -140,6 +143,7 @@ The default configuration is setup to run with "Application ZF2 Skeleton"
  * mixed `lastModifiedTime`: (optionnal) Allows you to define an arbitrary asset's last modified time in production.  Default `null` : last modified time is calculated for each asset.
  * string `basePath` : (optionnal) only needed if `cacheUrl` use `@zfBaseUrl`. If undefined, \Zend\Http\PhpEnvironment\Request::getBasePath() is used.
  * string `cachePath` : cache directory absolute path, you can use the `@zfRootPath` constant corresponding to current working directory. Default `@zfRootPath/public/cache`.
+ * string `configCachePath` : configuration cache directory absolute path, you can use the `@zfRootPath` constant corresponding to current working directory. Default `@zfRootPath/data/cache`.
  * string `assetsPath` : (optionnal) assets directory absolute path, allows you to define relative path for assets config. You can use the constant `@zfRootPath` corresponding to current working directory. Default `@zfRootPath/public`.
  * string `cacheUrl` : cache directory base url, you can use the constant `@zfBaseUrl` corresponding to application base url . Default `@zfBaseUrl/assets/cache/`.
  * array `mediaExt` : Put here all medias extensions to be cached. Default `array('jpg','png','gif','cur','ttf','eot','svg','woff')`.
