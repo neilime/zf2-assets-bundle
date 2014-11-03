@@ -212,7 +212,7 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
      * Assert response status code
      * @param int $code
      */
-    public function assertResponseStatusCode($code, $sMessage) {
+    public function assertResponseStatusCode($code) {
         if ($this->useConsoleRequest) {
             if (!in_array($code, array(0, 1))) {
                 throw new PHPUnit_Framework_ExpectationFailedException(
@@ -226,7 +226,7 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
                     'Failed asserting response code "%s", actual status code is "%s"', $code, $match
             ));
         }
-        $this->assertEquals($code, $match, $sMessage);
+        $this->assertEquals($code, $match, func_num_args() > 1 ? func_get_arg(1) : null);
     }
 
     public function tearDown() {
