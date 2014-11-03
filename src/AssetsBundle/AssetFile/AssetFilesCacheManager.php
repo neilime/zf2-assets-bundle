@@ -142,33 +142,12 @@ class AssetFilesCacheManager {
 
         // Create directory if not exists
         if (!is_dir($sCacheFileDirPath)) {
-            $sCacheFileDirPathBuild = null;
-            foreach (explode(DIRECTORY_SEPARATOR, $sCacheFileDirPath) as $sCacheFileDirPathPart) {
-                if (!$sCacheFileDirPathPart) {
-                    continue;
-                }
-                if ($sCacheFileDirPathBuild) {
-                    $sCacheFileDirPathPart = $sCacheFileDirPathBuild . DIRECTORY_SEPARATOR . $sCacheFileDirPathPart;
-                }
-                if (!is_dir($sCacheFileDirPathPart)) {
-                    \Zend\Stdlib\ErrorHandler::start();
-                    if (!mkdir($sCacheFileDirPathPart, 0775)) {
-                        throw new \RuntimeException('Error occured while creating directory "' . $sCacheFileDirPathPart . '"');
-                    }
-                    \Zend\Stdlib\ErrorHandler::stop(true);
-                }
-                $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
+            \Zend\Stdlib\ErrorHandler::start();
+            if (!mkdir($sCacheFileDirPath, 0775, true)) {
+                throw new \RuntimeException('Error occured while creating directory "' . $sCacheFileDirPath . '"');
             }
-
-            if (!is_dir($sCacheFileDirPath)) {
-                throw new \LogicException('Error occured while created Cache file directory "' . $sCacheFileDirPath . '"');
-            }
-            if (!is_writable($sCacheFileDirPath)) {
-                \Zend\Stdlib\ErrorHandler::start();
-                if (!chmod($sCacheFileDirPath, 0775)) {
-                    throw new \RuntimeException('Error occured while changing mode on directory "' . $sCacheFileDirPath . '"');
-                }
-                \Zend\Stdlib\ErrorHandler::stop(true);
+            if ($oException = \Zend\Stdlib\ErrorHandler::stop()) {
+                throw new \RuntimeException('Error occured while creating directory "' . $sCacheFileDirPath . '"', $oException->getCode(), $oException);
             }
         } elseif (!is_writable($sCacheFileDirPath)) {
             \Zend\Stdlib\ErrorHandler::start();
@@ -180,7 +159,6 @@ class AssetFilesCacheManager {
 
         // Cache remote asset file
         if ($oAssetFile->isAssetFilePathUrl()) {
-            // Open source and destionation files
             \Zend\Stdlib\ErrorHandler::start();
             $oAssetFileFileHandle = fopen($oAssetFile->getAssetFilePath(), 'rb');
             \Zend\Stdlib\ErrorHandler::stop(true);
@@ -191,7 +169,6 @@ class AssetFilesCacheManager {
             file_put_contents($sCacheFilePath, stream_get_contents($oAssetFileFileHandle));
             \Zend\Stdlib\ErrorHandler::stop(true);
 
-            // Close source and destination files
             \Zend\Stdlib\ErrorHandler::start();
             fclose($oAssetFileFileHandle);
             \Zend\Stdlib\ErrorHandler::stop(true);
