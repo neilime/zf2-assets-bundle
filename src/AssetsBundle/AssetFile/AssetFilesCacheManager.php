@@ -115,7 +115,9 @@ class AssetFilesCacheManager {
 
     /**
      * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
+     * @param \AssetsBundle\AssetFile\AssetFile $oSourceAssetFile
      * @return \AssetsBundle\AssetFile\AssetFile
+     * @throws \LogicException
      */
     public function cacheAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile, \AssetsBundle\AssetFile\AssetFile $oSourceAssetFile = null) {
 
@@ -132,6 +134,26 @@ class AssetFilesCacheManager {
         // Retrieve asset file cache path
         $sCacheFilePath = $this->getAssetFileCachePath($oSourceAssetFile);
 
+        // Create dir if not exists
+        if (!is_dir($sCacheFileDirPath = dirname($sCacheFilePath))) {
+            $sCacheFileDirPathBuild = null;
+            foreach (explode(DIRECTORY_SEPARATOR, $sCacheFileDirPath) as $sCacheFileDirPathPart) {
+                if (!$sCacheFileDirPathPart) {
+                    continue;
+                }
+                if ($sCacheFileDirPathBuild) {
+                    $sCacheFileDirPathPart = $sCacheFileDirPathBuild . DIRECTORY_SEPARATOR . $sCacheFileDirPathPart;
+                }
+                if (!is_dir($sCacheFileDirPathPart)) {
+                    \Zend\Stdlib\ErrorHandler::start();
+                    mkdir($sCacheFileDirPathPart, 0775);
+                    \Zend\Stdlib\ErrorHandler::stop(true);
+                }
+                $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
+            }
+        }
+
+        // Cache remote asset file
         if ($oAssetFile->isAssetFilePathUrl()) {
             // Open source and destionation files
             \Zend\Stdlib\ErrorHandler::start();
@@ -140,32 +162,17 @@ class AssetFilesCacheManager {
             if (!$oAssetFileFileHandle) {
                 throw new \LogicException('Unable to open asset file "' . $oAssetFile->getAssetFilePath() . '"');
             }
+            \Zend\Stdlib\ErrorHandler::start();
             file_put_contents($sCacheFilePath, stream_get_contents($oAssetFileFileHandle));
+            \Zend\Stdlib\ErrorHandler::stop(true);
 
             // Close source and destination files
             \Zend\Stdlib\ErrorHandler::start();
             fclose($oAssetFileFileHandle);
             \Zend\Stdlib\ErrorHandler::stop(true);
         }
-        // Create dir if not exists
+        // Cache local asset file
         else {
-            if (!is_dir($sCacheFileDirPath = dirname($sCacheFilePath))) {
-                $sCacheFileDirPathBuild = null;
-                foreach (explode(DIRECTORY_SEPARATOR, $sCacheFileDirPath) as $sCacheFileDirPathPart) {
-                    if (!$sCacheFileDirPathPart) {
-                        continue;
-                    }
-                    if ($sCacheFileDirPathBuild) {
-                        $sCacheFileDirPathPart = $sCacheFileDirPathBuild . DIRECTORY_SEPARATOR . $sCacheFileDirPathPart;
-                    }
-                    if (!is_dir($sCacheFileDirPathPart)) {
-                        \Zend\Stdlib\ErrorHandler::start();
-                        mkdir($sCacheFileDirPathPart, 0775);
-                        \Zend\Stdlib\ErrorHandler::stop(true);
-                    }
-                    $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
-                }
-            }
             \Zend\Stdlib\ErrorHandler::start();
             copy($oAssetFile->getAssetFilePath(), $sCacheFilePath);
             \Zend\Stdlib\ErrorHandler::stop(true);
