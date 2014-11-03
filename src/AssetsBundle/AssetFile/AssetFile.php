@@ -73,7 +73,7 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @return boolean
      */
     public function isAssetFilePathUrl() {
-        return !!preg_match('/^\/|http/', $this->getAssetFilePath());
+        return filter_var($sAssetFilePath = $this->getAssetFilePath(), FILTER_VALIDATE_URL) && preg_match('/^\/|http/', $sAssetFilePath);
     }
 
     /**
@@ -86,7 +86,7 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
             throw new \InvalidArgumentException('Asset file path expects string, "' . gettype($sAssetFilePath) . '" given');
         }
 
-        //Reset asset file contents
+        // Reset asset file contents
         $this->assetFileContents = null;
 
         if (is_readable($sAssetFilePath)) {
@@ -94,15 +94,33 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
             return $this;
         }
 
+        // Asset file path is an url
         if (strpos($sAssetFilePath, '://') === false) {
             throw new \InvalidArgumentException('Asset\'s file "' . $sAssetFilePath . '" does not exist');
         } elseif ($this->getAssetFileType() === self::ASSET_LESS) {
             throw new \InvalidArgumentException('Less assets does not support urls, "' . $sAssetFilePath . '" given');
         }
+
+        if (!($sFilteredAssetFilePath = filter_var($sAssetFilePath, FILTER_VALIDATE_URL))) {
+            throw new \InvalidArgumentException('Asset\'s file path "' . $sAssetFilePath . '" is not a valid url');
+        }
+
         \Zend\Stdlib\ErrorHandler::start();
-        $oFileHandle = fopen($sAssetFilePath, 'r');
+        $oFileHandle = fopen($sFilteredAssetFilePath, 'r');
+        \Zend\Stdlib\ErrorHandler::stop(true);
+        if (!$oFileHandle) {
+            throw new \InvalidArgumentException('Unable to open asset file "' . $sFilteredAssetFilePath . '"');
+        }
+
+        \Zend\Stdlib\ErrorHandler::start();
         $aMetaData = stream_get_meta_data($oFileHandle);
+        \Zend\Stdlib\ErrorHandler::stop(true);
+        if (empty($aMetaData['uri'])) {
+            throw new \InvalidArgumentException('Unable to retreive uri metadata from file "' . $sFilteredAssetFilePath . '"');
+        }
         $this->assetFilePath = $aMetaData['uri'];
+
+        \Zend\Stdlib\ErrorHandler::start();
         fclose($oFileHandle);
         \Zend\Stdlib\ErrorHandler::stop(true);
 
@@ -143,7 +161,7 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
             throw new \RuntimeException('Unable to retrieve asset contents from file "' . $sAssetFilePath . '"');
         }
 
-        //Update content last retrieved time
+        // Update content last retrieved time
         $this->assetFileContentsLastRetrievedTime = time();
 
         return $this->assetFileContents;
@@ -179,7 +197,7 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @return string
      */
     public function getAssetFileExtension() {
-        return $this->assetFileExtension ? $this->assetFileExtension : $this->assetFileExtension = strtolower(pathinfo($this->getAssetFilePath(), PATHINFO_EXTENSION));
+        return $this->assetFileExtension ? : $this->assetFileExtension = strtolower(pathinfo($this->getAssetFilePath(), PATHINFO_EXTENSION));
     }
 
     /**
