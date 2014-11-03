@@ -157,6 +157,12 @@ class AssetFilesCacheManager {
                 }
                 $sCacheFileDirPathBuild = $sCacheFileDirPathPart;
             }
+        } elseif (!is_writable($sCacheFileDirPath)) {
+            \Zend\Stdlib\ErrorHandler::start();
+            if (!chmod($sCacheFileDirPath, 0775)) {
+                throw new \RuntimeException('Error occured while changing mode on directory "' . $sCacheFileDirPath . '"');
+            }
+            \Zend\Stdlib\ErrorHandler::stop(true);
         }
 
         // Cache remote asset file
