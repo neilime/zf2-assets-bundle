@@ -154,7 +154,7 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
 
         //Less cache files
         $sLessFile = 'dev_' . $this->service->getOptions()->getCacheFileName() . '.less';
-        $this->assertAssetCacheContent(array($sLessFile));
+        $this->assertAssetCacheContent(array('test-module-index-controller-index.less' => $sLessFile));
 
         //Js cache files
         $this->assertAssetCacheContent(array('_files/assets/js/test.js'));
@@ -259,7 +259,7 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
         ));
 
         //Less cache files
-        $this->assertAssetCacheContent(array('dev_' . $this->service->getOptions()->getCacheFileName() . '.less'));
+        $this->assertAssetCacheContent(array('test-module-index-controller-test-media.less' => 'dev_' . $this->service->getOptions()->getCacheFileName() . '.less'));
 
         //Js cache files
         $this->assertAssetCacheContent(array('_files/assets/js/test.js'));
@@ -302,12 +302,20 @@ class ServiceDevTest extends \PHPUnit_Framework_TestCase {
      */
     protected function assertAssetCacheContent(array $aAssetsFiles) {
         $sCacheExpectedPath = getcwd() . '/_files/dev-cache-expected';
-        foreach ($aAssetsFiles as $sAssetFile) {
-            $sAssetFilePath = $this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sAssetFile;
+        foreach ($aAssetsFiles as $sExpectedAssetFile => $sCachedAssetFile) {
+            if (is_int($sExpectedAssetFile)) {
+                $sExpectedAssetFile = $sCachedAssetFile;
+            } else {
+                $sExpectedAssetFile = strtolower($sExpectedAssetFile);
+            }
+
+            $sAssetFilePath = $this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCachedAssetFile;
             $sCacheContent = preg_replace('/' . preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', getcwd()), '/') . '/', '/current-dir', file_get_contents($sAssetFilePath));
-            $sExpectedFilePath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile;
+            $sExpectedFilePath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sExpectedAssetFile;
+
+            $this->assertFileExists($sExpectedFilePath);
             $this->assertFileExists($sAssetFilePath);
-            $this->assertStringEqualsFile($sExpectedFilePath, $sCacheContent, $sAssetFile);
+            $this->assertStringEqualsFile($sExpectedFilePath, $sCacheContent, $sExpectedAssetFile . ($sExpectedAssetFile === $sCachedAssetFile ? '' : ' (' . $sCachedAssetFile . ')'));
         }
     }
 

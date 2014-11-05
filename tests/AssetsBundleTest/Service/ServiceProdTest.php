@@ -139,7 +139,10 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service->renderAssets($oMvcEvent));
 
         //Check assets content
-        $this->assertAssetCacheContent(array($sCssFile, $sJsFile));
+        $this->assertAssetCacheContent(array(
+            'test-module-index-controller-index.css' => $sCssFile,
+            'test-module-index-controller-index.js' => $sJsFile,
+        ));
 
         //Retrieve assets last modified date
         $this->assertNotEquals($iLastModified = filemtime($this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCssFile), false);
@@ -196,7 +199,10 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service->renderAssets($oMvcEvent));
 
         // Check assets content
-        $this->assertAssetCacheContent(array($sCssFile, $sJsFile));
+        $this->assertAssetCacheContent(array(
+            'test-module-index-controller-test-media.css' => $sCssFile,
+            'test-module-index-controller-test-media.js' => $sJsFile,
+        ));
 
         // Media cache files
         #Fonts
@@ -226,13 +232,13 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('AssetsBundle\Service\ServiceOptions', $this->service->getOptions()->setActionName('test-mixins'));
         $this->assertEquals('test-mixins', $this->service->getOptions()->getActionName());
 
-        //Test Cache file name
-        $this->assertEquals($this->service->getOptions()->getCacheFileName(), md5(current(explode('\\', $this->routeMatch->getParam('controller'))) . $this->routeMatch->getParam('controller') . $this->service->getOptions()->getActionName()));
+        // Test Cache file name
+        $this->assertEquals($this->service->getOptions()->getCacheFileName(), md5(current(explode('\\', $this->routeMatch->getParam('controller'))) . '_' . $this->routeMatch->getParam('controller') . '_' . $this->service->getOptions()->getActionName()));
 
-        //Empty cache directory
+        // Empty cache directory
         \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
 
-        //Initialize MvcEvent
+        // Initialize MvcEvent
         $oMvcEvent = new \Zend\Mvc\MvcEvent();
         $oMvcEvent
                 ->setApplication(\Zend\Mvc\Application::init(\AssetsBundleTest\Bootstrap::getConfig()))
@@ -241,23 +247,23 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
                 //Reset request
                 ->setRequest(new \Zend\Http\Request());
 
-        //Render assets
+        // Render assets
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service->renderAssets($oMvcEvent));
 
-        //Check assets content
-        $this->assertAssetCacheContent(array($this->service->getOptions()->getCacheFileName() . '.css'));
+        // Check assets content
+        $this->assertAssetCacheContent(array('test-module-index-controller-test-mixins.css' => $this->service->getOptions()->getCacheFileName() . '.css'));
     }
 
     public function testRenderTestAssetsFromUrl() {
         $this->assertInstanceOf('AssetsBundle\Service\ServiceOptions', $this->service->getOptions()->setActionName('test-assets-from-url'));
         $this->assertEquals('test-assets-from-url', $this->service->getOptions()->getActionName());
 
-        //Test Cache file name
+        // Test Cache file name
         $this->assertEquals(
-                $this->service->getOptions()->getCacheFileName(), md5(current(explode('\\', $this->routeMatch->getParam('controller'))) . $this->routeMatch->getParam('controller') . $this->service->getOptions()->getActionName())
+                $this->service->getOptions()->getCacheFileName(), md5(current(explode('\\', $this->routeMatch->getParam('controller'))) . '_' . $this->routeMatch->getParam('controller') . '_' . $this->service->getOptions()->getActionName())
         );
 
-        //Empty cache directory
+        // Empty cache directory
         \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
 
         $this->assertTrue(extension_loaded('openssl'), 'Open SSL must be available for tests');
@@ -275,8 +281,8 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service->renderAssets($oMvcEvent));
 
         //Check assets content
-        $this->assertAssetCacheContent(array($this->service->getOptions()->getCacheFileName() . '.js'));
-        $this->assertAssetCacheContent(array($this->service->getOptions()->getCacheFileName() . '.css'));
+        $this->assertAssetCacheContent(array('test-module-index-controller-test-assets-from-url.js' => $this->service->getOptions()->getCacheFileName() . '.js'));
+        $this->assertAssetCacheContent(array('test-module-index-controller-test-assets-from-url.css' => $this->service->getOptions()->getCacheFileName() . '.css'));
     }
 
     public function testRenderTestHugeAssets() {
@@ -299,7 +305,7 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('AssetsBundle\Service\Service', $this->service->renderAssets($oMvcEvent));
 
         //Check assets content
-        $this->assertAssetCacheContent(array($this->service->getOptions()->getCacheFileName() . '.css'));
+        $this->assertAssetCacheContent(array('test-module-index-controller-ttest-huge-assets.css' => $this->service->getOptions()->getCacheFileName() . '.css'));
     }
 
     /**
@@ -307,16 +313,20 @@ class ServiceProdTest extends \PHPUnit_Framework_TestCase {
      */
     protected function assertAssetCacheContent(array $aAssetsFiles) {
         $sCacheExpectedPath = dirname(__DIR__) . '/../_files/prod-cache-expected';
-        foreach ($aAssetsFiles as $sAssetFile) {
-            $sAssetFilePath = $this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sAssetFile;
-            $sCacheContent = preg_replace('/cache\/([0-9a-f]{32})\//', 'cache/encrypted-file-tree/', file_get_contents($sAssetFilePath));
-            $sExpectedFilePath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sAssetFile;
-            $this->assertFileExists($sAssetFilePath);
-
-            if ($sCacheContent != file_get_contents($sExpectedFilePath)) {
-                file_put_contents($sExpectedFilePath, $sCacheContent);
+        foreach ($aAssetsFiles as $sExpectedAssetFile => $sCachedAssetFile) {
+            if (is_int($sExpectedAssetFile)) {
+                $sExpectedAssetFile = $sCachedAssetFile;
+            } else {
+                $sExpectedAssetFile = strtolower($sExpectedAssetFile);
             }
-            $this->assertStringEqualsFile($sExpectedFilePath, $sCacheContent);
+
+            $sAssetFilePath = $this->service->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCachedAssetFile;
+            $sCacheContent = preg_replace('/cache\/([0-9a-f]{32})\//', 'cache/encrypted-file-tree/', file_get_contents($sAssetFilePath));
+            $sExpectedFilePath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sExpectedAssetFile;
+
+            $this->assertFileExists($sExpectedFilePath);
+            $this->assertFileExists($sAssetFilePath);
+            $this->assertStringEqualsFile($sExpectedFilePath, $sCacheContent, $sExpectedAssetFile . ($sExpectedAssetFile === $sCachedAssetFile ? '' : ' (' . $sCachedAssetFile . ')'));
         }
     }
 

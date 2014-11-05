@@ -1,1 +1,0 @@
-function test(){return'test';}

@@ -361,11 +361,11 @@ class AssetFilesManager {
             // Return asset file base url
             return str_replace($aMatches[1], $sAssetFileRealBaseUrl, $aMatches[0]);
         }
-        //Remote relative url
+        // Remote relative url
         elseif ($oAssetFile->isAssetFilePathUrl()) {
-            return str_replace($aMatches[1], $sFirstChar . dirname($oAssetFile->getAssetFilePath()) . DIRECTORY_SEPARATOR . $sUrl . $sFirstChar, $aMatches[0]);
+            return str_replace($aMatches[1], $sFirstChar . dirname($oAssetFile->getAssetFilePath()) . '/' . ltrim($sUrl, '/') . $sFirstChar, $aMatches[0]);
         }
-        //Url is not an exising file
+        // Url is not an exising file
         else {
             throw new \LogicException('Url file "' . $sUrl . '" does not exist even relative with "' . $oAssetFile->getAssetFilePath() . '"');
         }

@@ -643,7 +643,7 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
     public function getCacheFileName() {
         $aAssets = $this->getAssets();
 
-        $sCacheFileName = (isset($aAssets[$sModuleName = $this->getModuleName()]) ? $sModuleName : \AssetsBundle\Service\ServiceOptions::NO_MODULE);
+        $sCacheFileName = isset($aAssets[$sModuleName = $this->getModuleName()]) ? $sModuleName : \AssetsBundle\Service\ServiceOptions::NO_MODULE;
 
         $aUnwantedKeys = array(
             \AssetsBundle\AssetFile\AssetFile::ASSET_CSS => true,
@@ -660,7 +660,7 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
                 break;
             }
         }
-        $sCacheFileName .= $bControllerNameFound ? $sControllerName : \AssetsBundle\Service\ServiceOptions::NO_CONTROLLER;
+        $sCacheFileName .= '_' . ($bControllerNameFound ? $sControllerName : \AssetsBundle\Service\ServiceOptions::NO_CONTROLLER);
 
         $bActionNameFound = false;
         $sActionName = $this->getActionName();
@@ -672,14 +672,14 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
                 }
             }
         }
-        $sCacheFileName .= $bActionNameFound ? $sActionName : \AssetsBundle\Service\ServiceOptions::NO_ACTION;
+        $sCacheFileName .= '_' . ($bActionNameFound ? $sActionName : \AssetsBundle\Service\ServiceOptions::NO_ACTION);
         return md5($sCacheFileName);
     }
 
     /**
      * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
      * @param scalar $iLastModifiedTime
-     * @return type
+     * @return string
      */
     public function getAssetFileBaseUrl(\AssetsBundle\AssetFile\AssetFile $oAssetFile, $iLastModifiedTime = null) {
         if ($oAssetFile->isAssetFilePathUrl()) {
