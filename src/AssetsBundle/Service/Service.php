@@ -119,9 +119,9 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
         // Render Css and Js assets
         $this->displayAssets(
                 // Retrieve cached Css assets
-                $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS) +
+                array_merge($oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS),
                 // Retrieve cached Js assets
-                $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_JS)
+                $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_JS))
         );
 
         // Save current configuration
