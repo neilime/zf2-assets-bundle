@@ -1,21 +1,24 @@
 @FontAwesomePath:   "../../fonts";
 @font-face {
-  font-family: 'FontTwo';
-  src: url('@{FontAwesomePath}/fontawesome-webfont.eot?v=3.0.1');
-  src: url('@{FontAwesomePath}/fontawesome-webfont.eot?#iefix&v=3.0.1') format('embedded-opentype'),
-    url('@{FontAwesomePath}/fontawesome-webfont.woff?v=3.0.1') format('woff'),
-    url('@{FontAwesomePath}/fontawesome-webfont.ttf?v=3.0.1') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'FontTwo';
+    src: url('@{FontAwesomePath}/fontawesome-webfont.eot?v=3.0.1');
+    src: url('@{FontAwesomePath}/fontawesome-webfont.eot?#iefix&v=3.0.1') format('embedded-opentype'),
+        url('@{FontAwesomePath}/fontawesome-webfont.woff?v=3.0.1') format('woff'),
+        url('@{FontAwesomePath}/fontawesome-webfont.ttf?v=3.0.1') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 #test-media-less{
-	.test-less{
-		 font-family: FontTwo;
-		 background-image : url('../../images/test-media.gif');
-	}
-	.test-less-png{
-		 font-family: FontTwo;
-		 background-image : url('../../images/test-media.png');
-	}
+    .test-less{
+        font-family: FontTwo;
+        background-image : url('../../images/test-media.gif');
+    }
+    .test-less-png{
+        font-family: FontTwo;
+        background-image : url('../../images/test-media.png');
+    }
+    .test-less-data{
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAyCAYAAACd+7GKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAClJREFUeNpi/v//vwMTAwPDfzjBgMpFI/7hFSOT9Y8qRuF3JLoHAQIMAHYtMmRA+CugAAAAAElFTkSuQmCC);
+    }
 }

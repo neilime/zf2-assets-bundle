@@ -2,7 +2,8 @@
 
 namespace AssetsBundleTest\Controller;
 
-class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase {
+class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase
+{
 
     /**
      * @var array
@@ -40,7 +41,8 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     /**
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    public function setUp() {
+    public function setUp()
+    {
         $this->setApplicationConfig(\AssetsBundleTest\Bootstrap::getConfig());
         parent::setUp();
 
@@ -55,9 +57,13 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
             $oServiceLocator->setAllowOverride(true);
         }
         $oServiceLocator->setService('Config', $this->configuration)->setAllowOverride($bAllowOverride);
+
+        // Empty cache and processed directories
+        $oServiceLocator->get('AssetsBundleToolsService')->emptyCache(false);
     }
 
-    public function testTestActionInProduction() {
+    public function testTestActionInProduction()
+    {
         $this->dispatch('/test');
         $this->assertResponseStatusCode(200);
         $this->assertModuleName('AssetsBundleTest');
@@ -67,7 +73,8 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertEquals('/jscustom/AssetsBundleTest%5CController%5CTest/test', $this->getResponse()->getContent());
     }
 
-    public function testTestActionInDevelopment() {
+    public function testTestActionInDevelopment()
+    {
         $oServiceLocator = $this->getApplicationServiceLocator();
 
         $aConfiguration = $oServiceLocator->get('Config');
@@ -103,7 +110,8 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertFileExists($oAssetsBundleService->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . '_files/assets/js/jscustom.php');
     }
 
-    public function testFileErrorActionInDevelopment() {
+    public function testFileErrorActionInDevelopment()
+    {
         $oServiceLocator = $this->getApplicationServiceLocator();
 
         $aConfiguration = $oServiceLocator->get('Config');
@@ -125,7 +133,8 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertMatchedRouteName('fileError');
     }
 
-    public function testEmptyActionInDevelopment() {
+    public function testEmptyActionInDevelopment()
+    {
         $oServiceLocator = $this->getApplicationServiceLocator();
 
         $aConfiguration = $oServiceLocator->get('Config');
@@ -147,7 +156,8 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertMatchedRouteName('empty');
     }
 
-    public function testJsCustomAction() {
+    public function testJsCustomAction()
+    {
         $this->dispatch('/jscustom/AssetsBundleTest%5CController%5CTest/test');
         $this->assertResponseStatusCode(200);
         $this->assertModuleName('AssetsBundleTest');
@@ -156,63 +166,19 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertMatchedRouteName('jscustom/definition');
 
         $this->assertResponseHeaderContains('content-type', 'text/javascript');
+
+        $sCacheExpectedPath = dirname(__DIR__) . '/../_files/expected/cache/prod';
         $this->assertStringEqualsFile(
-                dirname(__DIR__) . '/../_files/prod-cache-expected/jscustom.js', str_replace(PHP_EOL, "\n", $this->getResponse()->getContent())
+                $sCacheExpectedPath . '/jscustom.js', str_replace(PHP_EOL, "\n", $this->getResponse()->getContent())
         );
-    }
-
-    public function testJsCustomActionWithException() {
-        $this->dispatch('/jscustom/AssetsBundleTest%5CController%5CTest/exception');
-        $this->assertResponseStatusCode(500);
-        $this->assertModuleName('AssetsBundleTest');
-        $this->assertControllerName('AssetsBundleTest\Controller\Test');
-        $this->assertControllerClass('TestController');
-        $this->assertMatchedRouteName('jscustom/definition');
-
-        $this->assertResponseHeaderContains('content-type', 'text/javascript');
-        $this->assertEquals('', $this->getResponse()->getContent());
-    }
-
-    protected function emptyCacheDirectory() {
-        //Empty cache directory except .gitignore
-        foreach (new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($this->getApplicationServiceLocator()->get('AssetsBundleService')->getOptions()->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
-        ) as $oFileinfo) {
-            if ($oFileinfo->isDir()) {
-                rmdir($oFileinfo->getRealPath());
-            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
-                unlink($oFileinfo->getRealPath());
-            }
-        }
-    }
-
-    protected function emptyProcessedDirectory() {
-        //Empty processed directory except .gitignore
-        foreach (new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($this->getApplicationServiceLocator()->get('AssetsBundleService')->getOptions()->getProcessedDirPath() . DIRECTORY_SEPARATOR . 'lessc', \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
-        ) as $oFileinfo) {
-            if ($oFileinfo->isDir()) {
-                rmdir($oFileinfo->getRealPath());
-            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
-                unlink($oFileinfo->getRealPath());
-            }
-        }
-        foreach (new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($this->getApplicationServiceLocator()->get('AssetsBundleService')->getOptions()->getProcessedDirPath() . DIRECTORY_SEPARATOR . 'config', \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
-        ) as $oFileinfo) {
-            if ($oFileinfo->isDir()) {
-                rmdir($oFileinfo->getRealPath());
-            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
-                unlink($oFileinfo->getRealPath());
-            }
-        }
     }
 
     /**
      * Assert response status code
      * @param int $code
      */
-    public function assertResponseStatusCode($code) {
+    public function assertResponseStatusCode($code)
+    {
         if ($this->useConsoleRequest) {
             if (!in_array($code, array(0, 1))) {
                 throw new \PHPUnit_Framework_ExpectationFailedException(
@@ -232,12 +198,10 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertEquals($code, $match, $sMessage);
     }
 
-    public function tearDown() {
-        //Empty cache directory
-        $this->emptyCacheDirectory();
-        //Empty processed directory
-        $this->emptyProcessedDirectory();
+    public function tearDown()
+    {
+        // Empty cache and processed directories
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
         parent::tearDown();
     }
-
 }

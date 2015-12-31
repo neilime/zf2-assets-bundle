@@ -2,7 +2,8 @@
 
 namespace AssetsBundleTest\Controller;
 
-class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase {
+class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase
+{
 
     /**
      * @var array
@@ -54,7 +55,8 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
     /**
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    public function setUp() {
+    public function setUp()
+    {
         $this->setApplicationConfig(\AssetsBundleTest\Bootstrap::getConfig());
         parent::setUp();
 
@@ -79,10 +81,14 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
 
         //Rebuild AssetsBundle service
         $oServiceLocator->setService('AssetsBundleService', $oServiceLocator->create('AssetsBundleService')->attach($oEventManager));
+
+        // Empty cache and processed directories
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
     }
 
-    public function testRenderAssetsAction() {
-        //Retrieve service locator
+    public function testRenderAssetsInProductionAction()
+    {
+        // Retrieve service locator
         $oServiceLocator = $this->getApplicationServiceLocator();
 
         $this->dispatch('render');
@@ -92,35 +98,40 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         $this->assertControllerClass('ToolsController');
         $this->assertMatchedRouteName('render-assets');
 
-        //Retrieve AssetsBundle service
+        // Retrieve AssetsBundle service
         $oAssetsBundleService = $oServiceLocator->get('AssetsBundleService');
         /* @var $oAssetsBundleService \AssetsBundle\Service\Service */
-        //Test service instance
+        // Test service instance
         $this->assertInstanceOf('AssetsBundle\Service\Service', $oAssetsBundleService);
-        $sCacheExpectedPath = dirname(__DIR__) . '/../_files/prod-cache-expected';
+        $sCacheExpectedPath = dirname(__DIR__) . '/../_files/expected/cache/prod';
 
-        //Retrieve options
+        // Retrieve options
         $oOptions = $oAssetsBundleService->getOptions();
 
         $aCachedFiles = array(
-            //"css/test.css", "css/test.php", "css/full-dir/full-dir.css" | "less/test.less" | "js/test.js"
+            // "css/test.css", "css/test.php", "css/full-dir/full-dir.css" | "less/test.less" | "js/test.js"
             'test-module-index-controller-test-media' => $oOptions->setModuleName('test-module')->setControllerName('test-module\index-controller')->setActionName('test-media')->getCacheFileName(),
             //"css/test.css", "css/test.php", "css/full-dir/full-dir.css" | "less/test.less" | "js/test.js"
             'test-module-index-controller-test-mixins' => $oOptions->setModuleName('test-module')->setControllerName('test-module\index-controller')->setActionName('test-mixins')->getCacheFileName(),
-            //"css/test.css", "css/test.php", "css/test-media.css" | "less/test.less", "less/test-media.less" | "js/test.js"
+            // "css/test.css", "css/test.php", "css/test-media.css" | "less/test.less", "less/test-media.less" | "js/test.js"
             'test-module-index-controller-with-assets-no_action' => $oOptions->setModuleName('test-module')->setControllerName('test-module\index-controller-with-assets')->setActionName(\AssetsBundle\Service\ServiceOptions::NO_ACTION)->getCacheFileName(),
-            //"css/test.css", "css/test.php", "css/full-dir/full-dir.css" | "less/test.less" | "js/test.js"
+            // "css/test.css", "css/test.php", "css/full-dir/full-dir.css" | "less/test.less" | "js/test.js"
             'test-module-with-assets-no_controller-no_action' => $oOptions->setModuleName('test-module-with-assets')->setControllerName(\AssetsBundle\Service\ServiceOptions::NO_CONTROLLER)->setActionName(\AssetsBundle\Service\ServiceOptions::NO_ACTION)->getCacheFileName(),
-            //"css/test.css", "css/test.php" | "less/test.less" | "js/test.js"
+            // "css/test.css", "css/test.php" | "less/test.less" | "js/test.js"
             'no_module-no_controller-no_action' => $oOptions->setModuleName(\AssetsBundle\Service\ServiceOptions::NO_MODULE)->setControllerName(\AssetsBundle\Service\ServiceOptions::NO_CONTROLLER)->setActionName(\AssetsBundle\Service\ServiceOptions::NO_ACTION)->getCacheFileName(),
         );
-        //Test cached files
+        // Test cached files
         foreach ($aCachedFiles as $sCachePart => $sCacheFile) {
 
             // Css cached files
             $sCssCacheExpectedPath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sCachePart . '.css';
             $sCssFilePath = $oAssetsBundleService->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCacheFile . '.css';
-            $sCssFileContent = preg_replace(array('/cache\/([0-9a-f]{32})\//', '/\?[0-9]+/'), array('cache/encrypted-file-tree/', '?timestamp'), file_get_contents($sCssFilePath));
+
+            $sCssFileContent = preg_replace(array(
+                '/' . preg_quote(getcwd(), '/') . '/',
+                '/cache\/([0-9a-f]{32})\//',
+                '/\?[0-9]+/',
+                    ), array('/current/directory', 'cache/encrypted-file-tree/', '?timestamp'), file_get_contents($sCssFilePath));
             $sCssFilename = $sCachePart . ' - ' . $sCacheFile . '.css';
             $this->assertStringEqualsFile($sCssCacheExpectedPath, $sCssFileContent, $sCssFilename);
 
@@ -132,7 +143,8 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         }
     }
 
-    public function testEmptyCache() {
+    public function testEmptyCache()
+    {
         $this->dispatch('empty');
         $this->assertResponseStatusCode(0);
         $this->assertModuleName('AssetsBundle');
@@ -153,13 +165,16 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         $this->assertContains('.gitignore', $aConfigFiles);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $oServiceLocator = $this->getApplicationServiceLocator();
         $bAllowOverride = $oServiceLocator->getAllowOverride();
         if (!$bAllowOverride) {
             $oServiceLocator->setAllowOverride(true);
         }
         $oServiceLocator->setService('Config', $this->originalConfiguration)->setAllowOverride($bAllowOverride);
-    }
 
+        // Empty cache and processed directories
+        \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
+    }
 }

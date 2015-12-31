@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\AssetFile;
 
-class AssetFilesManager {
+class AssetFilesManager
+{
 
     /**
      * @var \AssetsBundle\Service\ServiceOptions
@@ -28,7 +29,8 @@ class AssetFilesManager {
      * Constructor
      * @param \AssetsBundle\Service\ServiceOptions $oOptions
      */
-    public function __construct(\AssetsBundle\Service\ServiceOptions $oOptions = null) {
+    public function __construct(\AssetsBundle\Service\ServiceOptions $oOptions = null)
+    {
         if ($oOptions) {
             $this->setOptions($oOptions);
         }
@@ -40,7 +42,8 @@ class AssetFilesManager {
      * @throws \InvalidArgumentException
      * @throws \DomainException
      */
-    public function getCachedAssetsFiles($sAssetFileType) {
+    public function getCachedAssetsFiles($sAssetFileType)
+    {
         if (!\AssetsBundle\AssetFile\AssetFile::assetFileTypeExists($sAssetFileType)) {
             throw new \InvalidArgumentException('Asset file type "' . $sAssetFileType . '" is not valid');
         }
@@ -82,7 +85,8 @@ class AssetFilesManager {
      * Cache Css asset files and retrieve cached asset files
      * @return array
      */
-    protected function cacheCssAssetFiles() {
+    protected function cacheCssAssetFiles()
+    {
 
         // Cache media asset files
         $this->cacheMediaAssetFiles();
@@ -146,7 +150,8 @@ class AssetFilesManager {
      * Cache Less asset files and retrieve cached asset files
      * @return array
      */
-    protected function cacheLessAssetFiles() {
+    protected function cacheLessAssetFiles()
+    {
 
         // Create tmp asset file
         \Zend\Stdlib\ErrorHandler::stop(true);
@@ -209,7 +214,8 @@ class AssetFilesManager {
      * Cache Js asset files and retrieve cached asset files
      * @return array
      */
-    protected function cacheJsAssetFiles() {
+    protected function cacheJsAssetFiles()
+    {
 
         if ($bIsProduction = $this->getOptions()->isProduction()) {
             //Retrieve asset file filters manager
@@ -249,7 +255,8 @@ class AssetFilesManager {
      * Cache media asset files and retrieve cached asset files
      * @return array
      */
-    protected function cacheMediaAssetFiles() {
+    protected function cacheMediaAssetFiles()
+    {
         $aAssetFileFilters = array();
         $aAssetFiles = array();
 
@@ -310,7 +317,8 @@ class AssetFilesManager {
      * @throws \InvalidArgumentException
      * @throws \LogicException
      */
-    public function rewriteUrl(array $aMatches, \AssetsBundle\AssetFile\AssetFile $oAssetFile) {
+    public function rewriteUrl(array $aMatches, \AssetsBundle\AssetFile\AssetFile $oAssetFile)
+    {
         if (!isset($aMatches[1])) {
             throw new \InvalidArgumentException('Url match is not valid');
         }
@@ -320,8 +328,13 @@ class AssetFilesManager {
         $sFirstChar = preg_match('/^("|\'){1}/', $sUrl = trim($aMatches[1]), $aFirstCharMatches) ? $aFirstCharMatches[1] : '';
         $sUrl = str_ireplace(array('"', '\''), '', $sUrl);
 
+        // Data url
+        if (strpos($sUrl, 'data:') === 0) {
+            return $aMatches[0];
+        }
+
         // Remote absolute url
-        if (preg_match('/^\/|http/', $sUrl)) {
+        if (preg_match('/^http/', $sUrl)) {
             return $aMatches[0];
         }
 
@@ -375,7 +388,8 @@ class AssetFilesManager {
      * @param \AssetsBundle\Service\ServiceOptions $oOptions
      * @return \AssetsBundle\AssetFile\AssetFilesManager
      */
-    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions) {
+    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions)
+    {
         $this->options = $oOptions;
         if (isset($this->assetFilesConfiguration)) {
             $this->getAssetFilesConfiguration()->setOptions($this->options);
@@ -392,7 +406,8 @@ class AssetFilesManager {
     /**
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         if (!($this->options instanceof \AssetsBundle\Service\ServiceOptions)) {
             $this->setOptions(new \AssetsBundle\Service\ServiceOptions());
         }
@@ -404,7 +419,8 @@ class AssetFilesManager {
      * @param \AssetsBundle\AssetFile\AssetFilesConfiguration $oAssetFilesConfiguration
      * @return \AssetsBundle\AssetFile\AssetFilesManager
      */
-    public function setAssetFilesConfiguration(\AssetsBundle\AssetFile\AssetFilesConfiguration $oAssetFilesConfiguration) {
+    public function setAssetFilesConfiguration(\AssetsBundle\AssetFile\AssetFilesConfiguration $oAssetFilesConfiguration)
+    {
         $this->assetFilesConfiguration = $oAssetFilesConfiguration->setOptions($this->getOptions());
         return $this;
     }
@@ -413,7 +429,8 @@ class AssetFilesManager {
      * Retrieve the asset files configuration. Lazy loads an instance if none currently set.
      * @return \AssetsBundle\AssetFile\AssetFilesConfiguration
      */
-    public function getAssetFilesConfiguration() {
+    public function getAssetFilesConfiguration()
+    {
         if (!$this->assetFilesConfiguration instanceof \AssetsBundle\AssetFile\AssetFilesConfiguration) {
             $this->setAssetFilesConfiguration(new \AssetsBundle\AssetFile\AssetFilesConfiguration());
         }
@@ -425,7 +442,8 @@ class AssetFilesManager {
      * @param \AssetsBundle\AssetFile\AssetFileFiltersManager $oAssetFileFiltersManager
      * @return \AssetsBundle\AssetFile\AssetFilesManager
      */
-    public function setAssetFileFiltersManager(\AssetsBundle\AssetFile\AssetFileFiltersManager $oAssetFileFiltersManager) {
+    public function setAssetFileFiltersManager(\AssetsBundle\AssetFile\AssetFileFiltersManager $oAssetFileFiltersManager)
+    {
         $this->assetFileFiltersManager = $oAssetFileFiltersManager->setOptions($this->getOptions());
         return $this;
     }
@@ -434,7 +452,8 @@ class AssetFilesManager {
      * Retrieve the asset file filters manager. Lazy loads an instance if none currently set.
      * @return \AssetsBundle\AssetFile\AssetFileFiltersManager
      */
-    public function getAssetFileFiltersManager() {
+    public function getAssetFileFiltersManager()
+    {
         if (!$this->assetFileFiltersManager instanceof \AssetsBundle\AssetFile\AssetFileFiltersManager) {
             $this->setAssetFileFiltersManager(new \AssetsBundle\AssetFile\AssetFileFiltersManager());
         }
@@ -446,7 +465,8 @@ class AssetFilesManager {
      * @param \AssetsBundle\AssetFile\AssetFilesCacheManager $oAssetFilesCacheManager
      * @return \AssetsBundle\AssetFile\AssetFilesManager
      */
-    public function setAssetFilesCacheManager(\AssetsBundle\AssetFile\AssetFilesCacheManager $oAssetFilesCacheManager) {
+    public function setAssetFilesCacheManager(\AssetsBundle\AssetFile\AssetFilesCacheManager $oAssetFilesCacheManager)
+    {
         $this->assetFilesCacheManager = $oAssetFilesCacheManager->setOptions($this->getOptions());
         return $this;
     }
@@ -455,11 +475,11 @@ class AssetFilesManager {
      * Retrieve the asset files cache manager. Lazy loads an instance if none currently set.
      * @return \AssetsBundle\AssetFile\AssetFilesCacheManager
      */
-    public function getAssetFilesCacheManager() {
+    public function getAssetFilesCacheManager()
+    {
         if (!$this->assetFilesCacheManager instanceof \AssetsBundle\AssetFile\AssetFilesCacheManager) {
             $this->setAssetFilesCacheManager(new \AssetsBundle\AssetFile\AssetFilesCacheManager());
         }
         return $this->assetFilesCacheManager;
     }
-
 }

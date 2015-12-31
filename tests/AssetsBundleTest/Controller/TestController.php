@@ -45,7 +45,7 @@ class TestController extends \AssetsBundle\Mvc\Controller\AbstractActionControll
             case 'empty':
                 break;
             case 'exception':
-                throw new \Exception('jscustomAction exception');
+                throw new \LogicException('jscustomAction exception');
         }
         return $aJsFiles;
     }

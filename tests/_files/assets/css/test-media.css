@@ -1,16 +1,21 @@
 @font-face {
-  font-family: 'FontOne';
-  src: url('../../fonts/fontawesome-webfont.eot?v=3.0.1');
-  src: url('../../fonts/fontawesome-webfont.eot?#iefix&v=3.0.1') format('embedded-opentype'),
-    url('../../fonts/fontawesome-webfont.woff?v=3.0.1') format('woff'),
-    url('../../fonts/fontawesome-webfont.ttf?v=3.0.1') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'FontOne';
+    src: url('../../fonts/fontawesome-webfont.eot?v=3.0.1');
+    src: url('../../fonts/fontawesome-webfont.eot?#iefix&v=3.0.1') format('embedded-opentype'),
+        url('../../fonts/fontawesome-webfont.woff?v=3.0.1') format('woff'),
+        url('../../fonts/fontawesome-webfont.ttf?v=3.0.1') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @import url(http://fonts.googleapis.com/css?family=Sniglet);
 
 #test-media-css{
-	font-family: FontOne;
-	background-image : url('@zfAssetsPath/../images/test-media-css.gif');
+    font-family: FontOne;
+    background-image : url('@zfAssetsPath/../images/test-media-css.gif');
+}
+
+
+#test-media-css-data{
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAyCAYAAACd+7GKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAClJREFUeNpi/v//vwMTAwPDfzjBgMpFI/7hFSOT9Y8qRuF3JLoHAQIMAHYtMmRA+CugAAAAAElFTkSuQmCC);
 }

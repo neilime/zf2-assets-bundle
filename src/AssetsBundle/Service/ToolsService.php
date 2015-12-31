@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\Service;
 
-class ToolsService {
+class ToolsService
+{
 
     /**
      * @var \Zend\Console\Adapter\AdapterInterface
@@ -22,7 +23,8 @@ class ToolsService {
     /**
      * @return \AssetsBundle\Service\ToolsService
      */
-    public function renderAllAssets() {
+    public function renderAllAssets()
+    {
 
         //Initialize AssetsBundle service
         $oAssetsBundleService = $this->getAssetsBundleService();
@@ -132,7 +134,8 @@ class ToolsService {
      * @param boolean $bDisplayConsoleMessage
      * @return \AssetsBundle\Service\ToolsService
      */
-    public function emptyCache($bDisplayConsoleMessage = true) {
+    public function emptyCache($bDisplayConsoleMessage = true)
+    {
         if ($bDisplayConsoleMessage) {
             $oConsole = $this->getConsole();
             $oConsole->writeLine('');
@@ -142,11 +145,11 @@ class ToolsService {
             $oConsole->writeLine('');
         }
 
-        //Initialize AssetsBundle service
+        // Initialize AssetsBundle service
         $oAssetsBundleService = $this->getAssetsBundleService();
         /* @var $oAssetsBundleService \AssetsBundle\Service\Service */
 
-        //Empty cache directory except .gitignore
+        // Empty cache directory except .gitignore
         foreach (new \RecursiveIteratorIterator(
         new \RecursiveDirectoryIterator($oAssetsBundleService->getOptions()->getCachePath(), \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
         ) as $oFileinfo) {
@@ -160,10 +163,10 @@ class ToolsService {
             $oConsole->writeLine(' * Cache directory is empty', \Zend\Console\ColorInterface::GRAY);
         }
 
-        //Retrieve
+        // Retrieve Asset File Filters Manager
         $oAssetFileFiltersManager = $oAssetsBundleService->getAssetFilesManager()->getAssetFileFiltersManager();
         $aRegisteredServices = $oAssetFileFiltersManager->getRegisteredServices();
-        //Empty asset file filters cache directory except .gitignore
+        // Empty asset file filters cache directory except .gitignore
         foreach ($aRegisteredServices['instances'] as $sFilter) {
             $oFilter = $oAssetFileFiltersManager->get($sFilter);
             if (is_dir($sAssetFileFilterProcessedDirPath = $oFilter->getAssetFileFilterProcessedDirPath())) {
@@ -182,7 +185,7 @@ class ToolsService {
             }
         }
 
-        //Empty config directory except .gitignore
+        // Empty config directory except .gitignore
         foreach (new \RecursiveIteratorIterator(
         new \RecursiveDirectoryIterator(dirname($oAssetsBundleService->getAssetFilesManager()->getAssetFilesConfiguration()->getConfigurationFilePath()), \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
         ) as $oFileinfo) {
@@ -204,7 +207,8 @@ class ToolsService {
      * @return \Zend\Console\Adapter\AdapterInterface
      * @throws \LogicException
      */
-    public function getConsole() {
+    public function getConsole()
+    {
         if ($this->console instanceof \Zend\Console\Adapter\AdapterInterface) {
             return $this->console;
         }
@@ -215,7 +219,8 @@ class ToolsService {
      * @param \Zend\Console\Adapter\AdapterInterface $oConsole
      * @return \AssetsBundle\Service\ToolsService
      */
-    public function setConsole(\Zend\Console\Adapter\AdapterInterface $oConsole) {
+    public function setConsole(\Zend\Console\Adapter\AdapterInterface $oConsole)
+    {
         $this->console = $oConsole;
         return $this;
     }
@@ -224,7 +229,8 @@ class ToolsService {
      * @return \Zend\Mvc\MvcEvent
      * @throws \LogicException
      */
-    public function getMvcEvent() {
+    public function getMvcEvent()
+    {
         if ($this->mvcEvent instanceof \Zend\Mvc\MvcEvent) {
             return $this->mvcEvent;
         }
@@ -235,7 +241,8 @@ class ToolsService {
      * @param \Zend\Mvc\MvcEvent $oMvcEvent
      * @return \AssetsBundle\Service\ToolsService
      */
-    public function setMvcEvent(\Zend\Mvc\MvcEvent $oMvcEvent) {
+    public function setMvcEvent(\Zend\Mvc\MvcEvent $oMvcEvent)
+    {
         $this->mvcEvent = $oMvcEvent;
         return $this;
     }
@@ -244,7 +251,8 @@ class ToolsService {
      * @return \AssetsBundle\Service\Service
      * @throws \LogicException
      */
-    public function getAssetsBundleService() {
+    public function getAssetsBundleService()
+    {
         if ($this->assetsBundleService instanceof \AssetsBundle\Service\Service) {
             return $this->assetsBundleService;
         }
@@ -255,9 +263,9 @@ class ToolsService {
      * @param \AssetsBundle\Service\Service $oAssetsBundleService
      * @return \AssetsBundle\Service\ToolsService
      */
-    public function setAssetsBundleService(\AssetsBundle\Service\Service $oAssetsBundleService) {
+    public function setAssetsBundleService(\AssetsBundle\Service\Service $oAssetsBundleService)
+    {
         $this->assetsBundleService = $oAssetsBundleService;
         return $this;
     }
-
 }
