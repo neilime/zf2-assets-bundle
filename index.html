@@ -1,46 +1,26 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>Assetsbundle by neilime</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
+    <section class="page-header">
+      <h1 class="project-name">Assetsbundle</h1>
+      <h2 class="project-tagline"> AssetsBundle is module for ZF2 allowing asset managment (bundling &amp; caching)</h2>
+      <a href="https://github.com/neilime/zf2-assets-bundle" class="btn">View on GitHub</a>
+      <a href="https://github.com/neilime/zf2-assets-bundle/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/neilime/zf2-assets-bundle/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-      <header>
-        <h1>Assetsbundle</h1>
-        <p> AssetsBundle is module for ZF2 allowing asset managment (bundling &amp; caching)</p>
-      </header>
-
-      <div id="banner">
-        <span id="logo"></span>
-
-        <a href="https://github.com/neilime/zf2-assets-bundle" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/neilime/zf2-assets-bundle/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/neilime/zf2-assets-bundle/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
-
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
-      <section>
-        <h1>
-<a name="assetsbundle-v330" class="anchor" href="#assetsbundle-v330"><span class="octicon octicon-link"></span></a>AssetsBundle, v3.3.0</h1>
+    <section class="main-content">
+      <h1>
+<a id="assetsbundle-v330" class="anchor" href="#assetsbundle-v330" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AssetsBundle, v3.3.0</h1>
 
 <p><a href="https://travis-ci.org/neilime/zf2-assets-bundle"><img src="https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master" alt="Build Status"></a>
 <a href="https://packagist.org/packages/neilime/zf2-assets-bundle"><img src="https://poser.pugx.org/neilime/zf2-assets-bundle/v/stable.png" alt="Latest Stable Version"></a>
@@ -51,7 +31,7 @@
 <p><a href="https://pledgie.com/campaigns/26668"><img alt="Click here to lend your support to: ZF2 AssetsBundle and make a donation at pledgie.com !" src="https://pledgie.com/campaigns/26668.png?skin_name=chrome" border="0"></a></p>
 
 <h2>
-<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
 
 <p>AssetsBundle is a module for ZF2 allowing asset management (bundling &amp; caching) like Css, Js and Less, dependent on modules, controllers and actions .
 This module manages the concept of the "development/production" environment.</p>
@@ -61,13 +41,17 @@ This module manages the concept of the "development/production" environment.</p>
 <ul>
 <li>Files are not bundled for easier debugging.</li>
 <li>Less files are compiled when updated or if an "<a href="https://github.com/import" class="user-mention">@import</a>" inside is updated</li>
-</ul><p>In production :</p>
+</ul>
+
+<p>In production :</p>
 
 <ul>
 <li>All files are bundled and cached once only if needed.</li>
 <li>Assets path are encrypted to mask file tree (with the exception of files in the "assets" directory)</li>
-</ul><h2>
-<a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
+</ul>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
 
 <ul>
 <li>
@@ -76,53 +60,56 @@ This module manages the concept of the "development/production" environment.</p>
 <a href="https://github.com/neilime/lessphp">lessphp</a> (latest master).</li>
 <li>
 <a href="https://github.com/mrclay/minify">Minify</a> (latest master).</li>
-</ul><h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
 <h3>
-<a name="main-setup" class="anchor" href="#main-setup"><span class="octicon octicon-link"></span></a>Main Setup</h3>
+<a id="main-setup" class="anchor" href="#main-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Main Setup</h3>
 
 <h4>
-<a name="by-cloning-project" class="anchor" href="#by-cloning-project"><span class="octicon octicon-link"></span></a>By cloning project</h4>
+<a id="by-cloning-project" class="anchor" href="#by-cloning-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>By cloning project</h4>
 
 <ol>
 <li>Install the <a href="https://github.com/Nodge/lessphp">lessphp fork</a>, <a href="https://github.com/mrclay/minify">Minify</a> by cloning them into <code>./vendor/</code>.</li>
 <li>Clone this project into your <code>./vendor/</code> directory.</li>
-</ol><h4>
-<a name="with-composer" class="anchor" href="#with-composer"><span class="octicon octicon-link"></span></a>With composer</h4>
+</ol>
+
+<h4>
+<a id="with-composer" class="anchor" href="#with-composer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>With composer</h4>
 
 <ol>
 <li>
 <p>Add this project in your composer.json:</p>
 
-<div class="highlight highlight-json"><pre><span class="s2">"require"</span><span class="err">:</span> <span class="p">{</span>
-    <span class="nt">"neilime/zf2-assets-bundle"</span><span class="p">:</span> <span class="s2">"dev-master"</span>
-<span class="p">}</span>
-</pre></div>
+<div class="highlight highlight-source-json"><pre><span class="pl-s"><span class="pl-pds">"</span>require<span class="pl-pds">"</span></span>: {
+    <span class="pl-s"><span class="pl-pds">"</span>neilime/zf2-assets-bundle<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>dev-master<span class="pl-pds">"</span></span>
+}</pre></div>
 </li>
 <li>
 <p>Now tell composer to download AssetsBundle by running the command:</p>
 
-<div class="highlight highlight-bash"><pre><span class="nv">$ </span>php composer.phar update
-</pre></div>
+<div class="highlight highlight-source-shell"><pre>$ php composer.phar update</pre></div>
 </li>
-</ol><h4>
-<a name="post-installation" class="anchor" href="#post-installation"><span class="octicon octicon-link"></span></a>Post installation</h4>
+</ol>
+
+<h4>
+<a id="post-installation" class="anchor" href="#post-installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Post installation</h4>
 
 <ol>
 <li>
 <p>Enabling it in your <code>application.config.php</code>file.</p>
 
-<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">'modules'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="c1">// ...</span>
-        <span class="s1">'AssetsBundle'</span><span class="p">,</span>
-        <span class="c1">// ...</span>
-    <span class="p">),</span>
-    <span class="c1">// ...</span>
-<span class="p">);</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">return</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>modules<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">        <span class="pl-c">// ...</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>AssetsBundle<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-c">// ...</span></span>
+<span class="pl-s1">    ),</span>
+<span class="pl-s1">    <span class="pl-c">// ...</span></span>
+<span class="pl-s1">);</span></pre></div>
 
 <p>You should note that as the ordering of modules matters, you should declare the 'AssetsBundle' module before your application modules to ensure the default settings don't take priority.</p>
 </li>
@@ -131,20 +118,20 @@ This module manages the concept of the "development/production" environment.</p>
 
 <p>Into the <code>&lt;head&gt;</code> part :</p>
 
-<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">headScript</span><span class="p">();</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>headScript();</span></pre></div>
 
 <p>At the bottom of the <code>&lt;body&gt;</code> part :</p>
 
-<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">inlineScript</span><span class="p">();</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>inlineScript();</span></pre></div>
 </li>
-</ol><h1>
-<a name="how-to-use-assetsbundle" class="anchor" href="#how-to-use-assetsbundle"><span class="octicon octicon-link"></span></a>How to use <em>AssetsBundle</em>
+</ol>
+
+<h1>
+<a id="how-to-use-assetsbundle" class="anchor" href="#how-to-use-assetsbundle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to use <em>AssetsBundle</em>
 </h1>
 
 <h2>
-<a name="simple-configuration-example" class="anchor" href="#simple-configuration-example"><span class="octicon octicon-link"></span></a>Simple configuration example</h2>
+<a id="simple-configuration-example" class="anchor" href="#simple-configuration-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Simple configuration example</h2>
 
 <p>This example shows how to convert <a href="https://github.com/zendframework/ZendSkeletonApplication">ZF2 Skeleton Application</a> to manage assets via AssetsBundle.</p>
 
@@ -153,52 +140,51 @@ This module manages the concept of the "development/production" environment.</p>
 <li>
 <p>Then just create cache directory into "public/".</p>
 
-<div class="highlight highlight-bash"><pre><span class="nb">cd </span>to/your/project/public/dir/
-mkdir cache
-</pre></div>
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> to/your/project/public/dir/
+mkdir cache</pre></div>
 </li>
 <li>
 <p>Edit the application module configuration file <code>module/Application/config/module.config.php</code>, adding the configuration fragment below:</p>
 
-<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
-    <span class="c1">//...</span>
-    <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-            <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'css'</span><span class="p">),</span>
-            <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                <span class="s1">'js/jquery.min.js'</span><span class="p">,</span>
-                <span class="s1">'js/bootstrap.min.js'</span>
-            <span class="p">),</span>
-            <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'img'</span><span class="p">,</span><span class="s1">'fonts'</span><span class="p">)</span>
-        <span class="p">)</span>
-    <span class="p">),</span>
-    <span class="c1">//...</span>
-<span class="p">);</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">return</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">    <span class="pl-c">//...</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>assets_bundle<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>assets<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>css<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>css<span class="pl-pds">'</span></span>),</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>js<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>js/jquery.min.js<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>js/bootstrap.min.js<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">            ),</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>media<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>img<span class="pl-pds">'</span></span>,<span class="pl-s"><span class="pl-pds">'</span>fonts<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">        )</span>
+<span class="pl-s1">    ),</span>
+<span class="pl-s1">    <span class="pl-c">//...</span></span>
+<span class="pl-s1">);</span></pre></div>
 </li>
 <li>
 <p>Edit layout file <code>module/Application/view/layout/layout.phtml</code>, removing prepend function for assets:</p>
 
-<div class="highlight highlight-php"><pre> <span class="o">&lt;?</span><span class="nx">php</span>
-<span class="c1">//Remove these lines</span>
-
-<span class="o">-&gt;</span><span class="na">prependStylesheet</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/css/bootstrap-responsive.min.css'</span><span class="p">)</span>
-<span class="o">-&gt;</span><span class="na">prependStylesheet</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/css/style.css'</span><span class="p">)</span>
-<span class="o">-&gt;</span><span class="na">prependStylesheet</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/css/bootstrap.min.css'</span><span class="p">)</span>
-
- <span class="o">-&gt;</span><span class="na">prependFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/js/bootstrap.min.js'</span><span class="p">)</span>
- <span class="o">-&gt;</span><span class="na">prependFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="p">()</span> <span class="o">.</span> <span class="s1">'/js/jquery.min.js'</span><span class="p">)</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"> <span class="pl-k">&lt;</span>?<span class="pl-c1">php</span></span>
+<span class="pl-s1"><span class="pl-c">//Remove these lines</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">-&gt;</span>prependStylesheet(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>basePath() <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>/css/bootstrap-responsive.min.css<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1"><span class="pl-k">-&gt;</span>prependStylesheet(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>basePath() <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>/css/style.css<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1"><span class="pl-k">-&gt;</span>prependStylesheet(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>basePath() <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>/css/bootstrap.min.css<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"> <span class="pl-k">-&gt;</span>prependFile(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>basePath() <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>/js/bootstrap.min.js<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1"> <span class="pl-k">-&gt;</span>prependFile(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>basePath() <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>/js/jquery.min.js<span class="pl-pds">'</span></span>)</span></pre></div>
 </li>
 <li>Save &amp; Refresh.</li>
-</ol><h1>
-<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h1>
+</ol>
+
+<h1>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h1>
 
 <p>The default configuration is setup to run with "Application ZF2 Skeleton"</p>
 
 <h3>
-<a name="1-assetsbundle" class="anchor" href="#1-assetsbundle"><span class="octicon octicon-link"></span></a>1. <em>AssetsBundle</em>
+<a id="1-assetsbundle" class="anchor" href="#1-assetsbundle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. <em>AssetsBundle</em>
 </h3>
 
 <ul>
@@ -211,59 +197,60 @@ mkdir cache
 <li>string <code>cacheUrl</code> : cache directory base url, you can use the constant <code>@zfBaseUrl</code> corresponding to application base url . Default <code>@zfBaseUrl/assets/cache/</code>.</li>
 <li>array <code>mediaExt</code> : Put here all medias extensions to be cached. Default <code>array('jpg','png','gif','cur','ttf','eot','svg','woff')</code>.</li>
 <li>boolean <code>recursiveSearch</code>: If you define a folder as required asset, it will search for matching assets in that folder and its subfolders. Default <code>false</code>.</li>
-</ul><h3>
-<a name="2-assets" class="anchor" href="#2-assets"><span class="octicon octicon-link"></span></a>2. Assets</h3>
+</ul>
+
+<h3>
+<a id="2-assets" class="anchor" href="#2-assets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Assets</h3>
 
 <p>You can define assets for modules / controllers / action</p>
 
 <p>Exemple :</p>
 
-<div class="highlight highlight-php"><pre>    <span class="o">&lt;?</span><span class="nx">php</span>
-    <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
-            <span class="c1">//...</span>
-            <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                <span class="c1">//...</span>
-                <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                <span class="c1">//Common assets included in every pages</span>
-                <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define css files to include</span>
-                <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define js files to include</span>
-                <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define less files to include</span>
-                <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Define images to manage</span>
-
-                <span class="c1">//Modules specific assets</span>
-                <span class="s1">'Test'</span> <span class="o">=&gt;</span>  <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span> <span class="c1">// "Test" is the name of the module</span>
-
-                    <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                    <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                    <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                    <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-
-                    <span class="c1">//Controller specific assets</span>
-                    <span class="s1">'Test\Controller\Name'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                        <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                        <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                        <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                        <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-
-                        <span class="c1">//Action specific assets</span>
-                        <span class="s1">'ActionName'</span><span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                            <span class="s1">'css'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                            <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                            <span class="s1">'less'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-                            <span class="s1">'media'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
-                        <span class="p">),</span>
-                        <span class="c1">//...</span>
-                    <span class="p">),</span>
-                    <span class="c1">//...</span>
-                <span class="p">),</span>
-                <span class="c1">//...</span>
-                <span class="p">)</span>
-            <span class="p">),</span>
-            <span class="c1">//...</span>
-        <span class="p">),</span>
-        <span class="c1">//...</span>
-    <span class="p">);</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-k">&lt;</span>?<span class="pl-c1">php</span></span>
+<span class="pl-s1">    <span class="pl-k">return</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-c">//...</span></span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>assets_bundle<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">                <span class="pl-c">//...</span></span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>assets<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">                <span class="pl-c">//Common assets included in every pages</span></span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>css<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(), <span class="pl-c">//Define css files to include</span></span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>js<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(), <span class="pl-c">//Define js files to include</span></span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>less<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(), <span class="pl-c">//Define less files to include</span></span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>media<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(), <span class="pl-c">//Define images to manage</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">                <span class="pl-c">//Modules specific assets</span></span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>Test<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span>  <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>( <span class="pl-c">// "Test" is the name of the module</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>css<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>js<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>less<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>media<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">                    <span class="pl-c">//Controller specific assets</span></span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>Test\Controller\Name<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>css<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>js<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>less<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>media<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">                        <span class="pl-c">//Action specific assets</span></span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>ActionName<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">                            <span class="pl-s"><span class="pl-pds">'</span>css<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1">                            <span class="pl-s"><span class="pl-pds">'</span>js<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1">                            <span class="pl-s"><span class="pl-pds">'</span>less<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(),</span>
+<span class="pl-s1">                            <span class="pl-s"><span class="pl-pds">'</span>media<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>()</span>
+<span class="pl-s1">                        ),</span>
+<span class="pl-s1">                        <span class="pl-c">//...</span></span>
+<span class="pl-s1">                    ),</span>
+<span class="pl-s1">                    <span class="pl-c">//...</span></span>
+<span class="pl-s1">                ),</span>
+<span class="pl-s1">                <span class="pl-c">//...</span></span>
+<span class="pl-s1">                )</span>
+<span class="pl-s1">            ),</span>
+<span class="pl-s1">            <span class="pl-c">//...</span></span>
+<span class="pl-s1">        ),</span>
+<span class="pl-s1">        <span class="pl-c">//...</span></span>
+<span class="pl-s1">    );</span></pre></div>
 
 <ul>
 <li><p>For each asset, you can specify files or directories. All these elements are related to the asset path by default,
@@ -273,44 +260,44 @@ If you specify a directory, all files matching the asset type (css, less, js, me
 <li>
 <p>You can use url for <code>js</code> and <code>css</code> assets :</p>
 
-<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-    <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
-        <span class="c1">//...</span>
-        <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-            <span class="c1">//...</span>
-            <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js'</span><span class="p">),</span>
-                <span class="c1">//...</span>
-            <span class="p">)</span>
-            <span class="c1">//...</span>
-        <span class="p">)</span>
-        <span class="c1">//...</span>
-    <span class="p">);</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">return</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">        <span class="pl-c">//...</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>assets_bundle<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-c">//...</span></span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>assets<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>js<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools.js<span class="pl-pds">'</span></span>),</span>
+<span class="pl-s1">                <span class="pl-c">//...</span></span>
+<span class="pl-s1">            )</span>
+<span class="pl-s1">            <span class="pl-c">//...</span></span>
+<span class="pl-s1">        )</span>
+<span class="pl-s1">        <span class="pl-c">//...</span></span>
+<span class="pl-s1">    );</span></pre></div>
 
 <p>This example includes <code>Mootools</code> from <em>Google Hosted Libraries</em></p>
 </li>
 <li>
 <p>You can define an inclusion order like this :</p>
 
-<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-    <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
-        <span class="c1">//...</span>
-        <span class="s1">'asset_bundle'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-            <span class="c1">//...</span>
-            <span class="s1">'assets'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-                <span class="s1">'js'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'js/firstFile.js'</span><span class="p">,</span><span class="s1">'js'</span><span class="p">),</span>
-                <span class="c1">//...</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-        <span class="c1">//...</span>
-    <span class="p">);</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">return</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">        <span class="pl-c">//...</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>assets_bundle<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-c">//...</span></span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>assets<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>js<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>js/firstFile.js<span class="pl-pds">'</span></span>,<span class="pl-s"><span class="pl-pds">'</span>js<span class="pl-pds">'</span></span>),</span>
+<span class="pl-s1">                <span class="pl-c">//...</span></span>
+<span class="pl-s1">            )</span>
+<span class="pl-s1">        )</span>
+<span class="pl-s1">        <span class="pl-c">//...</span></span>
+<span class="pl-s1">    );</span></pre></div>
 
 <p>This example includes the file "firstFile.js" first, and all other javascript files in the folder "js"</p>
 </li>
-</ul><h3>
-<a name="3-custom-js" class="anchor" href="#3-custom-js"><span class="octicon octicon-link"></span></a>3. Custom Js</h3>
+</ul>
+
+<h3>
+<a id="3-custom-js" class="anchor" href="#3-custom-js" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Custom Js</h3>
 
 <p>This function allows you to dynamically include javascript files. For exemple, files specific to user settings.
 In this case, your controller that need these file have to extend <code>AssetsBundle\Mvc\Controller\AbstractActionController</code>.</p>
@@ -319,71 +306,71 @@ In this case, your controller that need these file have to extend <code>AssetsBu
 
 <p>Then create a jscustomAction function into your controller :</p>
 
-<div class="highlight highlight-php"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">jscustomAction</span><span class="p">(</span><span class="nv">$sAction</span> <span class="o">=</span> <span class="k">null</span><span class="p">){</span>
-    <span class="c1">//Check params, it's not mandatory</span>
-    <span class="k">if</span><span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">)){</span>
-        <span class="nv">$sAction</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">(</span><span class="s1">'js_action'</span><span class="p">);</span>
-        <span class="k">if</span><span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">))</span><span class="k">throw</span> <span class="k">new</span> <span class="nx">\InvalidArgumentException</span><span class="p">(</span><span class="s1">'Action param is empty'</span><span class="p">);</span>
-    <span class="p">}</span>
-
-    <span class="nv">$aJsFiles</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-    <span class="k">switch</span><span class="p">(</span><span class="nb">strtolower</span><span class="p">(</span><span class="nv">$sAction</span><span class="p">)){</span>
-        <span class="k">case</span> <span class="s1">'myActionName'</span><span class="o">:</span>
-            <span class="c1">//Put here all js files needed for "myActionName" action</span>
-            <span class="nv">$aJsFiles</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">'js/test.js'</span><span class="p">;</span>
-            <span class="nv">$aJsFiles</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">'js/test.php'</span><span class="p">;</span>
-            <span class="k">break</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nv">$aJsFiles</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">jscustomAction</span>(<span class="pl-smi">$sAction</span> <span class="pl-k">=</span> <span class="pl-c1">null</span>){</span>
+<span class="pl-s1">    <span class="pl-c">//Check params, it's not mandatory</span></span>
+<span class="pl-s1">    <span class="pl-k">if</span>(<span class="pl-c1">empty</span>(<span class="pl-smi">$sAction</span>)){</span>
+<span class="pl-s1">        <span class="pl-smi">$sAction</span> <span class="pl-k">=</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>params(<span class="pl-s"><span class="pl-pds">'</span>js_action<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">        <span class="pl-k">if</span>(<span class="pl-c1">empty</span>(<span class="pl-smi">$sAction</span>))<span class="pl-k">throw</span> <span class="pl-k">new</span> <span class="pl-c1">\InvalidArgumentException</span>(<span class="pl-s"><span class="pl-pds">'</span>Action param is empty<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-smi">$aJsFiles</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>();</span>
+<span class="pl-s1">    <span class="pl-k">switch</span>(<span class="pl-c1">strtolower</span>(<span class="pl-smi">$sAction</span>)){</span>
+<span class="pl-s1">        <span class="pl-k">case</span> <span class="pl-s"><span class="pl-pds">'</span>myActionName<span class="pl-pds">'</span></span>:</span>
+<span class="pl-s1">            <span class="pl-c">//Put here all js files needed for "myActionName" action</span></span>
+<span class="pl-s1">            <span class="pl-smi">$aJsFiles</span>[] <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>js/test.js<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">            <span class="pl-smi">$aJsFiles</span>[] <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>js/test.php<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">            <span class="pl-k">break</span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">    <span class="pl-k">return</span> <span class="pl-smi">$aJsFiles</span>;</span>
+<span class="pl-s1">}</span></pre></div>
 
 <p>Edit layout file:</p>
 
-<div class="highlight highlight-php"><pre><span class="c1">//Into head</span>
-
-<span class="c1">//Production case</span>
-<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomUrl</span><span class="p">))</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">plugin</span><span class="p">(</span><span class="s1">'InlineScript'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">appendFile</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomUrl</span><span class="o">.</span><span class="s1">'?'</span><span class="o">.</span><span class="nb">time</span><span class="p">());</span> <span class="c1">//Set time() force browser not to cache file, it's not mandatory</span>
-<span class="c1">//Development case</span>
-<span class="k">elseif</span><span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomFiles</span><span class="p">))</span><span class="k">foreach</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">jsCustomFiles</span> <span class="k">as</span> <span class="nv">$sJsCustomFile</span><span class="p">){</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">plugin</span><span class="p">(</span><span class="s1">'InlineScript'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">appendFile</span><span class="p">(</span><span class="nv">$sJsCustomFile</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c">//Into head</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">//Production case</span></span>
+<span class="pl-s1"><span class="pl-k">if</span>(<span class="pl-k">!</span><span class="pl-c1">empty</span>(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">jsCustomUrl</span>))<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>plugin(<span class="pl-s"><span class="pl-pds">'</span>InlineScript<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>appendFile(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">jsCustomUrl</span><span class="pl-k">.</span><span class="pl-s"><span class="pl-pds">'</span>?<span class="pl-pds">'</span></span><span class="pl-k">.</span><span class="pl-c1">time</span>()); <span class="pl-c">//Set time() force browser not to cache file, it's not mandatory</span></span>
+<span class="pl-s1"><span class="pl-c">//Development case</span></span>
+<span class="pl-s1"><span class="pl-k">elseif</span>(<span class="pl-c1">is_array</span>(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">jsCustomFiles</span>))<span class="pl-k">foreach</span>(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">jsCustomFiles</span> <span class="pl-k">as</span> <span class="pl-smi">$sJsCustomFile</span>){</span>
+<span class="pl-s1">    <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>plugin(<span class="pl-s"><span class="pl-pds">'</span>InlineScript<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>appendFile(<span class="pl-smi">$sJsCustomFile</span>);</span>
+<span class="pl-s1">}</span></pre></div>
 
 <h1>
-<a name="tools" class="anchor" href="#tools"><span class="octicon octicon-link"></span></a>Tools</h1>
+<a id="tools" class="anchor" href="#tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tools</h1>
 
 <p><em>AssetsBundle</em> provides console tools.</p>
 
 <h2>
-<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
 
 <pre><code>Rendering all assets
 Empty cache directory
 </code></pre>
 
 <h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
 <h3>
-<a name="rendering-all-assets" class="anchor" href="#rendering-all-assets"><span class="octicon octicon-link"></span></a>Rendering all assets</h3>
+<a id="rendering-all-assets" class="anchor" href="#rendering-all-assets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rendering all assets</h3>
 
 <pre><code>php public/index.php render
 </code></pre>
 
 <h3>
-<a name="empty-cache-directory" class="anchor" href="#empty-cache-directory"><span class="octicon octicon-link"></span></a>Empty cache directory</h3>
+<a id="empty-cache-directory" class="anchor" href="#empty-cache-directory" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Empty cache directory</h3>
 
 <pre><code>php public/index.php empty
 </code></pre>
-      </section>
-      <footer>
-        <p>Project maintained by <a href="https://github.com/neilime">neilime</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/neilime/zf2-assets-bundle">Assetsbundle</a> is maintained by <a href="https://github.com/neilime">neilime</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-              <script type="text/javascript">
+
+    </section>
+
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
