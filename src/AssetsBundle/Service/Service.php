@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\Service;
 
-class Service implements \Zend\EventManager\ListenerAggregateInterface {
+class Service implements \Zend\EventManager\ListenerAggregateInterface
+{
 
     /**
      * @var \AssetsBundle\Service\ServiceOptions
@@ -26,10 +27,12 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
 
     /**
      * Constructor
-     * @param \AssetsBundle\Service\ServiceOptions $oOptions
+     *
+     * @param  \AssetsBundle\Service\ServiceOptions $oOptions
      * @throws \InvalidArgumentException
      */
-    public function __construct(\AssetsBundle\Service\ServiceOptions $oOptions = null) {
+    public function __construct(\AssetsBundle\Service\ServiceOptions $oOptions = null)
+    {
         if ($oOptions) {
             $this->setOptions($oOptions);
         }
@@ -39,7 +42,8 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
      * @param \Zend\EventManager\EventManagerInterface $oEventManager
      * @return \AssetsBundle\Service\Service
      */
-    public function attach(\Zend\EventManager\EventManagerInterface $oEventManager) {
+    public function attach(\Zend\EventManager\EventManagerInterface $oEventManager)
+    {
         // Assets rendering
         $this->listeners[] = $oEventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'renderAssets'));
 
@@ -53,7 +57,8 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
      * @param \Zend\EventManager\EventManagerInterface $oEventManager
      * @return \AssetsBundle\Service\Service
      */
-    public function detach(\Zend\EventManager\EventManagerInterface $oEventManager) {
+    public function detach(\Zend\EventManager\EventManagerInterface $oEventManager)
+    {
         foreach ($this->listeners as $iIndex => $oCallback) {
             if ($oEventManager->detach($oCallback)) {
                 unset($this->listeners[$iIndex]);
@@ -64,17 +69,18 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
 
     /**
      * Render assets
-     * @param \Zend\Mvc\MvcEvent $oEvent
+     *
+     * @param  \Zend\Mvc\MvcEvent $oEvent
      * @return \AssetsBundle\Service\Service
      */
-    public function renderAssets(\Zend\Mvc\MvcEvent $oEvent) {
+    public function renderAssets(\Zend\Mvc\MvcEvent $oEvent)
+    {
 
         // Retrieve service manager
         $oServiceManager = $oEvent->getApplication()->getServiceManager();
 
         // Check if asset should be rendered
-        if (
-        // Assert that request is an Http request
+        if (// Assert that request is an Http request
                 !(($oRequest = $oEvent->getRequest()) instanceof \Zend\Http\Request)
                 // Not an Ajax request
                 || $oRequest->isXmlHttpRequest()
@@ -90,14 +96,15 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
         // Define options from route match
         $oRouteMatch = $oEvent->getRouteMatch();
         if ($oRouteMatch instanceof \Zend\Mvc\Router\RouteMatch) {
-
             // Retrieve controller
-            if (
-                    ($sControllerName = $oRouteMatch->getParam('controller')) && ($sControllerClass = get_class($oServiceManager->get('ControllerLoader')->get($sControllerName)))
-            ) {
-                $oOptions->setControllerName($sControllerName);
-                if ($sModuleName = substr($sControllerClass, 0, strpos($sControllerClass, '\\'))) {
-                    $oOptions->setModuleName($sModuleName);
+            if ($sControllerName = $oRouteMatch->getParam('controller')) {
+                $oControllerLoader = $oServiceManager->get('ControllerLoader');
+                if ($oControllerLoader->has('ControllerLoader') && ($oController = $oControllerLoader->get($sControllerName))) {
+                    $oOptions->setControllerName($sControllerName);
+                    $sControllerClass = get_class($oController);
+                    if ($sModuleName = substr($sControllerClass, 0, strpos($sControllerClass, '\\'))) {
+                        $oOptions->setModuleName($sModuleName);
+                    }
                 }
             }
 
@@ -118,10 +125,12 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
 
         // Render Css and Js assets
         $this->displayAssets(
-                // Retrieve cached Css assets
-                array_merge($oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS),
-                // Retrieve cached Js assets
-                $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_JS))
+            // Retrieve cached Css assets
+                array_merge(
+                    $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS),
+                    // Retrieve cached Js assets
+                    $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_JS)
+                )
         );
 
         // Save current configuration
@@ -132,12 +141,14 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
 
     /**
      * Display assets through renderer
-     * @param array $aAssetFiles
+     *
+     * @param  array $aAssetFiles
      * @return \AssetsBundle\Service\Service
      * @throws \InvalidArgumentException
      * @throws \DomainException
      */
-    protected function displayAssets(array $aAssetFiles) {
+    protected function displayAssets(array $aAssetFiles)
+    {
         // Retrieve options
         $oOptions = $this->getOptions();
 
@@ -151,7 +162,8 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
         foreach ($aAssetFiles as $oAssetFile) {
             if (!($oAssetFile instanceof \AssetsBundle\AssetFile\AssetFile)) {
                 throw new \InvalidArgumentException(sprintf(
-                        'Asset file expects an instance of "AssetsBundle\AssetFile\AssetFile", "%s" given', is_object($oAssetFile) ? get_class($oAssetFile) : gettype($oAssetFile)
+                    'Asset file expects an instance of "AssetsBundle\AssetFile\AssetFile", "%s" given',
+                    is_object($oAssetFile) ? get_class($oAssetFile) : gettype($oAssetFile)
                 ));
             }
 
@@ -173,11 +185,12 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
 
     /**
      * Display errors to the console, if an error appends during a ToolsController action
+     *
      * @param \Zend\Mvc\MvcEvent $oEvent
      */
-    public function consoleError(\Zend\Mvc\MvcEvent $oEvent) {
-        if (
-                ($oRequest = $oEvent->getRequest()) instanceof \Zend\Console\Request && $oRequest->getParam('controller') === 'AssetsBundle\Controller\Tools'
+    public function consoleError(\Zend\Mvc\MvcEvent $oEvent)
+    {
+        if (($oRequest = $oEvent->getRequest()) instanceof \Zend\Console\Request && $oRequest->getParam('controller') === 'AssetsBundle\Controller\Tools'
         ) {
             $oConsole = $oEvent->getApplication()->getServiceManager()->get('console');
             $oConsole->writeLine(PHP_EOL . '======================================================================', \Zend\Console\ColorInterface::GRAY);
@@ -195,7 +208,8 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
      * @param \AssetsBundle\Service\ServiceOptions $oOptions
      * @return \AssetsBundle\Service\Service
      */
-    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions) {
+    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions)
+    {
         $this->options = $oOptions;
         if (isset($this->assetFilesManager)) {
             $this->getAssetFilesManager()->setOptions($this->options);
@@ -206,7 +220,8 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
     /**
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         if (!($this->options instanceof \AssetsBundle\Service\ServiceOptions)) {
             $this->setOptions(new \AssetsBundle\Service\ServiceOptions());
         }
@@ -217,7 +232,8 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
      * @param \AssetsBundle\AssetFile\AssetFilesManager $oAssetFilesManager
      * @return \AssetsBundle\Service\Service
      */
-    public function setAssetFilesManager(\AssetsBundle\AssetFile\AssetFilesManager $oAssetFilesManager) {
+    public function setAssetFilesManager(\AssetsBundle\AssetFile\AssetFilesManager $oAssetFilesManager)
+    {
         $this->assetFilesManager = $oAssetFilesManager->setOptions($this->getOptions());
         return $this;
     }
@@ -225,11 +241,11 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface {
     /**
      * @return \AssetsBundle\AssetFile\AssetFilesManager
      */
-    public function getAssetFilesManager() {
+    public function getAssetFilesManager()
+    {
         if (!($this->assetFilesManager instanceof \AssetsBundle\AssetFile\AssetFilesManager)) {
             $this->setAssetFilesManager(new \AssetsBundle\AssetFile\AssetFilesManager());
         }
         return $this->assetFilesManager;
     }
-
 }
