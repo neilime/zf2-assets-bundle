@@ -59,6 +59,11 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
     {
         $this->setApplicationConfig(\AssetsBundleTest\Bootstrap::getConfig());
         parent::setUp();
+        
+        // Create tmp directory
+        if (!is_dir($sTmpDirectory = dirname(__DIR__) . '/../_files/tmp')) {
+            mkdir($sTmpDirectory);
+        }
 
         //Retrieve service locator
         $oServiceLocator = $this->getApplicationServiceLocator()->setAllowOverride(true);
@@ -84,6 +89,8 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
 
         // Empty cache and processed directories
         \AssetsBundleTest\Bootstrap::getServiceManager()->get('AssetsBundleToolsService')->emptyCache(false);
+        
+        
     }
 
     public function testRenderAssetsInProductionAction()
@@ -122,7 +129,6 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         );
         // Test cached files
         foreach ($aCachedFiles as $sCachePart => $sCacheFile) {
-
             // Css cached files
             $sCssCacheExpectedPath = $sCacheExpectedPath . DIRECTORY_SEPARATOR . $sCachePart . '.css';
             $sCssFilePath = $oAssetsBundleService->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCacheFile . '.css';
@@ -141,6 +147,9 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
             $sJsFilename = $sCachePart . ' - ' . $sCacheFile . '.js';
             $this->assertFileEquals($sJsCacheExpectedPath, $sJsFilePath, $sJsFilename);
         }
+        
+        // Test that tmp directory is empty
+        $this->assertCount(0, array_diff(array('.','..'), scandir(dirname(__DIR__) . '/../_files/tmp')));
     }
 
     public function testEmptyCache()

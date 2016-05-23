@@ -3,6 +3,7 @@
 return array(
     'assets_bundle' => array(
         'baseUrl' => '/',
+         'tmpDirPath' => '@zfRootPath/_files/tmp',
         'cachePath' => '@zfRootPath/_files/cache',
         'assetsPath' => '@zfRootPath/_files/assets',
         'processedDirPath' => '@zfRootPath/_files/processed'
