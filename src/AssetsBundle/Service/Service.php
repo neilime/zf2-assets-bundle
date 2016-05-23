@@ -99,7 +99,7 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface
             // Retrieve controller
             if ($sControllerName = $oRouteMatch->getParam('controller')) {
                 $oControllerLoader = $oServiceManager->get('ControllerLoader');
-                if ($oControllerLoader->has('ControllerLoader') && ($oController = $oControllerLoader->get($sControllerName))) {
+                if ($oControllerLoader->has($sControllerName) && ($oController = $oControllerLoader->get($sControllerName))) {
                     $oOptions->setControllerName($sControllerName);
                     $sControllerClass = get_class($oController);
                     if ($sModuleName = substr($sControllerClass, 0, strpos($sControllerClass, '\\'))) {
@@ -129,7 +129,7 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface
                 array_merge(
                     $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS),
                     // Retrieve cached Js assets
-                    $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_JS)
+                        $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_JS)
                 )
         );
 
