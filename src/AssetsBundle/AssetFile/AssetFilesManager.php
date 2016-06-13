@@ -271,10 +271,11 @@ class AssetFilesManager
                 continue;
             }
             if ($bIsProduction) {
-                if (!isset($aAssetFileFilters[$sAssetFileExtension = $oAssetFile->getAssetFileExtension()])) {
-                    $aAssetFileFilters[$sAssetFileExtension] = $oAssetFileFiltersManager->has($sAssetFileExtension) ? $oAssetFileFiltersManager->get($sAssetFileExtension) : null;
+                if (array_key_exists($sAssetFileExtension = $oAssetFile->getAssetFileExtension(), $aAssetFileFilters)) {
+                    $oMediaFileFilter = $aAssetFileFilters[$sAssetFileExtension];
+                } else {
+                    $oMediaFileFilter = $aAssetFileFilters[$sAssetFileExtension] = $oAssetFileFiltersManager->has($sAssetFileExtension) ? $oAssetFileFiltersManager->get($sAssetFileExtension) : null;
                 }
-                $oMediaFileFilter = $aAssetFileFilters[$sAssetFileExtension];
             } else {
                 $oMediaFileFilter = null;
             }

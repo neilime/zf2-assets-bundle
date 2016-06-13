@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\Factory;
 
-class ServiceFactory implements \Zend\ServiceManager\FactoryInterface {
+class ServiceFactory implements \Zend\ServiceManager\FactoryInterface
+{
 
     /**
      * @see \Zend\ServiceManager\FactoryInterface::createService()
@@ -10,7 +11,8 @@ class ServiceFactory implements \Zend\ServiceManager\FactoryInterface {
      * @throws \UnexpectedValueException
      * @return \AssetsBundle\Service\Service
      */
-    public function createService(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator) {
+    public function createService(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator)
+    {
         $aConfiguration = $oServiceLocator->get('Config');
         if (!isset($aConfiguration['assets_bundle'])) {
             throw new \UnexpectedValueException('AssetsBundle configuration is undefined');
@@ -30,43 +32,46 @@ class ServiceFactory implements \Zend\ServiceManager\FactoryInterface {
 
             $oAssetFileFiltersManager = $oAssetsBundleService->getAssetFilesManager()->getAssetFileFiltersManager();
             foreach ($aFilters as $sFilterAliasName => $oFilter) {
+                if ($oFilter === null) {
+                    continue;
+                }
                 if ($oFilter instanceof \AssetsBundle\AssetFile\AssetFileFilter\AssetFileFilterInterface) {
                     $oAssetFileFiltersManager->setService($oFilter->getFilterName(), $oFilter);
+                    continue;
+                }
+                if (is_string($oFilter)) {
+                    $sFilterName = $oFilter;
+                    $oFilter = array();
                 } else {
-                    if (is_string($oFilter)) {
-                        $sFilterName = $oFilter;
-                        $oFilter = array();
-                    } else {
-                        if ($oFilter instanceof \Traversable) {
-                            $oFilter = \Zend\Stdlib\ArrayUtils::iteratorToArray($oFilter);
-                        }
-                        if (is_array($oFilter)) {
-                            if (isset($oFilter['filter_name'])) {
-                                $sFilterName = $oFilter['filter_name'];
-                                unset($oFilter['filter_name']);
-                            }
-                        } elseif (!is_array($aFilters)) {
-                            throw new \InvalidArgumentException('Filter expect expects a string, an array or Traversable object; received "' . (is_object($aFilters) ? get_class($aFilters) : gettype($aFilters)) . '"');
-                        }
+                    if ($oFilter instanceof \Traversable) {
+                        $oFilter = \Zend\Stdlib\ArrayUtils::iteratorToArray($oFilter);
                     }
+                    if (is_array($oFilter)) {
+                        if (isset($oFilter['filter_name'])) {
+                            $sFilterName = $oFilter['filter_name'];
+                            unset($oFilter['filter_name']);
+                        }
+                    } elseif (!is_array($oFilter)) {
+                        throw new \InvalidArgumentException('Filter expect expects a string, an array or Traversable object; received "' . (is_object($oFilter) ? get_class($oFilter) : gettype($oFilter)) . '"');
+                    }
+                }
 
-                    //Retrieve filter
-                    if ($oServiceLocator->has($sFilterName)) {
-                        $oFilter = $oServiceLocator->get($sFilterName);
-                    } elseif (class_exists($sFilterName)) {
-                        $oFilter = new $sFilterName($oFilter);
-                    } else {
-                        throw new \InvalidArgumentException('Filter "' . $sFilterName . '" is not an available service or an existing class');
-                    }
+                //Retrieve filter
+                if ($oServiceLocator->has($sFilterName)) {
+                    $oFilter = $oServiceLocator->get($sFilterName);
+                } elseif (class_exists($sFilterName)) {
+                    $oFilter = new $sFilterName($oFilter);
+                } else {
+                    throw new \InvalidArgumentException('Filter "' . $sFilterName . '" is not an available service or an existing class');
+                }
 
-                    if ($oFilter instanceof \AssetsBundle\AssetFile\AssetFileFilter\AssetFileFilterInterface) {
-                        $oAssetFileFiltersManager->setService($sAssetFileFilterName = $oFilter->getAssetFileFilterName(), $oFilter);
-                        if (!$oAssetFileFiltersManager->has($sFilterAliasName)) {
-                            $oAssetFileFiltersManager->setAlias($sFilterAliasName, $sAssetFileFilterName);
-                        }
-                    } else {
-                        throw new \InvalidArgumentException('Filter expects an instance of \AssetsBundle\AssetFile\AssetFileFilter\AssetFileFilterInterface, "' . get_class($oFilter) . '" given');
+                if ($oFilter instanceof \AssetsBundle\AssetFile\AssetFileFilter\AssetFileFilterInterface) {
+                    $oAssetFileFiltersManager->setService($sAssetFileFilterName = $oFilter->getAssetFileFilterName(), $oFilter);
+                    if (!$oAssetFileFiltersManager->has($sFilterAliasName)) {
+                        $oAssetFileFiltersManager->setAlias($sFilterAliasName, $sAssetFileFilterName);
                     }
+                } else {
+                    throw new \InvalidArgumentException('Filter expects an instance of \AssetsBundle\AssetFile\AssetFileFilter\AssetFileFilterInterface, "' . get_class($oFilter) . '" given');
                 }
             }
         }

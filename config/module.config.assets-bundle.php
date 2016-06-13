@@ -10,7 +10,7 @@ return array(
     'processedDirPath' => '@zfRootPath/data/AssetsBundle/processed', // Processed files directory absolute path
     'baseUrl' => null, // Base URL of the application
     'cacheUrl' => '@zfBaseUrl/cache/', // Cache directory base url
-    'mediaExt' => array('jpeg', 'jpg', 'png', 'gif', 'cur', 'ttf', 'eot', 'svg', 'woff'), // Put here all media extensions to be cached
+    'mediaExt' => array('jpeg', 'jpg', 'png', 'gif', 'cur', 'ttf', 'eot', 'svg', 'woff', 'otf', 'woff2',), // Put here all media extensions to be cached
     'recursiveSearch' => false, // Allows search for matching assets in required folder and its subfolders
     'filters' => array(
         \AssetsBundle\AssetFile\AssetFile::ASSET_LESS => 'LessphpAssetFileFilter',
@@ -18,10 +18,10 @@ return array(
         \AssetsBundle\AssetFile\AssetFile::ASSET_JS => 'JsAssetFileFilter',
         'png' => 'PngAssetFileFilter',
         'jpg' => 'JpegAssetFileFilter', 'jpeg' => 'JpegAssetFileFilter',
-        'gif' => 'GifAssetFileFilter'
+        'gif' => 'GifAssetFileFilter',
     ),
     'view_helper_plugins' => array(
         \AssetsBundle\AssetFile\AssetFile::ASSET_CSS => 'headlink',
         \AssetsBundle\AssetFile\AssetFile::ASSET_JS => 'headscript',
-    )
+    ),
 );

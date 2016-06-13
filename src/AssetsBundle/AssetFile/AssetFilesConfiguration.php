@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\AssetFile;
 
-class AssetFilesConfiguration {
+class AssetFilesConfiguration
+{
 
     /**
      * @var array
@@ -12,7 +13,8 @@ class AssetFilesConfiguration {
     /**
      * @return string
      */
-    public function getConfigurationKey() {
+    public function getConfigurationKey()
+    {
         return $this->getOptions()->getModuleName() . '-' . $this->getOptions()->getControllerName() . '-' . $this->getOptions()->getActionName();
     }
 
@@ -21,7 +23,8 @@ class AssetFilesConfiguration {
      * @return array
      * @throws \InvalidArgumentException
      */
-    public function getAssetFiles($sAssetFileType = null) {
+    public function getAssetFiles($sAssetFileType = null)
+    {
         if ($sAssetFileType && !\AssetsBundle\AssetFile\AssetFile::assetFileTypeExists($sAssetFileType)) {
             throw new \InvalidArgumentException('Asset file type "' . $sAssetFileType . '" is not valid');
         }
@@ -111,7 +114,6 @@ class AssetFilesConfiguration {
 
         //Retrieve asset files from configuration
         foreach ($aAssets as $sAssetFileTypeKey => $aAssetFiles) {
-
             foreach (array_unique($aAssetFiles) as $sAssetFilePath) {
                 $this->addAssetFileFromOptions(is_array($sAssetFilePath) ? array_merge(array('asset_file_type' => $sAssetFileTypeKey, $sAssetFilePath)) : array('asset_file_path' => $sAssetFilePath, 'asset_file_type' => $sAssetFileTypeKey));
             }
@@ -127,7 +129,8 @@ class AssetFilesConfiguration {
      * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
      * @return \AssetsBundle\AssetFile\AssetFilesManager
      */
-    public function addAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
+    public function addAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile)
+    {
         $this->assetFiles[$this->getConfigurationKey()][$oAssetFile->getAssetFileType()][$oAssetFile->getAssetFilePath()] = $oAssetFile;
         return $this;
     }
@@ -137,7 +140,8 @@ class AssetFilesConfiguration {
      * @return \AssetsBundle\AssetFile\AssetFilesConfiguration
      * @throws \InvalidArgumentException
      */
-    public function addAssetFileFromOptions(array $aAssetFileOptions) {
+    public function addAssetFileFromOptions(array $aAssetFileOptions)
+    {
         if (empty($aAssetFileOptions['asset_file_type'])) {
             throw new \InvalidArgumentException('Asset file type is empty');
         }
@@ -147,7 +151,7 @@ class AssetFilesConfiguration {
         $oAssetFile->setAssetFileType($aAssetFileOptions['asset_file_type']);
         unset($aAssetFileOptions['asset_file_type']);
 
-        //Retrieve asset file path
+        // Retrieve asset file path
         if (empty($aAssetFileOptions['asset_file_path'])) {
             throw new \InvalidArgumentException('Asset file path is empty');
         }
@@ -156,17 +160,14 @@ class AssetFilesConfiguration {
             throw new \InvalidArgumentException('Asset file path expects string, "' . gettype($aAssetFileOptions['asset_file_path']) . '" given');
         }
 
-        //Retrieve asset file realpath
-        if ($sAssetRealPath = $this->getOptions()->getRealPath($aAssetFileOptions['asset_file_path'])) {
-            if (is_dir($sAssetRealPath)) {
-                foreach ($this->getAssetFilesPathFromDirectory($sAssetRealPath, $oAssetFile->getAssetFileType()) as $sChildAssetRealPath) {
-                    $oNewAssetFile = clone $oAssetFile;
-                    $this->addAssetFile($oNewAssetFile->setAssetFilePath($sChildAssetRealPath));
-                }
-                return $this;
+        // Retrieve asset file realpath
+        $sAssetRealPath = $this->getOptions()->getRealPath($aAssetFileOptions['asset_file_path'])?:$aAssetFileOptions['asset_file_path'];
+        if (is_dir($sAssetRealPath)) {
+            foreach ($this->getAssetFilesPathFromDirectory($sAssetRealPath, $oAssetFile->getAssetFileType()) as $sChildAssetRealPath) {
+                $oNewAssetFile = clone $oAssetFile;
+                $this->addAssetFile($oNewAssetFile->setAssetFilePath($sChildAssetRealPath));
             }
-        } else {
-            $sAssetRealPath = $aAssetFileOptions['asset_file_path'];
+            return $this;
         }
 
         return $this->addAssetFile($oAssetFile->setAssetFilePath($sAssetRealPath));
@@ -174,43 +175,41 @@ class AssetFilesConfiguration {
 
     /**
      * Retrieve assets from a directory
-     * @param string $sDirPath
-     * @param string $sAssetType
+     *
+     * @param  string $sDirPath
+     * @param  string $sAssetType
      * @throws \InvalidArgumentException
      * @return array
      */
-    protected function getAssetFilesPathFromDirectory($sDirPath, $sAssetType) {
+    protected function getAssetFilesPathFromDirectory($sDirPath, $sAssetType)
+    {
         if (!is_string($sDirPath) || !($sDirPath = $this->getOptions()->getRealPath($sDirPath)) && !is_dir($sDirPath)) {
             throw new \InvalidArgumentException('Directory not found : ' . $sDirPath);
         }
         if (!\AssetsBundle\AssetFile\AssetFile::assetFileTypeExists($sAssetType)) {
             throw new \InvalidArgumentException('Asset\'s type is undefined : ' . $sAssetType);
         }
+        
         $oDirIterator = new \DirectoryIterator($sDirPath);
         $aAssets = array();
-        $aMediasExt = $this->getOptions()->getMediaExt();
         $bRecursiveSearch = $this->getOptions()->allowsRecursiveSearch();
+        
+        // Defined expected extensions forthe given type
+        if ($sAssetType === \AssetsBundle\AssetFile\AssetFile::ASSET_MEDIA) {
+            $aExpectedExtensions = $this->getOptions()->getMediaExt();
+        } else {
+            $aExpectedExtensions = array(\AssetsBundle\AssetFile\AssetFile::getAssetFileDefaultExtension($sAssetType));
+        }
+        
         foreach ($oDirIterator as $oFile) {
             if ($oFile->isFile()) {
-                switch ($sAssetType) {
-                    case \AssetsBundle\AssetFile\AssetFile::ASSET_CSS:
-                    case \AssetsBundle\AssetFile\AssetFile::ASSET_JS:
-                    case \AssetsBundle\AssetFile\AssetFile::ASSET_LESS:
-                        if (strtolower(pathinfo($oFile->getFilename(), PATHINFO_EXTENSION)) === $sAssetType) {
-                            $aAssets[] = $oFile->getPathname();
-                        }
-                        break;
-                    case \AssetsBundle\AssetFile\AssetFile::ASSET_MEDIA:
-                        if (in_array(
-                                        $sExtension = strtolower(pathinfo($oFile->getFilename(), PATHINFO_EXTENSION)), $aMediasExt
-                                )) {
-                            $aAssets[] = $oFile->getPathname();
-                        }
-                        break;
+                if (in_array(strtolower(pathinfo($oFile->getFilename(), PATHINFO_EXTENSION)), $aExpectedExtensions, true)) {
+                    $aAssets[] = $oFile->getPathname();
                 }
             } elseif ($oFile->isDir() && !$oFile->isDot() && $bRecursiveSearch) {
                 $aAssets = array_merge(
-                        $aAssets, $this->getAssetFilesPathFromDirectory($oFile->getPathname(), $sAssetType)
+                    $aAssets,
+                    $this->getAssetFilesPathFromDirectory($oFile->getPathname(), $sAssetType)
                 );
             }
         }
@@ -219,11 +218,13 @@ class AssetFilesConfiguration {
 
     /**
      * Retrieve asset relative path
-     * @param string $sAssetPath
+     *
+     * @param  string $sAssetPath
      * @throws \InvalidArgumentException
      * @return string
      */
-    public function getAssetRelativePath($sAssetPath) {
+    public function getAssetRelativePath($sAssetPath)
+    {
         if (!($sAssetRealPath = $this->getOptions()->getRealPath($sAssetPath))) {
             throw new \InvalidArgumentException('File "' . $sAssetPath . '" does not exist');
         }
@@ -231,24 +232,32 @@ class AssetFilesConfiguration {
         //If asset is already a cache file
         $sCachePath = $this->getOptions()->getCachePath();
         return strpos($sAssetRealPath, $sCachePath) !== false ? str_ireplace(
-                        array($sCachePath, '.less'), array('', '.css'), $sAssetRealPath
-                ) : (
+            array($sCachePath, '.less'),
+            array('', '.css'),
+            $sAssetRealPath
+        ) : (
                 $this->getOptions()->hasAssetsPath() ? str_ireplace(
-                                array($this->getOptions()->getAssetsPath(), getcwd(), DIRECTORY_SEPARATOR), array('', '', '_'), $sAssetRealPath
-                        ) : str_ireplace(
-                                array(getcwd(), DIRECTORY_SEPARATOR), array('', '_'), $sAssetRealPath
-                        )
+                    array($this->getOptions()->getAssetsPath(), getcwd(), DIRECTORY_SEPARATOR),
+                    array('', '', '_'),
+                    $sAssetRealPath
+                ) : str_ireplace(
+                    array(getcwd(), DIRECTORY_SEPARATOR),
+                    array('', '_'),
+                    $sAssetRealPath
+                )
                 );
     }
 
     /**
      * Check if assets configuration is the same as last saved configuration
-     * @param array $aAssetsType
+     *
+     * @param  array $aAssetsType
      * @return boolean
      * @throws \RuntimeException
      * @throws \LogicException
      */
-    public function assetsConfigurationHasChanged(array $aAssetsType = null) {
+    public function assetsConfigurationHasChanged(array $aAssetsType = null)
+    {
         $aAssetsType = $aAssetsType ? array_unique($aAssetsType) : array(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS, \AssetsBundle\AssetFile\AssetFile::ASSET_LESS, \AssetsBundle\AssetFile\AssetFile::ASSET_JS, \AssetsBundle\AssetFile\AssetFile::ASSET_MEDIA);
 
         //Retrieve saved onfiguration file
@@ -274,8 +283,7 @@ class AssetFilesConfiguration {
                 } elseif (!empty($aAssets[$sAssetType])) {
                     if (empty($aConfig[$sAssetType])) {
                         return true;
-                    } elseif (
-                            array_diff($aAssets[$sAssetType], $aConfig[$sAssetType]) || array_diff($aConfig[$sAssetType], $aAssets[$sAssetType])
+                    } elseif (array_diff($aAssets[$sAssetType], $aConfig[$sAssetType]) || array_diff($aConfig[$sAssetType], $aAssets[$sAssetType])
                     ) {
                         return true;
                     }
@@ -288,17 +296,21 @@ class AssetFilesConfiguration {
 
     /**
      * Retrieve configuration file name for the current request
+     *
      * @return string
      */
-    public function getConfigurationFilePath() {
+    public function getConfigurationFilePath()
+    {
         return $this->getOptions()->getProcessedDirPath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $this->getOptions()->getCacheFileName() . '.conf';
     }
 
     /**
      * Save current asset configuration into conf file
+     *
      * @return \AssetsBundle\AssetFile\AssetFilesConfiguration
      */
-    public function saveAssetFilesConfiguration() {
+    public function saveAssetFilesConfiguration()
+    {
         \Zend\Stdlib\ErrorHandler::start();
 
         //Retrieve configuration file path
@@ -317,7 +329,8 @@ class AssetFilesConfiguration {
      * @param \AssetsBundle\Service\ServiceOptions $oOptions
      * @return \AssetsBundle\AssetFile\AssetFilesConfiguration
      */
-    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions) {
+    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions)
+    {
         $this->options = $oOptions;
         return $this;
     }
@@ -325,7 +338,8 @@ class AssetFilesConfiguration {
     /**
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         if (!($this->options instanceof \AssetsBundle\Service\ServiceOptions)) {
             $this->setOptions(new \AssetsBundle\Service\ServiceOptions());
         }
