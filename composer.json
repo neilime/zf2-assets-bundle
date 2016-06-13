@@ -33,14 +33,14 @@
         "zendframework/zend-log": "2.*@stable",
         "zendframework/zend-i18n": "2.*@stable",
         "oyejorge/less.php": "1.*@stable",
-        "mrclay/minify": "2.*@stable"
+        "mrclay/minify": "2.*@stable",
+        "tedivm/jshrink": "1.*@stable"
     },
     "require-dev": {
         "zendframework/zend-test": "2.*@stable",
         "phpunit/phpunit": "4.*@stable",
         "satooshi/php-coveralls": "0.*@stable",
-        "neilime/lessphp": "0.*@stable",
-        "tedivm/jshrink": "1.*@stable"
+        "neilime/lessphp": "0.*@stable"
     },
     "autoload": {
         "psr-0": {
