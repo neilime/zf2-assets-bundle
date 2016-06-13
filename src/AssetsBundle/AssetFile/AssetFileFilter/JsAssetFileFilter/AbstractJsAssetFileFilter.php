@@ -1,8 +1,8 @@
 <?php
 
-namespace AssetsBundle\AssetFile\AssetFileFilter;
+namespace AssetsBundle\AssetFile\AssetFileFilter\JsAssetFileFilter;
 
-class JsAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter
+abstract class AbstractJsAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter
 {
 
     /**
@@ -29,16 +29,12 @@ class JsAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\Abstract
             return $sCachedFilterRendering;
         }
 
-        if (!class_exists('JSMin')) {
-            throw new \LogicException('"JSMin" class does not exist');
-        }
-
         $iExecTime = strlen($sContent = $oAssetFile->getAssetFileContents()) * self::EXEC_TIME_PER_CHAR;
         $iMaxExecutionTime = ini_get('max_execution_time');
         set_time_limit(0);
         try {
             \Zend\Stdlib\ErrorHandler::start();
-            $sFilteredContent = \JSMin::minify($sContent);
+            $sFilteredContent = $this->minifyJsContent($sContent);
             \Zend\Stdlib\ErrorHandler::stop(true);
         } catch (\Exception $oException) {
             throw new \RuntimeException('An error occured while executing "\JSMin::minify" on file "'.$oAssetFile->getAssetFilePath().'"', $oException->getCode(), $oException);
@@ -48,5 +44,11 @@ class JsAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\Abstract
         set_time_limit($iMaxExecutionTime);
         return $sFilteredContent;
     }
+    
+    /**
+     * @var string $sContent
+     * @return string
+     */
+    abstract protected function minifyJsContent($sContent);
 
 }

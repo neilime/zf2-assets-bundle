@@ -15,7 +15,7 @@ return array(
     'filters' => array(
         \AssetsBundle\AssetFile\AssetFile::ASSET_LESS => 'LessphpAssetFileFilter',
         \AssetsBundle\AssetFile\AssetFile::ASSET_CSS => 'CssAssetFileFilter',
-        \AssetsBundle\AssetFile\AssetFile::ASSET_JS => 'JsAssetFileFilter',
+        \AssetsBundle\AssetFile\AssetFile::ASSET_JS => 'JShrinkAssetFileFilter',
         'png' => 'PngAssetFileFilter',
         'jpg' => 'JpegAssetFileFilter', 'jpeg' => 'JpegAssetFileFilter',
         'gif' => 'GifAssetFileFilter',

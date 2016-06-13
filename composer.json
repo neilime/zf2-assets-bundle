@@ -39,7 +39,8 @@
         "zendframework/zend-test": "2.*@stable",
         "phpunit/phpunit": "4.*@stable",
         "satooshi/php-coveralls": "0.*@stable",
-        "neilime/lessphp": "0.*@stable"
+        "neilime/lessphp": "0.*@stable",
+        "tedivm/jshrink": "1.*@stable"
     },
     "autoload": {
         "psr-0": {
