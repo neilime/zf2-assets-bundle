@@ -9,6 +9,6 @@ class JsCustomStrategyFactory implements \Zend\ServiceManager\FactoryInterface{
 	 */
 	public function createService(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator){
 		$oJsCustomStrategy = new \AssetsBundle\View\Strategy\JsCustomStrategy();
-		return $oJsCustomStrategy->setServiceLocator($oServiceLocator)->setRenderer($oServiceLocator->get('JsCustomRenderer'));
+		return $oJsCustomStrategy->setRouter($oServiceLocator->get('router'))->setRenderer($oServiceLocator->get('JsCustomRenderer'));
 	}
 }
