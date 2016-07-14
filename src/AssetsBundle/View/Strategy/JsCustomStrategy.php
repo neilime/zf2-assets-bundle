@@ -2,12 +2,17 @@
 
 namespace AssetsBundle\View\Strategy;
 
-class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface, \Zend\ServiceManager\ServiceLocatorAwareInterface {
+class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface {
 
     /**
      * @var \Zend\ServiceManager\ServiceLocatorInterface
      */
     protected $serviceLocator;
+
+    /**
+     * @var \Zend\Mvc\Router\RouteInterface
+     */
+    protected $oRouter;
 
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
@@ -39,28 +44,17 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface,
         throw new \LogicException('Renderer is undefined');
     }
 
-    /**
-     * Set service locator
-     * @param \Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator
-     * @return \AssetsBundle\View\Strategy\JsCustomStrategy
-     */
-    public function setServiceLocator(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator) {
-        $this->serviceLocator = $oServiceLocator;
+    public function setRouter(\Zend\Mvc\Router\RouteInterface $oRouter){
+        $this->oRouter = $oRouter;
         return $this;
     }
-
-    /**
-     * Get service locator
-     * @throws \LogicException
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
-     */
-    public function getServiceLocator() {
-        if ($this->serviceLocator instanceof \Zend\ServiceManager\ServiceLocatorInterface) {
-            return $this->serviceLocator;
+    public function getRouter(){
+        if ($this->oRouter instanceof \Zend\Mvc\Router\RouteInterface) {
+            return $this->oRouter;
         }
-        throw new \LogicException('Service locator is undefined');
+        throw new \LogicException('Router is undefined');
     }
-
+    
     /**
      * Attach the aggregate to the specified event manager
      * @param \Zend\EventManager\EventManagerInterface $oEvents
@@ -92,11 +86,9 @@ class JsCustomStrategy implements \Zend\EventManager\ListenerAggregateInterface,
      * @return void|\AssetsBundle\View\Renderer\JsRenderer
      */
     public function selectRenderer(\Zend\View\ViewEvent $oEvent) {
-        if (
-        //Retrieve router
-                $this->getServiceLocator()->has('router') && ($oRouter = $this->getServiceLocator()->get('router')) instanceof \Zend\Mvc\Router\RouteInterface
-                //Retrieve request
-                && ($oRequest = $oEvent->getRequest()) instanceof \Zend\Http\Request
+        $oRouter = $this->getRouter();
+        if (  //Retrieve request
+                ($oRequest = $oEvent->getRequest()) instanceof \Zend\Http\Request
                 //Retrieve route match
                 && ($oRouteMatch = $oRouter->match($oRequest)) instanceof \Zend\Mvc\Router\RouteMatch && $oRouteMatch->getParam('action') === \AssetsBundle\Mvc\Controller\AbstractActionController::JS_CUSTOM_ACTION
         ) {
