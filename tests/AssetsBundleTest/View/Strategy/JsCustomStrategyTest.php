@@ -42,14 +42,14 @@ class JsCustomStrategyTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException LogicException
      */
-    public function testGetServiceLocatorUnset()
+    public function testGetRouterUnset()
     {
-        $this->jsCustomStrategy->getServiceLocator();
+        $this->jsCustomStrategy->getRouter();
     }
 
     public function testSelectRenderer()
-    {
-        $this->jsCustomStrategy->setServiceLocator(\AssetsBundleTest\Bootstrap::getServiceManager())->selectRenderer(new \Zend\View\ViewEvent());
+    {        
+        $this->jsCustomStrategy->setRouter(\AssetsBundleTest\Bootstrap::getServiceManager()->get('router'))->selectRenderer(new \Zend\View\ViewEvent());
     }
 
     /**
@@ -87,7 +87,7 @@ class JsCustomStrategyTest extends \PHPUnit_Framework_TestCase
 
         $oViewEvent = new \Zend\View\ViewEvent();
         $this->jsCustomStrategy
-                ->setServiceLocator($oApplication->getServiceManager())
+                ->setRouter($oApplication->getServiceManager()->get('router'))
                 ->selectRenderer($oViewEvent->setRequest($oRequest));
     }
 
