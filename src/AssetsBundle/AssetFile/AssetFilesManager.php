@@ -145,11 +145,10 @@ class AssetFilesManager
             return array($this->getAssetFilesCacheManager()->cacheAssetFile($oTmpAssetFile));
         } else {
             // Cache less asset files
-            $this->cacheLessAssetFiles();
+            $aAssetFiles = $this->cacheLessAssetFiles();
 
             // Retrieve asset files cache manager
             $oAssetFilesCacheManager = $this->getAssetFilesCacheManager();
-            $aAssetFiles = array();
             foreach ($this->getAssetFilesConfiguration()->getAssetFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS) as $oAssetFile) {
                 // Cache asset file
                 $aAssetFiles[] = $oAssetFilesCacheManager->cacheAssetFile($oAssetFile);

@@ -46,7 +46,7 @@ class AssetFilesCacheManager {
                 }
                 //In development css & js files dirname are displayed for easy debugging
                 else {
-                    $sCacheFilePath = 'dev_' . $this->getOptions()->getCacheFileName() . '.' . \AssetsBundle\AssetFile\AssetFile::getAssetFileDefaultExtension($sAssetType);
+                    $sCacheFilePath = 'dev_' . $this->getOptions()->getCacheFileName() . '.' . \AssetsBundle\AssetFile\AssetFile::getAssetFileDefaultExtension(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS);
                 }
                 break;
             case \AssetsBundle\AssetFile\AssetFile::ASSET_MEDIA:
