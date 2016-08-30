@@ -36,8 +36,8 @@ Name | Version
 [zendframework/zend-log](https://github.com/zendframework/zend-log) | 2.*
 [zendframework/zend-i18n](https://github.com/zendframework/zend-i18n) | 2.*
 [oyejorge/less.php](https://github.com/oyejorge/less.php) | 1.*
-[mrclay/minify](https://github.com/mrclay/minify) | 2.*@stable
-[tedivm/jshrink](https://github.com/tedivm/jshrink) | 1.*@stable
+[mrclay/minify](https://github.com/mrclay/minify) | 2.
+[tedivm/jshrink](https://github.com/tedivm/jshrink) | 1.*
 
 # Pages
 
