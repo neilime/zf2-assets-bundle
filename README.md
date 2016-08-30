@@ -308,3 +308,42 @@ _AssetsBundle_ provides console tools.
 ### Empty cache directory
 
     php public/index.php empty
+    
+# Faq
+
+## Filters
+
+### How to disable media optimization
+
+In the assets_bundle configuration, you can disabled filters for image : 
+```php
+ 'filters' => array(
+        'png' => null,
+        'jpg' => null, 'jpeg' => null,
+        'gif' => null,
+    ),
+```
+### How to change Javascript compressor
+
+In the assets_bundle configuration, you can define which js filter you want to use in configuration
+```php
+    'filters' => array(
+            \AssetsBundle\AssetFile\AssetFile::ASSET_JS => 'JsMinAssetFileFilter',
+        ),
+    ),
+```
+
+## Common errors
+
+### "/my/file/path.jpeg" has not been cached as file
+
+Every media that are called into you stylesheets must be cached, you should define them the assets_bundle configuration :
+```php
+    'assets' => array(           
+        'media' => array(
+            '/my/file/path.jpeg',
+        ),
+    ),
+```
+
+
