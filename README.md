@@ -4,11 +4,11 @@
 
 NOTE : If you want to contribute don't hesitate, I'll review any PR.
 
-<a href='https://pledgie.com/campaigns/26668'><img alt='Click here to lend your support to: ZF2 AssetsBundle and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/26668.png?skin_name=chrome' border='0' ></a>
+<a href='https://pledgie.com/campaigns/26668'><img alt='Click here to lend your support to: Zend Framework AssetsBundle and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/26668.png?skin_name=chrome' border='0' ></a>
 
 # Introduction
 
-_AssetsBundle_ is a module for ZF2 allowing asset management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions .
+_AssetsBundle_ is a module for Zend Framework allowing asset management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions .
 This module manages the concept of the "development/production" environment.
 
 In development :

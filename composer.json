@@ -1,8 +1,8 @@
 {
     "name": "neilime/zf2-assets-bundle",
     "type": "library",
-    "description": "Zend Framework 2 module that provides assets bundling / caching",
-    "keywords": ["assets", "bundle", "cache", "zf2", "css", "js", "less"],
+    "description": "Zend Framework module that provides assets bundling / caching",
+    "keywords": ["assets", "bundle", "cache", "zf2","zend framework", "css", "js", "less"],
     "homepage": "http://neilime.github.io/zf2-assets-bundle/",
     "license": "MIT",
     "authors": [
