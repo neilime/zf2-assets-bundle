@@ -31,11 +31,11 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
                         'less' => array(
                             'less/test-mixins.less',
                             'less/test-mixins-use.less'
-                        )
-                    )
-                )
-            )
-        )
+                        ),
+                    ),
+                ),
+            ),
+        ),
     );
 
     /**
@@ -168,9 +168,7 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertResponseHeaderContains('content-type', 'text/javascript');
 
         $sCacheExpectedPath = dirname(__DIR__) . '/../_files/expected/cache/prod';
-        $this->assertStringEqualsFile(
-                $sCacheExpectedPath . '/jscustom.js', str_replace(PHP_EOL, "\n", $this->getResponse()->getContent())
-        );
+        $this->assertStringEqualsFile($sCacheExpectedPath . '/jscustom.js', $this->getResponse()->getContent());
     }
 
     /**

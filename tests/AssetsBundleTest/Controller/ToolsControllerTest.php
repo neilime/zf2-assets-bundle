@@ -151,6 +151,28 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
         // Test that tmp directory is empty
         $this->assertCount(0, array_diff(array('.','..'), scandir(dirname(__DIR__) . '/../_files/tmp')));
     }
+    
+    public function testRenderAssetsInDevelopmentAction()
+    {
+        // Retrieve service locator
+        $oServiceLocator = $this->getApplicationServiceLocator();
+        
+         // Retrieve AssetsBundle service
+        $oAssetsBundleService = $oServiceLocator->get('AssetsBundleService');
+         // Retrieve options
+        $oOptions = $oAssetsBundleService->getOptions();
+        $oOptions->setProduction(false);
+
+        $this->dispatch('render');
+        $this->assertResponseStatusCode(0);
+        $this->assertModuleName('AssetsBundle');
+        $this->assertControllerName('AssetsBundle\Controller\Tools');
+        $this->assertControllerClass('ToolsController');
+        $this->assertMatchedRouteName('render-assets');       
+        
+        // Test that tmp directory is empty
+        $this->assertCount(0, array_diff(array('.','..'), scandir(dirname(__DIR__) . '/../_files/tmp')));
+    }
 
     public function testEmptyCache()
     {

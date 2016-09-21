@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\AssetFile;
 
-class AssetFilesCacheManager {
+class AssetFilesCacheManager
+{
 
     /**
      * @var \AssetsBundle\Service\ServiceOptions
@@ -10,10 +11,17 @@ class AssetFilesCacheManager {
     protected $options;
 
     /**
+     * List of unwanted file path characters
+     * @var array
+     */
+    protected $unwantedFilePathChars = array('<', '>', '?', '*', '"', '|',':');
+
+    /**
      * Constructor
      * @param \AssetsBundle\Service\ServiceOptions $oOptions
      */
-    public function __construct(\AssetsBundle\Service\ServiceOptions $oOptions = null) {
+    public function __construct(\AssetsBundle\Service\ServiceOptions $oOptions = null)
+    {
         if ($oOptions) {
             $this->setOptions($oOptions);
         }
@@ -24,48 +32,44 @@ class AssetFilesCacheManager {
      * @return string
      * @throws \DomainException
      */
-    public function getAssetFileCachePath(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
+    public function getAssetFileCachePath(\AssetsBundle\AssetFile\AssetFile $oAssetFile)
+    {
         switch ($sAssetType = $oAssetFile->getAssetFileType()) {
             case \AssetsBundle\AssetFile\AssetFile::ASSET_CSS:
             case \AssetsBundle\AssetFile\AssetFile::ASSET_JS:
-                //In production css & js files have a unique name depending on current matching route
+                // In production css & js files have a unique name depending on current matching route
                 if ($this->getOptions()->isProduction()) {
                     $sCacheFilePath = $this->getOptions()->getCacheFileName() . '.' . \AssetsBundle\AssetFile\AssetFile::getAssetFileDefaultExtension($sAssetType);
                 }
-                //In development css & js files dirname are displayed for easy debugging
+                // In development css & js files dirname are displayed for easy debugging
                 else {
-                    $sCacheFilePath = $oAssetFile->isAssetFilePathUrl() ? str_replace(
-                                    array('/', '<', '>', '?', '*', '"', '|'), '_', implode('/', array_slice(explode('/', preg_replace('/http:\/\/|https:\/\/|www./', '', $oAssetFile->getAssetFilePath())), 0, 1))
-                            ) : $oAssetFile->getAssetFilePath();
+                    $sCacheFilePath = $this->sanitizeAssetFilePath($oAssetFile);
                 }
                 break;
             case \AssetsBundle\AssetFile\AssetFile::ASSET_LESS:
-                //In production css & js files have a unique name depending on current matching route
+                // In production css & js files have a unique name depending on current matching route
                 if ($this->getOptions()->isProduction()) {
                     throw new \DomainException('Asset\'s type "' . $sAssetType . '" can not be cached in production');
                 }
-                //In development css & js files dirname are displayed for easy debugging
+                // In development css & js files dirname are displayed for easy debugging
                 else {
                     $sCacheFilePath = 'dev_' . $this->getOptions()->getCacheFileName() . '.' . \AssetsBundle\AssetFile\AssetFile::getAssetFileDefaultExtension(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS);
                 }
                 break;
             case \AssetsBundle\AssetFile\AssetFile::ASSET_MEDIA:
-                //In production media dirname is encrypted
+                // In production media dirname is encrypted
                 if ($this->getOptions()->isProduction()) {
                     $sCacheFilePath = md5(dirname($sAssetFilePath = $oAssetFile->getAssetFilePath())) . DIRECTORY_SEPARATOR . basename($sAssetFilePath);
                 }
-                //In development media dirname is displayed for easy debugging
+                // In development media dirname is displayed for easy debugging
                 else {
-                    $sCacheFilePath = $oAssetFile->isAssetFilePathUrl() ? str_replace(
-                                    array('/', '<', '>', '?', '*', '"', '|'), '_', implode('/', array_slice(explode('/', preg_replace('/http:\/\/|https:\/\/|www./', '', $oAssetFile->getAssetFilePath())), 0, 1))
-                            ) : $oAssetFile->getAssetFilePath();
+                    $sCacheFilePath = $this->sanitizeAssetFilePath($oAssetFile);
                 }
                 break;
             default:
                 throw new \DomainException('Asset\'s type "' . $sAssetType . '" can not be cached');
         }
-
-        return $this->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . ltrim(str_ireplace(getcwd(), '', $sCacheFilePath), DIRECTORY_SEPARATOR);
+        return $this->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . str_replace($this->unwantedFilePathChars, '_', ltrim(str_ireplace(getcwd(), '', $sCacheFilePath), DIRECTORY_SEPARATOR));
     }
 
     /**
@@ -73,7 +77,8 @@ class AssetFilesCacheManager {
      * @return boolean
      * @throws \InvalidArgumentException
      */
-    public function hasProductionCachedAssetFiles($sAssetFileType) {
+    public function hasProductionCachedAssetFiles($sAssetFileType)
+    {
         if (!\AssetsBundle\AssetFile\AssetFile::assetFileTypeExists($sAssetFileType)) {
             throw new \InvalidArgumentException('Asset file type "' . $sAssetFileType . '" is not valid');
         }
@@ -90,7 +95,8 @@ class AssetFilesCacheManager {
      * @throws \InvalidArgumentException
      * @throws \LogicException
      */
-    public function getProductionCachedAssetFiles($sAssetFileType) {
+    public function getProductionCachedAssetFiles($sAssetFileType)
+    {
         if (!\AssetsBundle\AssetFile\AssetFile::assetFileTypeExists($sAssetFileType)) {
             throw new \InvalidArgumentException('Asset file type "' . $sAssetFileType . '" is not valid');
         }
@@ -119,7 +125,8 @@ class AssetFilesCacheManager {
      * @return \AssetsBundle\AssetFile\AssetFile
      * @throws \LogicException
      */
-    public function cacheAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile, \AssetsBundle\AssetFile\AssetFile $oSourceAssetFile = null) {
+    public function cacheAssetFile(\AssetsBundle\AssetFile\AssetFile $oAssetFile, \AssetsBundle\AssetFile\AssetFile $oSourceAssetFile = null)
+    {
 
         // Define source asset file
         if (!$oSourceAssetFile) {
@@ -190,7 +197,8 @@ class AssetFilesCacheManager {
      * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
      * @return boolean
      */
-    public function isAssetFileCached(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
+    public function isAssetFileCached(\AssetsBundle\AssetFile\AssetFile $oAssetFile)
+    {
 
         if (file_exists($sAssetFileCachedPath = $this->getAssetFileCachePath($oAssetFile))) {
             \Zend\Stdlib\ErrorHandler::start();
@@ -203,10 +211,22 @@ class AssetFilesCacheManager {
     }
 
     /**
+     * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
+     * @return string
+     */
+    public function sanitizeAssetFilePath(\AssetsBundle\AssetFile\AssetFile $oAssetFile)
+    {
+        return $oAssetFile->isAssetFilePathUrl() ? str_replace(
+                        array_merge(array('/'),$this->unwantedFilePathChars), '_', implode('/', array_slice(explode('/', preg_replace('/http:\/\/|https:\/\/|www./', '', $oAssetFile->getAssetFilePath())), 0, 1))
+                ) : $oAssetFile->getAssetFilePath();
+    }
+
+    /**
      * @param \AssetsBundle\Service\ServiceOptions $oOptions
      * @return \AssetsBundle\AssetFile\AssetFilesManager
      */
-    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions) {
+    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions)
+    {
         $this->options = $oOptions;
         return $this;
     }
@@ -214,11 +234,11 @@ class AssetFilesCacheManager {
     /**
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         if (!($this->options instanceof \AssetsBundle\Service\ServiceOptions)) {
             $this->setOptions(new \AssetsBundle\Service\ServiceOptions());
         }
         return $this->options;
     }
-
 }
