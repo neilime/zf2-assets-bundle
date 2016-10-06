@@ -33,9 +33,9 @@ class ToolsService
         //Start process
         $oConsole = $this->getConsole();
         $oConsole->writeLine('');
-        $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::GRAY);
+        $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::WHITE);
         $oConsole->writeLine('Render all assets for ' . ($oAssetsBundleService->getOptions()->isProduction() ? 'production' : 'development'), \Zend\Console\ColorInterface::GREEN);
-        $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::GRAY);
+        $oConsole->writeLine('======================================================================', \Zend\Console\ColorInterface::WHITE);
         $oConsole->writeLine('');
 
         //Empty cache directory
@@ -43,7 +43,7 @@ class ToolsService
 
         $oConsole->writeLine('');
         $oConsole->writeLine('Start rendering assets : ', \Zend\Console\ColorInterface::GREEN);
-        $oConsole->writeLine('-------------------------', \Zend\Console\ColorInterface::GRAY);
+        $oConsole->writeLine('-------------------------', \Zend\Console\ColorInterface::WHITE);
         $oConsole->writeLine('');
         $aUnwantedKeys = array(
             \AssetsBundle\AssetFile\AssetFile::ASSET_CSS => true,
@@ -70,7 +70,7 @@ class ToolsService
 
             //If module has global assets
             if (array_intersect_key($aModuleConfig, $aUnwantedKeys)) {
-                $oConsole->write(' * ', \Zend\Console\ColorInterface::GRAY);
+                $oConsole->write(' * ', \Zend\Console\ColorInterface::WHITE);
                 $oConsole->write('[' . $sModuleName . ']', \Zend\Console\ColorInterface::LIGHT_CYAN);
                 $oConsole->write('[No controller]', \Zend\Console\ColorInterface::LIGHT_BLUE);
                 $oConsole->write('[No action]' . PHP_EOL, \Zend\Console\ColorInterface::LIGHT_WHITE);
@@ -87,7 +87,7 @@ class ToolsService
 
                 //If controller has global assets
                 if (array_intersect_key($aControllerConfig, $aUnwantedKeys)) {
-                    $oConsole->write(' * ', \Zend\Console\ColorInterface::GRAY);
+                    $oConsole->write(' * ', \Zend\Console\ColorInterface::WHITE);
                     $oConsole->write('[' . $sModuleName . ']', \Zend\Console\ColorInterface::LIGHT_CYAN);
                     $oConsole->write('[' . $sControllerName . ']', \Zend\Console\ColorInterface::LIGHT_BLUE);
                     $oConsole->write('[No action]' . PHP_EOL, \Zend\Console\ColorInterface::LIGHT_WHITE);
@@ -100,7 +100,7 @@ class ToolsService
                 foreach (array_diff_key($aAssetsConfiguration[$sModuleName][$sControllerName], $aUnwantedKeys) as $sActionName => $aActionConfig) {
                     //Render assets for action
                     if (array_intersect_key($aActionConfig, $aUnwantedKeys)) {
-                        $oConsole->write(' * ', \Zend\Console\ColorInterface::GRAY);
+                        $oConsole->write(' * ', \Zend\Console\ColorInterface::WHITE);
                         $oConsole->write('[' . $sModuleName . ']', \Zend\Console\ColorInterface::LIGHT_CYAN);
                         $oConsole->write('[' . $sControllerName . ']', \Zend\Console\ColorInterface::LIGHT_BLUE);
                         $oConsole->write('[' . $sActionName . ']' . PHP_EOL, \Zend\Console\ColorInterface::LIGHT_WHITE);
@@ -112,7 +112,7 @@ class ToolsService
             }
         }
         //Render global assets
-        $oConsole->write(' * ', \Zend\Console\ColorInterface::GRAY);
+        $oConsole->write(' * ', \Zend\Console\ColorInterface::WHITE);
         $oConsole->write('[No module]', \Zend\Console\ColorInterface::LIGHT_CYAN);
         $oConsole->write('[No controller]', \Zend\Console\ColorInterface::LIGHT_BLUE);
         $oConsole->write('[No action]' . PHP_EOL, \Zend\Console\ColorInterface::LIGHT_WHITE);
@@ -123,7 +123,7 @@ class ToolsService
         $oAssetsBundleService->renderAssets($oMvcEvent);
 
         $oConsole->writeLine('');
-        $oConsole->writeLine('---------------', \Zend\Console\ColorInterface::GRAY);
+        $oConsole->writeLine('---------------', \Zend\Console\ColorInterface::WHITE);
         $oConsole->writeLine('Assets rendered', \Zend\Console\ColorInterface::GREEN);
         $oConsole->writeLine('');
 
@@ -139,9 +139,9 @@ class ToolsService
         if ($bDisplayConsoleMessage) {
             $oConsole = $this->getConsole();
             $oConsole->writeLine('');
-            $oConsole->writeLine('========================', \Zend\Console\ColorInterface::GRAY);
+            $oConsole->writeLine('========================', \Zend\Console\ColorInterface::WHITE);
             $oConsole->writeLine('Empty cache', \Zend\Console\ColorInterface::GREEN);
-            $oConsole->writeLine('========================', \Zend\Console\ColorInterface::GRAY);
+            $oConsole->writeLine('========================', \Zend\Console\ColorInterface::WHITE);
             $oConsole->writeLine('');
         }
 
@@ -160,7 +160,7 @@ class ToolsService
             }
         }
         if ($bDisplayConsoleMessage) {
-            $oConsole->writeLine(' * Cache directory is empty', \Zend\Console\ColorInterface::GRAY);
+            $oConsole->writeLine(' * Cache directory is empty', \Zend\Console\ColorInterface::WHITE);
         }
 
         // Retrieve Asset File Filters Manager
@@ -180,7 +180,7 @@ class ToolsService
                     }
                 }
                 if ($bDisplayConsoleMessage) {
-                    $oConsole->writeLine(' * "' . $oFilter->getAssetFileFilterName() . '" filter cache directory is empty', \Zend\Console\ColorInterface::GRAY);
+                    $oConsole->writeLine(' * "' . $oFilter->getAssetFileFilterName() . '" filter cache directory is empty', \Zend\Console\ColorInterface::WHITE);
                 }
             }
         }
@@ -196,7 +196,7 @@ class ToolsService
             }
         }
         if ($bDisplayConsoleMessage) {
-            $oConsole->writeLine(' * Config cache directory is empty', \Zend\Console\ColorInterface::GRAY);
+            $oConsole->writeLine(' * Config cache directory is empty', \Zend\Console\ColorInterface::WHITE);
             $oConsole->writeLine('');
         }
 
