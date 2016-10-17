@@ -41,7 +41,7 @@ class CssAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\Abstrac
         if (!class_exists('CSSmin')) {
             throw new \LogicException('"CSSmin" class does not exist');
         }
-        return $this->cssMin = new \CSSmin();
+        return $this->cssMin = new \CSSmin(false);
     }
 
 }
