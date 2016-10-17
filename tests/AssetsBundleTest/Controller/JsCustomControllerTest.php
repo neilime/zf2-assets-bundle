@@ -65,7 +65,7 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
     public function testTestActionInProduction()
     {
         $this->dispatch('/test');
-        $this->assertResponseStatusCode(200);
+        $this->assertResponseStatusCode(200,$this->getResponse()->getContent());
         $this->assertModuleName('AssetsBundleTest');
         $this->assertControllerName('AssetsBundleTest\Controller\Test');
         $this->assertControllerClass('TestController');
@@ -171,30 +171,7 @@ class JsCustomControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractHttpC
         $this->assertStringEqualsFile($sCacheExpectedPath . '/jscustom.js', $this->getResponse()->getContent());
     }
 
-    /**
-     * Assert response status code
-     * @param int $code
-     */
-    public function assertResponseStatusCode($code)
-    {
-        if ($this->useConsoleRequest) {
-            if (!in_array($code, array(0, 1))) {
-                throw new \PHPUnit_Framework_ExpectationFailedException(
-                'Console status code assert value must be O (valid) or 1 (error)'
-                );
-            }
-        }
-        $match = $this->getResponseStatusCode();
 
-        $sMessage = func_num_args() > 1 ? func_get_arg(1) : null;
-
-        if ($code != $match) {
-            throw new \PHPUnit_Framework_ExpectationFailedException(sprintf(
-                    'Failed asserting response code "%s", actual status code is "%s"' . ($sMessage ? ' : ' . $sMessage : ''), $code, $match
-            ));
-        }
-        $this->assertEquals($code, $match, $sMessage);
-    }
 
     public function tearDown()
     {

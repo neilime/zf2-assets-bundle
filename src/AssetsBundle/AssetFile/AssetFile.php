@@ -39,6 +39,7 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      */
     public function getAssetFileType() {
+       
         if (self::assetFileTypeExists($this->assetFileType)) {
             return $this->assetFileType;
         }

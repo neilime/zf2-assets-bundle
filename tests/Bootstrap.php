@@ -5,6 +5,14 @@ namespace AssetsBundleTest;
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
+// Composer autoloading
+if (! file_exists($sComposerAutoloadPath = __DIR__ . '/../vendor/autoload.php')) {
+    throw new \RuntimeException('Composer autoload file "' . $sComposerAutoloadPath . '" does not exist');
+}
+if (false === (include $sComposerAutoloadPath)) {
+    throw new \RuntimeException('An error occured while including composer autoload file "' . $sComposerAutoloadPath . '"');
+}
+
 class Bootstrap {
 
     /**
@@ -31,7 +39,7 @@ class Bootstrap {
                 }
             }
         }
-        static::initAutoloader();
+        
 
         //Use ModuleManager to load this module and it's dependencies
         static::$config = \Zend\Stdlib\ArrayUtils::merge(array(
@@ -55,31 +63,6 @@ class Bootstrap {
      */
     public static function getConfig() {
         return static::$config;
-    }
-
-    /**
-     * Initialize Autoloader
-     * @throws \RuntimeException
-     */
-    protected static function initAutoloader() {
-        //Composer autoloading
-        if (file_exists($sAutoloadPath = static::findParentPath('vendor') . DIRECTORY_SEPARATOR . 'autoload.php')) {
-            include $sAutoloadPath;
-        } else {
-            throw new \LogicException('Autoload file "' . $sAutoloadPath . '" does not exist');
-        }
-        if (!class_exists('Zend\Loader\AutoloaderFactory')) {
-            throw new \RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
-        }
-
-        //Autoload test classes
-        \Zend\Loader\AutoloaderFactory::factory(array(
-            \Zend\Loader\AutoloaderFactory::STANDARD_AUTOLOADER => array(
-                \Zend\Loader\StandardAutoloader::LOAD_NS => array(
-                    __NAMESPACE__ => __DIR__ . DIRECTORY_SEPARATOR . __NAMESPACE__
-                )
-            )
-        ));
     }
 
     /**

@@ -44,10 +44,15 @@
         "neilime/lessphp": "0.*@stable"
     },
     "autoload": {
-        "psr-0": {
-            "AssetsBundle": "src"
+        "psr-4": {
+            "AssetsBundle\\": "src/AssetsBundle"
         },
         "classmap": ["Module.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TestSuite\\": "tests/TestSuite"
+        }
     },
     "extra": {
         "branch-alias": {

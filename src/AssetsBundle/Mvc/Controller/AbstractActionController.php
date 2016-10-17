@@ -22,7 +22,7 @@ abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractAct
             }
 
             /* @var $oAssetsBundleService \AssetsBundle\Service\Service */
-            $oAssetsBundleService = $this->getServiceLocator()->get('AssetsBundleService');
+            $oAssetsBundleService = $oEvent->getApplication()->getServiceManager()->get('AssetsBundleService');
             $oOptions = $oAssetsBundleService->getOptions();
             //Retrieve asset files manager
             $oAssetFilesCacheManager = $oAssetsBundleService->getAssetFilesManager()->getAssetFilesCacheManager();
@@ -46,7 +46,7 @@ abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractAct
                 !$this->getRequest()->isXmlHttpRequest() && method_exists($this, 'jscustomAction')
         ) {
             /* @var $oAssetsBundleService \AssetsBundle\Service\Service */
-            $oAssetsBundleService = $this->getServiceLocator()->get('AssetsBundleService');
+            $oAssetsBundleService = $oEvent->getApplication()->getServiceManager()->get('AssetsBundleService');
             $oOptions = $oAssetsBundleService->getOptions();
 
             if ($oOptions->isProduction()) {
