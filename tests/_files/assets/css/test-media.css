@@ -15,6 +15,15 @@
     background-image : url('@zfAssetsPath/../images/test-media-css.gif');
 }
 
+#test-sub-media-css{
+    font-family: FontOne;
+    background-image : url('@zfAssetsPath/../images/subfolder/test-sub-media.jpg');
+}
+
+#test-sub-sub-media-css{
+    font-family: FontOne;
+    background-image : url('@zfAssetsPath/../images/subfolder/sub-sub-folder/test-sub-sub-media.jpg');
+}
 
 #test-media-css-data{
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAyCAYAAACd+7GKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAClJREFUeNpi/v//vwMTAwPDfzjBgMpFI/7hFSOT9Y8qRuF3JLoHAQIMAHYtMmRA+CugAAAAAElFTkSuQmCC);
