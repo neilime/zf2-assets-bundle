@@ -9,6 +9,11 @@ matrix:
       env:
         - EXECUTE_AFTER_SCRIPT=true
 
+addons:
+  apt:
+    packages:
+    - graphviz
+
 env:
   global:
   - secure: mZnk+Ub659qODl3u7oGo1wNEwHBk35VXRaXO9mqkeaswfhasb33qVKnBUeGBAY6UIhKlFPRvljTYb/AryA5X7+tgjmRCi9oY5Yr+vQMVw9vc7R+tr5lNEJEZjyGKA3My6LoWI/zUtszkW1j1zTvY7THejBIiVB/HZ7w6FosSh7U=
