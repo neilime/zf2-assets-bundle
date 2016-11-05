@@ -1,9 +1,14 @@
 language: php
-php:
-- '5.3'
-- '5.4'
-- '5.5'
-- '5.6'
+
+matrix:
+  include:
+    - php: '5.3'
+    - php: '5.4'
+    - php: '5.5'
+    - php: '5.6'
+      env:
+        - EXECUTE_AFTER_SCRIPT=true
+
 env:
   global:
   - secure: mZnk+Ub659qODl3u7oGo1wNEwHBk35VXRaXO9mqkeaswfhasb33qVKnBUeGBAY6UIhKlFPRvljTYb/AryA5X7+tgjmRCi9oY5Yr+vQMVw9vc7R+tr5lNEJEZjyGKA3My6LoWI/zUtszkW1j1zTvY7THejBIiVB/HZ7w6FosSh7U=
@@ -24,6 +29,6 @@ script:
 - phpunit -d max_execution_time=0 --coverage-text --coverage-clover ../build/logs/clover.xml
 - cd ..
 after_script:
-- php vendor/bin/coveralls --verbose --config
-- vendor/bin/phpdoc -d "./src" -t "./build/phpdoc" --template="responsive-twig"
-- bash ./build/publish_build.sh
+- if [[ $EXECUTE_AFTER_SCRIPT == 'true' ]]; then php vendor/bin/coveralls --verbose --config;fi
+- if [[ $EXECUTE_AFTER_SCRIPT == 'true' ]]; then vendor/bin/phpdoc -d "./src" -t "./build/phpdoc" --template="responsive-twig";fi
+- if [[ $EXECUTE_AFTER_SCRIPT == 'true' ]]; then bash ./build/publish_build.sh;fi
