@@ -38,10 +38,11 @@
         "tedivm/jshrink": "1.*@stable"
     },
     "require-dev": {
-        "zendframework/zend-test": "2.*@stable",
-        "phpunit/phpunit": "4.*@stable",
-        "satooshi/php-coveralls": "0.*@stable",
-        "neilime/lessphp": "0.*@stable"
+        "zendframework/zend-test": "2.*.*",
+        "phpunit/phpunit": "4.*.*",
+        "satooshi/php-coveralls": "1.*.*",
+        "neilime/lessphp": "0.*.*",
+        "phpdocumentor/phpdocumentor": "2.*.*"
     },
     "autoload": {
         "psr-4": {

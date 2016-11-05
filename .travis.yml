@@ -6,17 +6,19 @@ php:
  - "5.5"
  - "5.6"
 
+env:
+  global:
+    secure: MlHYK8Q/fLzsVBiYtzFk8yM1Nb1fr2zTPxpatNED5ZdlIjzUkoskmmDnHxCsNhmHuzwNuQWRymwkYK0B8H5MDilhfqNl95PYpuCXIiD471ZaszWILYrPLuSxk2mDbQ/2yRB+bsUL3Ibj50Xk9TGkrkMvEZw3btX0WmxsaMLFDyo=
+
 before_install:
-# Set the GitHub OAuth token to make use of the 6000 per hour rate limit
  - mkdir -p ~/.composer
  - cp .travis.composer.json ~/.composer/config.json
-# Update composer
  - composer self-update
-# Install project
  - composer install --prefer-dist --dev
 
 before_script:
  - mkdir -p build/logs
+ - mkdir -p build/phpdoc
 
 script:
  - cd tests
@@ -25,3 +27,9 @@ script:
 
 after_script:
  - php vendor/bin/coveralls --verbose --config
+
+script:
+  - vendor/bin/phpdoc.php -d ./src/AssetsBundle -t ./build/phpdoc
+
+after_script:
+  - bash ./build/publish_build.sh
