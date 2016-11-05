@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/AssetsBundle.html">\AssetsBundle</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">257</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-961031829"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-961031829" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1898101924"></a>
+                                <a href="../namespaces/AssetsBundle.html" style="margin-left: 30px; padding-left: 0">AssetsBundle</a>
+            </div>
+            <div id="namespace-1898101924" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2022616006"></a>
+                                <a href="../namespaces/AssetsBundle.AssetFile.html" style="margin-left: 30px; padding-left: 0">AssetFile</a>
+            </div>
+            <div id="namespace-2022616006" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1585252622"></a>
+                                <a href="../namespaces/AssetsBundle.AssetFile.AssetFileFilter.html" style="margin-left: 30px; padding-left: 0">AssetFileFilter</a>
+            </div>
+            <div id="namespace-1585252622" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1034257560"></a>
+                                <a href="../namespaces/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.html" style="margin-left: 30px; padding-left: 0">ImageAssetFileFilter</a>
+            </div>
+            <div id="namespace-1034257560" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.AbstractImageAssetFileFilter.html">AbstractImageAssetFileFilter</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.GifImageAssetFileFilter.html">GifImageAssetFileFilter</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.JpegImageAssetFileFilter.html">JpegImageAssetFileFilter</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.PngImageAssetFileFilter.html">PngImageAssetFileFilter</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1664072328"></a>
+                                <a href="../namespaces/AssetsBundle.AssetFile.AssetFileFilter.JsAssetFileFilter.html" style="margin-left: 30px; padding-left: 0">JsAssetFileFilter</a>
+            </div>
+            <div id="namespace-1664072328" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.JsAssetFileFilter.AbstractJsAssetFileFilter.html">AbstractJsAssetFileFilter</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.JsAssetFileFilter.JShrinkAssetFileFilter.html">JShrinkAssetFileFilter</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.JsAssetFileFilter.JsMinAssetFileFilter.html">JsMinAssetFileFilter</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AssetFileFilterInterface.html">AssetFileFilterInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html">AbstractAssetFileFilter</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.CssAssetFileFilter.html">CssAssetFileFilter</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LesscAssetFileFilter.html">LesscAssetFileFilter</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LessphpAssetFileFilter.html">LessphpAssetFileFilter</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFile.html">AssetFile</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFiltersManager.html">AssetFileFiltersManager</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFilesCacheManager.html">AssetFilesCacheManager</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFilesConfiguration.html">AssetFilesConfiguration</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">AssetFilesManager</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-182335028"></a>
+                                <a href="../namespaces/AssetsBundle.Controller.html" style="margin-left: 30px; padding-left: 0">Controller</a>
+            </div>
+            <div id="namespace-182335028" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Controller.ToolsController.html">ToolsController</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-643437894"></a>
+                                <a href="../namespaces/AssetsBundle.Factory.html" style="margin-left: 30px; padding-left: 0">Factory</a>
+            </div>
+            <div id="namespace-643437894" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1121070740"></a>
+                                <a href="../namespaces/AssetsBundle.Factory.AssetFileFilter.html" style="margin-left: 30px; padding-left: 0">AssetFileFilter</a>
+            </div>
+            <div id="namespace-1121070740" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.CssAssetFileFilterFactory.html">CssAssetFileFilterFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.GifAssetFileFilterFactory.html">GifAssetFileFilterFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.JpegAssetFileFilterFactory.html">JpegAssetFileFilterFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.JShrinkAssetFileFilterFactory.html">JShrinkAssetFileFilterFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.JsMinAssetFileFilterFactory.html">JsMinAssetFileFilterFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.LesscAssetFileFilterFactory.html">LesscAssetFileFilterFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.LessphpAssetFileFilterFactory.html">LessphpAssetFileFilterFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.PngAssetFileFilterFactory.html">PngAssetFileFilterFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.JsCustomStrategyFactory.html">JsCustomStrategyFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.ServiceFactory.html">ServiceFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.ServiceOptionsFactory.html">ServiceOptionsFactory</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.ToolsServiceFactory.html">ToolsServiceFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-764731768"></a>
+                                <a href="../namespaces/AssetsBundle.Mvc.html" style="margin-left: 30px; padding-left: 0">Mvc</a>
+            </div>
+            <div id="namespace-764731768" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-914558097"></a>
+                                <a href="../namespaces/AssetsBundle.Mvc.Controller.html" style="margin-left: 30px; padding-left: 0">Controller</a>
+            </div>
+            <div id="namespace-914558097" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Mvc.Controller.AbstractActionController.html">AbstractActionController</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1348089208"></a>
+                                <a href="../namespaces/AssetsBundle.Service.html" style="margin-left: 30px; padding-left: 0">Service</a>
+            </div>
+            <div id="namespace-1348089208" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Service.Service.html">Service</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Service.ServiceOptions.html">ServiceOptions</a></li>
+                                                    <li class="class"><a href="../classes/AssetsBundle.Service.ToolsService.html">ToolsService</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1873709926"></a>
+                                <a href="../namespaces/AssetsBundle.View.html" style="margin-left: 30px; padding-left: 0">View</a>
+            </div>
+            <div id="namespace-1873709926" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-828346444"></a>
+                                <a href="../namespaces/AssetsBundle.View.Renderer.html" style="margin-left: 30px; padding-left: 0">Renderer</a>
+            </div>
+            <div id="namespace-828346444" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.View.Renderer.JsCustomRenderer.html">JsCustomRenderer</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-663237520"></a>
+                                <a href="../namespaces/AssetsBundle.View.Strategy.html" style="margin-left: 30px; padding-left: 0">Strategy</a>
+            </div>
+            <div id="namespace-663237520" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AssetsBundle.View.Strategy.JsCustomStrategy.html">JsCustomStrategy</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/AssetsBundle.AssetFile.AssetFileFilter.html">\AssetsBundle\AssetFile\AssetFileFilter</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\AssetsBundle\AssetFile\AssetFileFilter</small>LessphpAssetFileFilter</h1>
+                    <p><em></em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#method_setAssetFileFilterName" class="">setAssetFileFilterName()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#method_getAssetFileFilterName" class="">getAssetFileFilterName()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#method_setOptions" class="">setOptions()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#method_getOptions" class="">getOptions()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#method_getCachedFilteredContentFilePath" class="">getCachedFilteredContentFilePath()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#method_getCachedFilteredContent" class="">getCachedFilteredContent()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#method_cacheFilteredAssetFileContent" class="">cacheFilteredAssetFileContent()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#method_getAssetFileFilterProcessedDirPath" class="">getAssetFileFilterProcessedDirPath()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LessphpAssetFileFilter.html#method_filterAssetFile" class="">filterAssetFile()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LessphpAssetFileFilter.html#method_getLessParser" class="">getLessParser()</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LessphpAssetFileFilter.html#method_setLessParser" class="">setLessParser()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LessphpAssetFileFilter.html#property_assetFileFilterName" class="">$assetFileFilterName</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#property_options" class="">$options</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html#property_assetFileFilterProcessedDirPath" class="">$assetFileFilterProcessedDirPath</a><br />
+                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LessphpAssetFileFilter.html#property_lessParser" class="">$lessParser</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/AssetFile.AssetFileFilter.LessphpAssetFileFilter.html"><div class="path-wrapper">AssetFile/AssetFileFilter/LessphpAssetFileFilter.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                                        <div class="namespace-wrapper">\Zend\Stdlib\AbstractOptions</div>
+                                                                    
+                                        <div class="namespace-wrapper"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</a></div>
+                                                                                                    <div class="namespace-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\LessphpAssetFileFilter</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_assetFileFilterName" name="property_assetFileFilterName" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$assetFileFilterName</h3>
+                <pre class="signature">$assetFileFilterName : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_options" name="property_options" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$options</h3>
+                <pre class="signature">$options : \AssetsBundle\Service\ServiceOptions</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_assetFileFilterProcessedDirPath" name="property_assetFileFilterProcessedDirPath" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$assetFileFilterProcessedDirPath</h3>
+                <pre class="signature">$assetFileFilterProcessedDirPath : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_lessParser" name="property_lessParser" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$lessParser</h3>
+                <pre class="signature">$lessParser : \Less_Parser</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                \Less_Parser
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setAssetFileFilterName" name="method_setAssetFileFilterName" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setAssetFileFilterName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setAssetFileFilterName(string  <span class="argument">$sAssetFileFilterName</span>) : \AssetsBundle\Service\Filter\AbstractFilter</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sAssetFileFilterName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\InvalidArgumentException</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    \AssetsBundle\Service\Filter\AbstractFilter
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getAssetFileFilterName" name="method_getAssetFileFilterName" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getAssetFileFilterName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getAssetFileFilterName() : string</pre>
+                <p><em></em></p>
+                
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\LogicException</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setOptions" name="method_setOptions" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setOptions()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setOptions(\AssetsBundle\Service\ServiceOptions  <span class="argument">$oOptions</span>) : \AssetsBundle\Service\Service</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a></td>
+                                <td>$oOptions </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/AssetsBundle.Service.Service.html">\AssetsBundle\Service\Service</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getOptions" name="method_getOptions" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getOptions()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getOptions() : \AssetsBundle\Service\ServiceOptions</pre>
+                <p><em></em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getCachedFilteredContentFilePath" name="method_getCachedFilteredContentFilePath" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getCachedFilteredContentFilePath()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getCachedFilteredContentFilePath(\AssetsBundle\AssetFile\AssetFile  <span class="argument">$oAssetFile</span>) : string</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/AssetsBundle.AssetFile.AssetFile.html">\AssetsBundle\AssetFile\AssetFile</a></td>
+                                <td>$oAssetFile </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getCachedFilteredContent" name="method_getCachedFilteredContent" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getCachedFilteredContent()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getCachedFilteredContent(\AssetsBundle\AssetFile\AssetFile  <span class="argument">$oAssetFile</span>) : boolean|string</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/AssetsBundle.AssetFile.AssetFile.html">\AssetsBundle\AssetFile\AssetFile</a></td>
+                                <td>$oAssetFile </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean|string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_cacheFilteredAssetFileContent" name="method_cacheFilteredAssetFileContent" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">cacheFilteredAssetFileContent()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">cacheFilteredAssetFileContent(\AssetsBundle\AssetFile\AssetFile  <span class="argument">$oAssetFile</span>, string  <span class="argument">$sFilteredContent</span>) : \AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/AssetsBundle.AssetFile.AssetFile.html">\AssetsBundle\AssetFile\AssetFile</a></td>
+                                <td>$oAssetFile </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sFilteredContent </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\InvalidArgumentException</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getAssetFileFilterProcessedDirPath" name="method_getAssetFileFilterProcessedDirPath" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getAssetFileFilterProcessedDirPath()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getAssetFileFilterProcessedDirPath() : string</pre>
+                <p><em></em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html"><div class="path-wrapper">\AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_filterAssetFile" name="method_filterAssetFile" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">filterAssetFile()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">filterAssetFile(\AssetsBundle\AssetFile\AssetFile  <span class="argument">$oAssetFile</span>) : string</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/AssetsBundle.AssetFile.AssetFile.html">\AssetsBundle\AssetFile\AssetFile</a></td>
+                                <td>$oAssetFile </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLessParser" name="method_getLessParser" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getLessParser()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLessParser() : \Less_Parser</pre>
+                <p><em></em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \Less_Parser
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setLessParser" name="method_setLessParser" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setLessParser()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setLessParser(\Less_Parser  <span class="argument">$oParser</span>) : \AssetsBundle\AssetFile\AssetFileFilter\LessphpAssetFileFilter</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Less_Parser</td>
+                                <td>$oParser </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LessphpAssetFileFilter.html">\AssetsBundle\AssetFile\AssetFileFilter\LessphpAssetFileFilter</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">LessphpAssetFileFilter.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/AssetFile/AssetFileFilter/LessphpAssetFileFilter.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/AssetsBundle.html">\AssetsBundle</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on November 5th, 2016 at 20:48.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
