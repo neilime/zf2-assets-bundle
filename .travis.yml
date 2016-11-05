@@ -8,7 +8,7 @@ php:
 
 env:
   global:
-    secure: MlHYK8Q/fLzsVBiYtzFk8yM1Nb1fr2zTPxpatNED5ZdlIjzUkoskmmDnHxCsNhmHuzwNuQWRymwkYK0B8H5MDilhfqNl95PYpuCXIiD471ZaszWILYrPLuSxk2mDbQ/2yRB+bsUL3Ibj50Xk9TGkrkMvEZw3btX0WmxsaMLFDyo=
+    secure: V3Rtx1JDIdkBnwG04BpFwuhFoPn1I78/CCe2HpRAqqauU8TS9qyeiF1xcqkXtSjQDcPwtPTSl+nwzk85SGlQ+AszZh+pPWUQc6WAE7J8egdpMyFtBUppa+A20hFHJmuZPxg4uEyD6LL3xHHGK/X+BFKLhx9vpfO6R7C1BDyOw2Y=
 
 sudo: false
 
