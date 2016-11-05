@@ -25,5 +25,5 @@ script:
 - cd ..
 after_script:
 - php vendor/bin/coveralls --verbose --config
-- vendor/bin/phpdoc -d ./src/AssetsBundle -t ./build/phpdoc
+- vendor/bin/phpdoc -d "./src" -t "./build/phpdoc" --template="responsive-twig"
 - bash ./build/publish_build.sh
