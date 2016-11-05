@@ -12,8 +12,8 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]
 fi
 
 ## Initialize git
-git config user.name "Travis CI"
-git config user.email "$COMMIT_AUTHOR_EMAIL"
+git config --global user.name "Travis CI"
+git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 
 # Save some useful information
 REPO=`git config remote.origin.url`

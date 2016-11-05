@@ -10,6 +10,13 @@ env:
   global:
     secure: MlHYK8Q/fLzsVBiYtzFk8yM1Nb1fr2zTPxpatNED5ZdlIjzUkoskmmDnHxCsNhmHuzwNuQWRymwkYK0B8H5MDilhfqNl95PYpuCXIiD471ZaszWILYrPLuSxk2mDbQ/2yRB+bsUL3Ibj50Xk9TGkrkMvEZw3btX0WmxsaMLFDyo=
 
+sudo: false
+
+# Cache composer bits
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 before_install:
  - mkdir -p ~/.composer
  - cp .travis.composer.json ~/.composer/config.json
