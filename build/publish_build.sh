@@ -31,7 +31,9 @@ git clone --quiet --branch=gh-pages $REPO gh-pages > /dev/null
 cd gh-pages
 
 # Remove old PHPDoc
-git rm -rf ./phpdoc
+if [ -d ./phpdoc ]; then
+    git rm -rf ./phpdoc
+fi
 
 ## Create new PHPDoc directory
 mkdir ./phpdoc
