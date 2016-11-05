@@ -27,9 +27,4 @@ script:
 
 after_script:
  - php vendor/bin/coveralls --verbose --config
-
-script:
-  - vendor/bin/phpdoc.php -d ./src/AssetsBundle -t ./build/phpdoc
-
-after_script:
-  - bash ./build/publish_build.sh
+ - bash ./build/publish_build.sh
