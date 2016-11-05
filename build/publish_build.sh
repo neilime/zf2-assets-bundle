@@ -11,6 +11,10 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]
     exit 0
 fi
 
+## Initialize git
+git config user.name "Travis CI"
+git config user.email "$COMMIT_AUTHOR_EMAIL"
+
 # Save some useful information
 REPO=`git config remote.origin.url`
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
@@ -21,10 +25,7 @@ echo -e "Publishing PHPDoc...\n"
 # Copy generated doc into $HOME
 cp -R build/phpdoc $HOME/phpdoc
 
-## Initialize and retrieve branch gh-pages
-git config user.name "Travis CI"
-git config user.email "$COMMIT_AUTHOR_EMAIL"
-
+#  Retrieve branch gh-pages
 cd $HOME
 git clone --quiet --branch=gh-pages $REPO gh-pages > /dev/null
 
