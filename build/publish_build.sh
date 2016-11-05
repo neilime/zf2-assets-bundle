@@ -15,11 +15,6 @@ fi
 git config --global user.name "neilime"
 git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 
-# Save some useful information
-REPO=`git config remote.origin.url`
-SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
-SHA=`git rev-parse --verify HEAD`
-
 echo -e "1. Publishing PHPDoc\n"
 
 # Copy generated doc into $HOME
@@ -28,7 +23,7 @@ cp -R build/phpdoc $HOME/phpdoc
 #  Retrieve branch gh-pages
 echo -e " * Retrieve branch gh-pages"
 cd $HOME
-git clone --quiet --branch=gh-pages $REPO gh-pages > /dev/null
+git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG} gh-pages > /dev/null
 cd gh-pages
 
 # Remove old PHPDoc

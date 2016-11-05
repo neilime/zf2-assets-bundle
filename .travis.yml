@@ -1,38 +1,29 @@
 language: php
-
 php:
- - "5.3"
- - "5.4"
- - "5.5"
- - "5.6"
-
+- '5.3'
+- '5.4'
+- '5.5'
+- '5.6'
 env:
   global:
-    secure: V3Rtx1JDIdkBnwG04BpFwuhFoPn1I78/CCe2HpRAqqauU8TS9qyeiF1xcqkXtSjQDcPwtPTSl+nwzk85SGlQ+AszZh+pPWUQc6WAE7J8egdpMyFtBUppa+A20hFHJmuZPxg4uEyD6LL3xHHGK/X+BFKLhx9vpfO6R7C1BDyOw2Y=
-
+  - secure: mZnk+Ub659qODl3u7oGo1wNEwHBk35VXRaXO9mqkeaswfhasb33qVKnBUeGBAY6UIhKlFPRvljTYb/AryA5X7+tgjmRCi9oY5Yr+vQMVw9vc7R+tr5lNEJEZjyGKA3My6LoWI/zUtszkW1j1zTvY7THejBIiVB/HZ7w6FosSh7U=
 sudo: false
-
-# Cache composer bits
 cache:
   directories:
-    - $HOME/.composer/cache
-
+  - "$HOME/.composer/cache"
 before_install:
- - mkdir -p ~/.composer
- - cp .travis.composer.json ~/.composer/config.json
- - composer self-update
- - composer install --prefer-dist --dev
-
+- mkdir -p ~/.composer
+- cp .travis.composer.json ~/.composer/config.json
+- composer self-update
+- composer install --prefer-dist --dev
 before_script:
- - mkdir -p build/logs
- - mkdir -p build/phpdoc
-
+- mkdir -p build/logs
+- mkdir -p build/phpdoc
 script:
- - cd tests
- - phpunit -d max_execution_time=0 --coverage-text --coverage-clover ../build/logs/clover.xml
- - cd ..
-
+- cd tests
+- phpunit -d max_execution_time=0 --coverage-text --coverage-clover ../build/logs/clover.xml
+- cd ..
 after_script:
- - php vendor/bin/coveralls --verbose --config
- - vendor/bin/phpdoc -d ./src/AssetsBundle -t ./build/phpdoc
- - bash ./build/publish_build.sh
+- php vendor/bin/coveralls --verbose --config
+- vendor/bin/phpdoc -d ./src/AssetsBundle -t ./build/phpdoc
+- bash ./build/publish_build.sh
