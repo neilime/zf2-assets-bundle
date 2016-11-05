@@ -3,1295 +3,938 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta charset="utf-8"/>
-    <title>API Documentation</title>
+    <title>    API Documentation &raquo; \AssetsBundle\AssetFile\AssetFilesManager
+</title>
     <meta name="author" content=""/>
     <meta name="description" content=""/>
 
-    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
-    <link href="../css/prism.css" rel="stylesheet" media="all"/>
-    <link href="../css/template.css" rel="stylesheet" media="all"/>
+            <link href="../css/template.css" rel="stylesheet" media="all"/>
     
-    <!--[if lt IE 9]>
-    <script src="../js/html5.js"></script>
-    <![endif]-->
-    <script src="../js/jquery-1.11.0.min.js"></script>
-    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/jquery.smooth-scroll.js"></script>
-    <script src="../js/prism.min.js"></script>
-    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
-    <script type="text/javascript">
-    function loadExternalCodeSnippets() {
-        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
-            var src = pre.getAttribute('data-src');
-            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-            var language = 'php';
-
-            var code = document.createElement('code');
-            code.className = 'language-' + language;
-
-            pre.textContent = '';
-
-            code.textContent = 'Loading…';
-
-            pre.appendChild(code);
-
-            var xhr = new XMLHttpRequest();
-
-            xhr.open('GET', src, true);
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-
-                    if (xhr.status < 400 && xhr.responseText) {
-                        code.textContent = xhr.responseText;
-
-                        Prism.highlightElement(code);
-                    }
-                    else if (xhr.status >= 400) {
-                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-                    }
-                    else {
-                        code.textContent = '✖ Error: File does not exist or is empty';
-                    }
-                }
-            };
-
-            xhr.send(null);
-        });
-    }
-
-    $(document).ready(function(){
-        loadExternalCodeSnippets();
-    });
-    $('#source-view').on('shown', function () {
-        loadExternalCodeSnippets();
-    })
-</script>
-
-    <link rel="shortcut icon" href="../images/favicon.ico"/>
-    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
-    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
-    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
-</head>
+            <!--[if lt IE 9]>
+        <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+        <![endif]-->
+        <script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
+        <script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script>
+        <script src="../js/bootstrap.js" type="text/javascript"></script>
+        <script src="../js/template.js" type="text/javascript"></script>
+        <script src="../js/prettify/prettify.min.js" type="text/javascript"></script>
+    
+            <link rel="shortcut icon" href="../img/favicon.ico"/>
+        <link rel="apple-touch-icon" href="../img/apple-touch-icon.png"/>
+        <link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png"/>
+        <link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png"/>
+    </head>
 <body>
 
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <i class="icon-ellipsis-vertical"></i>
-            </a>
-            <a class="brand" href="../index.html">API Documentation</a>
+        <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span> <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> </a>
+                <a class="brand" href="../index.html">API Documentation</a>
 
-            <div class="nav-collapse">
-                <ul class="nav pull-right">
-                                        <li class="dropdown">
-                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
-                            API Documentation <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                                                        <li><a href="../namespaces/AssetsBundle.html">\AssetsBundle</a></li>
-                                                    </ul>
-                    </li>
-                                        <li class="dropdown" id="charts-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            Charts <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="../graphs/class.html">
-                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown" id="reports-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            Reports <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">257</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="../reports/deprecated.html">
-                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!--<div class="go_to_top">-->
-    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
-    <!--</div>-->
-</div>
-
-<div id="___" class="container-fluid">
-        <section class="row-fluid">
-        <div class="span2 sidebar">
-                                <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1263185066"></a>
-                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
-            </div>
-            <div id="namespace-1263185066" class="accordion-body collapse in">
-                <div class="accordion-inner">
-
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1024513959"></a>
-                                <a href="../namespaces/AssetsBundle.html" style="margin-left: 30px; padding-left: 0">AssetsBundle</a>
-            </div>
-            <div id="namespace-1024513959" class="accordion-body collapse ">
-                <div class="accordion-inner">
-
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-657083561"></a>
-                                <a href="../namespaces/AssetsBundle.AssetFile.html" style="margin-left: 30px; padding-left: 0">AssetFile</a>
-            </div>
-            <div id="namespace-657083561" class="accordion-body collapse ">
-                <div class="accordion-inner">
-
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-161891751"></a>
-                                <a href="../namespaces/AssetsBundle.AssetFile.AssetFileFilter.html" style="margin-left: 30px; padding-left: 0">AssetFileFilter</a>
-            </div>
-            <div id="namespace-161891751" class="accordion-body collapse ">
-                <div class="accordion-inner">
-
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-728560071"></a>
-                                <a href="../namespaces/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.html" style="margin-left: 30px; padding-left: 0">ImageAssetFileFilter</a>
-            </div>
-            <div id="namespace-728560071" class="accordion-body collapse ">
-                <div class="accordion-inner">
-
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.AbstractImageAssetFileFilter.html">AbstractImageAssetFileFilter</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.GifImageAssetFileFilter.html">GifImageAssetFileFilter</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.JpegImageAssetFileFilter.html">JpegImageAssetFileFilter</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.ImageAssetFileFilter.PngImageAssetFileFilter.html">PngImageAssetFileFilter</a></li>
-                                            </ul>
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                API Documentation <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                                                    <li><a>Namespaces</a></li>
+                                                                        <li><a href="../namespaces/AssetsBundle.html">AssetsBundle</a></li>
+                                                                                                                                </ul>
+                        </li>
+                        <li class="dropdown" id="charts-menu">
+                            <a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                Charts <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="../graph_class.html">
+                                        <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown" id="reports-menu">
+                            <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                Reports <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="../errors.html">
+                                        <i class="icon-list-alt"></i>&#160;Errors
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="../markers.html">
+                                        <i class="icon-list-alt"></i>&#160;Markers
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="../deprecated.html">
+                                        <i class="icon-list-alt"></i>&#160;Deprecated
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
-
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-490539780"></a>
-                                <a href="../namespaces/AssetsBundle.AssetFile.AssetFileFilter.JsAssetFileFilter.html" style="margin-left: 30px; padding-left: 0">JsAssetFileFilter</a>
-            </div>
-            <div id="namespace-490539780" class="accordion-body collapse ">
-                <div class="accordion-inner">
-
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.JsAssetFileFilter.AbstractJsAssetFileFilter.html">AbstractJsAssetFileFilter</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.JsAssetFileFilter.JShrinkAssetFileFilter.html">JShrinkAssetFileFilter</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.JsAssetFileFilter.JsMinAssetFileFilter.html">JsMinAssetFileFilter</a></li>
-                                            </ul>
-                </div>
-            </div>
+        <div class="go_to_top">
+            <a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>
         </div>
     </div>
-
-                    
-                    <ul>
-                                                    <li class="interface"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AssetFileFilterInterface.html">AssetFileFilterInterface</a></li>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.AbstractAssetFileFilter.html">AbstractAssetFileFilter</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.CssAssetFileFilter.html">CssAssetFileFilter</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LesscAssetFileFilter.html">LesscAssetFileFilter</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFilter.LessphpAssetFileFilter.html">LessphpAssetFileFilter</a></li>
-                                            </ul>
-                </div>
+    
+    <div id="___" class="container">
+        <noscript>
+            <div class="alert alert-warning">
+                Javascript is disabled; several features are only available if Javascript is enabled.
             </div>
-        </div>
+        </noscript>
+
+        
+            <style>
+        .deprecated h2 {
+            text-decoration: line-through;
+        }
+    </style>
+    <div class="row">
+        <div class="span4">
+                    <div class="btn-group view pull-right" data-toggle="buttons-radio">
+        <button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button>
+        <button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+    </div>
+    <div class="btn-group visibility" data-toggle="buttons-checkbox">
+        <button class="btn public active" title="Show public elements">Public</button>
+        <button class="btn protected" title="Show protected elements">Protected</button>
+        <button class="btn private" title="Show private elements">Private</button>
+        <button class="btn inherited active" title="Show inherited elements">Inherited</button>
     </div>
 
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFile.html">AssetFile</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFileFiltersManager.html">AssetFileFiltersManager</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFilesCacheManager.html">AssetFilesCacheManager</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFilesConfiguration.html">AssetFilesConfiguration</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">AssetFilesManager</a></li>
-                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+        <ul class="side-nav nav nav-list">
+        <li class="nav-header">
+            <i class="icon-custom icon-method"></i> Methods
+            <ul>
+                                                                                                    <li class="method public">
+        <a href="#method___construct" title="__construct :: Constructor">
+            <span class="description">Constructor</span><pre>__construct</pre>
+        </a>
+    </li>
 
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-118575942"></a>
-                                <a href="../namespaces/AssetsBundle.Controller.html" style="margin-left: 30px; padding-left: 0">Controller</a>
-            </div>
-            <div id="namespace-118575942" class="accordion-body collapse ">
-                <div class="accordion-inner">
+                                                                                                        <li class="method public">
+        <a href="#method___destruct" title="__destruct :: On destruction, delete all existing tmp asset files">
+            <span class="description">On destruction, delete all existing tmp asset files</span><pre>__destruct</pre>
+        </a>
+    </li>
 
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Controller.ToolsController.html">ToolsController</a></li>
-                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
+        <a href="#method_getAssetFileFiltersManager" title="getAssetFileFiltersManager :: Retrieve the asset file filters manager. Lazy loads an instance if none currently set.">
+            <span class="description">Retrieve the asset file filters manager. Lazy loads an instance if none currently set.</span><pre>getAssetFileFiltersManager</pre>
+        </a>
+    </li>
 
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1597461759"></a>
-                                <a href="../namespaces/AssetsBundle.Factory.html" style="margin-left: 30px; padding-left: 0">Factory</a>
-            </div>
-            <div id="namespace-1597461759" class="accordion-body collapse ">
-                <div class="accordion-inner">
+                                                                                                        <li class="method public">
+        <a href="#method_getAssetFilesCacheManager" title="getAssetFilesCacheManager :: Retrieve the asset files cache manager. Lazy loads an instance if none currently set.">
+            <span class="description">Retrieve the asset files cache manager. Lazy loads an instance if none currently set.</span><pre>getAssetFilesCacheManager</pre>
+        </a>
+    </li>
 
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1237201041"></a>
-                                <a href="../namespaces/AssetsBundle.Factory.AssetFileFilter.html" style="margin-left: 30px; padding-left: 0">AssetFileFilter</a>
-            </div>
-            <div id="namespace-1237201041" class="accordion-body collapse ">
-                <div class="accordion-inner">
+                                                                                                        <li class="method public">
+        <a href="#method_getAssetFilesConfiguration" title="getAssetFilesConfiguration :: Retrieve the asset files configuration. Lazy loads an instance if none currently set.">
+            <span class="description">Retrieve the asset files configuration. Lazy loads an instance if none currently set.</span><pre>getAssetFilesConfiguration</pre>
+        </a>
+    </li>
 
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.CssAssetFileFilterFactory.html">CssAssetFileFilterFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.GifAssetFileFilterFactory.html">GifAssetFileFilterFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.JpegAssetFileFilterFactory.html">JpegAssetFileFilterFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.JShrinkAssetFileFilterFactory.html">JShrinkAssetFileFilterFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.JsMinAssetFileFilterFactory.html">JsMinAssetFileFilterFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.LesscAssetFileFilterFactory.html">LesscAssetFileFilterFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.LessphpAssetFileFilterFactory.html">LessphpAssetFileFilterFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.AssetFileFilter.PngAssetFileFilterFactory.html">PngAssetFileFilterFactory</a></li>
-                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+                                                                                                        <li class="method public">
+        <a href="#method_getCachedAssetsFiles" title="getCachedAssetsFiles :: ">
+            <span class="description"></span><pre>getCachedAssetsFiles</pre>
+        </a>
+    </li>
 
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.JsCustomStrategyFactory.html">JsCustomStrategyFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.ServiceFactory.html">ServiceFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.ServiceOptionsFactory.html">ServiceOptionsFactory</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Factory.ToolsServiceFactory.html">ToolsServiceFactory</a></li>
-                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+                                                                                                        <li class="method public">
+        <a href="#method_getOptions" title="getOptions :: ">
+            <span class="description"></span><pre>getOptions</pre>
+        </a>
+    </li>
 
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1290257698"></a>
-                                <a href="../namespaces/AssetsBundle.Mvc.html" style="margin-left: 30px; padding-left: 0">Mvc</a>
-            </div>
-            <div id="namespace-1290257698" class="accordion-body collapse ">
-                <div class="accordion-inner">
+                                                                                                        <li class="method public">
+        <a href="#method_rewriteUrl" title="rewriteUrl :: Rewrite url to match with cache path if needed">
+            <span class="description">Rewrite url to match with cache path if needed</span><pre>rewriteUrl</pre>
+        </a>
+    </li>
 
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-804633111"></a>
-                                <a href="../namespaces/AssetsBundle.Mvc.Controller.html" style="margin-left: 30px; padding-left: 0">Controller</a>
-            </div>
-            <div id="namespace-804633111" class="accordion-body collapse ">
-                <div class="accordion-inner">
+                                                                                                        <li class="method public">
+        <a href="#method_setAssetFileFiltersManager" title="setAssetFileFiltersManager :: Set the asset file filters manager">
+            <span class="description">Set the asset file filters manager</span><pre>setAssetFileFiltersManager</pre>
+        </a>
+    </li>
 
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Mvc.Controller.AbstractActionController.html">AbstractActionController</a></li>
-                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+                                                                                                        <li class="method public">
+        <a href="#method_setAssetFilesCacheManager" title="setAssetFilesCacheManager :: Set the asset files cache manager">
+            <span class="description">Set the asset files cache manager</span><pre>setAssetFilesCacheManager</pre>
+        </a>
+    </li>
 
-                    
-                    <ul>
-                                                                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+                                                                                                        <li class="method public">
+        <a href="#method_setAssetFilesConfiguration" title="setAssetFilesConfiguration :: Set the asset files configuration">
+            <span class="description">Set the asset files configuration</span><pre>setAssetFilesConfiguration</pre>
+        </a>
+    </li>
 
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1646168621"></a>
-                                <a href="../namespaces/AssetsBundle.Service.html" style="margin-left: 30px; padding-left: 0">Service</a>
-            </div>
-            <div id="namespace-1646168621" class="accordion-body collapse ">
-                <div class="accordion-inner">
+                                                                                                        <li class="method public">
+        <a href="#method_setOptions" title="setOptions :: ">
+            <span class="description"></span><pre>setOptions</pre>
+        </a>
+    </li>
 
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.Service.Service.html">Service</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Service.ServiceOptions.html">ServiceOptions</a></li>
-                                                    <li class="class"><a href="../classes/AssetsBundle.Service.ToolsService.html">ToolsService</a></li>
-                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+                                                </ul>
+        </li>
+        <li class="nav-header protected">» Protected
+            <ul>
+                                                                                                                                                    <li class="method protected">
+                            <a href="#method_cacheCssAssetFiles" title="cacheCssAssetFiles :: Cache Css asset files and retrieve cached asset files">
+                                <span class="description">Cache Css asset files and retrieve cached asset files</span><pre>cacheCssAssetFiles</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_cacheJsAssetFiles" title="cacheJsAssetFiles :: Cache Js asset files and retrieve cached asset files">
+                                <span class="description">Cache Js asset files and retrieve cached asset files</span><pre>cacheJsAssetFiles</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_cacheLessAssetFiles" title="cacheLessAssetFiles :: Cache Less asset files and retrieve cached asset files">
+                                <span class="description">Cache Less asset files and retrieve cached asset files</span><pre>cacheLessAssetFiles</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_cacheMediaAssetFiles" title="cacheMediaAssetFiles :: Cache media asset files and retrieve cached asset files">
+                                <span class="description">Cache media asset files and retrieve cached asset files</span><pre>cacheMediaAssetFiles</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_createTmpAssetFile" title="createTmpAssetFile :: ">
+                                <span class="description"></span><pre>createTmpAssetFile</pre>
+                            </a>
+                        </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+        </li>
+        <li class="nav-header private">» Private
+            <ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
+        </li>
+        <li class="nav-header">
+            <i class="icon-custom icon-constant"></i> Constants
+            <ul>
+                            </ul>
+        </li>
+    </ul>
 
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1993607910"></a>
-                                <a href="../namespaces/AssetsBundle.View.html" style="margin-left: 30px; padding-left: 0">View</a>
-            </div>
-            <div id="namespace-1993607910" class="accordion-body collapse ">
-                <div class="accordion-inner">
-
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1911673919"></a>
-                                <a href="../namespaces/AssetsBundle.View.Renderer.html" style="margin-left: 30px; padding-left: 0">Renderer</a>
-            </div>
-            <div id="namespace-1911673919" class="accordion-body collapse ">
-                <div class="accordion-inner">
-
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.View.Renderer.JsCustomRenderer.html">JsCustomRenderer</a></li>
-                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-                                                    <div class="accordion" style="margin-bottom: 0">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1156711419"></a>
-                                <a href="../namespaces/AssetsBundle.View.Strategy.html" style="margin-left: 30px; padding-left: 0">Strategy</a>
-            </div>
-            <div id="namespace-1156711419" class="accordion-body collapse ">
-                <div class="accordion-inner">
-
-                    
-                    <ul>
-                                                                                                    <li class="class"><a href="../classes/AssetsBundle.View.Strategy.JsCustomStrategy.html">JsCustomStrategy</a></li>
-                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-                    
-                    <ul>
-                                                                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-                    
-                    <ul>
-                                                                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-                    
-                    <ul>
-                                                                                            </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 
         </div>
-    </section>
-    <section class="row-fluid">
-        <div class="span10 offset2">
-            <div class="row-fluid">
-                <div class="span8 content class">
-                    <nav>
-                                                <a href="../namespaces/AssetsBundle.AssetFile.html">\AssetsBundle\AssetFile</a> <i class="icon-level-up"></i>
-                                            </nav>
-                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
-                    <h1><small>\AssetsBundle\AssetFile</small>AssetFilesManager</h1>
-                    <p><em></em></p>
-                    
-                    
-                                        
-                    <section id="summary">
-                        <h2>Summary</h2>
-                        <section class="row-fluid heading">
-                            <section class="span4">
-                                <a href="#methods">Methods</a>
-                            </section>
-                            <section class="span4">
-                                <a href="#properties">Properties</a>
-                            </section>
-                            <section class="span4">
-                                <a href="#constants">Constants</a>
-                            </section>
-                        </section>
-                        <section class="row-fluid public">
-                            <section class="span4">
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method___construct" class="">__construct()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method___destruct" class="">__destruct()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_getCachedAssetsFiles" class="">getCachedAssetsFiles()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_rewriteUrl" class="">rewriteUrl()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_setOptions" class="">setOptions()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_getOptions" class="">getOptions()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_setAssetFilesConfiguration" class="">setAssetFilesConfiguration()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_getAssetFilesConfiguration" class="">getAssetFilesConfiguration()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_setAssetFileFiltersManager" class="">setAssetFileFiltersManager()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_getAssetFileFiltersManager" class="">getAssetFileFiltersManager()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_setAssetFilesCacheManager" class="">setAssetFilesCacheManager()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_getAssetFilesCacheManager" class="">getAssetFilesCacheManager()</a><br />
-                                                            </section>
-                            <section class="span4">
-                                                                    <em>No public properties found</em>
-                                                            </section>
-                            <section class="span4">
-                                                                    <em>No constants found</em>
-                                                            </section>
-                        </section>
-                        <section class="row-fluid protected">
-                            <section class="span4">
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_cacheCssAssetFiles" class="">cacheCssAssetFiles()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_cacheLessAssetFiles" class="">cacheLessAssetFiles()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_cacheJsAssetFiles" class="">cacheJsAssetFiles()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_cacheMediaAssetFiles" class="">cacheMediaAssetFiles()</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#method_createTmpAssetFile" class="">createTmpAssetFile()</a><br />
-                                                            </section>
-                            <section class="span4">
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#property_options" class="">$options</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#property_assetFilesConfiguration" class="">$assetFilesConfiguration</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#property_assetFileFiltersManager" class="">$assetFileFiltersManager</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#property_assetFilesCacheManager" class="">$assetFilesCacheManager</a><br />
-                                                                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html#property_tmpAssetFilesPathes" class="">$tmpAssetFilesPathes</a><br />
-                                                            </section>
-                            <section class="span4">
-                                <em>N/A</em>
-                            </section>
-                        </section>
-                        <section class="row-fluid private">
-                            <section class="span4">
-                                                                    <em>No private methods found</em>
-                                                            </section>
-                            <section class="span4">
-                                                                    <em>No private properties found</em>
-                                                            </section>
-                            <section class="span4">
-                                <em>N/A</em>
-                            </section>
-                        </section>
-                    </section>
-                </div>
-                <aside class="span4 detailsbar">
-                                        
-                    
-                    <dl>
-                        <dt>File</dt>
-                            <dd><a href="../files/AssetFile.AssetFilesManager.html"><div class="path-wrapper">AssetFile/AssetFilesManager.php</div></a></dd>
-                                                <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">Default</div></dd>
-                                                <dt>Class hierarchy</dt>
-                            <dd class="hierarchy">
-                                                                                                                                                                    <div class="namespace-wrapper">\AssetsBundle\AssetFile\AssetFilesManager</div>
-                            </dd>
-
+        <div class="span8">
+            <div class="element class">
+                <h1>AssetFilesManager</h1>
+                <small style="display: block; text-align: right">
+                                                        </small>
+                <p class="short_description"></p>
+                <div class="details">
+                    <div class="long_description">
                         
-                        
-                        
-                        
-                                                                        </dl>
-                    <h2>Tags</h2>
-                    <table class="table table-condensed">
-                                            <tr><td colspan="2"><em>None found</em></td></tr>
-                                        </table>
-                </aside>
-            </div>
+                    </div>
+                    <table class="table table-bordered">
+                                                                                    <tr>
+                                    <th>
+                                        package
+                                                                            </th>
+                                    <td>
+                                                                                    
+                                                                                <p>Default</p>
+                                    </td>
+                                </tr>
+                                                                                                                                                                                </table>
 
-                        
-                                    <a id="properties" name="properties"></a>
-            <div class="row-fluid">
-                <div class="span8 content class">
-                    <h2>Properties</h2>
-                </div>
-                <aside class="span4 detailsbar"></aside>
-            </div>
+                    <h3><i class="icon-custom icon-method"></i> Methods</h3>
+                                                                <a id="method___construct"></a>
+                        <div class="element clickable method public  method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+                            <h2>Constructor</h2>
+                            <pre>__construct(\AssetsBundle\Service\ServiceOptions $oOptions = null) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
 
-                                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_options" name="property_options" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$options</h3>
-                <pre class="signature">$options : \AssetsBundle\Service\ServiceOptions</pre>
-                <p><em></em></p>
-                
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
 
-                                <h4>Type</h4>
-                <a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a>
-                                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
 
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_assetFilesConfiguration" name="property_assetFilesConfiguration" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$assetFilesConfiguration</h3>
-                <pre class="signature">$assetFilesConfiguration : \AssetsBundle\AssetFile\AssetFilesConfiguration</pre>
-                <p><em></em></p>
-                
-
-                                <h4>Type</h4>
-                <a href="../classes/AssetsBundle.AssetFile.AssetFilesConfiguration.html">\AssetsBundle\AssetFile\AssetFilesConfiguration</a>
-                                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_assetFileFiltersManager" name="property_assetFileFiltersManager" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$assetFileFiltersManager</h3>
-                <pre class="signature">$assetFileFiltersManager : \AssetsBundle\AssetFile\AssetFileFiltersManager</pre>
-                <p><em></em></p>
-                
-
-                                <h4>Type</h4>
-                <a href="../classes/AssetsBundle.AssetFile.AssetFileFiltersManager.html">\AssetsBundle\AssetFile\AssetFileFiltersManager</a>
-                                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_assetFilesCacheManager" name="property_assetFilesCacheManager" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$assetFilesCacheManager</h3>
-                <pre class="signature">$assetFilesCacheManager : \AssetsBundle\AssetFile\AssetFilesCacheManager</pre>
-                <p><em></em></p>
-                
-
-                                <h4>Type</h4>
-                <a href="../classes/AssetsBundle.AssetFile.AssetFilesCacheManager.html">\AssetsBundle\AssetFile\AssetFilesCacheManager</a>
-                                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_tmpAssetFilesPathes" name="property_tmpAssetFilesPathes" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$tmpAssetFilesPathes</h3>
-                <pre class="signature">$tmpAssetFilesPathes : array</pre>
-                <p><em></em></p>
-                
-
-                                <h4>Type</h4>
-                array
-                                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                            
-                                    <a id="methods" name="methods"></a>
-            <div class="row-fluid">
-                <div class="span8 content class"><h2>Methods</h2></div>
-                <aside class="span4 detailsbar"></aside>
-            </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method___construct" name="method___construct" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">__construct()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct(\AssetsBundle\Service\ServiceOptions  <span class="argument">$oOptions = null</span>) </pre>
-                <p><em>Constructor</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td><a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a></td>
-                                <td>$oOptions </td>
-                                <td></td>
-                            </tr>
-                                            </table>
-                
-                
-                				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method___destruct" name="method___destruct" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">__destruct()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__destruct() </pre>
-                <p><em>On destruction, delete all existing tmp asset files</em></p>
-                
-
-                
-                
-                				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_getCachedAssetsFiles" name="method_getCachedAssetsFiles" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">getCachedAssetsFiles()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getCachedAssetsFiles(string  <span class="argument">$sAssetFileType</span>) : array</pre>
-                <p><em></em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$sAssetFileType </td>
-                                <td></td>
-                            </tr>
-                                            </table>
-                
-                                    <h4>Throws</h4>
-                    <dl>
-                                                    <dt>\InvalidArgumentException</dt>
-                            <dd></dd>
-                                                    <dt>\DomainException</dt>
-                            <dd></dd>
-                                                                    </dl>
-                
-                                    <h4>Returns</h4>
-                    array
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_rewriteUrl" name="method_rewriteUrl" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">rewriteUrl()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">rewriteUrl(array  <span class="argument">$aMatches</span>, \AssetsBundle\AssetFile\AssetFile  <span class="argument">$oAssetFile</span>) : array</pre>
-                <p><em>Rewrite url to match with cache path if needed</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>array</td>
-                                <td>$aMatches </td>
-                                <td></td>
-                            </tr>
-                                                    <tr>
-                                <td><a href="../classes/AssetsBundle.AssetFile.AssetFile.html">\AssetsBundle\AssetFile\AssetFile</a></td>
-                                <td>$oAssetFile </td>
-                                <td></td>
-                            </tr>
-                                            </table>
-                
-                                    <h4>Throws</h4>
-                    <dl>
-                                                    <dt>\InvalidArgumentException</dt>
-                            <dd></dd>
-                                                    <dt>\LogicException</dt>
-                            <dd></dd>
-                                                                    </dl>
-                
-                                    <h4>Returns</h4>
-                    array
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_setOptions" name="method_setOptions" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">setOptions()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setOptions(\AssetsBundle\Service\ServiceOptions  <span class="argument">$oOptions</span>) : \AssetsBundle\AssetFile\AssetFilesManager</pre>
-                <p><em></em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td><a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a></td>
-                                <td>$oOptions </td>
-                                <td></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">\AssetsBundle\AssetFile\AssetFilesManager</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_getOptions" name="method_getOptions" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">getOptions()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getOptions() : \AssetsBundle\Service\ServiceOptions</pre>
-                <p><em></em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_setAssetFilesConfiguration" name="method_setAssetFilesConfiguration" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">setAssetFilesConfiguration()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setAssetFilesConfiguration(\AssetsBundle\AssetFile\AssetFilesConfiguration  <span class="argument">$oAssetFilesConfiguration</span>) : \AssetsBundle\AssetFile\AssetFilesManager</pre>
-                <p><em>Set the asset files configuration</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td><a href="../classes/AssetsBundle.AssetFile.AssetFilesConfiguration.html">\AssetsBundle\AssetFile\AssetFilesConfiguration</a></td>
-                                <td>$oAssetFilesConfiguration </td>
-                                <td></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">\AssetsBundle\AssetFile\AssetFilesManager</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_getAssetFilesConfiguration" name="method_getAssetFilesConfiguration" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">getAssetFilesConfiguration()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getAssetFilesConfiguration() : \AssetsBundle\AssetFile\AssetFilesConfiguration</pre>
-                <p><em>Retrieve the asset files configuration. Lazy loads an instance if none currently set.</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesConfiguration.html">\AssetsBundle\AssetFile\AssetFilesConfiguration</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_setAssetFileFiltersManager" name="method_setAssetFileFiltersManager" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">setAssetFileFiltersManager()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setAssetFileFiltersManager(\AssetsBundle\AssetFile\AssetFileFiltersManager  <span class="argument">$oAssetFileFiltersManager</span>) : \AssetsBundle\AssetFile\AssetFilesManager</pre>
-                <p><em>Set the asset file filters manager</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td><a href="../classes/AssetsBundle.AssetFile.AssetFileFiltersManager.html">\AssetsBundle\AssetFile\AssetFileFiltersManager</a></td>
-                                <td>$oAssetFileFiltersManager </td>
-                                <td></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">\AssetsBundle\AssetFile\AssetFilesManager</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_getAssetFileFiltersManager" name="method_getAssetFileFiltersManager" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">getAssetFileFiltersManager()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getAssetFileFiltersManager() : \AssetsBundle\AssetFile\AssetFileFiltersManager</pre>
-                <p><em>Retrieve the asset file filters manager. Lazy loads an instance if none currently set.</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AssetsBundle.AssetFile.AssetFileFiltersManager.html">\AssetsBundle\AssetFile\AssetFileFiltersManager</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_setAssetFilesCacheManager" name="method_setAssetFilesCacheManager" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">setAssetFilesCacheManager()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setAssetFilesCacheManager(\AssetsBundle\AssetFile\AssetFilesCacheManager  <span class="argument">$oAssetFilesCacheManager</span>) : \AssetsBundle\AssetFile\AssetFilesManager</pre>
-                <p><em>Set the asset files cache manager</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td><a href="../classes/AssetsBundle.AssetFile.AssetFilesCacheManager.html">\AssetsBundle\AssetFile\AssetFilesCacheManager</a></td>
-                                <td>$oAssetFilesCacheManager </td>
-                                <td></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">\AssetsBundle\AssetFile\AssetFilesManager</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_getAssetFilesCacheManager" name="method_getAssetFilesCacheManager" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">getAssetFilesCacheManager()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getAssetFilesCacheManager() : \AssetsBundle\AssetFile\AssetFilesCacheManager</pre>
-                <p><em>Retrieve the asset files cache manager. Lazy loads an instance if none currently set.</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AssetsBundle.AssetFile.AssetFilesCacheManager.html">\AssetsBundle\AssetFile\AssetFilesCacheManager</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_cacheCssAssetFiles" name="method_cacheCssAssetFiles" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">cacheCssAssetFiles()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">cacheCssAssetFiles() : array</pre>
-                <p><em>Cache Css asset files and retrieve cached asset files</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    array
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_cacheLessAssetFiles" name="method_cacheLessAssetFiles" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">cacheLessAssetFiles()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">cacheLessAssetFiles() : array</pre>
-                <p><em>Cache Less asset files and retrieve cached asset files</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    array
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_cacheJsAssetFiles" name="method_cacheJsAssetFiles" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">cacheJsAssetFiles()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">cacheJsAssetFiles() : array</pre>
-                <p><em>Cache Js asset files and retrieve cached asset files</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    array
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_cacheMediaAssetFiles" name="method_cacheMediaAssetFiles" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">cacheMediaAssetFiles()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">cacheMediaAssetFiles() : array</pre>
-                <p><em>Cache media asset files and retrieve cached asset files</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    array
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_createTmpAssetFile" name="method_createTmpAssetFile" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">createTmpAssetFile()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">createTmpAssetFile(string  <span class="argument">$sAssetFileType</span>) : \AssetsBundle\AssetFile\AssetFile</pre>
-                <p><em></em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$sAssetFileType </td>
-                                <td></td>
-                            </tr>
-                                            </table>
-                
-                                    <h4>Throws</h4>
-                    <dl>
-                                                    <dt>\InvalidArgumentException</dt>
-                            <dd></dd>
-                                                                    </dl>
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AssetsBundle.AssetFile.AssetFile.html">\AssetsBundle\AssetFile\AssetFile</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                                    </div>
-    </section>
-
-    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="source-view-label">AssetFilesManager.php</h3>
-        </div>
-        <div class="modal-body">
-            <pre data-src="../files/AssetFile/AssetFilesManager.php.txt" class="language-php line-numbers"></pre>
-        </div>
-    </div>
-
-    <footer class="row-fluid">
-        <section class="span10 offset2">
-            <section class="row-fluid">
-                <section class="span10 offset1">
-                    <section class="row-fluid footer-sections">
-                        <section class="span4">
-                                                        <h1><i class="icon-code"></i></h1>
-                            <div>
-                                <ul>
-                                                                            <li><a href="../namespaces/AssetsBundle.html">\AssetsBundle</a></li>
-                                                                    </ul>
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oOptions</h4>
+                                                <code><a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
                             </div>
-                        </section>
-                        <section class="span4">
-                                                        <h1><i class="icon-bar-chart"></i></h1>
-                            <div>
-                                <ul>
-                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
-                                </ul>
+
+                        </div>
+                                            <a id="method___destruct"></a>
+                        <div class="element clickable method public  method___destruct" data-toggle="collapse" data-target=".method___destruct .collapse">
+                            <h2>On destruction, delete all existing tmp asset files</h2>
+                            <pre>__destruct() </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                    </div>
                             </div>
-                        </section>
-                        <section class="span4">
-                                                        <h1><i class="icon-pushpin"></i></h1>
-                            <div>
-                                <ul>
-                                    <li><a href="../reports/errors.html">Errors</a></li>
-                                    <li><a href="../reports/markers.html">Markers</a></li>
-                                </ul>
+
+                        </div>
+                                            <a id="method_cacheCssAssetFiles"></a>
+                        <div class="element clickable method protected  method_cacheCssAssetFiles" data-toggle="collapse" data-target=".method_cacheCssAssetFiles .collapse">
+                            <h2>Cache Css asset files and retrieve cached asset files</h2>
+                            <pre>cacheCssAssetFiles() : array</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
+                                                                    </div>
                             </div>
-                        </section>
-                    </section>
-                </section>
-            </section>
-            <section class="row-fluid">
-                <section class="span10 offset1">
-                    <hr />
-                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on November 5th, 2016 at 20:48.
-                </section>
-            </section>
-        </section>
+
+                        </div>
+                                            <a id="method_cacheJsAssetFiles"></a>
+                        <div class="element clickable method protected  method_cacheJsAssetFiles" data-toggle="collapse" data-target=".method_cacheJsAssetFiles .collapse">
+                            <h2>Cache Js asset files and retrieve cached asset files</h2>
+                            <pre>cacheJsAssetFiles() : array</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_cacheLessAssetFiles"></a>
+                        <div class="element clickable method protected  method_cacheLessAssetFiles" data-toggle="collapse" data-target=".method_cacheLessAssetFiles .collapse">
+                            <h2>Cache Less asset files and retrieve cached asset files</h2>
+                            <pre>cacheLessAssetFiles() : array</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_cacheMediaAssetFiles"></a>
+                        <div class="element clickable method protected  method_cacheMediaAssetFiles" data-toggle="collapse" data-target=".method_cacheMediaAssetFiles .collapse">
+                            <h2>Cache media asset files and retrieve cached asset files</h2>
+                            <pre>cacheMediaAssetFiles() : array</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_createTmpAssetFile"></a>
+                        <div class="element clickable method protected  method_createTmpAssetFile" data-toggle="collapse" data-target=".method_createTmpAssetFile .collapse">
+                            <h2>createTmpAssetFile</h2>
+                            <pre>createTmpAssetFile(string $sAssetFileType) : \AssetsBundle\AssetFile\AssetFile</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\InvalidArgumentException</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$sAssetFileType</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/AssetsBundle.AssetFile.AssetFile.html">\AssetsBundle\AssetFile\AssetFile</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getAssetFileFiltersManager"></a>
+                        <div class="element clickable method public  method_getAssetFileFiltersManager" data-toggle="collapse" data-target=".method_getAssetFileFiltersManager .collapse">
+                            <h2>Retrieve the asset file filters manager. Lazy loads an instance if none currently set.</h2>
+                            <pre>getAssetFileFiltersManager() : \AssetsBundle\AssetFile\AssetFileFiltersManager</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/AssetsBundle.AssetFile.AssetFileFiltersManager.html">\AssetsBundle\AssetFile\AssetFileFiltersManager</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getAssetFilesCacheManager"></a>
+                        <div class="element clickable method public  method_getAssetFilesCacheManager" data-toggle="collapse" data-target=".method_getAssetFilesCacheManager .collapse">
+                            <h2>Retrieve the asset files cache manager. Lazy loads an instance if none currently set.</h2>
+                            <pre>getAssetFilesCacheManager() : \AssetsBundle\AssetFile\AssetFilesCacheManager</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesCacheManager.html">\AssetsBundle\AssetFile\AssetFilesCacheManager</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getAssetFilesConfiguration"></a>
+                        <div class="element clickable method public  method_getAssetFilesConfiguration" data-toggle="collapse" data-target=".method_getAssetFilesConfiguration .collapse">
+                            <h2>Retrieve the asset files configuration. Lazy loads an instance if none currently set.</h2>
+                            <pre>getAssetFilesConfiguration() : \AssetsBundle\AssetFile\AssetFilesConfiguration</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesConfiguration.html">\AssetsBundle\AssetFile\AssetFilesConfiguration</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getCachedAssetsFiles"></a>
+                        <div class="element clickable method public  method_getCachedAssetsFiles" data-toggle="collapse" data-target=".method_getCachedAssetsFiles .collapse">
+                            <h2>getCachedAssetsFiles</h2>
+                            <pre>getCachedAssetsFiles(string $sAssetFileType) : array</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\InvalidArgumentException</dt>
+                                                        <dd></dd>
+                                                                                                            <dt>\DomainException</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$sAssetFileType</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getOptions"></a>
+                        <div class="element clickable method public  method_getOptions" data-toggle="collapse" data-target=".method_getOptions .collapse">
+                            <h2>getOptions</h2>
+                            <pre>getOptions() : \AssetsBundle\Service\ServiceOptions</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_rewriteUrl"></a>
+                        <div class="element clickable method public  method_rewriteUrl" data-toggle="collapse" data-target=".method_rewriteUrl .collapse">
+                            <h2>Rewrite url to match with cache path if needed</h2>
+                            <pre>rewriteUrl(array $aMatches, \AssetsBundle\AssetFile\AssetFile $oAssetFile) : array</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\InvalidArgumentException</dt>
+                                                        <dd></dd>
+                                                                                                            <dt>\LogicException</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$aMatches</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oAssetFile</h4>
+                                                <code><a href="../classes/AssetsBundle.AssetFile.AssetFile.html">\AssetsBundle\AssetFile\AssetFile</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setAssetFileFiltersManager"></a>
+                        <div class="element clickable method public  method_setAssetFileFiltersManager" data-toggle="collapse" data-target=".method_setAssetFileFiltersManager .collapse">
+                            <h2>Set the asset file filters manager</h2>
+                            <pre>setAssetFileFiltersManager(\AssetsBundle\AssetFile\AssetFileFiltersManager $oAssetFileFiltersManager) : \AssetsBundle\AssetFile\AssetFilesManager</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oAssetFileFiltersManager</h4>
+                                                <code><a href="../classes/AssetsBundle.AssetFile.AssetFileFiltersManager.html">\AssetsBundle\AssetFile\AssetFileFiltersManager</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">\AssetsBundle\AssetFile\AssetFilesManager</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setAssetFilesCacheManager"></a>
+                        <div class="element clickable method public  method_setAssetFilesCacheManager" data-toggle="collapse" data-target=".method_setAssetFilesCacheManager .collapse">
+                            <h2>Set the asset files cache manager</h2>
+                            <pre>setAssetFilesCacheManager(\AssetsBundle\AssetFile\AssetFilesCacheManager $oAssetFilesCacheManager) : \AssetsBundle\AssetFile\AssetFilesManager</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oAssetFilesCacheManager</h4>
+                                                <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesCacheManager.html">\AssetsBundle\AssetFile\AssetFilesCacheManager</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">\AssetsBundle\AssetFile\AssetFilesManager</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setAssetFilesConfiguration"></a>
+                        <div class="element clickable method public  method_setAssetFilesConfiguration" data-toggle="collapse" data-target=".method_setAssetFilesConfiguration .collapse">
+                            <h2>Set the asset files configuration</h2>
+                            <pre>setAssetFilesConfiguration(\AssetsBundle\AssetFile\AssetFilesConfiguration $oAssetFilesConfiguration) : \AssetsBundle\AssetFile\AssetFilesManager</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oAssetFilesConfiguration</h4>
+                                                <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesConfiguration.html">\AssetsBundle\AssetFile\AssetFilesConfiguration</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">\AssetsBundle\AssetFile\AssetFilesManager</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setOptions"></a>
+                        <div class="element clickable method public  method_setOptions" data-toggle="collapse" data-target=".method_setOptions .collapse">
+                            <h2>setOptions</h2>
+                            <pre>setOptions(\AssetsBundle\Service\ServiceOptions $oOptions) : \AssetsBundle\AssetFile\AssetFilesManager</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oOptions</h4>
+                                                <code><a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">\AssetsBundle\AssetFile\AssetFilesManager</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                    
+                    
+                                                                <h3><i class="icon-custom icon-property"></i> Properties</h3>
+                                                    <a id="property_options"> </a>
+                            <div class="element clickable property  protected property_options" data-toggle="collapse" data-target=".property_options .collapse">
+                                <h2>options</h2>
+                                <pre>options : \AssetsBundle\Service\ServiceOptions</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code><a href="../classes/AssetsBundle.Service.ServiceOptions.html">\AssetsBundle\Service\ServiceOptions</a></code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_assetFilesConfiguration"> </a>
+                            <div class="element clickable property  protected property_assetFilesConfiguration" data-toggle="collapse" data-target=".property_assetFilesConfiguration .collapse">
+                                <h2>assetFilesConfiguration</h2>
+                                <pre>assetFilesConfiguration : \AssetsBundle\AssetFile\AssetFilesConfiguration</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesConfiguration.html">\AssetsBundle\AssetFile\AssetFilesConfiguration</a></code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_assetFileFiltersManager"> </a>
+                            <div class="element clickable property  protected property_assetFileFiltersManager" data-toggle="collapse" data-target=".property_assetFileFiltersManager .collapse">
+                                <h2>assetFileFiltersManager</h2>
+                                <pre>assetFileFiltersManager : \AssetsBundle\AssetFile\AssetFileFiltersManager</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code><a href="../classes/AssetsBundle.AssetFile.AssetFileFiltersManager.html">\AssetsBundle\AssetFile\AssetFileFiltersManager</a></code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_assetFilesCacheManager"> </a>
+                            <div class="element clickable property  protected property_assetFilesCacheManager" data-toggle="collapse" data-target=".property_assetFilesCacheManager .collapse">
+                                <h2>assetFilesCacheManager</h2>
+                                <pre>assetFilesCacheManager : \AssetsBundle\AssetFile\AssetFilesCacheManager</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code><a href="../classes/AssetsBundle.AssetFile.AssetFilesCacheManager.html">\AssetsBundle\AssetFile\AssetFilesCacheManager</a></code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_tmpAssetFilesPathes"> </a>
+                            <div class="element clickable property  protected property_tmpAssetFilesPathes" data-toggle="collapse" data-target=".property_tmpAssetFilesPathes .collapse">
+                                <h2>tmpAssetFilesPathes</h2>
+                                <pre>tmpAssetFilesPathes : array</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                            </div>
+            </div>
+            <a id="\AssetsBundle\AssetFile\AssetFilesManager"></a>
+            <ul class="breadcrumb">
+                <li><a href="../index.html"><i class="icon-custom icon-class"></i></a></li>
+                    
+    
+    <li><span class="divider">\</span><a href="../namespaces/AssetsBundle.AssetFile.html">AssetFile</a></li>
+
+                <li class="active"><span class="divider">\</span><a href="../classes/AssetsBundle.AssetFile.AssetFilesManager.html">AssetFilesManager</a></li>
+            </ul>
+        </div>
+    </div>
+
+    </div>
+
+        <footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
+            <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
+            generated on Sat, 05 Nov 2016 23:07:09 +0000.<br/>
     </footer>
-</div>
-
-</body>
+    </body>
 </html>
