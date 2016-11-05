@@ -12,7 +12,7 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]
 fi
 
 ## Initialize git
-git config --global user.name "Travis CI"
+git config --global user.name "neilime"
 git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 
 # Save some useful information
