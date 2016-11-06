@@ -58,8 +58,8 @@ echo -e " * Copy new Coverage version"
 cp -Rf $HOME/coverage/* ./coverage/
 
 # Set new readme file content into index page
-NEW=`curl -s https://github.com/neilime/zf2-assets-bundle/blob/master/README.md | sed -n "/<article class=\"markdown-body entry-content\" itemprop=\"text\">/,/<\/article>/p" | grep -v "<article class=\"markdown-body entry-content\" itemprop=\"text\">" | grep -v "</article>"`;
-awk '/<section class="main-content">/{p=1;print "<section class=\"main-content\">'"$NEW"'"}/<\/section>/{p=0}!p' index.html > index.html.tmp
+NEW=`curl -H 'Cache-Control: no-cache' -s https://github.com/neilime/zf2-assets-bundle/blob/master/README.md | sed -n "/<article class=\"markdown-body entry-content\" itemprop=\"text\">/,/<\/article>/p" | grep -v "<article class=\"markdown-body entry-content\" itemprop=\"text\">" | grep -v "</article>"`;
+awk -v var="$NEW" '/<section class="main-content">/{p=1;print "<section class=\"main-content\""var}/<\/section>/{p=0}!p' index.html > index.html.tmp
 mv index.html.tmp index.html
 
 # Add, commit & push all files to git
