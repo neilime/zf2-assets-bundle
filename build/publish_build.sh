@@ -15,10 +15,13 @@ fi
 git config --global user.name "neilime"
 git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 
-echo -e "1. Publishing PHPDoc\n"
+echo -e "# Publish build #\n"
 
 # Copy generated doc into $HOME
 cp -R build/phpdoc $HOME/phpdoc
+
+# Copy generated doc into $HOME
+cp -R build/coverage $HOME/coverage
 
 #  Retrieve branch gh-pages
 echo -e " * Retrieve branch gh-pages"
@@ -32,14 +35,28 @@ if [ -d ./phpdoc ]; then
     git rm -rf ./phpdoc
 fi
 
-## Create new PHPDoc directory
+# Create new PHPDoc directory
 echo -e " * Create new PHPDoc directory"
 mkdir ./phpdoc
-cd ./phpdoc
 
 # Copy new PHPDoc version
 echo -e " * Copy new PHPDoc version"
-cp -Rf $HOME/phpdoc/* ./
+cp -Rf $HOME/phpdoc/* ./phpdoc/
+
+# Remove old Coverage
+if [ -d ./coverage ]; then
+    echo -e " * Remove old Coverage"
+    git rm -rf ./coverage
+fi
+
+# Create new Coverage directory
+echo -e " * Create new Coverage directory"
+mkdir ./coverage
+
+# Copy new Coverage version
+echo -e " * Copy new Coverage version"
+cp -Rf $HOME/coverage/* ./coverage/
+
 
 # Add, commit & push all files to git
 echo -e " * Add, commit & push all files to git"
@@ -48,4 +65,4 @@ git commit -m "PHPDocumentor (Publish Travis Build : $TRAVIS_BUILD_NUMBER)"
 git push -fq origin gh-pages > /dev/null
 
 # Done
-echo -e " * Published PHPDoc to gh-pages.\n"
+echo -e " * Published PHPDoc & Coverage to gh-pages.\n"
