@@ -17,6 +17,9 @@ git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 
 echo -e "# Publish build #\n"
 
+# Copy README file into $HOME
+cp -R README.md $HOME/README.md
+
 # Copy generated doc into $HOME
 cp -R build/phpdoc $HOME/phpdoc
 
@@ -68,6 +71,18 @@ echo -e " * Add, commit & push all files to git"
 git add -f .
 git commit -m "Publish Travis Build : $TRAVIS_BUILD_NUMBER"
 git push -fq origin gh-pages > /dev/null
+cd $HOME
+
+echo -e " * Update wiki home page"
+git clone --quiet --branch=master https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.wiki.git wiki > /dev/null
+cd wiki
+cp $HOME/README.md ./Home.md
+# Add, commit & push all files to git
+echo -e " * Add, commit & push all files to git"
+git add -f .
+git commit -m "Publish Travis Build : $TRAVIS_BUILD_NUMBER"
+git push -fq origin master > /dev/null
+cd $HOME
 
 # Done
 echo -e " * Published PHPDoc & Coverage to gh-pages.\n"
