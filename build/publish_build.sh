@@ -59,8 +59,7 @@ cp -Rf $HOME/coverage/* ./coverage/
 
 # Set new readme file content into index page
 NEW=`curl -s https://github.com/neilime/zf2-assets-bundle/blob/master/README.md | sed -n "/<article class=\"markdown-body entry-content\" itemprop=\"text\">/,/<\/article>/p" | grep -v "<article class=\"markdown-body entry-content\" itemprop=\"text\">" | grep -v "</article>"`;
-sed -i -e 's/<section class="main-content">(.*)<\/section>/<section class="main-content">${NEW}<\/section>/g' index.html
-
+sed -r -i -e 's|<section class="main-content">(.*)</section>|<section class="main-content">'"${NEW}"'</section>|g' index.html
 
 # Add, commit & push all files to git
 echo -e " * Add, commit & push all files to git"
