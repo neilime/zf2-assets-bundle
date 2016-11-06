@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /home/travis/build/neilime/zf2-assets-bundle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/nv.d3.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.min.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+ </head>
+ <body>
+  <header>
+   <div class="container">
+    <div class="row">
+     <div class="col-md-12">
+      <ol class="breadcrumb">
+        <li><a href="index.html">/home/travis/build/neilime/zf2-assets-bundle</a></li>
+        <li class="active">(Dashboard)</li>
+
+      </ol>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/LesscAssetFileFilter.php.html#5">LesscAssetFileFilter</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/AssetFileFilter/LesscAssetFileFilterFactory.php.html#5">LesscAssetFileFilterFactory</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/AssetFileFilter/JsMinAssetFileFilterFactory.php.html#5">JsMinAssetFileFilterFactory</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/JsAssetFileFilter/JsMinAssetFileFilter.php.html#5">JsMinAssetFileFilter</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/PngAssetFileFilter.php.html#5">PngImageAssetFileFilter</a></td><td class="text-right">41%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/JpegAssetFileFilter.php.html#5">JpegImageAssetFileFilter</a></td><td class="text-right">41%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#5">AssetFile</a></td><td class="text-right">47%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/JsAssetFileFilter/JShrinkAssetFileFilter.php.html#5">JShrinkAssetFileFilter</a></td><td class="text-right">60%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/ServiceFactory.php.html#5">ServiceFactory</a></td><td class="text-right">61%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/ServiceOptionsFactory.php.html#5">ServiceOptionsFactory</a></td><td class="text-right">61%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#5">AssetFilesConfiguration</a></td><td class="text-right">63%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#5">AssetFilesCacheManager</a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFiltersManager.php.html#5">AssetFileFiltersManager</a></td><td class="text-right">70%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Controller/ToolsController.php.html#5">ToolsController</a></td><td class="text-right">70%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#5">AbstractAssetFileFilter</a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#5">AssetFilesManager</a></td><td class="text-right">79%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#5">ServiceOptions</a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/Service.php.html#5">Service</a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/GifAssetFileFilter.php.html#5">GifImageAssetFileFilter</a></td><td class="text-right">83%</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Strategy/JsCustomStrategy.php.html#5">JsCustomStrategy</a></td><td class="text-right">87%</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Renderer/JsCustomRenderer.php.html#5">JsCustomRenderer</a></td><td class="text-right">88%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#5">AssetFilesConfiguration</a></td><td class="text-right">460</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#5">AssetFile</a></td><td class="text-right">445</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#5">ServiceOptions</a></td><td class="text-right">247</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#5">AssetFilesManager</a></td><td class="text-right">114</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#5">AssetFilesCacheManager</a></td><td class="text-right">97</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/Service.php.html#5">Service</a></td><td class="text-right">46</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/ServiceFactory.php.html#5">ServiceFactory</a></td><td class="text-right">39</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/ServiceOptionsFactory.php.html#5">ServiceOptionsFactory</a></td><td class="text-right">32</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Strategy/JsCustomStrategy.php.html#5">JsCustomStrategy</a></td><td class="text-right">26</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#5">AbstractAssetFileFilter</a></td><td class="text-right">25</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/JpegAssetFileFilter.php.html#5">JpegImageAssetFileFilter</a></td><td class="text-right">25</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/PngAssetFileFilter.php.html#5">PngImageAssetFileFilter</a></td><td class="text-right">25</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/JsAssetFileFilter/JsMinAssetFileFilter.php.html#5">JsMinAssetFileFilter</a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFiltersManager.php.html#5">AssetFileFiltersManager</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Renderer/JsCustomRenderer.php.html#5">JsCustomRenderer</a></td><td class="text-right">9</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/JsAssetFileFilter/JShrinkAssetFileFilter.php.html#5">JShrinkAssetFileFilter</a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/GifAssetFileFilter.php.html#5">GifImageAssetFileFilter</a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="src/AssetsBundle/Controller/ToolsController.php.html#5">ToolsController</a></td><td class="text-right">3</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#559"><abbr title="ServiceOptions::getViewHelperPlugins">getViewHelperPlugins</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/AssetFileFilter/JsMinAssetFileFilterFactory.php.html#12"><abbr title="JsMinAssetFileFilterFactory::createService">createService</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/AssetFileFilter/LesscAssetFileFilterFactory.php.html#11"><abbr title="LesscAssetFileFilterFactory::createService">createService</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/JpegAssetFileFilter.php.html#23"><abbr title="JpegImageAssetFileFilter::setImageQuality">setImageQuality</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/PngAssetFileFilter.php.html#23"><abbr title="PngImageAssetFileFilter::setImageQuality">setImageQuality</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#226"><abbr title="AssetFilesConfiguration::getAssetRelativePath">getAssetRelativePath</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/LesscAssetFileFilter.php.html#16"><abbr title="LesscAssetFileFilter::filterAssetFile">filterAssetFile</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/JsAssetFileFilter/JsMinAssetFileFilter.php.html#14"><abbr title="JsMinAssetFileFilter::minifyJsContent">minifyJsContent</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#27"><abbr title="AbstractAssetFileFilter::setAssetFileFilterName">setAssetFileFilterName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#519"><abbr title="ServiceOptions::setDisabledContexts">setDisabledContexts</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/Service.php.html#191"><abbr title="Service::consoleError">consoleError</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#259"><abbr title="AssetFilesConfiguration::assetsConfigurationHasChanged">assetsConfigurationHasChanged</abbr></a></td><td class="text-right">13%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#527"><abbr title="ServiceOptions::isAssetsBundleDisabled">isAssetsBundleDisabled</abbr></a></td><td class="text-right">15%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#85"><abbr title="AssetFile::setAssetFilePath">setAssetFilePath</abbr></a></td><td class="text-right">18%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#208"><abbr title="AssetFile::getAssetFileLastModified">getAssetFileLastModified</abbr></a></td><td class="text-right">29%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#48"><abbr title="AssetFilesManager::__destruct">__destruct</abbr></a></td><td class="text-right">37%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFiltersManager.php.html#17"><abbr title="AssetFileFiltersManager::validatePlugin">validatePlugin</abbr></a></td><td class="text-right">40%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#395"><abbr title="AssetFilesManager::setOptions">setOptions</abbr></a></td><td class="text-right">45%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#128"><abbr title="AssetFilesCacheManager::cacheAssetFile">cacheAssetFile</abbr></a></td><td class="text-right">48%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFiltersManager.php.html#56"><abbr title="AssetFileFiltersManager::getOptions">getOptions</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#237"><abbr title="AssetFilesCacheManager::getOptions">getOptions</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#23"><abbr title="AssetFilesCacheManager::__construct">__construct</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#413"><abbr title="AssetFilesManager::getOptions">getOptions</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#38"><abbr title="AssetFilesManager::__construct">__construct</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#64"><abbr title="AbstractAssetFileFilter::getOptions">getOptions</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#341"><abbr title="AssetFilesConfiguration::getOptions">getOptions</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#135"><abbr title="AssetFile::getAssetFileContents">getAssetFileContents</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#261"><abbr title="AssetFile::getAssetFileDefaultExtension">getAssetFileDefaultExtension</abbr></a></td><td class="text-right">54%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#572"><abbr title="ServiceOptions::getViewHelperPluginForAssetFileType">getViewHelperPluginForAssetFileType</abbr></a></td><td class="text-right">57%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#243"><abbr title="AssetFile::assetFileTypeExists">assetFileTypeExists</abbr></a></td><td class="text-right">60%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#80"><abbr title="AssetFilesCacheManager::hasProductionCachedAssetFiles">hasProductionCachedAssetFiles</abbr></a></td><td class="text-right">60%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/JsAssetFileFilter/JShrinkAssetFileFilter.php.html#14"><abbr title="JShrinkAssetFileFilter::minifyJsContent">minifyJsContent</abbr></a></td><td class="text-right">60%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/ServiceFactory.php.html#14"><abbr title="ServiceFactory::createService">createService</abbr></a></td><td class="text-right">61%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/ServiceOptionsFactory.php.html#13"><abbr title="ServiceOptionsFactory::createService">createService</abbr></a></td><td class="text-right">61%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Controller/ToolsController.php.html#10"><abbr title="ToolsController::renderAssetsAction">renderAssetsAction</abbr></a></td><td class="text-right">62%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#239"><abbr title="ServiceOptions::setTmpDirPath">setTmpDirPath</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#254"><abbr title="ServiceOptions::getTmpDirPath">getTmpDirPath</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#466"><abbr title="ServiceOptions::setControllerName">setControllerName</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ToolsService.php.html#210"><abbr title="ToolsService::getConsole">getConsole</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#493"><abbr title="ServiceOptions::setActionName">setActionName</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#45"><abbr title="AbstractAssetFileFilter::getAssetFileFilterName">getAssetFileFilterName</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ToolsService.php.html#232"><abbr title="ToolsService::getMvcEvent">getMvcEvent</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ToolsService.php.html#254"><abbr title="ToolsService::getAssetsBundleService">getAssetsBundleService</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#66"><abbr title="AssetFile::getAssetFilePath">getAssetFilePath</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#202"><abbr title="ServiceOptions::setAssetsPath">setAssetsPath</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#439"><abbr title="ServiceOptions::setModuleName">setModuleName</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#281"><abbr title="ServiceOptions::getProcessedDirPath">getProcessedDirPath</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#41"><abbr title="AssetFile::getAssetFileType">getAssetFileType</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#427"><abbr title="ServiceOptions::getRenderer">getRenderer</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#266"><abbr title="ServiceOptions::setProcessedDirPath">setProcessedDirPath</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#217"><abbr title="AssetFilesCacheManager::sanitizeAssetFilePath">sanitizeAssetFilePath</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#65"><abbr title="AssetFilesManager::getCachedAssetsFiles">getCachedAssetsFiles</abbr></a></td><td class="text-right">69%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#165"><abbr title="AssetFilesManager::cacheLessAssetFiles">cacheLessAssetFiles</abbr></a></td><td class="text-right">72%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/Service.php.html#150"><abbr title="Service::displayAssets">displayAssets</abbr></a></td><td class="text-right">73%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#312"><abbr title="AssetFilesConfiguration::saveAssetFilesConfiguration">saveAssetFilesConfiguration</abbr></a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#172"><abbr title="ServiceOptions::setCachePath">setCachePath</abbr></a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#54"><abbr title="AssetFile::setAssetFileType">setAssetFileType</abbr></a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#306"><abbr title="AssetFilesManager::rewriteUrl">rewriteUrl</abbr></a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#26"><abbr title="AssetFilesConfiguration::getAssetFiles">getAssetFiles</abbr></a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/GifAssetFileFilter.php.html#26"><abbr title="GifImageAssetFileFilter::optimizeImage">optimizeImage</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/CssAssetFileFilter.php.html#37"><abbr title="CssAssetFileFilter::getCSSmin">getCSSmin</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#177"><abbr title="AssetFile::setAssetFileContents">setAssetFileContents</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Strategy/JsCustomStrategy.php.html#88"><abbr title="JsCustomStrategy::selectRenderer">selectRenderer</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Strategy/JsCustomStrategy.php.html#116"><abbr title="JsCustomStrategy::injectResponse">injectResponse</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/JpegAssetFileFilter.php.html#45"><abbr title="JpegImageAssetFileFilter::optimizeImage">optimizeImage</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#98"><abbr title="AssetFilesCacheManager::getProductionCachedAssetFiles">getProductionCachedAssetFiles</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFiltersManager.php.html#45"><abbr title="AssetFileFiltersManager::setOptions">setOptions</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/PngAssetFileFilter.php.html#45"><abbr title="PngImageAssetFileFilter::optimizeImage">optimizeImage</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#143"><abbr title="AssetFilesConfiguration::addAssetFileFromOptions">addAssetFileFromOptions</abbr></a></td><td class="text-right">82%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#109"><abbr title="AbstractAssetFileFilter::cacheFilteredAssetFileContent">cacheFilteredAssetFileContent</abbr></a></td><td class="text-right">83%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#591"><abbr title="ServiceOptions::getRealPath">getRealPath</abbr></a></td><td class="text-right">83%</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Renderer/JsCustomRenderer.php.html#37"><abbr title="JsCustomRenderer::render">render</abbr></a></td><td class="text-right">86%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#35"><abbr title="AssetFilesCacheManager::getAssetFileCachePath">getAssetFileCachePath</abbr></a></td><td class="text-right">86%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#184"><abbr title="AssetFilesConfiguration::getAssetFilesPathFromDirectory">getAssetFilesPathFromDirectory</abbr></a></td><td class="text-right">87%</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#375"><abbr title="AssetFilesManager::createTmpAssetFile">createTmpAssetFile</abbr></a></td><td class="text-right">88%</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#684"><abbr title="ServiceOptions::getAssetFileBaseUrl">getAssetFileBaseUrl</abbr></a></td><td class="text-right">88%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#259"><abbr title="AssetFilesConfiguration::assetsConfigurationHasChanged">assetsConfigurationHasChanged</abbr></a></td><td class="text-right">124</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#26"><abbr title="AssetFilesConfiguration::getAssetFiles">getAssetFiles</abbr></a></td><td class="text-right">70</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#85"><abbr title="AssetFile::setAssetFilePath">setAssetFilePath</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/PngAssetFileFilter.php.html#23"><abbr title="PngImageAssetFileFilter::setImageQuality">setImageQuality</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/JpegAssetFileFilter.php.html#23"><abbr title="JpegImageAssetFileFilter::setImageQuality">setImageQuality</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/ServiceFactory.php.html#14"><abbr title="ServiceFactory::createService">createService</abbr></a></td><td class="text-right">39</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#208"><abbr title="AssetFile::getAssetFileLastModified">getAssetFileLastModified</abbr></a></td><td class="text-right">37</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#527"><abbr title="ServiceOptions::isAssetsBundleDisabled">isAssetsBundleDisabled</abbr></a></td><td class="text-right">36</td></tr>
+       <tr><td><a href="src/AssetsBundle/Factory/ServiceOptionsFactory.php.html#13"><abbr title="ServiceOptionsFactory::createService">createService</abbr></a></td><td class="text-right">32</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#128"><abbr title="AssetFilesCacheManager::cacheAssetFile">cacheAssetFile</abbr></a></td><td class="text-right">31</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#135"><abbr title="AssetFile::getAssetFileContents">getAssetFileContents</abbr></a></td><td class="text-right">22</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/JsAssetFileFilter/JsMinAssetFileFilter.php.html#14"><abbr title="JsMinAssetFileFilter::minifyJsContent">minifyJsContent</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/Service.php.html#191"><abbr title="Service::consoleError">consoleError</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#226"><abbr title="AssetFilesConfiguration::getAssetRelativePath">getAssetRelativePath</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#591"><abbr title="ServiceOptions::getRealPath">getRealPath</abbr></a></td><td class="text-right">16</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#306"><abbr title="AssetFilesManager::rewriteUrl">rewriteUrl</abbr></a></td><td class="text-right">14</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#184"><abbr title="AssetFilesConfiguration::getAssetFilesPathFromDirectory">getAssetFilesPathFromDirectory</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#27"><abbr title="AbstractAssetFileFilter::setAssetFileFilterName">setAssetFileFilterName</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/Service.php.html#150"><abbr title="Service::displayAssets">displayAssets</abbr></a></td><td class="text-right">10</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#65"><abbr title="AssetFilesManager::getCachedAssetsFiles">getCachedAssetsFiles</abbr></a></td><td class="text-right">9</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#165"><abbr title="AssetFilesManager::cacheLessAssetFiles">cacheLessAssetFiles</abbr></a></td><td class="text-right">9</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Strategy/JsCustomStrategy.php.html#88"><abbr title="JsCustomStrategy::selectRenderer">selectRenderer</abbr></a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#243"><abbr title="AssetFile::assetFileTypeExists">assetFileTypeExists</abbr></a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#35"><abbr title="AssetFilesCacheManager::getAssetFileCachePath">getAssetFileCachePath</abbr></a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFiltersManager.php.html#17"><abbr title="AssetFileFiltersManager::validatePlugin">validatePlugin</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Strategy/JsCustomStrategy.php.html#116"><abbr title="JsCustomStrategy::injectResponse">injectResponse</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#261"><abbr title="AssetFile::getAssetFileDefaultExtension">getAssetFileDefaultExtension</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#143"><abbr title="AssetFilesConfiguration::addAssetFileFromOptions">addAssetFileFromOptions</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="src/AssetsBundle/View/Renderer/JsCustomRenderer.php.html#37"><abbr title="JsCustomRenderer::render">render</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#572"><abbr title="ServiceOptions::getViewHelperPluginForAssetFileType">getViewHelperPluginForAssetFileType</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#395"><abbr title="AssetFilesManager::setOptions">setOptions</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#684"><abbr title="ServiceOptions::getAssetFileBaseUrl">getAssetFileBaseUrl</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#559"><abbr title="ServiceOptions::getViewHelperPlugins">getViewHelperPlugins</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#202"><abbr title="ServiceOptions::setAssetsPath">setAssetsPath</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#266"><abbr title="ServiceOptions::setProcessedDirPath">setProcessedDirPath</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#239"><abbr title="ServiceOptions::setTmpDirPath">setTmpDirPath</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#98"><abbr title="AssetFilesCacheManager::getProductionCachedAssetFiles">getProductionCachedAssetFiles</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#48"><abbr title="AssetFilesManager::__destruct">__destruct</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/JsAssetFileFilter/JShrinkAssetFileFilter.php.html#14"><abbr title="JShrinkAssetFileFilter::minifyJsContent">minifyJsContent</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#172"><abbr title="ServiceOptions::setCachePath">setCachePath</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#177"><abbr title="AssetFile::setAssetFileContents">setAssetFileContents</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#80"><abbr title="AssetFilesCacheManager::hasProductionCachedAssetFiles">hasProductionCachedAssetFiles</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#493"><abbr title="ServiceOptions::setActionName">setActionName</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#466"><abbr title="ServiceOptions::setControllerName">setControllerName</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#254"><abbr title="ServiceOptions::getTmpDirPath">getTmpDirPath</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#281"><abbr title="ServiceOptions::getProcessedDirPath">getProcessedDirPath</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#45"><abbr title="AbstractAssetFileFilter::getAssetFileFilterName">getAssetFileFilterName</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#439"><abbr title="ServiceOptions::setModuleName">setModuleName</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/CssAssetFileFilter.php.html#37"><abbr title="CssAssetFileFilter::getCSSmin">getCSSmin</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#413"><abbr title="AssetFilesManager::getOptions">getOptions</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#237"><abbr title="AssetFilesCacheManager::getOptions">getOptions</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#64"><abbr title="AbstractAssetFileFilter::getOptions">getOptions</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#23"><abbr title="AssetFilesCacheManager::__construct">__construct</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFiltersManager.php.html#56"><abbr title="AssetFileFiltersManager::getOptions">getOptions</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#341"><abbr title="AssetFilesConfiguration::getOptions">getOptions</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#38"><abbr title="AssetFilesManager::__construct">__construct</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/Controller/ToolsController.php.html#10"><abbr title="ToolsController::renderAssetsAction">renderAssetsAction</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesCacheManager.php.html#217"><abbr title="AssetFilesCacheManager::sanitizeAssetFilePath">sanitizeAssetFilePath</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#66"><abbr title="AssetFile::getAssetFilePath">getAssetFilePath</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#41"><abbr title="AssetFile::getAssetFileType">getAssetFileType</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ToolsService.php.html#254"><abbr title="ToolsService::getAssetsBundleService">getAssetsBundleService</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ToolsService.php.html#210"><abbr title="ToolsService::getConsole">getConsole</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ServiceOptions.php.html#427"><abbr title="ServiceOptions::getRenderer">getRenderer</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/Service/ToolsService.php.html#232"><abbr title="ToolsService::getMvcEvent">getMvcEvent</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesConfiguration.php.html#312"><abbr title="AssetFilesConfiguration::saveAssetFilesConfiguration">saveAssetFilesConfiguration</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFile.php.html#54"><abbr title="AssetFile::setAssetFileType">setAssetFileType</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/GifAssetFileFilter.php.html#26"><abbr title="GifImageAssetFileFilter::optimizeImage">optimizeImage</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/JpegAssetFileFilter.php.html#45"><abbr title="JpegImageAssetFileFilter::optimizeImage">optimizeImage</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/ImageAssetFileFilter/PngAssetFileFilter.php.html#45"><abbr title="PngImageAssetFileFilter::optimizeImage">optimizeImage</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFiltersManager.php.html#45"><abbr title="AssetFileFiltersManager::setOptions">setOptions</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFileFilter/AbstractAssetFileFilter.php.html#109"><abbr title="AbstractAssetFileFilter::cacheFilteredAssetFileContent">cacheFilteredAssetFileContent</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="src/AssetsBundle/AssetFile/AssetFilesManager.php.html#375"><abbr title="AssetFilesManager::createTmpAssetFile">createTmpAssetFile</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 2.2.4</a> using <a href="https://secure.php.net/" target="_top">PHP 5.6.5</a> and <a href="https://phpunit.de/">PHPUnit 4.8.27</a> at Sun Nov 6 0:05:53 UTC 2016.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="js/jquery.min.js" type="text/javascript"></script>
+  <script src="js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="js/holder.min.js" type="text/javascript"></script>
+  <script src="js/d3.min.js" type="text/javascript"></script>
+  <script src="js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([4,0,0,0,0,3,0,5,4,5,4,11], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([11,0,3,1,1,3,10,23,7,17,7,87], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(key, y, e, graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[100,4,"<a href=\"Module.php.html#5\">Module<\/a>"],[47.413793103448,52,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#5\">AssetFile<\/a>"],[75.555555555556,20,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/AbstractAssetFileFilter.php.html#5\">AbstractAssetFileFilter<\/a>"],[90,5,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/CssAssetFileFilter.php.html#5\">CssAssetFileFilter<\/a>"],[100,7,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/AbstractImageAssetFileFilter.php.html#5\">AbstractImageAssetFileFilter<\/a>"],[83.333333333333,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/GifAssetFileFilter.php.html#5\">GifImageAssetFileFilter<\/a>"],[41.666666666667,9,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/JpegAssetFileFilter.php.html#5\">JpegImageAssetFileFilter<\/a>"],[41.666666666667,9,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/PngAssetFileFilter.php.html#5\">PngImageAssetFileFilter<\/a>"],[92.857142857143,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/JsAssetFileFilter\/AbstractJsAssetFileFilter.php.html#5\">AbstractJsAssetFileFilter<\/a>"],[60,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/JsAssetFileFilter\/JShrinkAssetFileFilter.php.html#5\">JShrinkAssetFileFilter<\/a>"],[0,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/JsAssetFileFilter\/JsMinAssetFileFilter.php.html#5\">JsMinAssetFileFilter<\/a>"],[0,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/LesscAssetFileFilter.php.html#5\">LesscAssetFileFilter<\/a>"],[100,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/LessphpAssetFileFilter.php.html#5\">LessphpAssetFileFilter<\/a>"],[70,10,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFiltersManager.php.html#5\">AssetFileFiltersManager<\/a>"],[66.990291262136,40,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#5\">AssetFilesCacheManager<\/a>"],[63.636363636364,88,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#5\">AssetFilesConfiguration<\/a>"],[79.896907216495,72,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#5\">AssetFilesManager<\/a>"],[70,3,"<a href=\"src\/AssetsBundle\/Controller\/ToolsController.php.html#5\">ToolsController<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/CssAssetFileFilterFactory.php.html#5\">CssAssetFileFilterFactory<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/GifAssetFileFilterFactory.php.html#5\">GifAssetFileFilterFactory<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/JShrinkAssetFileFilterFactory.php.html#5\">JShrinkAssetFileFilterFactory<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/JpegAssetFileFilterFactory.php.html#5\">JpegAssetFileFilterFactory<\/a>"],[0,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/JsMinAssetFileFilterFactory.php.html#5\">JsMinAssetFileFilterFactory<\/a>"],[0,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/LesscAssetFileFilterFactory.php.html#5\">LesscAssetFileFilterFactory<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/LessphpAssetFileFilterFactory.php.html#5\">LessphpAssetFileFilterFactory<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/PngAssetFileFilterFactory.php.html#5\">PngAssetFileFilterFactory<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/JsCustomStrategyFactory.php.html#3\">JsCustomStrategyFactory<\/a>"],[61.702127659574,19,"<a href=\"src\/AssetsBundle\/Factory\/ServiceFactory.php.html#5\">ServiceFactory<\/a>"],[61.904761904762,17,"<a href=\"src\/AssetsBundle\/Factory\/ServiceOptionsFactory.php.html#5\">ServiceOptionsFactory<\/a>"],[100,4,"<a href=\"src\/AssetsBundle\/Factory\/ToolsServiceFactory.php.html#5\">ToolsServiceFactory<\/a>"],[91.304347826087,14,"<a href=\"src\/AssetsBundle\/Mvc\/Controller\/AbstractActionController.php.html#5\">AbstractActionController<\/a>"],[80.612244897959,37,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#5\">Service<\/a>"],[80.275229357798,126,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#5\">ServiceOptions<\/a>"],[96.376811594203,33,"<a href=\"src\/AssetsBundle\/Service\/ToolsService.php.html#5\">ToolsService<\/a>"],[88.888888888889,9,"<a href=\"src\/AssetsBundle\/View\/Renderer\/JsCustomRenderer.php.html#5\">JsCustomRenderer<\/a>"],[87.755102040816,25,"<a href=\"src\/AssetsBundle\/View\/Strategy\/JsCustomStrategy.php.html#5\">JsCustomStrategy<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(key, y, e, graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[100,1,"<a href=\"Module.php.html#11\">Module::onBootstrap<\/a>"],[100,1,"<a href=\"Module.php.html#23\">Module::getConsoleUsage<\/a>"],[100,1,"<a href=\"Module.php.html#36\">Module::getAutoloaderConfig<\/a>"],[100,1,"<a href=\"Module.php.html#47\">Module::getConfig<\/a>"],[66.666666666667,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#41\">AssetFile::getAssetFileType<\/a>"],[75,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#54\">AssetFile::setAssetFileType<\/a>"],[66.666666666667,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#66\">AssetFile::getAssetFilePath<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#76\">AssetFile::isAssetFilePathUrl<\/a>"],[18.518518518519,8,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#85\">AssetFile::setAssetFilePath<\/a>"],[50,10,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#135\">AssetFile::getAssetFileContents<\/a>"],[80,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#177\">AssetFile::setAssetFileContents<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#200\">AssetFile::getAssetFileExtension<\/a>"],[29.411764705882,9,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#208\">AssetFile::getAssetFileLastModified<\/a>"],[60,6,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#243\">AssetFile::assetFileTypeExists<\/a>"],[54.545454545455,5,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFile.php.html#261\">AssetFile::getAssetFileDefaultExtension<\/a>"],[0,3,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/AbstractAssetFileFilter.php.html#27\">AbstractAssetFileFilter::setAssetFileFilterName<\/a>"],[66.666666666667,3,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/AbstractAssetFileFilter.php.html#45\">AbstractAssetFileFilter::getAssetFileFilterName<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/AbstractAssetFileFilter.php.html#56\">AbstractAssetFileFilter::setOptions<\/a>"],[50,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/AbstractAssetFileFilter.php.html#64\">AbstractAssetFileFilter::getOptions<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/AbstractAssetFileFilter.php.html#75\">AbstractAssetFileFilter::getCachedFilteredContentFilePath<\/a>"],[91.666666666667,5,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/AbstractAssetFileFilter.php.html#83\">AbstractAssetFileFilter::getCachedFilteredContent<\/a>"],[83.333333333333,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/AbstractAssetFileFilter.php.html#109\">AbstractAssetFileFilter::cacheFilteredAssetFileContent<\/a>"],[100,3,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/AbstractAssetFileFilter.php.html#122\">AbstractAssetFileFilter::getAssetFileFilterProcessedDirPath<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/CssAssetFileFilter.php.html#23\">CssAssetFileFilter::filterAssetFile<\/a>"],[80,3,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/CssAssetFileFilter.php.html#37\">CssAssetFileFilter::getCSSmin<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/AbstractImageAssetFileFilter.php.html#16\">AbstractImageAssetFileFilter::__construct<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/AbstractImageAssetFileFilter.php.html#32\">AbstractImageAssetFileFilter::filterAssetFile<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/AbstractImageAssetFileFilter.php.html#50\">AbstractImageAssetFileFilter::assetFileShouldBeOptimize<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/AbstractImageAssetFileFilter.php.html#58\">AbstractImageAssetFileFilter::optimizeImage<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/GifAssetFileFilter.php.html#16\">GifImageAssetFileFilter::assetFileShouldBeOptimize<\/a>"],[80,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/GifAssetFileFilter.php.html#26\">GifImageAssetFileFilter::optimizeImage<\/a>"],[0,6,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/JpegAssetFileFilter.php.html#23\">JpegImageAssetFileFilter::setImageQuality<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/JpegAssetFileFilter.php.html#36\">JpegImageAssetFileFilter::getImageQuality<\/a>"],[80,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/JpegAssetFileFilter.php.html#45\">JpegImageAssetFileFilter::optimizeImage<\/a>"],[0,6,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/PngAssetFileFilter.php.html#23\">PngImageAssetFileFilter::setImageQuality<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/PngAssetFileFilter.php.html#36\">PngImageAssetFileFilter::getImageQuality<\/a>"],[80,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/ImageAssetFileFilter\/PngAssetFileFilter.php.html#45\">PngImageAssetFileFilter::optimizeImage<\/a>"],[92.857142857143,3,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/JsAssetFileFilter\/AbstractJsAssetFileFilter.php.html#25\">AbstractJsAssetFileFilter::filterAssetFile<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/JsAssetFileFilter\/AbstractJsAssetFileFilter.php.html#52\">AbstractJsAssetFileFilter::minifyJsContent<\/a>"],[60,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/JsAssetFileFilter\/JShrinkAssetFileFilter.php.html#14\">JShrinkAssetFileFilter::minifyJsContent<\/a>"],[0,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/JsAssetFileFilter\/JsMinAssetFileFilter.php.html#14\">JsMinAssetFileFilter::minifyJsContent<\/a>"],[0,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/LesscAssetFileFilter.php.html#16\">LesscAssetFileFilter::filterAssetFile<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/LessphpAssetFileFilter.php.html#21\">LessphpAssetFileFilter::filterAssetFile<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/LessphpAssetFileFilter.php.html#33\">LessphpAssetFileFilter::getLessParser<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFilter\/LessphpAssetFileFilter.php.html#45\">LessphpAssetFileFilter::setLessParser<\/a>"],[40,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFiltersManager.php.html#17\">AssetFileFiltersManager::validatePlugin<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFiltersManager.php.html#32\">AssetFileFiltersManager::setService<\/a>"],[80,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFiltersManager.php.html#45\">AssetFileFiltersManager::setOptions<\/a>"],[50,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFileFiltersManager.php.html#56\">AssetFileFiltersManager::getOptions<\/a>"],[50,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#23\">AssetFilesCacheManager::__construct<\/a>"],[86.95652173913,8,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#35\">AssetFilesCacheManager::getAssetFileCachePath<\/a>"],[60,3,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#80\">AssetFilesCacheManager::hasProductionCachedAssetFiles<\/a>"],[80,5,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#98\">AssetFilesCacheManager::getProductionCachedAssetFiles<\/a>"],[48.780487804878,12,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#128\">AssetFilesCacheManager::cacheAssetFile<\/a>"],[100,5,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#200\">AssetFilesCacheManager::isAssetFileCached<\/a>"],[66.666666666667,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#217\">AssetFilesCacheManager::sanitizeAssetFilePath<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#228\">AssetFilesCacheManager::setOptions<\/a>"],[50,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesCacheManager.php.html#237\">AssetFilesCacheManager::getOptions<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#16\">AssetFilesConfiguration::getConfigurationKey<\/a>"],[75.949367088608,44,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#26\">AssetFilesConfiguration::getAssetFiles<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#132\">AssetFilesConfiguration::addAssetFile<\/a>"],[82.352941176471,7,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#143\">AssetFilesConfiguration::addAssetFileFromOptions<\/a>"],[87.5,12,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#184\">AssetFilesConfiguration::getAssetFilesPathFromDirectory<\/a>"],[0,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#226\">AssetFilesConfiguration::getAssetRelativePath<\/a>"],[13.04347826087,13,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#259\">AssetFilesConfiguration::assetsConfigurationHasChanged<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#302\">AssetFilesConfiguration::getConfigurationFilePath<\/a>"],[75,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#312\">AssetFilesConfiguration::saveAssetFilesConfiguration<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#332\">AssetFilesConfiguration::setOptions<\/a>"],[50,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesConfiguration.php.html#341\">AssetFilesConfiguration::getOptions<\/a>"],[50,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#38\">AssetFilesManager::__construct<\/a>"],[37.5,3,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#48\">AssetFilesManager::__destruct<\/a>"],[69.565217391304,8,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#65\">AssetFilesManager::getCachedAssetsFiles<\/a>"],[100,8,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#107\">AssetFilesManager::cacheCssAssetFiles<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#140\">AssetFilesManager::anonymous function<\/a>"],[72,8,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#165\">AssetFilesManager::cacheLessAssetFiles<\/a>"],[100,6,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#220\">AssetFilesManager::cacheJsAssetFiles<\/a>"],[91.666666666667,7,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#255\">AssetFilesManager::cacheMediaAssetFiles<\/a>"],[75.862068965517,12,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#306\">AssetFilesManager::rewriteUrl<\/a>"],[88.888888888889,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#375\">AssetFilesManager::createTmpAssetFile<\/a>"],[45.454545454545,4,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#395\">AssetFilesManager::setOptions<\/a>"],[50,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#413\">AssetFilesManager::getOptions<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#427\">AssetFilesManager::setAssetFilesConfiguration<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#438\">AssetFilesManager::getAssetFilesConfiguration<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#452\">AssetFilesManager::setAssetFileFiltersManager<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#463\">AssetFilesManager::getAssetFileFiltersManager<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#477\">AssetFilesManager::setAssetFilesCacheManager<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/AssetFile\/AssetFilesManager.php.html#488\">AssetFilesManager::getAssetFilesCacheManager<\/a>"],[62.5,2,"<a href=\"src\/AssetsBundle\/Controller\/ToolsController.php.html#10\">ToolsController::renderAssetsAction<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Controller\/ToolsController.php.html#28\">ToolsController::emptyCacheAction<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/CssAssetFileFilterFactory.php.html#11\">CssAssetFileFilterFactory::createService<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/GifAssetFileFilterFactory.php.html#11\">GifAssetFileFilterFactory::createService<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/JShrinkAssetFileFilterFactory.php.html#12\">JShrinkAssetFileFilterFactory::createService<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/JpegAssetFileFilterFactory.php.html#11\">JpegAssetFileFilterFactory::createService<\/a>"],[0,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/JsMinAssetFileFilterFactory.php.html#12\">JsMinAssetFileFilterFactory::createService<\/a>"],[0,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/LesscAssetFileFilterFactory.php.html#11\">LesscAssetFileFilterFactory::createService<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/LessphpAssetFileFilterFactory.php.html#11\">LessphpAssetFileFilterFactory::createService<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/AssetFileFilter\/PngAssetFileFilterFactory.php.html#11\">PngAssetFileFilterFactory::createService<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Factory\/JsCustomStrategyFactory.php.html#10\">JsCustomStrategyFactory::createService<\/a>"],[61.702127659574,19,"<a href=\"src\/AssetsBundle\/Factory\/ServiceFactory.php.html#14\">ServiceFactory::createService<\/a>"],[61.904761904762,17,"<a href=\"src\/AssetsBundle\/Factory\/ServiceOptionsFactory.php.html#13\">ServiceOptionsFactory::createService<\/a>"],[100,4,"<a href=\"src\/AssetsBundle\/Factory\/ToolsServiceFactory.php.html#13\">ToolsServiceFactory::createService<\/a>"],[91.304347826087,14,"<a href=\"src\/AssetsBundle\/Mvc\/Controller\/AbstractActionController.php.html#17\">AbstractActionController::onDispatch<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#34\">Service::__construct<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#45\">Service::attach<\/a>"],[100,3,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#60\">Service::detach<\/a>"],[97.142857142857,11,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#76\">Service::renderAssets<\/a>"],[73.913043478261,9,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#150\">Service::displayAssets<\/a>"],[0,4,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#191\">Service::consoleError<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#211\">Service::setOptions<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#223\">Service::getOptions<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#235\">Service::setAssetFilesManager<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/Service.php.html#244\">Service::getAssetFilesManager<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#124\">ServiceOptions::setProduction<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#136\">ServiceOptions::isProduction<\/a>"],[100,3,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#148\">ServiceOptions::setLastModifiedTime<\/a>"],[100,3,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#160\">ServiceOptions::getLastModifiedTime<\/a>"],[75,4,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#172\">ServiceOptions::setCachePath<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#190\">ServiceOptions::getCachePath<\/a>"],[66.666666666667,5,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#202\">ServiceOptions::setAssetsPath<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#219\">ServiceOptions::hasAssetsPath<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#227\">ServiceOptions::getAssetsPath<\/a>"],[66.666666666667,5,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#239\">ServiceOptions::setTmpDirPath<\/a>"],[66.666666666667,3,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#254\">ServiceOptions::getTmpDirPath<\/a>"],[66.666666666667,5,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#266\">ServiceOptions::setProcessedDirPath<\/a>"],[66.666666666667,3,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#281\">ServiceOptions::getProcessedDirPath<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#293\">ServiceOptions::setBaseUrl<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#305\">ServiceOptions::getBaseUrl<\/a>"],[100,3,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#317\">ServiceOptions::setCacheUrl<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#332\">ServiceOptions::getCacheUrl<\/a>"],[90,4,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#344\">ServiceOptions::setMediaExt<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#363\">ServiceOptions::getMediaExt<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#375\">ServiceOptions::setRecursiveSearch<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#387\">ServiceOptions::allowsRecursiveSearch<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#398\">ServiceOptions::setAssets<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#407\">ServiceOptions::getAssets<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#418\">ServiceOptions::setRenderer<\/a>"],[66.666666666667,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#427\">ServiceOptions::getRenderer<\/a>"],[66.666666666667,3,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#439\">ServiceOptions::setModuleName<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#454\">ServiceOptions::getModuleName<\/a>"],[66.666666666667,3,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#466\">ServiceOptions::setControllerName<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#481\">ServiceOptions::getControllerName<\/a>"],[66.666666666667,3,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#493\">ServiceOptions::setActionName<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#508\">ServiceOptions::getActionName<\/a>"],[0,1,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#519\">ServiceOptions::setDisabledContexts<\/a>"],[15.384615384615,7,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#527\">ServiceOptions::isAssetsBundleDisabled<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#550\">ServiceOptions::setViewHelperPlugins<\/a>"],[0,2,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#559\">ServiceOptions::getViewHelperPlugins<\/a>"],[57.142857142857,5,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#572\">ServiceOptions::getViewHelperPluginForAssetFileType<\/a>"],[83.333333333333,15,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#591\">ServiceOptions::getRealPath<\/a>"],[100,9,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#643\">ServiceOptions::getCacheFileName<\/a>"],[88.888888888889,6,"<a href=\"src\/AssetsBundle\/Service\/ServiceOptions.php.html#684\">ServiceOptions::getAssetFileBaseUrl<\/a>"],[100,8,"<a href=\"src\/AssetsBundle\/Service\/ToolsService.php.html#26\">ToolsService::renderAllAssets<\/a>"],[96.296296296296,16,"<a href=\"src\/AssetsBundle\/Service\/ToolsService.php.html#137\">ToolsService::emptyCache<\/a>"],[66.666666666667,2,"<a href=\"src\/AssetsBundle\/Service\/ToolsService.php.html#210\">ToolsService::getConsole<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Service\/ToolsService.php.html#222\">ToolsService::setConsole<\/a>"],[66.666666666667,2,"<a href=\"src\/AssetsBundle\/Service\/ToolsService.php.html#232\">ToolsService::getMvcEvent<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Service\/ToolsService.php.html#244\">ToolsService::setMvcEvent<\/a>"],[66.666666666667,2,"<a href=\"src\/AssetsBundle\/Service\/ToolsService.php.html#254\">ToolsService::getAssetsBundleService<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/Service\/ToolsService.php.html#266\">ToolsService::setAssetsBundleService<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/View\/Renderer\/JsCustomRenderer.php.html#15\">JsCustomRenderer::getEngine<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/View\/Renderer\/JsCustomRenderer.php.html#24\">JsCustomRenderer::setResolver<\/a>"],[86.666666666667,7,"<a href=\"src\/AssetsBundle\/View\/Renderer\/JsCustomRenderer.php.html#37\">JsCustomRenderer::render<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/View\/Strategy\/JsCustomStrategy.php.html#31\">JsCustomStrategy::setRenderer<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/View\/Strategy\/JsCustomStrategy.php.html#40\">JsCustomStrategy::getRenderer<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/View\/Strategy\/JsCustomStrategy.php.html#47\">JsCustomStrategy::setRouter<\/a>"],[100,2,"<a href=\"src\/AssetsBundle\/View\/Strategy\/JsCustomStrategy.php.html#51\">JsCustomStrategy::getRouter<\/a>"],[100,1,"<a href=\"src\/AssetsBundle\/View\/Strategy\/JsCustomStrategy.php.html#64\">JsCustomStrategy::attach<\/a>"],[100,3,"<a href=\"src\/AssetsBundle\/View\/Strategy\/JsCustomStrategy.php.html#74\">JsCustomStrategy::detach<\/a>"],[80,8,"<a href=\"src\/AssetsBundle\/View\/Strategy\/JsCustomStrategy.php.html#88\">JsCustomStrategy::selectRenderer<\/a>"],[80,7,"<a href=\"src\/AssetsBundle\/View\/Strategy\/JsCustomStrategy.php.html#116\">JsCustomStrategy::injectResponse<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>
