@@ -48,3 +48,4 @@ Name | Version
 5. [Console tools](https://github.com/neilime/zf2-assets-bundle/wiki/Console-tools)
 6. [FAQ](https://github.com/neilime/zf2-assets-bundle/wiki/FAQ)
 7. [PHP Doc](http://neilime.github.io/zf2-assets-bundle/phpdoc/)
+8. [Code Coverage](http://neilime.github.io/zf2-assets-bundle/coverage/)
