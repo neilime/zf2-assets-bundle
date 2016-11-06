@@ -1,3 +1,5 @@
+# AssetsBundle - Zend Framework module
+
 [![Build Status](https://travis-ci.org/neilime/zf2-assets-bundle.png?branch=master)](https://travis-ci.org/neilime/zf2-assets-bundle)
 [![Latest Stable Version](https://poser.pugx.org/neilime/zf2-assets-bundle/v/stable.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
 [![Total Downloads](https://poser.pugx.org/neilime/zf2-assets-bundle/downloads.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
