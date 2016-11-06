@@ -2,23 +2,27 @@
 [![Latest Stable Version](https://poser.pugx.org/neilime/zf2-assets-bundle/v/stable.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
 [![Total Downloads](https://poser.pugx.org/neilime/zf2-assets-bundle/downloads.png)](https://packagist.org/packages/neilime/zf2-assets-bundle)
 
-NOTE : If you want to contribute don't hesitate, I'll review any PR.
-
-<a href='https://pledgie.com/campaigns/26668'><img alt='Click here to lend your support to: Zend Framework AssetsBundle and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/26668.png?skin_name=chrome' border='0' ></a>
-
-# Introduction
-
-_AssetsBundle_ is a module for Zend Framework allowing asset management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions .
-This module manages the concept of the "development/production" environment.
+_AssetsBundle_ is a module for Zend Framework providing assets management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions .
+This module supports the concept of the "development/production" environment.
 
 In development :
  - Files are not bundled for easier debugging.
  - Less files are compiled when updated or if an "@import" inside is updated
 
 In production :
-
  - All files are bundled and cached once only if needed.
  - Assets path are encrypted to mask file tree (with the exception of files in the "assets" directory)
+
+# Helping Project 
+
+If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can make a donation, thank you.
+
+<a href='https://pledgie.com/campaigns/26668'><img alt='Click here to lend your support to: Zend Framework AssetsBundle and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/26668.png?skin_name=chrome' border='0' ></a>
+
+# Contributing
+
+If you wish to contribute to TwbBundle, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+NOTE : If you want to contribute don't hesitate, I'll review any PR.
 
 # Requirements
 
