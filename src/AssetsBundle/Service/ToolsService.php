@@ -186,18 +186,21 @@ class ToolsService
         }
 
         // Empty config directory except .gitignore
-        foreach (new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator(dirname($oAssetsBundleService->getAssetFilesManager()->getAssetFilesConfiguration()->getConfigurationFilePath()), \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
-        ) as $oFileinfo) {
-            if ($oFileinfo->isDir()) {
-                rmdir($oFileinfo->getRealPath());
-            } elseif ($oFileinfo->getBasename() !== '.gitignore') {
-                unlink($oFileinfo->getRealPath());
+        $sConfigurationFileDirectoryPath = dirname($oAssetsBundleService->getAssetFilesManager()->getAssetFilesConfiguration()->getConfigurationFilePath());
+        if(is_dir($sConfigurationFileDirectoryPath)){        
+            foreach (new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($sConfigurationFileDirectoryPath, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+            ) as $oFileinfo) {
+                if ($oFileinfo->isDir()) {
+                    rmdir($oFileinfo->getRealPath());
+                } elseif ($oFileinfo->getBasename() !== '.gitignore') {
+                    unlink($oFileinfo->getRealPath());
+                }
             }
-        }
-        if ($bDisplayConsoleMessage) {
-            $oConsole->writeLine(' * Config cache directory is empty', \Zend\Console\ColorInterface::WHITE);
-            $oConsole->writeLine('');
+            if ($bDisplayConsoleMessage) {
+                $oConsole->writeLine(' * Config cache directory is empty', \Zend\Console\ColorInterface::WHITE);
+                $oConsole->writeLine('');
+            }
         }
 
         return $this;
