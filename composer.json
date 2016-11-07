@@ -39,10 +39,9 @@
     },
     "require-dev": {
         "zendframework/zend-test": "2.*.*",
-        "phpunit/phpunit": "4.*.*",
+        "phpunit/phpunit": "5.*.*",
         "satooshi/php-coveralls": "1.*.*",
-        "neilime/lessphp": "0.*.*",
-        "phpdocumentor/phpdocumentor": "2.*.*"
+        "neilime/lessphp": "0.*.*"
     },
     "autoload": {
         "psr-4": {

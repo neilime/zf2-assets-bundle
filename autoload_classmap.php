@@ -30,6 +30,7 @@ return array(
     'AssetsBundle\Factory\ServiceFactory' => __DIR__ . '/src/AssetsBundle/Factory/ServiceFactory.php',
     'AssetsBundle\Factory\ServiceOptionsFactory' => __DIR__ . '/src/AssetsBundle/Factory/ServiceOptionsFactory.php',
     'AssetsBundle\Factory\ToolsServiceFactory' => __DIR__ . '/src/AssetsBundle/Factory/ToolsServiceFactory.php',
+    'AssetsBundle\Factory\ToolsControllerFactory' => __DIR__ . '/src/AssetsBundle/Factory/ToolsControllerFactory.php',
     'AssetsBundle\Mvc\Controller\AbstractActionController' => __DIR__ . '/src/AssetsBundle/Mvc/Controller/AbstractActionController.php',
     'AssetsBundle\Service\Service' => __DIR__ . '/src/AssetsBundle/Service/Service.php',
     'AssetsBundle\Service\ServiceOptions' => __DIR__ . '/src/AssetsBundle/Service/ServiceOptions.php',

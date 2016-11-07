@@ -2,31 +2,49 @@
 
 namespace AssetsBundle\Controller;
 
-class ToolsController extends \Zend\Mvc\Controller\AbstractActionController {
+class ToolsController extends \Zend\Mvc\Controller\AbstractActionController
+{
+
+    /**
+     * @var \AssetsBundle\Service\ToolsService
+     */
+    protected $assetsBundleToolsService;
 
     /**
      * Process render all assets action
      */
-    public function renderAssetsAction() {
-        // Retrieve service manager
-        $oServiceManager = $this->getEvent()->getApplication()->getServiceManager();
-        
-        //Retrieve configuration
-        $aConfiguration = $oServiceManager->get('Config');
-        if (!isset($aConfiguration['assets_bundle'])) {
-            $oView = new \Zend\View\Model\ConsoleModel();
-            $oView->setErrorLevel(1);
-            return $oView->setResult('AssetsBundle configuration is undefined' . PHP_EOL);
-        }
-
-        $oServiceManager->get('AssetsBundleToolsService')->renderAllAssets();
+    public function renderAssetsAction()
+    {
+        $this->getAssetsBundleToolsService()->renderAllAssets();
     }
 
     /**
      * Process empty cache action
      */
-    public function emptyCacheAction() {
-        $this->getEvent()->getApplication()->getServiceManager()->get('AssetsBundleToolsService')->emptyCache();
+    public function emptyCacheAction()
+    {
+        $this->getAssetsBundleToolsService()->emptyCache();
     }
 
+    /**
+     * @return \AssetsBundle\Service\ToolsService
+     * @throws \LogicException
+     */
+    public function getAssetsBundleToolsService()
+    {
+        if ($this->assetsBundleToolsService instanceof \AssetsBundle\Service\ToolsService) {
+            return $this->assetsBundleToolsService;
+        }
+        throw new \LogicException('Property "assetsBundleService" expects an instance of "\AssetsBundle\Service\ToolsService", "' . (is_object($this->assetsBundleToolsService) ? get_class($this->assetsBundleToolsService) : gettype($this->assetsBundleToolsService)) . '" defined');
+    }
+
+    /**
+     * @param \AssetsBundle\Service\ToolsService $oAssetsBundleToolsService
+     * @return \AssetsBundle\Controller\ToolsController
+     */
+    public function setAssetsBundleToolsService(\AssetsBundle\Service\ToolsService $oAssetsBundleToolsService)
+    {
+        $this->assetsBundleToolsService = $oAssetsBundleToolsService;
+        return $this;
+    }
 }

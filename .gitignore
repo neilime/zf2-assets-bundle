@@ -3,4 +3,4 @@
 /.project
 /vendor
 /nbproject/
-/.composer.lock
+/composer.lock

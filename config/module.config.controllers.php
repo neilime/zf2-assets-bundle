@@ -1,8 +1,9 @@
 <?php
 
-//Controllers module config
+
+// Controllers module config
 return array(
-    'invokables' => array(
-        'AssetsBundle\Controller\Tools' => 'AssetsBundle\Controller\ToolsController'
-    )
+    'factories' => array(
+        'AssetsBundle\Controller\Tools' => 'AssetsBundle\Factory\ToolsControllerFactory'
+    ),
 );
