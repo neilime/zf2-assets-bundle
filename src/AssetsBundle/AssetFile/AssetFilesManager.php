@@ -209,7 +209,9 @@ class AssetFilesManager
         $oTmpAssetFile->setAssetFileContents($sAssetFileFilteredContent, false);
 
         // Development need to cache less asset file
-        return array($this->getAssetFilesCacheManager()->cacheAssetFile($oTmpAssetFile)->setAssetFileType(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS));
+        $cache = $this->getAssetFilesCacheManager()->cacheAssetFile($oTmpAssetFile);
+        $result = (null !== $cache) ? [$cache->setAssetFileType(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS)] : [];
+        return $result;
     }
 
     /**

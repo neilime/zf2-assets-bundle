@@ -187,10 +187,15 @@ class AssetFilesCacheManager
             if (!is_file($sAssetFilePath)) {
                 throw new \LogicException('Asset file "' . $sAssetFilePath . '" does not exits');
             }
-            copy($sAssetFilePath, $sCacheFilePath);
+            $size = filesize($sAssetFilePath);
+            if ($size > 0) {
+                copy($sAssetFilePath, $sCacheFilePath);
+            } else {
+                $oAssetFile = null;
+            }
             \Zend\Stdlib\ErrorHandler::stop(true);
         }
-        return $oAssetFile->setAssetFilePath($sCacheFilePath);
+        return (null !== $oAssetFile ? $oAssetFile->setAssetFilePath($sCacheFilePath) : null);
     }
 
     /**
