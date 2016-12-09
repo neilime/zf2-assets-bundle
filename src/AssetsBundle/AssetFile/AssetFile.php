@@ -233,6 +233,41 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
             return $iAssetFileFilemtime ? : null;
         }
     }
+    
+    /**
+     * Retrieve asset file size
+     * @return integer|null
+     */
+    public function getAssetFileSize(){
+         
+         // Remote file
+         if ($this->isAssetFilePathUrl()) {
+            if (
+                    // Retrieve headers
+                    ($aHeaders = get_headers($sAssetFilePath = $this->getAssetFilePath(), 1))
+                    // Assert return is OK
+                    && strstr($aHeaders[0], '200') !== false
+                    // Retrieve content length
+                    && !empty($aHeaders['Content-Length']) && $iAssetFileSize = $aHeaders['Content-Length']
+            ) {
+                return $iAssetFileSize;
+            }
+            $oCurlHandle = curl_init($sAssetFilePath);
+            curl_setopt($oCurlHandle, CURLOPT_NOBODY, true);
+            curl_setopt($oCurlHandle, CURLOPT_RETURNTRANSFER, true);           
+            if (curl_exec($oCurlHandle) === false) {
+                return null;
+            }
+            return curl_getinfo($oCurlHandle, CURLINFO_CONTENT_LENGTH_DOWNLOAD) ? : null;
+        }
+        
+        // Local file
+        \Zend\Stdlib\ErrorHandler::start();
+        $iAssetFileSize = filesize($this->getAssetFilePath());
+        \Zend\Stdlib\ErrorHandler::stop(true);
+        return $iAssetFileSize ? : null;
+              
+    }
 
     /**
      * Check if asset file's type is valid
