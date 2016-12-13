@@ -15,7 +15,7 @@ In production :
  - All files are bundled and cached once only if needed.
  - Assets path are encrypted to mask file tree (with the exception of files in the "assets" directory)
 
-# Helping Project 
+# Helping Project
 
 If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can make a donation, thank you.
 

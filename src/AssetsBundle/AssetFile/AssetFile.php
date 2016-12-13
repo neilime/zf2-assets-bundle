@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\AssetFile;
 
-class AssetFile extends \Zend\Stdlib\AbstractOptions {
+class AssetFile extends \Zend\Stdlib\AbstractOptions
+{
 
     const ASSET_CSS = 'css';
     const ASSET_JS = 'js';
@@ -38,8 +39,9 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @return string
      * @throws \LogicException
      */
-    public function getAssetFileType() {
-       
+    public function getAssetFileType()
+    {
+
         if (self::assetFileTypeExists($this->assetFileType)) {
             return $this->assetFileType;
         }
@@ -51,7 +53,8 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @return \AssetsBundle\Service\AssetFile
      * @throws \InvalidArgumentException
      */
-    public function setAssetFileType($sAssetFileType) {
+    public function setAssetFileType($sAssetFileType)
+    {
         if (self::assetFileTypeExists($sAssetFileType)) {
             $this->assetFileType = $sAssetFileType;
             return $this;
@@ -63,7 +66,8 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @return string
      * @throws \LogicException
      */
-    public function getAssetFilePath() {
+    public function getAssetFilePath()
+    {
         if (is_string($this->assetFilePath)) {
             return $this->assetFilePath;
         }
@@ -73,7 +77,8 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
     /**
      * @return boolean
      */
-    public function isAssetFilePathUrl() {
+    public function isAssetFilePathUrl()
+    {
         return filter_var($sAssetFilePath = $this->getAssetFilePath(), FILTER_VALIDATE_URL) && preg_match('/^\/|http/', $sAssetFilePath);
     }
 
@@ -82,7 +87,8 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @return \AssetsBundle\Service\AssetFile
      * @throws \InvalidArgumentException
      */
-    public function setAssetFilePath($sAssetFilePath) {
+    public function setAssetFilePath($sAssetFilePath)
+    {
         if (!is_string($sAssetFilePath)) {
             throw new \InvalidArgumentException('Asset file path expects string, "' . gettype($sAssetFilePath) . '" given');
         }
@@ -132,7 +138,8 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @return string
      * @throws \RuntimeException
      */
-    public function getAssetFileContents() {
+    public function getAssetFileContents()
+    {
         if (
                 $this->assetFileContents &&
                 (($iLastModified = $this->getAssetFileLastModified()) && $iLastModified < $this->assetFileContentsLastRetrievedTime)
@@ -174,30 +181,35 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @return \AssetsBundle\AssetFile\AssetFile
      * @throws \InvalidArgumentException
      */
-    public function setAssetFileContents($sAssetFileContents, $bFileAppend = true) {
+    public function setAssetFileContents($sAssetFileContents, $bFileAppend = true)
+    {
         if (!is_string($sAssetFileContents)) {
             throw new \InvalidArgumentException('Asset file content expects string, "' . gettype($sAssetFileContents) . '" given');
         }
+
+        $sAssetFilePath = $this->getAssetFilePath();
         if ($bFileAppend) {
             if ($this->assetFileContents) {
                 $this->assetFileContents .= $sAssetFileContents;
             }
             \Zend\Stdlib\ErrorHandler::start();
-            file_put_contents($this->getAssetFilePath(), $sAssetFileContents, FILE_APPEND);
+            file_put_contents($sAssetFilePath, $sAssetFileContents, FILE_APPEND);
             \Zend\Stdlib\ErrorHandler::stop(true);
         } else {
             $this->assetFileContents = $sAssetFileContents;
             \Zend\Stdlib\ErrorHandler::start();
-            file_put_contents($this->getAssetFilePath(), $sAssetFileContents);
+            file_put_contents($sAssetFilePath, $sAssetFileContents);
             \Zend\Stdlib\ErrorHandler::stop(true);
         }
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAssetFileExtension() {
+    public function getAssetFileExtension()
+    {
         return $this->assetFileExtension ? : $this->assetFileExtension = strtolower(pathinfo($this->getAssetFilePath(), PATHINFO_EXTENSION));
     }
 
@@ -205,7 +217,8 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * Retrieve asset file last modified timestamp
      * @return int|null
      */
-    public function getAssetFileLastModified() {
+    public function getAssetFileLastModified()
+    {
         if ($this->isAssetFilePathUrl()) {
             if (
             //Retrieve headers
@@ -240,7 +253,8 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return boolean
      */
-    public static function assetFileTypeExists($sAssetFileType) {
+    public static function assetFileTypeExists($sAssetFileType)
+    {
         if (!is_string($sAssetFileType)) {
             throw new \InvalidArgumentException('Asset file type expects string, "' . gettype($sAssetFileType) . '" given');
         }
@@ -258,7 +272,8 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
     /**
      * @return string
      */
-    public static function getAssetFileDefaultExtension($sAssetFileType) {
+    public static function getAssetFileDefaultExtension($sAssetFileType)
+    {
         if (!is_string($sAssetFileType)) {
             throw new \InvalidArgumentException('Asset file type expects string, "' . gettype($sAssetFileType) . '" given');
         }
@@ -273,5 +288,4 @@ class AssetFile extends \Zend\Stdlib\AbstractOptions {
                 throw new \DomainException('Asset file type "' . $sAssetFileType . '" has no default extension');
         }
     }
-
 }

@@ -14,7 +14,7 @@ class AssetFilesCacheManager
      * List of unwanted file path characters
      * @var array
      */
-    protected $unwantedFilePathChars = array('<', '>', '?', '*', '"', '|',':');
+    protected $unwantedFilePathChars = array('<', '>', '?', '*', '"', '|', ':');
 
     /**
      * Constructor
@@ -150,7 +150,7 @@ class AssetFilesCacheManager
         // Create directory if not exists
         if (!is_dir($sCacheFileDirPath)) {
             \Zend\Stdlib\ErrorHandler::start();
-            if (!mkdir($sCacheFileDirPath, 0775, true)) {
+            if (!mkdir($sCacheFileDirPath, $this->getOptions()->getDirectoriesPermissions(), true)) {
                 throw new \RuntimeException('Error occured while creating directory "' . $sCacheFileDirPath . '"');
             }
             if ($oException = \Zend\Stdlib\ErrorHandler::stop()) {
@@ -158,11 +158,13 @@ class AssetFilesCacheManager
             }
         } elseif (!is_writable($sCacheFileDirPath)) {
             \Zend\Stdlib\ErrorHandler::start();
-            if (!chmod($sCacheFileDirPath, 0775)) {
+            if (!chmod($sCacheFileDirPath, $this->getOptions()->getDirectoriesPermissions())) {
                 throw new \RuntimeException('Error occured while changing mode on directory "' . $sCacheFileDirPath . '"');
             }
             \Zend\Stdlib\ErrorHandler::stop(true);
         }
+
+        $bFileExists = file_exists($sCacheFilePath);
 
         // Cache remote asset file
         if ($oAssetFile->isAssetFilePathUrl()) {
@@ -172,6 +174,7 @@ class AssetFilesCacheManager
             if (!$oAssetFileFileHandle) {
                 throw new \LogicException('Unable to open asset file "' . $oAssetFile->getAssetFilePath() . '"');
             }
+
             \Zend\Stdlib\ErrorHandler::start();
             file_put_contents($sCacheFilePath, stream_get_contents($oAssetFileFileHandle));
             \Zend\Stdlib\ErrorHandler::stop(true);
@@ -190,6 +193,13 @@ class AssetFilesCacheManager
             copy($sAssetFilePath, $sCacheFilePath);
             \Zend\Stdlib\ErrorHandler::stop(true);
         }
+
+        if (!$bFileExists) {
+            \Zend\Stdlib\ErrorHandler::start();
+            chmod($sCacheFilePath, $this->getOptions()->getFilesPermissions());
+            \Zend\Stdlib\ErrorHandler::stop(true);
+        }
+
         return $oAssetFile->setAssetFilePath($sCacheFilePath);
     }
 
@@ -217,7 +227,7 @@ class AssetFilesCacheManager
     public function sanitizeAssetFilePath(\AssetsBundle\AssetFile\AssetFile $oAssetFile)
     {
         return $oAssetFile->isAssetFilePathUrl() ? str_replace(
-                        array_merge(array('/'),$this->unwantedFilePathChars), '_', implode('/', array_slice(explode('/', preg_replace('/http:\/\/|https:\/\/|www./', '', $oAssetFile->getAssetFilePath())), 0, 1))
+                        array_merge(array('/'), $this->unwantedFilePathChars), '_', implode('/', array_slice(explode('/', preg_replace('/http:\/\/|https:\/\/|www./', '', $oAssetFile->getAssetFilePath())), 0, 1))
                 ) : $oAssetFile->getAssetFilePath();
     }
 

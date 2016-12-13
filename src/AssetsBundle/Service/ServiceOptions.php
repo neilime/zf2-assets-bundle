@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\Service;
 
-class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
+class ServiceOptions extends \Zend\Stdlib\AbstractOptions
+{
 
     const NO_MODULE = 'no_module';
     const NO_ACTION = 'no_action';
@@ -69,6 +70,18 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
     protected $recursiveSearch;
 
     /**
+     * Permissions for created files
+     * @var integer
+     */
+    protected $filesPermissions;
+
+    /**
+     * Permissions for created directories
+     * @var integer
+     */
+    protected $directoriesPermissions;
+
+    /**
      * Required assets
      * @var array
      */
@@ -121,7 +134,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setProduction($bProduction) {
+    public function setProduction($bProduction)
+    {
         if (is_bool($bProduction)) {
             $this->production = $bProduction;
             return $this;
@@ -133,7 +147,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return boolean
      */
-    public function isProduction() {
+    public function isProduction()
+    {
         if (is_bool($this->production)) {
             return $this->production;
         }
@@ -145,7 +160,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setLastModifiedTime($sLastModifiedTime = null) {
+    public function setLastModifiedTime($sLastModifiedTime = null)
+    {
         if (is_scalar($sLastModifiedTime) || is_null($sLastModifiedTime)) {
             $this->lastModifiedTime = $sLastModifiedTime;
             return $this;
@@ -157,7 +173,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return scalable|null
      */
-    public function getLastModifiedTime() {
+    public function getLastModifiedTime()
+    {
         if (is_scalar($this->lastModifiedTime) || is_null($this->lastModifiedTime)) {
             return $this->lastModifiedTime;
         }
@@ -169,7 +186,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setCachePath($sCachePath) {
+    public function setCachePath($sCachePath)
+    {
         if (is_string($sCachePath)) {
             if (is_dir($sRealCachePath = $this->getRealPath($sCachePath))) {
                 if (is_writable($sRealCachePath)) {
@@ -187,7 +205,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return string
      */
-    public function getCachePath() {
+    public function getCachePath()
+    {
         if (is_string($this->cachePath)) {
             return $this->cachePath;
         }
@@ -199,7 +218,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setAssetsPath($sAssetsPath = null) {
+    public function setAssetsPath($sAssetsPath = null)
+    {
         if (!is_string($sAssetsPath) && !is_null($sAssetsPath)) {
             throw new \InvalidArgumentException('"Assets path" option expects a string or null, "' . gettype($sAssetsPath) . '" given');
         }
@@ -216,7 +236,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
     /**
      * @return boolean
      */
-    public function hasAssetsPath() {
+    public function hasAssetsPath()
+    {
         return is_string($this->assetsPath);
     }
 
@@ -224,7 +245,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return string
      */
-    public function getAssetsPath() {
+    public function getAssetsPath()
+    {
         if ($this->hasAssetsPath()) {
             return $this->assetsPath;
         }
@@ -236,7 +258,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @return \AssetsBundle\Service\ServiceOptions
      * @throws \InvalidArgumentException
      */
-    public function setTmpDirPath($sTmpDirPath) {
+    public function setTmpDirPath($sTmpDirPath)
+    {
         if (!is_string($sTmpDirPath)) {
             throw new \InvalidArgumentException('"Temp dir path" option expects a string, "' . gettype($sTmpDirPath) . '" given');
         }
@@ -251,7 +274,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @return string
      * @throws \LogicException
      */
-    public function getTmpDirPath() {
+    public function getTmpDirPath()
+    {
         if (is_dir($this->tmpDirPath) && is_writable($this->tmpDirPath)) {
             return $this->tmpDirPath;
         }
@@ -263,7 +287,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @return \AssetsBundle\Service\ServiceOptions
      * @throws \InvalidArgumentException
      */
-    public function setProcessedDirPath($sProcessedDirPath) {
+    public function setProcessedDirPath($sProcessedDirPath)
+    {
         if (!is_string($sProcessedDirPath)) {
             throw new \InvalidArgumentException('"Processed dir path" option expects a string, "' . gettype($sProcessedDirPath) . '" given');
         }
@@ -278,7 +303,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @return string
      * @throws \LogicException
      */
-    public function getProcessedDirPath() {
+    public function getProcessedDirPath()
+    {
         if (is_dir($this->processedDirPath) && is_writable($this->processedDirPath)) {
             return $this->processedDirPath;
         }
@@ -290,7 +316,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setBaseUrl($sBaseUrl) {
+    public function setBaseUrl($sBaseUrl)
+    {
         if (is_string($sBaseUrl)) {
             $this->baseUrl = rtrim($sBaseUrl, '/');
             return $this;
@@ -302,7 +329,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return string
      */
-    public function getBaseUrl() {
+    public function getBaseUrl()
+    {
         if (is_string($this->baseUrl)) {
             return $this->baseUrl;
         }
@@ -314,7 +342,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setCacheUrl($sCacheUrl) {
+    public function setCacheUrl($sCacheUrl)
+    {
         if (is_string($sCacheUrl)) {
             if (strpos($sCacheUrl, '@zfBaseUrl') !== false) {
                 $sCacheUrl = $this->getBaseUrl() . '/' . ltrim(str_ireplace('@zfBaseUrl', '', $sCacheUrl), '/');
@@ -329,7 +358,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return string
      */
-    public function getCacheUrl() {
+    public function getCacheUrl()
+    {
         if (is_string($this->cacheUrl)) {
             return $this->cacheUrl;
         }
@@ -341,7 +371,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setMediaExt(array $aMediaExt) {
+    public function setMediaExt(array $aMediaExt)
+    {
         $this->mediaExt = array();
         foreach (array_unique($aMediaExt) as $sMediaExt) {
             if (empty($sMediaExt)) {
@@ -360,7 +391,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return array
      */
-    public function getMediaExt() {
+    public function getMediaExt()
+    {
         if (is_array($this->mediaExt)) {
             return $this->mediaExt;
         }
@@ -372,7 +404,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setRecursiveSearch($bRecursiveSearch) {
+    public function setRecursiveSearch($bRecursiveSearch)
+    {
         if (is_bool($bRecursiveSearch)) {
             $this->recursiveSearch = $bRecursiveSearch;
             return $this;
@@ -384,7 +417,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return boolean
      */
-    public function allowsRecursiveSearch() {
+    public function allowsRecursiveSearch()
+    {
         if (is_bool($this->recursiveSearch)) {
             return $this->recursiveSearch;
         }
@@ -392,10 +426,63 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
     }
 
     /**
+     * @return integer
+     * @throws \LogicException
+     */
+    public function getFilesPermissions()
+    {
+        if (is_integer($this->filesPermissions)) {
+            return $this->filesPermissions;
+        }
+        throw new \LogicException('Property "filesPermissions" expects an integer, "' . (is_object($this->filesPermissions) ? get_class($this->filesPermissions) : gettype($this->filesPermissions)) . '" defined');
+    }
+
+    /**
+     * @param integer $iFilesPermissions
+     * @return \AssetsBundle\Service\ServiceOptions
+     * @throws \InvalidArgumentException
+     */
+    public function setFilesPermissions($iFilesPermissions)
+    {
+        if (is_integer($iFilesPermissions)) {
+            $this->filesPermissions = $iFilesPermissions;
+            return $this;
+        }
+        throw new \InvalidArgumentException('Argument "$iFilesPermissions" expects an integer, "' . (is_object($iFilesPermissions) ? get_class($iFilesPermissions) : gettype($iFilesPermissions)) . '" given');
+    }
+
+    /**
+     * @return integer
+     * @throws \LogicException
+     */
+    public function getDirectoriesPermissions()
+    {
+        if (is_integer($this->directoriesPermissions)) {
+            return $this->directoriesPermissions;
+        }
+        throw new \LogicException('Property "directoriesPermissions" expects an integer, "' . (is_object($this->directoriesPermissions) ? get_class($this->directoriesPermissions) : gettype($this->directoriesPermissions)) . '" defined');
+    }
+
+    /**
+     * @param integer $iDirectoriesPermissions
+     * @return \AssetsBundle\Service\ServiceOptions
+     * @throws \InvalidArgumentException
+     */
+    public function setDirectoriesPermissions($iDirectoriesPermissions)
+    {
+        if (is_integer($iDirectoriesPermissions)) {
+            $this->directoriesPermissions = $iDirectoriesPermissions;
+            return $this;
+        }
+        throw new \InvalidArgumentException('Argument "$iDirectoriesPermissions" expects an integer, "' . (is_object($iDirectoriesPermissions) ? get_class($iDirectoriesPermissions) : gettype($iDirectoriesPermissions)) . '" given');
+    }
+
+    /**
      * @param array $aAssets
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setAssets(array $aAssets) {
+    public function setAssets(array $aAssets)
+    {
         $this->assets = $aAssets;
         return $this;
     }
@@ -404,7 +491,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return array
      */
-    public function getAssets() {
+    public function getAssets()
+    {
         if (is_array($this->assets)) {
             return $this->assets;
         }
@@ -415,7 +503,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @param \Zend\View\Renderer\RendererInterface $oRenderer
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setRenderer(\Zend\View\Renderer\RendererInterface $oRenderer) {
+    public function setRenderer(\Zend\View\Renderer\RendererInterface $oRenderer)
+    {
         $this->renderer = $oRenderer;
         return $this;
     }
@@ -424,7 +513,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return \Zend\View\Renderer\RendererInterface
      */
-    public function getRenderer() {
+    public function getRenderer()
+    {
         if ($this->renderer instanceof \Zend\View\Renderer\RendererInterface) {
             return $this->renderer;
         }
@@ -436,7 +526,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setModuleName($sModuleName) {
+    public function setModuleName($sModuleName)
+    {
         if (empty($sModuleName)) {
             throw new \InvalidArgumentException('"Module name" option is empty');
         }
@@ -451,7 +542,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return string
      */
-    public function getModuleName() {
+    public function getModuleName()
+    {
         if (is_string($this->moduleName)) {
             return $this->moduleName;
         }
@@ -463,7 +555,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setControllerName($sControllerName) {
+    public function setControllerName($sControllerName)
+    {
         if (empty($sControllerName)) {
             throw new \InvalidArgumentException('"Controller name" option is empty');
         }
@@ -478,7 +571,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return string
      */
-    public function getControllerName() {
+    public function getControllerName()
+    {
         if (is_string($this->controllerName)) {
             return $this->controllerName;
         }
@@ -490,7 +584,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setActionName($sActionName) {
+    public function setActionName($sActionName)
+    {
         if (empty($sActionName)) {
             throw new \InvalidArgumentException('"Action name" option is empty');
         }
@@ -505,7 +600,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @return string
      */
-    public function getActionName() {
+    public function getActionName()
+    {
         if (is_string($this->actionName)) {
             return $this->actionName;
         }
@@ -516,7 +612,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @param array $aDisabledContexts
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setDisabledContexts(array $aDisabledContexts) {
+    public function setDisabledContexts(array $aDisabledContexts)
+    {
         $this->disabledContexts = $aDisabledContexts;
         return $this;
     }
@@ -524,7 +621,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
     /**
      * @return boolean
      */
-    public function isAssetsBundleDisabled() {
+    public function isAssetsBundleDisabled()
+    {
         if (isset($this->disabledContexts[$sModuleName = $this->getModuleName()])) {
             if (is_bool($this->disabledContexts[$sModuleName])) {
                 return $this->disabledContexts[$sModuleName];
@@ -547,7 +645,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @param array $aViewHelperPlugins
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function setViewHelperPlugins(array $aViewHelperPlugins) {
+    public function setViewHelperPlugins(array $aViewHelperPlugins)
+    {
         $this->view_helper_plugins = $aViewHelperPlugins;
         return $this;
     }
@@ -556,7 +655,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @return array
      * @throws \LogicException
      */
-    public function getViewHelperPlugins() {
+    public function getViewHelperPlugins()
+    {
         if (is_array($this->view_helper_plugins)) {
             return $this->view_helper_plugins;
         }
@@ -569,7 +669,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @throws \LogicException
      * @throws \InvalidArgumentException
      */
-    public function getViewHelperPluginForAssetFileType($sAssetFileType) {
+    public function getViewHelperPluginForAssetFileType($sAssetFileType)
+    {
         if (\AssetsBundle\AssetFile\AssetFile::assetFileTypeExists($sAssetFileType)) {
             if (!is_array($this->view_helper_plugins)) {
                 throw new \LogicException('View helper plugins are undefined');
@@ -588,7 +689,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @return string|boolean
      * @throws \InvalidArgumentException
      */
-    public function getRealPath($sPathToResolve, \AssetsBundle\AssetFile\AssetFile $oAssetFile = null) {
+    public function getRealPath($sPathToResolve, \AssetsBundle\AssetFile\AssetFile $oAssetFile = null)
+    {
         if (!is_string($sPathToResolve)) {
             throw new \InvalidArgumentException('Path to resolve expects string, "' . gettype($sPathToResolve) . '" given');
         }
@@ -640,7 +742,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * Retrieve cache file name for given module name, controller name and action name
      * @return string
      */
-    public function getCacheFileName() {
+    public function getCacheFileName()
+    {
         $aAssets = $this->getAssets();
 
         $sCacheFileName = isset($aAssets[$sModuleName = $this->getModuleName()]) ? $sModuleName : \AssetsBundle\Service\ServiceOptions::NO_MODULE;
@@ -681,7 +784,8 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
      * @param scalar $iLastModifiedTime
      * @return string
      */
-    public function getAssetFileBaseUrl(\AssetsBundle\AssetFile\AssetFile $oAssetFile, $iLastModifiedTime = null) {
+    public function getAssetFileBaseUrl(\AssetsBundle\AssetFile\AssetFile $oAssetFile, $iLastModifiedTime = null)
+    {
         if ($oAssetFile->isAssetFilePathUrl()) {
             return $oAssetFile->getAssetFilePath();
         }
@@ -696,5 +800,4 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions {
         }
         return $this->getCacheUrl() . ltrim($sAssetPath, '/') . ($iLastModifiedTime ? (strpos($sAssetPath, '?') === false ? '?' : '&' ) . $iLastModifiedTime : '');
     }
-
 }

@@ -161,7 +161,7 @@ class AssetFilesConfiguration
         }
 
         // Retrieve asset file realpath
-        $sAssetRealPath = $this->getOptions()->getRealPath($aAssetFileOptions['asset_file_path'])?:$aAssetFileOptions['asset_file_path'];
+        $sAssetRealPath = $this->getOptions()->getRealPath($aAssetFileOptions['asset_file_path'])? : $aAssetFileOptions['asset_file_path'];
         if (is_dir($sAssetRealPath)) {
             foreach ($this->getAssetFilesPathFromDirectory($sAssetRealPath, $oAssetFile->getAssetFileType()) as $sChildAssetRealPath) {
                 $oNewAssetFile = clone $oAssetFile;
@@ -189,18 +189,18 @@ class AssetFilesConfiguration
         if (!\AssetsBundle\AssetFile\AssetFile::assetFileTypeExists($sAssetType)) {
             throw new \InvalidArgumentException('Asset\'s type is undefined : ' . $sAssetType);
         }
-        
+
         $oDirIterator = new \DirectoryIterator($sDirPath);
         $aAssets = array();
         $bRecursiveSearch = $this->getOptions()->allowsRecursiveSearch();
-        
+
         // Defined expected extensions forthe given type
         if ($sAssetType === \AssetsBundle\AssetFile\AssetFile::ASSET_MEDIA) {
             $aExpectedExtensions = $this->getOptions()->getMediaExt();
         } else {
             $aExpectedExtensions = array(\AssetsBundle\AssetFile\AssetFile::getAssetFileDefaultExtension($sAssetType));
         }
-        
+
         foreach ($oDirIterator as $oFile) {
             if ($oFile->isFile()) {
                 if (in_array(strtolower(pathinfo($oFile->getFilename(), PATHINFO_EXTENSION)), $aExpectedExtensions, true)) {
@@ -208,8 +208,7 @@ class AssetFilesConfiguration
                 }
             } elseif ($oFile->isDir() && !$oFile->isDot() && $bRecursiveSearch) {
                 $aAssets = array_merge(
-                    $aAssets,
-                    $this->getAssetFilesPathFromDirectory($oFile->getPathname(), $sAssetType)
+                        $aAssets, $this->getAssetFilesPathFromDirectory($oFile->getPathname(), $sAssetType)
                 );
             }
         }
@@ -232,19 +231,13 @@ class AssetFilesConfiguration
         //If asset is already a cache file
         $sCachePath = $this->getOptions()->getCachePath();
         return strpos($sAssetRealPath, $sCachePath) !== false ? str_ireplace(
-            array($sCachePath, '.less'),
-            array('', '.css'),
-            $sAssetRealPath
-        ) : (
+                        array($sCachePath, '.less'), array('', '.css'), $sAssetRealPath
+                ) : (
                 $this->getOptions()->hasAssetsPath() ? str_ireplace(
-                    array($this->getOptions()->getAssetsPath(), getcwd(), DIRECTORY_SEPARATOR),
-                    array('', '', '_'),
-                    $sAssetRealPath
-                ) : str_ireplace(
-                    array(getcwd(), DIRECTORY_SEPARATOR),
-                    array('', '_'),
-                    $sAssetRealPath
-                )
+                                array($this->getOptions()->getAssetsPath(), getcwd(), DIRECTORY_SEPARATOR), array('', '', '_'), $sAssetRealPath
+                        ) : str_ireplace(
+                                array(getcwd(), DIRECTORY_SEPARATOR), array('', '_'), $sAssetRealPath
+                        )
                 );
     }
 
@@ -311,17 +304,27 @@ class AssetFilesConfiguration
      */
     public function saveAssetFilesConfiguration()
     {
-        \Zend\Stdlib\ErrorHandler::start();
 
-        //Retrieve configuration file path
+
+        // Retrieve configuration file path
         $sConfigurationFilePath = $this->getConfigurationFilePath();
+        $bFileExists = file_exists($sConfigurationFilePath);
 
-        //Create dir if needed
-        if (!is_dir($sConfigurationFileDirPath = dirname($sConfigurationFilePath))) {
-            mkdir($sConfigurationFileDirPath, 0775);
+        // Create dir if needed
+        if (($bFileExists = file_exists($sConfigurationFilePath)) && !is_dir($sConfigurationFileDirPath = dirname($sConfigurationFilePath))) {
+            \Zend\Stdlib\ErrorHandler::start();
+            mkdir($sConfigurationFileDirPath, $this->getOptions()->getDirectoriesPermissions());
+            \Zend\Stdlib\ErrorHandler::stop(true);
         }
+
+        \Zend\Stdlib\ErrorHandler::start();
         file_put_contents($sConfigurationFilePath, '<?php' . PHP_EOL . 'return ' . var_export($this->getOptions()->getAssets(), 1) . ';');
         \Zend\Stdlib\ErrorHandler::stop(true);
+        if (!$bFileExists) {
+            \Zend\Stdlib\ErrorHandler::start();
+            chmod($sConfigurationFilePath, $this->getOptions()->getFilesPermissions());
+            \Zend\Stdlib\ErrorHandler::stop(true);
+        }
         return $this;
     }
 
@@ -345,5 +348,4 @@ class AssetFilesConfiguration
         }
         return $this->options;
     }
-
 }

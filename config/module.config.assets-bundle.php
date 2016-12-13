@@ -12,6 +12,8 @@ return array(
     'cacheUrl' => '@zfBaseUrl/cache/', // Cache directory base url
     'mediaExt' => array('jpeg', 'jpg', 'png', 'gif', 'cur', 'ttf', 'eot', 'svg', 'woff', 'otf', 'woff2',), // Put here all media extensions to be cached
     'recursiveSearch' => false, // Allows search for matching assets in required folder and its subfolders
+    'filesPermissions' => 0664, // Permissions for created files
+    'directoriesPermissions' => 0775, // Permissions for created directories
     'filters' => array(
         \AssetsBundle\AssetFile\AssetFile::ASSET_LESS => 'LessphpAssetFileFilter',
         \AssetsBundle\AssetFile\AssetFile::ASSET_CSS => 'CssAssetFileFilter',

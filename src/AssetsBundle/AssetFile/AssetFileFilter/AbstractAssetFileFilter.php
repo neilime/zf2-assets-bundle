@@ -2,7 +2,8 @@
 
 namespace AssetsBundle\AssetFile\AssetFileFilter;
 
-abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions implements \ AssetsBundle\AssetFile\AssetFileFilter\AssetFileFilterInterface {
+abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions implements \ AssetsBundle\AssetFile\AssetFileFilter\AssetFileFilterInterface
+{
 
     /**
      * @var string
@@ -24,7 +25,8 @@ abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions impl
      * @return \AssetsBundle\Service\Filter\AbstractFilter
      * @throws \InvalidArgumentException
      */
-    public function setAssetFileFilterName($sAssetFileFilterName) {
+    public function setAssetFileFilterName($sAssetFileFilterName)
+    {
         if (empty($sAssetFileFilterName)) {
             throw new \InvalidArgumentException('Filter name is empty');
         }
@@ -42,7 +44,8 @@ abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions impl
      * @return string
      * @throws \LogicException
      */
-    public function getAssetFileFilterName() {
+    public function getAssetFileFilterName()
+    {
         if (is_string($this->assetFileFilterName) && !empty($this->assetFileFilterName)) {
             return $this->assetFileFilterName;
         }
@@ -53,7 +56,8 @@ abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions impl
      * @param \AssetsBundle\Service\ServiceOptions $oOptions
      * @return \AssetsBundle\Service\Service
      */
-    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions) {
+    public function setOptions(\AssetsBundle\Service\ServiceOptions $oOptions)
+    {
         $this->options = $oOptions;
         return $this;
     }
@@ -61,7 +65,8 @@ abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions impl
     /**
      * @return \AssetsBundle\Service\ServiceOptions
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         if (!($this->options instanceof \AssetsBundle\Service\ServiceOptions)) {
             $this->setOptions(new \AssetsBundle\Service\ServiceOptions());
         }
@@ -72,7 +77,8 @@ abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions impl
      * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
      * @return string
      */
-    public function getCachedFilteredContentFilePath(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
+    public function getCachedFilteredContentFilePath(\AssetsBundle\AssetFile\AssetFile $oAssetFile)
+    {
         return $this->getAssetFileFilterProcessedDirPath() . DIRECTORY_SEPARATOR . md5($sAssetFilePath = $oAssetFile->getAssetFilePath());
     }
 
@@ -80,7 +86,8 @@ abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions impl
      * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
      * @return boolean|string
      */
-    public function getCachedFilteredContent(\AssetsBundle\AssetFile\AssetFile $oAssetFile) {
+    public function getCachedFilteredContent(\AssetsBundle\AssetFile\AssetFile $oAssetFile)
+    {
         if (file_exists($sCachedFilteredContentFilePath = $this->getCachedFilteredContentFilePath($oAssetFile))) {
             $oFilteredAssetFile = new \AssetsBundle\AssetFile\AssetFile(array(
                 'assetFilePath' => $sCachedFilteredContentFilePath,
@@ -106,11 +113,21 @@ abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions impl
      * @return \AssetsBundle\AssetFile\AssetFileFilter\AbstractAssetFileFilter
      * @throws \InvalidArgumentException
      */
-    public function cacheFilteredAssetFileContent(\AssetsBundle\AssetFile\AssetFile $oAssetFile, $sFilteredContent) {
+    public function cacheFilteredAssetFileContent(\AssetsBundle\AssetFile\AssetFile $oAssetFile, $sFilteredContent)
+    {
         if (is_string($sFilteredContent)) {
+            $sCachedFilteredContentFilePath = $this->getCachedFilteredContentFilePath($oAssetFile);
+            $bFileExists = file_exists($sCachedFilteredContentFilePath);
+
             \Zend\Stdlib\ErrorHandler::start();
-            file_put_contents($this->getCachedFilteredContentFilePath($oAssetFile), $sFilteredContent);
+            file_put_contents($sCachedFilteredContentFilePath, $sFilteredContent);
             \Zend\Stdlib\ErrorHandler::stop(true);
+
+            if (!$bFileExists) {
+                \Zend\Stdlib\ErrorHandler::start();
+                chmod($sCachedFilteredContentFilePath, $this->getOptions()->getFilesPermissions());
+                \Zend\Stdlib\ErrorHandler::stop(true);
+            }
             return $this;
         }
         throw new \InvalidArgumentException('Filtered content expects string, "' . gettype($sFilteredContent) . '" given');
@@ -119,18 +136,18 @@ abstract class AbstractAssetFileFilter extends \Zend\Stdlib\AbstractOptions impl
     /**
      * @return string
      */
-    public function getAssetFileFilterProcessedDirPath() {
+    public function getAssetFileFilterProcessedDirPath()
+    {
         if (!is_dir($this->assetFileFilterProcessedDirPath)) {
             $this->assetFileFilterProcessedDirPath = $this->getOptions()->getProcessedDirPath() . DIRECTORY_SEPARATOR . strtolower(str_replace(
                                     array('/', '<', '>', '?', '*', '"', '|'), '_', $this->getAssetFileFilterName()
             ));
             if (!is_dir($this->assetFileFilterProcessedDirPath)) {
                 \Zend\Stdlib\ErrorHandler::start();
-                mkdir($this->assetFileFilterProcessedDirPath, 0775);
+                mkdir($this->assetFileFilterProcessedDirPath, $this->getOptions()->getDirectoriesPermissions());
                 \Zend\Stdlib\ErrorHandler::stop(true);
             }
         }
         return $this->assetFileFilterProcessedDirPath;
     }
-
 }
