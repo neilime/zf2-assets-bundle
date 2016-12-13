@@ -130,6 +130,12 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions
     protected $resolvedPaths = array();
 
     /**
+     * Store open basedir allowed paths
+     * @var array
+     */
+    protected $openBaseDirPaths = null;
+
+    /**
      * @param boolean $bProduction
      * @throws \InvalidArgumentException
      * @return \AssetsBundle\Service\ServiceOptions
@@ -710,10 +716,6 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions
         }
 
         // Path is absolute
-        if (file_exists($sPathToResolve)) {
-            return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sPathToResolve);
-        }
-
         if (strpos($sPathToResolve, '@zfRootPath') !== false) {
             $sPathToResolve = str_ireplace('@zfRootPath', getcwd(), $sPathToResolve);
         }
@@ -725,17 +727,50 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions
             return $this->resolvedPaths[$sResolvedPathsKey] = $sRealPath;
         }
 
-        // Try to guess real path with root path or asset path (if defined)
-        if (file_exists($sRealPath = getcwd() . DIRECTORY_SEPARATOR . $sPathToResolve)) {
-            return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
-        }
-        if ($this->hasAssetsPath() && file_exists($sRealPath = $this->getAssetsPath() . DIRECTORY_SEPARATOR . $sPathToResolve)) {
+        // Try to define real path with given asset file path
+        if ($oAssetFile && $this->safeFileExists($sRealPath = dirname($oAssetFile->getAssetFilePath()) . DIRECTORY_SEPARATOR . $sPathToResolve)) {
             return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
         }
 
-        // Try to define real path with given asset file path
-        if ($oAssetFile && file_exists($sRealPath = dirname($oAssetFile->getAssetFilePath()) . DIRECTORY_SEPARATOR . $sPathToResolve)) {
+        // Try to guess real path with root path or asset path (if defined)
+        if ($this->hasAssetsPath() && $this->safeFileExists($sRealPath = $this->getAssetsPath() . DIRECTORY_SEPARATOR . $sPathToResolve)) {
             return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
+        }
+
+        if ($this->safeFileExists($sRealPath = getcwd() . DIRECTORY_SEPARATOR . $sPathToResolve)) {
+            return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
+        }
+        return false;
+    }
+
+    /**
+     * Check if file exists, only search in "open_basedir" path if defined
+     * @param string $sFilePath
+     * @return boolean
+     * @throws \InvalidArgumentException
+     */
+    protected function safeFileExists($sFilePath)
+    {
+        if (!is_string($sFilePath)) {
+            throw new \InvalidArgumentException('Argument "$sFilePath" expects a string, "' . (is_object($sFilePath) ? get_class($sFilePath) : gettype($sFilePath)) . '" given');
+        }
+
+        // Retrieve "open_basedir" restriction
+        if ($this->openBaseDirPaths === null) {
+            if ($sOpenBaseDir = ini_get('open_basedir')) {
+                $this->openBaseDirPaths = explode(PATH_SEPARATOR, $sOpenBaseDir);
+            } else {
+                $this->openBaseDirPaths = array();
+            }
+        }
+
+        if (!$this->openBaseDirPaths) {
+            return file_exists($sFilePath);
+        }
+        foreach ($this->openBaseDirPaths as $sAllowedPath) {
+            if (strpos($sFilePath, $sAllowedPath)) {
+                return file_exists($sFilePath);
+            }
         }
         return false;
     }
