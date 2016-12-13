@@ -692,48 +692,50 @@ class ServiceOptions extends \Zend\Stdlib\AbstractOptions
     public function getRealPath($sPathToResolve, \AssetsBundle\AssetFile\AssetFile $oAssetFile = null)
     {
         if (!is_string($sPathToResolve)) {
-            throw new \InvalidArgumentException('Path to resolve expects string, "' . gettype($sPathToResolve) . '" given');
+            throw new \InvalidArgumentException('Argument "$sPathToResolve" expects a string, "' . (is_object($sPathToResolve) ? get_class($sPathToResolve) : gettype($sPathToResolve)) . '" given');
+        }
+        if (!$sPathToResolve) {
+            throw new \InvalidArgumentException('Argument "$sPathToResolve" is empty');
         }
 
-        //Define resolved paths key
+        // Define resolved paths key
         $sResolvedPathsKey = ($oAssetFile ? $oAssetFile->getAssetFilePath() . '_' : '') . $sPathToResolve;
 
         if (isset($this->resolvedPaths[$sResolvedPathsKey])) {
             return $this->resolvedPaths[$sResolvedPathsKey];
-        } else {
-            //If path is "/", assets path is prefered
-            if ($sPathToResolve === DIRECTORY_SEPARATOR && $this->hasAssetsPath()) {
-                return $this->resolvedPaths[$sResolvedPathsKey] = $this->getAssetsPath();
-            }
+        }
+        // If path is "/", assets path is prefered
+        if ($sPathToResolve === DIRECTORY_SEPARATOR && $this->hasAssetsPath()) {
+            return $this->resolvedPaths[$sResolvedPathsKey] = $this->getAssetsPath();
+        }
 
-            //Path is absolute
-            if (file_exists($sPathToResolve)) {
-                return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sPathToResolve);
-            }
+        // Path is absolute
+        if (file_exists($sPathToResolve)) {
+            return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sPathToResolve);
+        }
 
-            if (strpos($sPathToResolve, '@zfRootPath') !== false) {
-                $sPathToResolve = str_ireplace('@zfRootPath', getcwd(), $sPathToResolve);
-            }
-            if (strpos($sPathToResolve, '@zfAssetsPath') !== false) {
-                $sPathToResolve = str_ireplace('@zfAssetsPath', $this->getAssetsPath(), $sPathToResolve);
-            }
+        if (strpos($sPathToResolve, '@zfRootPath') !== false) {
+            $sPathToResolve = str_ireplace('@zfRootPath', getcwd(), $sPathToResolve);
+        }
+        if (strpos($sPathToResolve, '@zfAssetsPath') !== false) {
+            $sPathToResolve = str_ireplace('@zfAssetsPath', $this->getAssetsPath(), $sPathToResolve);
+        }
 
-            if (($sRealPath = realpath($sPathToResolve)) !== false) {
-                return $this->resolvedPaths[$sResolvedPathsKey] = $sRealPath;
-            }
+        if (($sRealPath = realpath($sPathToResolve)) !== false) {
+            return $this->resolvedPaths[$sResolvedPathsKey] = $sRealPath;
+        }
 
-            //Try to guess real path with root path or asset path (if defined)
-            if (file_exists($sRealPath = getcwd() . DIRECTORY_SEPARATOR . $sPathToResolve)) {
-                return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
-            }
-            if ($this->hasAssetsPath() && file_exists($sRealPath = $this->getAssetsPath() . DIRECTORY_SEPARATOR . $sPathToResolve)) {
-                return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
-            }
+        // Try to guess real path with root path or asset path (if defined)
+        if (file_exists($sRealPath = getcwd() . DIRECTORY_SEPARATOR . $sPathToResolve)) {
+            return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
+        }
+        if ($this->hasAssetsPath() && file_exists($sRealPath = $this->getAssetsPath() . DIRECTORY_SEPARATOR . $sPathToResolve)) {
+            return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
+        }
 
-            //Try to define real path with given asset file path
-            if ($oAssetFile && file_exists($sRealPath = dirname($oAssetFile->getAssetFilePath()) . DIRECTORY_SEPARATOR . $sPathToResolve)) {
-                return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
-            }
+        // Try to define real path with given asset file path
+        if ($oAssetFile && file_exists($sRealPath = dirname($oAssetFile->getAssetFilePath()) . DIRECTORY_SEPARATOR . $sPathToResolve)) {
+            return $this->resolvedPaths[$sResolvedPathsKey] = realpath($sRealPath);
         }
         return false;
     }
