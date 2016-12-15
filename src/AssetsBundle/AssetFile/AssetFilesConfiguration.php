@@ -311,7 +311,7 @@ class AssetFilesConfiguration
         $bFileExists = file_exists($sConfigurationFilePath);
 
         // Create dir if needed
-        if (($bFileExists = file_exists($sConfigurationFilePath)) && !is_dir($sConfigurationFileDirPath = dirname($sConfigurationFilePath))) {
+        if (!($bFileExists = file_exists($sConfigurationFilePath)) && !is_dir($sConfigurationFileDirPath = dirname($sConfigurationFilePath))) {
             \Zend\Stdlib\ErrorHandler::start();
             mkdir($sConfigurationFileDirPath, $this->getOptions()->getDirectoriesPermissions());
             \Zend\Stdlib\ErrorHandler::stop(true);
