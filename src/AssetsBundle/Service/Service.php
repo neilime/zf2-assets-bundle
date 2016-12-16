@@ -123,15 +123,14 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface
         // Retrieve asset files manager
         $oAssetFilesManager = $this->getAssetFilesManager();
 
-        // Render Css and Js assets
-        $this->displayAssets(
-            // Retrieve cached Css assets
-                array_merge(
-                    $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS),
-                    // Retrieve cached Js assets
-                        $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_JS)
-                )
+        // Retrieve cached Css & Js assets
+        $aAssets = array_merge(
+            $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS),                    
+            $oAssetFilesManager->getCachedAssetsFiles(\AssetsBundle\AssetFile\AssetFile::ASSET_JS)
         );
+        
+        // Render Css and Js assets
+        $this->displayAssets($aAssets);
 
         // Save current configuration
         $this->getAssetFilesManager()->getAssetFilesConfiguration()->saveAssetFilesConfiguration();
@@ -177,7 +176,7 @@ class Service implements \Zend\EventManager\ListenerAggregateInterface
                     $oRendererPlugin->appendStylesheet($oOptions->getAssetFileBaseUrl($oAssetFile, $iLastModifiedTime), 'all');
                     break;
                 default:
-                    throw new \DomainException('Asset\'s type "' . gettype($oAssetFile->getAssetFileType()) . '" can not be rendering as asset');
+                    throw new \DomainException('Asset\'s type "' . $oAssetFile->getAssetFileType() . '" can not be rendering as asset');
             }
         }
         return $this;

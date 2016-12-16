@@ -34,7 +34,7 @@ abstract class AbstractActionController extends \Zend\Mvc\Controller\AbstractAct
                         'asset_file_type' => \AssetsBundle\AssetFile\AssetFile::ASSET_JS,
                         'asset_file_path' => $sJsFilePath
                     ));
-                    //Copy js file into cache
+                    // Copy js file into cache
                     $oAssetFilesCacheManager->cacheAssetFile($oJsAssetFile);
                     $sJsFilePath = $oJsAssetFile;
                 } else {

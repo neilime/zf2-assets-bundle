@@ -101,22 +101,21 @@ class AssetFilesCacheManager
             throw new \InvalidArgumentException('Asset file type "' . $sAssetFileType . '" is not valid');
         }
 
-        if (in_array($sAssetFileType, array(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS, \AssetsBundle\AssetFile\AssetFile::ASSET_JS))) {
-            $sCacheFileName = $this->getOptions()->getCacheFileName();
-            $sCacheFileExtension = \AssetsBundle\AssetFile\AssetFile::getAssetFileDefaultExtension($sAssetFileType);
-            if (file_exists($sCachedAssetFile = $this->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCacheFileName . '.' . $sCacheFileExtension)) {
-                $aAssetFiles = array();
-                foreach (glob($this->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCacheFileName . '*.' . $sCacheFileExtension) as $sAssetFilePath) {
-                    $aAssetFiles[] = new \AssetsBundle\AssetFile\AssetFile(array(
-                        'asset_file_path' => $sAssetFilePath,
-                        'asset_file_type' => $sAssetFileType
-                    ));
-                }
-                return $aAssetFiles;
-            }
-            throw new \LogicException('Production cached asset files do not exist for asset file type "' . $sAssetFileType . '"');
+        if (!in_array($sAssetFileType, array(\AssetsBundle\AssetFile\AssetFile::ASSET_CSS, \AssetsBundle\AssetFile\AssetFile::ASSET_JS))) {
+            throw new \InvalidArgumentException(__METHOD__ . 'allows "' . \AssetsBundle\AssetFile\AssetFile::ASSET_CSS . '" & "' . \AssetsBundle\AssetFile\AssetFile::ASSET_JS . '" asset file type, "' . $sAssetFileType . '" given');
         }
-        throw new \InvalidArgumentException(__METHOD__ . 'allows "' . \AssetsBundle\AssetFile\AssetFile::ASSET_CSS . '" & "' . \AssetsBundle\AssetFile\AssetFile::ASSET_JS . '" asset file type, "' . $sAssetFileType . '" given');
+        
+        $sCacheFileName = $this->getOptions()->getCacheFileName();
+        $sCacheFileExtension = \AssetsBundle\AssetFile\AssetFile::getAssetFileDefaultExtension($sAssetFileType);
+
+        $aAssetFiles = array();
+        foreach (glob($this->getOptions()->getCachePath() . DIRECTORY_SEPARATOR . $sCacheFileName . '*.' . $sCacheFileExtension) as $sAssetFilePath) {
+            $aAssetFiles[] = new \AssetsBundle\AssetFile\AssetFile(array(
+                'asset_file_path' => $sAssetFilePath,
+                'asset_file_type' => $sAssetFileType
+            ));
+        }
+        return $aAssetFiles;   
     }
 
     /**
