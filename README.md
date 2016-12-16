@@ -23,7 +23,7 @@ If this project helps you reduce time to develop and/or you want to help the mai
 
 # Contributing
 
-If you wish to contribute to TwbBundle, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+If you wish to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 NOTE : If you want to contribute don't hesitate, I'll review any PR.
 
 # Requirements
