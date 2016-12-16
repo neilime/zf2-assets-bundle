@@ -4,7 +4,7 @@
 
 To run tests:
 
-- Make sure you have a recent version of PHPUnit installed; 3.7.0
+- Make sure you have a recent version of PHPUnit installed; 4.8.0
   minimally.
 - Enter the `tests/` subdirectory.
 - Execute PHPUnit
