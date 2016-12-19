@@ -4,7 +4,7 @@ sudo: false
 
 env:
   global:
-  - secure: PENfjgcItjkcdkDjZZABlQzrcSDDgtAR5uJ/bTFJ+lryS675X5V/2nzSikxkpx0NvIBvj4N6ooQZDG/WsDNsNL9SYPjeEcmW60ADxs8SBU3+SczBIEIK3IN/5Cdmfrx0HrmuShMe6gkV07ZT1/Jhch1WExapfssZ9eniPqDkECE=
+  - secure: "cSujC/abhUMuBqgU88qrGg8fZPOfoXd6sCU+uD6HzAzt0JLNgxVwR0EHss8k7Vc4Z7Pp9FxQFq/f6ecjEbK8w5spw5Vmz8a0D2QE5CEb0vR4hElRqCxNmN+azAVIvB1zyomRtCEdYQTDbjx8K35Uarh4mykczr9oCidI0kc7Ae8="
 
 matrix:
   include:
