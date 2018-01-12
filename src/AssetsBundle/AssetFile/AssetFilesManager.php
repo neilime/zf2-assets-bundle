@@ -199,7 +199,16 @@ class AssetFilesManager
             if ($iAssetFileCachedFilemtime && $bIsUpdated) {
                 $bIsUpdated = $iAssetFileCachedFilemtime >= $oAssetFile->getAssetFileLastModified();
             }
-            $oTmpAssetFile->setAssetFileContents('@import "' . str_replace(array(getcwd(), DIRECTORY_SEPARATOR), array('', '/'), $oAssetFile->getAssetFilePath()) . '";' . PHP_EOL);
+            // If less asset file is a php file, retrieve its content and add it as final less file content
+            if ($oAssetFile->getAssetFileExtension() === 'php') {
+                $sLessContent = $oAssetFile->getAssetFileContents();
+            } 
+            // Else import it in final less file
+            else {
+                $sLessContent = '@import "' . str_replace(array(getcwd(), DIRECTORY_SEPARATOR), array('', '/'), $oAssetFile->getAssetFilePath()) . '";';
+            }
+
+            $oTmpAssetFile->setAssetFileContents($sLessContent . PHP_EOL);
         }
         \Zend\Stdlib\ErrorHandler::stop(true);
 
