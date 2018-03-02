@@ -135,6 +135,7 @@ class AssetFilesConfiguration
         return $this;
     }
 
+    
     /**
      * @param array $aAssetFileOptions
      * @return \AssetsBundle\AssetFile\AssetFilesConfiguration
@@ -162,15 +163,34 @@ class AssetFilesConfiguration
 
         // Retrieve asset file realpath
         $sAssetRealPath = $this->getOptions()->getRealPath($aAssetFileOptions['asset_file_path'])? : $aAssetFileOptions['asset_file_path'];
+
+        return $this->getAssetFileFromFilePath($oAssetFile, $sAssetRealPath);
+    }
+
+    /**
+     * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
+     * @param type $sAssetRealPath
+     * @return \AssetsBundle\AssetFile\AssetFilesConfiguration
+     */
+    public function getAssetFileFromFilePath(\AssetsBundle\AssetFile\AssetFile $oAssetFile, $sAssetRealPath)
+    {
         if (is_dir($sAssetRealPath)) {
             foreach ($this->getAssetFilesPathFromDirectory($sAssetRealPath, $oAssetFile->getAssetFileType()) as $sChildAssetRealPath) {
-                $oNewAssetFile = clone $oAssetFile;
-                $this->addAssetFile($oNewAssetFile->setAssetFilePath($sChildAssetRealPath));
+                $this->getAssetFileFromFilePath($oAssetFile, $sChildAssetRealPath);
+            }
+            return $this;
+        }
+        // Handle path with wildcard
+        elseif (strpos($sAssetRealPath, '*') !== false) {
+            $oGlobIterator = new \GlobIterator($sAssetRealPath);
+            foreach ($oGlobIterator as $oItem) {
+                $this->getAssetFileFromFilePath($oAssetFile, $oItem->key());
             }
             return $this;
         }
 
-        return $this->addAssetFile($oAssetFile->setAssetFilePath($sAssetRealPath));
+        $oNewAssetFile = clone $oAssetFile;
+        return $this->addAssetFile($oNewAssetFile->setAssetFilePath($sAssetRealPath));
     }
 
     /**
