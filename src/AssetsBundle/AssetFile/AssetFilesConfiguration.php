@@ -184,7 +184,7 @@ class AssetFilesConfiguration
         elseif (strpos($sAssetRealPath, '*') !== false) {
             $oGlobIterator = new \GlobIterator($sAssetRealPath);
             foreach ($oGlobIterator as $oItem) {
-                $this->getAssetFileFromFilePath($oAssetFile, $oItem->key());
+                $this->getAssetFileFromFilePath($oAssetFile, $oItem->getRealPath());
             }
             return $this;
         }
