@@ -21,7 +21,7 @@
         "neilime/lessphp": "The lessphp fork, to use the Lessc filter"
     },
     "require": {
-        "php": ">=5.5",
+        "php": ">=5.6",
         "zendframework/zend-servicemanager": "2.*@stable",
         "zendframework/zend-eventmanager": "2.*@stable",
         "zendframework/zend-http": "2.*@stable",
@@ -39,9 +39,9 @@
     },
     "require-dev": {
         "zendframework/zend-test": "2.*.*",
-        "phpunit/phpunit": "4.*.*",
         "neilime/lessphp": "0.*.*",
-        "php-coveralls/php-coveralls": "^2.1"
+        "php-coveralls/php-coveralls": "^2.1",
+        "phpunit/phpunit": "^5.7"
     },
     "autoload": {
         "psr-4": {
