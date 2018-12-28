@@ -12,6 +12,8 @@ matrix:
     - php: '5.5'
     - php: '5.6'
     - php: '7.1'
+    - php: '7.2'
+    - php: '7.3'
       env:
         - EXECUTE_AFTER_SCRIPT=true
 
@@ -37,9 +39,7 @@ before_script:
 - mkdir -p build/{logs,coverage,phpdoc}
 
 script:
-- cd tests
-- phpunit -d max_execution_time=0 --coverage-text --coverage-clover ../build/logs/clover.xml --coverage-html ../build/coverage/
-- cd ..
+- composer run testCi
 
 after_script:
 - if [[ $EXECUTE_AFTER_SCRIPT == 'true' ]]; then php vendor/bin/coveralls --verbose --config;fi
