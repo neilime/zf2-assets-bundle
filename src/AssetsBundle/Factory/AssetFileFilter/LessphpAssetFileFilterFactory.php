@@ -9,7 +9,7 @@ class LessphpAssetFileFilterFactory implements \Zend\ServiceManager\FactoryInter
      * @return \AssetsBundle\AssetFile\AssetFileFilter\LessPhpAssetFileFilter
      */
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator) {
-        return new \AssetsBundle\AssetFile\AssetFileFilter\LessphpAssetFileFilter();
+        return new \AssetsBundle\AssetFile\AssetFileFilter\StyleAssetFileFilter\LessphpAssetFileFilter();
     }
 
 }

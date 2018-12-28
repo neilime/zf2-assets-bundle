@@ -11,7 +11,7 @@ class JShrinkAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\JsA
      * @throws \LogicException
      * @throws \InvalidArgumentException
      */
-    protected function minifyJsContent($sContent)
+    protected function minifyContent($sContent)
     {
         if (!is_string($sContent)) {
             throw new \InvalidArgumentException('Argument "$sContent" expects a string, "'.(is_object($sContent)?get_class($sContent):gettype($sContent)).'" given');

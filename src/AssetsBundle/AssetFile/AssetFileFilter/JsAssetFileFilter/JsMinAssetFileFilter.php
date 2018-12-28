@@ -11,7 +11,7 @@ class JsMinAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\JsAss
      * @throws \LogicException
      * @throws \InvalidArgumentException
      */
-    protected function minifyJsContent($sContent)
+    protected function minifyContent($sContent)
     {
         if (!is_string($sContent)) {
             throw new \InvalidArgumentException('Argument "$sContent" expects a string, "'.(is_object($sContent)?get_class($sContent):gettype($sContent)).'" given');
@@ -19,7 +19,7 @@ class JsMinAssetFileFilter extends \AssetsBundle\AssetFile\AssetFileFilter\JsAss
         if (!class_exists('JSMin')) {
             throw new \LogicException('"JSMin" class does not exist');
         }
-        return  \JSMin::minify($sContent);
+        return \JSMin::minify($sContent);
     }
 
 }

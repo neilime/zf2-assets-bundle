@@ -38,7 +38,7 @@ class ServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreateServiceWithClassnameFilter() {
         $aConfiguration = $this->configuration;
-        $aConfiguration['assets_bundle']['filters']['css'] = 'AssetsBundle\AssetFile\AssetFileFilter\CssAssetFileFilter';
+        $aConfiguration['assets_bundle']['filters']['css'] = 'AssetsBundle\AssetFile\AssetFileFilter\StyleAssetFileFilter\CssAssetFileFilter';
 
         $oServiceManager = \AssetsBundleTest\Bootstrap::getServiceManager();
         $bAllowOverride = $oServiceManager->getAllowOverride();

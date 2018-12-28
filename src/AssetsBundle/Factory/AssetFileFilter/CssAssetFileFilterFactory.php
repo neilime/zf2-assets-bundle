@@ -9,7 +9,7 @@ class CssAssetFileFilterFactory implements \Zend\ServiceManager\FactoryInterface
      * @return \AssetsBundle\AssetFile\AssetFileFilter\CssAssetFileFilter
      */
     public function createService(\Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator) {
-        return new \AssetsBundle\AssetFile\AssetFileFilter\CssAssetFileFilter();
+        return new \AssetsBundle\AssetFile\AssetFileFilter\StyleAssetFileFilter\CssAssetFileFilter();
     }
 
 }

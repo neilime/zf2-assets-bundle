@@ -133,6 +133,7 @@ class ToolsControllerTest extends \Zend\Test\PHPUnit\Controller\AbstractConsoleC
                 '/cache\/([0-9a-f]{32})\//',
                 '/\?[0-9]+/',
                     ), array('/current/directory', 'cache/encrypted-file-tree/', '?timestamp'), file_get_contents($sCssFilePath));
+
             $this->assertStringEqualsFile($sCssCacheExpectedPath, $sCssFileContent, $sCachePart . ' - ' . $sCacheFile . '.css');
 
             // Js cache files

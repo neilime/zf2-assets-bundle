@@ -34,14 +34,14 @@
         "zendframework/zend-log": "2.*@stable",
         "zendframework/zend-i18n": "2.*@stable",
         "oyejorge/less.php": "1.*@stable",
-        "mrclay/minify": "2.*@stable",
-        "tedivm/jshrink": "1.*@stable"
+        "tedivm/jshrink": "1.*@stable",
+        "tubalmartin/cssmin": "^4.1"
     },
     "require-dev": {
         "zendframework/zend-test": "2.*.*",
         "phpunit/phpunit": "4.*.*",
-        "satooshi/php-coveralls": "1.*.*",
-        "neilime/lessphp": "0.*.*"
+        "neilime/lessphp": "0.*.*",
+        "php-coveralls/php-coveralls": "^2.1"
     },
     "autoload": {
         "psr-4": {
@@ -58,5 +58,8 @@
         "branch-alias": {
             "dev-master": "1.0-dev"
         }
+    },
+	"scripts": {
+        "test": "cd tests && phpunit & cd .."
     }
 }
