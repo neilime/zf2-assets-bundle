@@ -1,11 +1,18 @@
-# AssetsBundle - Zend Framework module
+# AssetsBundle - Zend Framework 2 module
 
 [![Build Status](https://travis-ci.org/neilime/zf2-assets-bundle.svg?branch=master)](https://travis-ci.org/neilime/zf2-assets-bundle)
 [![Latest Stable Version](https://poser.pugx.org/neilime/zf2-assets-bundle/v/stable.svg)](https://packagist.org/packages/neilime/zf2-assets-bundle)
 [![Total Downloads](https://poser.pugx.org/neilime/zf2-assets-bundle/downloads.svg)](https://packagist.org/packages/neilime/zf2-assets-bundle)
 [![Coverage Status](https://coveralls.io/repos/github/neilime/zf2-assets-bundle/badge.svg?branch=master)](https://coveralls.io/github/neilime/zf2-assets-bundle?branch=master)
+[![Beerpay](https://beerpay.io/neilime/zf2-assets-bundle/badge.svg)](https://beerpay.io/neilime/zf2-assets-bundle)
 
-_AssetsBundle_ is a module for Zend Framework providing assets management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions .
+****
+
+__⚠️ For Zend Framework 3+, please use [zf-assets-bundle](https://github.com/neilime/zf-assets-bundle) ⚠️__
+
+****
+
+_AssetsBundle_ is a module for Zend Framework 2 providing assets management (bundling & caching) like Css, Js and Less, dependent on modules, controllers and actions .
 This module supports the concept of the "development/production" environment.
 
 In development :
@@ -18,9 +25,7 @@ In production :
 
 # Helping Project
 
-If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can make a donation, thank you.
-
-<a href='https://pledgie.com/campaigns/26668'><img alt='Click here to lend your support to: Zend Framework AssetsBundle and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/26668.png?skin_name=chrome' border='0' ></a>
+❤️ If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can support him on [![Beerpay](https://beerpay.io/neilime/zf2-assets-bundle/badge.svg)](https://beerpay.io/neilime/zf2-assets-bundle) Thank you !
 
 # Contributing
 
