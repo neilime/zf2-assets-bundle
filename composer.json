@@ -27,7 +27,7 @@
         "zendframework/zend-http": "2.*@stable",
         "zendframework/zend-mvc": "2.*@stable",
         "zendframework/zend-modulemanager": "2.*@stable",
-        "zendframework/zend-config": "2.*@stable",
+        "zendframework/zend-config": "2.*@stable || 3.3",
         "zendframework/zend-console": "2.*@stable",
         "zendframework/zend-view": "2.*@stable",
         "zendframework/zend-serializer": "2.*@stable",
