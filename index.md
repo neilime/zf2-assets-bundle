@@ -12,7 +12,9 @@ title: Home
 
 ****
 
-__⚠️ For Zend Framework 3+, please use [zf-assets-bundle](https://github.com/neilime/zf-assets-bundle) ⚠️__
+__⚠️ This module is for Zend Framework 2, it is deprecated ⚠️__ \
+\
+__⚠️ Please use [zf-assets-bundle](https://github.com/neilime/zf-assets-bundle)__ ⚠️
 
 ****
 
@@ -45,4 +47,4 @@ NOTE : If you want to contribute don't hesitate, I'll review any PR.
 5. [Console tools](https://github.com/neilime/zf2-assets-bundle/wiki/Console-tools)
 6. [FAQ](https://github.com/neilime/zf2-assets-bundle/wiki/FAQ)
 7. [PHP Doc](https://neilime.github.io/zf2-assets-bundle/phpdoc/)
-8. [Code Coverage](https://coveralls.io/github/neilime/php-css-lint)
+8. [Code Coverage](https://coveralls.io/github/neilime/zf2-assets-bundle)
