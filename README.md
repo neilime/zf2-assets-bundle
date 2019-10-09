@@ -40,5 +40,5 @@ NOTE : If you want to contribute don't hesitate, I'll review any PR.
 4. [Custom Js](https://github.com/neilime/zf2-assets-bundle/wiki/Custom-Js)
 5. [Console tools](https://github.com/neilime/zf2-assets-bundle/wiki/Console-tools)
 6. [FAQ](https://github.com/neilime/zf2-assets-bundle/wiki/FAQ)
-7. [PHP Doc](http://neilime.github.io/zf2-assets-bundle/phpdoc/)
-8. [Code Coverage](http://neilime.github.io/zf2-assets-bundle/coverage/)
+7. [PHP Doc](https://neilime.github.io/zf2-assets-bundle/phpdoc/)
+8. [Code Coverage](https://coveralls.io/github/neilime/php-css-lint)
