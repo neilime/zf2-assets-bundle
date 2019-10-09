@@ -32,25 +32,6 @@ In production :
 If you wish to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 NOTE : If you want to contribute don't hesitate, I'll review any PR.
 
-# Requirements
-
-Name | Version
------|--------
-[php](https://secure.php.net/) | >=5.6
-[zendframework/zend-eventmanager](https://github.com/zendframework/zend-eventmanager) | 2.*
-[zendframework/zend-http](https://github.com/zendframework/zend-http) | 2.*
-[zendframework/zend-mvc](https://github.com/zendframework/zend-mvc) | 2.*
-[zendframework/zend-modulemanager](https://github.com/zendframework/zend-modulemanager) | 2.*
-[zendframework/zend-config](https://github.com/zendframework/zend-config) | 2.*
-[zendframework/zend-console](https://github.com/zendframework/zend-console) | 2.*
-[zendframework/zend-view](https://github.com/zendframework/zend-view) | 2.*
-[zendframework/zend-serializer](https://github.com/zendframework/zend-serializer) | 2.*
-[zendframework/zend-log](https://github.com/zendframework/zend-log) | 2.*
-[zendframework/zend-i18n](https://github.com/zendframework/zend-i18n) | 2.*
-[oyejorge/less.php](https://github.com/oyejorge/less.php) | 1.*
-[tedivm/jshrink](https://github.com/tedivm/jshrink) | 1.*
-[tubalmartin/cssmin](https://github.com/tubalmartin/cssmin) | ^4.1
-
 # Pages
 
 1. [Installation](https://github.com/neilime/zf2-assets-bundle/wiki/Installation)

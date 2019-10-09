@@ -326,7 +326,8 @@ class AssetFilesManager
      * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
      * @return string
      */
-    public function rewriteAssetFileUrls($sAssetFileContent, \AssetsBundle\AssetFile\AssetFile $oAssetFile){
+    public function rewriteAssetFileUrls(string $sAssetFileContent, \AssetsBundle\AssetFile\AssetFile $oAssetFile) : string
+    {
         // Callback for url rewriting
         $oRewriteUrlCallback = array($this, 'rewriteUrl');
         return preg_replace_callback('/url\(([^\)]+)\)/', function ($aMatches) use ($oAssetFile, $oRewriteUrlCallback) {
@@ -334,46 +335,40 @@ class AssetFilesManager
         }, $sAssetFileContent);
     }
 
-    /**
+     /**
      * Rewrite url to match with cache path if needed
      *
-     * @param  array $aMatches
-     * @param  \AssetsBundle\AssetFile\AssetFile $oAssetFile
-     * @return array
+     * @param array $aMatches
+     * @param \AssetsBundle\AssetFile\AssetFile $oAssetFile
+     * @return string
      * @throws \InvalidArgumentException
      * @throws \LogicException
      */
-    public function rewriteUrl(array $aMatches, \AssetsBundle\AssetFile\AssetFile $oAssetFile)
+    public function rewriteUrl(array $aMatches, \AssetsBundle\AssetFile\AssetFile $oAssetFile): string
     {
         if (!isset($aMatches[1])) {
             throw new \InvalidArgumentException('Url match is not valid');
         }
-
         // Remove quotes & double quotes from url
         $aFirstCharMatches = null;
         $sFirstChar = preg_match('/^("|\'){1}/', $sUrl = trim($aMatches[1]), $aFirstCharMatches) ? $aFirstCharMatches[1] : '';
         $sUrl = str_ireplace(array('"', '\''), '', $sUrl);
-
         // Data url
         if (strpos($sUrl, 'data:') === 0) {
             return $aMatches[0];
         }
-
         // Remote absolute url
         if (preg_match('/^http/', $sUrl)) {
             return $aMatches[0];
         }
-
         // Split arguments
         if (strpos($sUrl, '?') !== false) {
             list($sUrl, $sArguments) = explode('?', $sUrl);
         }
-
         // Split anchor
         if (strpos($sUrl, '#') !== false) {
             list($sUrl, $sAnchor) = explode('#', $sUrl);
         }
-
         // Absolute url
         if (($sUrlRealpath = $this->getOptions()->getRealPath($sUrl, $oAssetFile))) {
             // Initialize asset file from url
@@ -381,21 +376,16 @@ class AssetFilesManager
                 'asset_file_type' => \AssetsBundle\AssetFile\AssetFile::ASSET_MEDIA,
                 'asset_file_path' => $sUrlRealpath
             ));
-
             $sAssetFileCachePath = $this->getAssetFilesCacheManager()->getAssetFileCachePath($oUrlAssetFile);
             if (!file_exists($sAssetFileCachePath)) {
                 throw new \LogicException('Media file "' . $oUrlAssetFile->getAssetFilePath() . '" used by "' . $oAssetFile->getAssetFilePath() . '" does not have been cached. Please add it into ["assets_bundle"]["assets"]["media"] configuration array');
             }
-
             // Define cached file path
             $oUrlAssetFile->setAssetFilePath($sAssetFileCachePath);
-
             // Retrieve asset file base url
             $sAssetFileBaseUrl = $this->getOptions()->getAssetFileBaseUrl($oUrlAssetFile);
-
             // Add argument and / or anchor to asset file base url
             $sAssetFileRealBaseUrl = $sFirstChar . $sAssetFileBaseUrl . (empty($sArguments) ? '' : '?' . $sArguments) . (empty($sAnchor) ? '' : '#' . $sAnchor) . $sFirstChar;
-
             // Return asset file base url
             return str_replace($aMatches[1], $sAssetFileRealBaseUrl, $aMatches[0]);
         } // Remote relative url

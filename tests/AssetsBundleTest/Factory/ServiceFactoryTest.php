@@ -2,7 +2,7 @@
 
 namespace AssetsBundleTest\Factory;
 
-class ServiceFactoryTest extends \PHPUnit_Framework_TestCase {
+class ServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var array

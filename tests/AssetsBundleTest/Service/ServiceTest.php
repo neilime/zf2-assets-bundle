@@ -2,7 +2,7 @@
 
 namespace AssetsBundleTest\Service;
 
-class ServiceTest extends \PHPUnit_Framework_TestCase
+class ServiceTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

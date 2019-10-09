@@ -2,7 +2,7 @@
 
 namespace AssetsBundleTest\View\Strategy;
 
-class JsCustomStrategyTest extends \PHPUnit_Framework_TestCase
+class JsCustomStrategyTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

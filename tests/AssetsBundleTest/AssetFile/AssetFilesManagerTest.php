@@ -2,7 +2,7 @@
 
 namespace AssetsBundleTest\AssetFile;
 
-class AssetFilesManagerTest extends \PHPUnit_Framework_TestCase
+class AssetFilesManagerTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

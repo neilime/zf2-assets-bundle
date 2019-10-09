@@ -30,7 +30,7 @@ class Bootstrap {
      */
     public static function init() {
         //Load the user-defined test configuration file, if it exists;
-        $aTestConfig = include is_readable(__DIR__ . '/TestConfig.php') ? __DIR__ . '/TestConfig.php' : __DIR__ . '/TestConfig.php.dist';
+        $aTestConfig = include __DIR__ . '/application.config.php';
         $aZf2ModulePaths = array();
         if (isset($aTestConfig['module_listener_options']['module_paths'])) {
             foreach ($aTestConfig['module_listener_options']['module_paths'] as $sModulePath) {

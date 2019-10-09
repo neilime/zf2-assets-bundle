@@ -1,6 +1,6 @@
 <?php
 namespace AssetsBundleTest\Service;
-class ServiceOptionsTest extends \PHPUnit_Framework_TestCase{
+class ServiceOptionsTest extends \PHPUnit\Framework\TestCase{
 
 	/**
 	 * @var \AssetsBundle\Service\ServiceOptions

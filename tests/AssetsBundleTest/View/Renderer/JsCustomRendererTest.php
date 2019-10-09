@@ -2,7 +2,7 @@
 
 namespace AssetsBundleTest\View\Renderer;
 
-class JsCustomRendererTest extends \PHPUnit_Framework_TestCase {
+class JsCustomRendererTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var \AssetsBundle\View\Renderer\JsCustomRenderer
