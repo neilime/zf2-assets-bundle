@@ -1,0 +1,8 @@
+title: Assetsbundle
+description: "AssetsBundle is a module for Zend Framework allowing asset managment (bundling & caching) "
+google_analytics: UA-53063406-2
+show_downloads: true
+theme: jekyll-theme-leap-day
+
+gems:
+  - jekyll-mentions
