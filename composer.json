@@ -27,7 +27,7 @@
         "tubalmartin/cssmin": "^4.1",
         "zendframework/zend-config": "^2.6",
         "zendframework/zend-console": "^2.6",
-        "zendframework/zend-eventmanager": "^2.6",
+        "zendframework/zend-eventmanager": "^2.6 || ^3.0",
         "zendframework/zend-http": "^2.5",
         "zendframework/zend-i18n": "^2.6",
         "zendframework/zend-log": "^2.7",
