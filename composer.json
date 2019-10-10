@@ -34,7 +34,7 @@
         "zendframework/zend-modulemanager": "^2.7",
         "zendframework/zend-mvc": "^2.7",
         "zendframework/zend-serializer": "^2.6",
-        "zendframework/zend-servicemanager": "^2.7",
+        "zendframework/zend-servicemanager": "^2.7 || ^3.0",
         "zendframework/zend-view": "^2.6"
     },
     "require-dev": {
